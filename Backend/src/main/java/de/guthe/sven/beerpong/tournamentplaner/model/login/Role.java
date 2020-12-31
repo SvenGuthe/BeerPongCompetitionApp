@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.login;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,13 +22,14 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "roles_privileges",
             joinColumns = @JoinColumn(
                     name = "roleid", referencedColumnName = "roleid"),
             inverseJoinColumns = @JoinColumn(
                     name = "privilegeid", referencedColumnName = "privilegeid"))
+    @JsonIgnore
     private Collection<Privilege> privileges;
 
     public Role() {

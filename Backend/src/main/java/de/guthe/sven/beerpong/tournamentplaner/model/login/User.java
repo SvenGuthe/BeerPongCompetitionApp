@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.login;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -32,12 +34,13 @@ public class User {
     @Column(name = "tokenexpired", nullable = false)
     private boolean tokenExpired;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "userid", referencedColumnName = "userid"),
             inverseJoinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid")
     )
+    @JsonIgnore
     private Collection<Role> roles;
 
     public User() {

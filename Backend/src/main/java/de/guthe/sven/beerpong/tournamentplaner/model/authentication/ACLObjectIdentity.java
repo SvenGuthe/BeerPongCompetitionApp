@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -30,7 +32,8 @@ public class ACLObjectIdentity {
     @Column(name = "entries_inheriting", nullable = false)
     private Boolean entriesInheriting;
 
-    @OneToMany(mappedBy = "objectIdentity")
+    @OneToMany(mappedBy = "objectIdentity", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ACLEntry> aclEntries;
 
     public ACLObjectIdentity() {

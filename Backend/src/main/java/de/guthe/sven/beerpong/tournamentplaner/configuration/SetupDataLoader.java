@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityPrivilege;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.model.login.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.login.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.login.User;
@@ -40,42 +42,67 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         if (alreadySetup)
             return;
 
-        Privilege readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
-        Privilege writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
+        Privilege readAclPrivilege = createPrivilegeIfNotFound(SecurityPrivilege.READ_TESTOBJECT_PRIVILEGE);
+        Privilege writeAclPrivilege = createPrivilegeIfNotFound(SecurityPrivilege.WRITE_TESTOBJECT_PRIVILEGE);
 
-        List<Privilege> adminPrivileges = Arrays.asList(readPrivilege, writePrivilege);
-        createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        createRoleIfNotFound("ROLE_USER", Arrays.asList(readPrivilege));
+        List<Privilege> administratorPrivileges = Arrays.asList(readAclPrivilege, writeAclPrivilege);
+        List<Privilege> moderatorPrivileges = Arrays.asList(readAclPrivilege, writeAclPrivilege);
+        List<Privilege> playerPrivileges = Arrays.asList();
 
-        Role adminRole = roleRepository.findByName("ROLE_ADMIN");
-        User user = new User();
-        user.setFirstName("Test");
-        user.setLastName("Test");
-        user.setPassword(passwordEncoder.encode("test"));
-        user.setEmail("test@test.com");
-        user.setRoles(Arrays.asList(adminRole));
-        user.setEnabled(true);
-        userRepository.save(user);
+        createRoleIfNotFound(SecurityRole.ROLE_ADMINISTRATOR, administratorPrivileges);
+        createRoleIfNotFound(SecurityRole.ROLE_MODERATOR, moderatorPrivileges);
+        createRoleIfNotFound(SecurityRole.ROLE_PLAYER, playerPrivileges);
+
+        Role adminRole = roleRepository.findByName(SecurityRole.ROLE_ADMINISTRATOR.toString());
+        Role moderatorRole = roleRepository.findByName(SecurityRole.ROLE_MODERATOR.toString());
+        Role playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
+
+        User adminUser = new User();
+        adminUser.setFirstName("admin");
+        adminUser.setLastName("admin");
+        adminUser.setPassword(passwordEncoder.encode("admin"));
+        adminUser.setEmail("admin@admin.com");
+        adminUser.setRoles(Arrays.asList(adminRole, moderatorRole, playerRole));
+        adminUser.setEnabled(true);
+        userRepository.save(adminUser);
+
+        User moderatorUser = new User();
+        moderatorUser.setFirstName("moderator");
+        moderatorUser.setLastName("moderator");
+        moderatorUser.setPassword(passwordEncoder.encode("moderator"));
+        moderatorUser.setEmail("moderator@moderator.com");
+        moderatorUser.setRoles(Arrays.asList(moderatorRole, playerRole));
+        moderatorUser.setEnabled(true);
+        userRepository.save(moderatorUser);
+
+        User playerUser = new User();
+        playerUser.setFirstName("player");
+        playerUser.setLastName("player");
+        playerUser.setPassword(passwordEncoder.encode("player"));
+        playerUser.setEmail("player@player.com");
+        playerUser.setRoles(Arrays.asList(playerRole));
+        playerUser.setEnabled(true);
+        userRepository.save(playerUser);
 
         alreadySetup = true;
 
     }
 
     @Transactional
-    Privilege createPrivilegeIfNotFound(String name) {
-        Privilege privilege = privilegeRepository.findByName(name);
+    Privilege createPrivilegeIfNotFound(SecurityPrivilege securityPrivilege) {
+        Privilege privilege = privilegeRepository.findByName(securityPrivilege.toString());
         if (privilege == null) {
-            privilege = new Privilege(name);
+            privilege = new Privilege(securityPrivilege.toString());
             privilegeRepository.save(privilege);
         }
         return privilege;
     }
 
     @Transactional
-    Role createRoleIfNotFound(String name, Collection<Privilege> privileges) {
-        Role role = roleRepository.findByName(name);
+    Role createRoleIfNotFound(SecurityRole securityRole, Collection<Privilege> privileges) {
+        Role role = roleRepository.findByName(securityRole.toString());
         if (role == null) {
-            role = new Role(name);
+            role = new Role(securityRole.toString());
             role.setPrivileges(privileges);
             roleRepository.save(role);
         }

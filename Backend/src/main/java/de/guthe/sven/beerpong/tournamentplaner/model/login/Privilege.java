@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.login;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -16,7 +18,8 @@ public class Privilege {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Collection<Role> roles;
 
     public Privilege() {

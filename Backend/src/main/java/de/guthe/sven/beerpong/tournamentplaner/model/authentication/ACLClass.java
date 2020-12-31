@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -15,7 +17,8 @@ public class ACLClass {
     @Column(name = "class")
     private String aclClass;
 
-    @OneToMany(mappedBy = "aclClass")
+    @OneToMany(mappedBy = "aclClass", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ACLObjectIdentity> aclObjectIdentities;
 
     public ACLClass() {

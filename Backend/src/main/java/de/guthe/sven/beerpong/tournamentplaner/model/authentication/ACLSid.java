@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,10 +20,12 @@ public class ACLSid {
     @Column(name = "sid")
     private String sid;
 
-    @OneToMany(mappedBy = "aclSid")
+    @OneToMany(mappedBy = "aclSid", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ACLEntry> aclEntries;
 
-    @OneToMany(mappedBy = "aclSid")
+    @OneToMany(mappedBy = "aclSid", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<ACLObjectIdentity> aclObjectIdentities;
 
     public ACLSid() {
