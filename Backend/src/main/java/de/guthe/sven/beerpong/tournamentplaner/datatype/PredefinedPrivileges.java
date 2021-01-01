@@ -16,14 +16,16 @@ public class PredefinedPrivileges {
     public static List<SecurityPrivilege> moderatorPrivileges = ListUtils.union(
             playerPrivileges,
             Arrays.asList(
-                    SecurityPrivilege.READ_ACL_PRIVILEGE
+                    SecurityPrivilege.READ_ACL_PRIVILEGE,
+                    SecurityPrivilege.READ_AUTHENTICATION_PRIVILEGE
             )
     );
 
     public static List<SecurityPrivilege> administratorPrivileges = ListUtils.union(
             moderatorPrivileges,
             Arrays.asList(
-                    SecurityPrivilege.WRITE_ACL_PRIVILEGE
+                    SecurityPrivilege.WRITE_ACL_PRIVILEGE,
+                    SecurityPrivilege.WRITE_AUTHENTICATION_PRIVILEGE
             )
     );
 
