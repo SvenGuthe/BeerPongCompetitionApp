@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
@@ -44,8 +45,7 @@ public class ACLContext {
 
     @Bean
     public AclAuthorizationStrategy aclAuthorizationStrategy() {
-        return new AclAuthorizationStrategyImpl(
-                new SimpleGrantedAuthority("ROLE_ADMIN"));
+        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority(SecurityRole.ROLE_ADMINISTRATOR.toString()));
     }
 
     @Bean

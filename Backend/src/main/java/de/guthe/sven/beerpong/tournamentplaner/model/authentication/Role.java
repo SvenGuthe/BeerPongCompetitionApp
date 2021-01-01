@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.model.login;
+package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

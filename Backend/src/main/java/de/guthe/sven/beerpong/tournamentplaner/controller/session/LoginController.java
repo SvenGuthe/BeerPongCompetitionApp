@@ -1,7 +1,7 @@
-package de.guthe.sven.beerpong.tournamentplaner.controller;
+package de.guthe.sven.beerpong.tournamentplaner.controller.session;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.login.User;
-import de.guthe.sven.beerpong.tournamentplaner.repository.login.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class LoginController {
 
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public LoginController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping("/authenticateduser")
     public User getLogin() {

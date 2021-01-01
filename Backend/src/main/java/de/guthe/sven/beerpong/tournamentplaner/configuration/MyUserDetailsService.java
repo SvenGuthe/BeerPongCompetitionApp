@@ -1,10 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.login.Privilege;
-import de.guthe.sven.beerpong.tournamentplaner.model.login.Role;
-import de.guthe.sven.beerpong.tournamentplaner.model.login.User;
-import de.guthe.sven.beerpong.tournamentplaner.repository.login.RoleRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.login.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,8 +48,11 @@ public class MyUserDetailsService implements UserDetailsService {
 
     private Collection<? extends GrantedAuthority> getAuthorities(
             Collection<Role> roles) {
-
-        return getGrantedAuthorities(getPrivileges(roles));
+        List<String> privilegesAndRoles = getPrivileges(roles);
+        for (Role role : roles) {
+            privilegesAndRoles.add(role.getName());
+        }
+        return getGrantedAuthorities(privilegesAndRoles);
     }
 
     private List<String> getPrivileges(Collection<Role> roles) {

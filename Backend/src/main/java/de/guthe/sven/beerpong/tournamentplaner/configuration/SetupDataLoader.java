@@ -2,12 +2,13 @@ package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityPrivilege;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
-import de.guthe.sven.beerpong.tournamentplaner.model.login.Privilege;
-import de.guthe.sven.beerpong.tournamentplaner.model.login.Role;
-import de.guthe.sven.beerpong.tournamentplaner.model.login.User;
-import de.guthe.sven.beerpong.tournamentplaner.repository.login.PrivilegeRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.login.RoleRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.login.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.PredefinedPrivileges;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -18,6 +19,8 @@ import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -42,16 +45,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         if (alreadySetup)
             return;
 
-        Privilege readAclPrivilege = createPrivilegeIfNotFound(SecurityPrivilege.READ_TESTOBJECT_PRIVILEGE);
-        Privilege writeAclPrivilege = createPrivilegeIfNotFound(SecurityPrivilege.WRITE_TESTOBJECT_PRIVILEGE);
+        Map<SecurityRole, List<SecurityPrivilege>> securityPrivilegesMap = PredefinedPrivileges.privileges;
 
-        List<Privilege> administratorPrivileges = Arrays.asList(readAclPrivilege, writeAclPrivilege);
-        List<Privilege> moderatorPrivileges = Arrays.asList(readAclPrivilege, writeAclPrivilege);
-        List<Privilege> playerPrivileges = Arrays.asList();
-
-        createRoleIfNotFound(SecurityRole.ROLE_ADMINISTRATOR, administratorPrivileges);
-        createRoleIfNotFound(SecurityRole.ROLE_MODERATOR, moderatorPrivileges);
-        createRoleIfNotFound(SecurityRole.ROLE_PLAYER, playerPrivileges);
+        for (Map.Entry<SecurityRole, List<SecurityPrivilege>> entry : securityPrivilegesMap.entrySet()) {
+            List<Privilege> privileges = entry.getValue().stream().map(this::createPrivilegeIfNotFound).collect(Collectors.toList());
+            createRoleIfNotFound(entry.getKey(), privileges);
+        }
 
         Role adminRole = roleRepository.findByName(SecurityRole.ROLE_ADMINISTRATOR.toString());
         Role moderatorRole = roleRepository.findByName(SecurityRole.ROLE_MODERATOR.toString());
@@ -87,6 +86,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         alreadySetup = true;
 
     }
+
 
     @Transactional
     Privilege createPrivilegeIfNotFound(SecurityPrivilege securityPrivilege) {

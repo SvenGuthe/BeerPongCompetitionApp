@@ -1,5 +1,6 @@
-package de.guthe.sven.beerpong.tournamentplaner.controller;
+package de.guthe.sven.beerpong.tournamentplaner.controller.test;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.model.test.TestObject;
 import de.guthe.sven.beerpong.tournamentplaner.repository.test.TestObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,15 @@ import java.util.List;
 @RequestMapping("/test")
 public class TestObjectController {
 
-    @Autowired
     private JdbcMutableAclService aclService;
 
-    @Autowired
     private TestObjectRepository testObjectRepository;
+
+    @Autowired
+    public TestObjectController(JdbcMutableAclService aclService, TestObjectRepository testObjectRepository) {
+        this.aclService = aclService;
+        this.testObjectRepository = testObjectRepository;
+    }
 
     @PostMapping("/testobject")
     @Transactional
@@ -41,26 +46,26 @@ public class TestObjectController {
     }
 
     @GetMapping("/testobject/{testObjectId}")
-    @PostAuthorize("hasPermission(returnObject, 'READ')")
+    @PostAuthorize("hasPermission(returnObject, 'READ') and hasAuthority('READ_TESTOBJECT_PRIVILEGE')")
     public TestObject getTestObject(@PathVariable Long testObjectId) {
         return testObjectRepository.findById(testObjectId).get();
     }
 
     @GetMapping("/testobject")
-    @PostFilter("hasPermission(filterObject, 'READ')")
+    @PostFilter("hasPermission(filterObject, 'READ') and hasAuthority('READ_TESTOBJECT_PRIVILEGE')")
     public List<TestObject> getAllTestObjects() {
         return testObjectRepository.findAll();
     }
 
     @PutMapping("/testobject")
-    @PreFilter("hasPermission(#testObject, 'WRITE')")
+    @PreFilter("hasPermission(#testObject, 'WRITE') and hasAuthority('WRITE_TESTOBJECT_PRIVILEGE')")
     public TestObject updateTestObject ( @RequestBody TestObject testObject) {
         return testObjectRepository.save(testObject);
     }
 
     @DeleteMapping("/testobject")
     @Transactional
-    @PreFilter("hasPermission(#testObject, 'WRITE')")
+    @PreFilter("hasPermission(#testObject, 'WRITE') and hasAuthority('WRITE_TESTOBJECT_PRIVILEGE')")
     public void deleteTestObject(@RequestBody TestObject testObject) {
         testObjectRepository.delete(testObject);
     }
@@ -88,7 +93,7 @@ public class TestObjectController {
             acl.insertAce(acl.getEntries().size(), permission, sidCreator, true);
         }
 
-        Sid administrator = new GrantedAuthoritySid("ROLE_ADMINISTRATOR");
+        Sid administrator = new GrantedAuthoritySid(SecurityRole.ROLE_ADMINISTRATOR.toString());
         List<Permission> permissionsAdministrator = new LinkedList<>();
         permissionsAdministrator.add(BasePermission.READ);
         permissionsAdministrator.add(BasePermission.WRITE);
@@ -100,7 +105,7 @@ public class TestObjectController {
             acl.insertAce(acl.getEntries().size(), permission, administrator, true);
         }
 
-        Sid moderator = new GrantedAuthoritySid("ROLE_MODERATOR");
+        Sid moderator = new GrantedAuthoritySid(SecurityRole.ROLE_MODERATOR.toString());
         List<Permission> permissionsModerator = new LinkedList<>();
         permissionsModerator.add(BasePermission.READ);
         permissionsModerator.add(BasePermission.WRITE);
@@ -111,7 +116,7 @@ public class TestObjectController {
             acl.insertAce(acl.getEntries().size(), permission, moderator, true);
         }
 
-        Sid player = new GrantedAuthoritySid("ROLE_PLAYER");
+        Sid player = new GrantedAuthoritySid(SecurityRole.ROLE_PLAYER.toString());
         List<Permission> permissionsPlayer = new LinkedList<>();
         permissionsPlayer.add(BasePermission.READ);
 

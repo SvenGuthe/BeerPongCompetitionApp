@@ -1,6 +1,6 @@
-package de.guthe.sven.beerpong.tournamentplaner.repository.login;
+package de.guthe.sven.beerpong.tournamentplaner.repository.authentication;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.login.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
