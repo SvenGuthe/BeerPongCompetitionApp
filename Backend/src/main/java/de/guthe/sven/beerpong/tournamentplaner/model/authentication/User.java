@@ -31,9 +31,6 @@ public class User {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column(name = "tokenexpired", nullable = false)
-    private boolean tokenExpired;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
@@ -88,14 +85,6 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public boolean isTokenExpired() {
-        return tokenExpired;
-    }
-
-    public void setTokenExpired(boolean tokenExpired) {
-        this.tokenExpired = tokenExpired;
     }
 
     public Collection<Role> getRoles() {

@@ -21,13 +21,7 @@ public class PredefinedPrivileges {
             )
     );
 
-    public static List<SecurityPrivilege> administratorPrivileges = ListUtils.union(
-            moderatorPrivileges,
-            Arrays.asList(
-                    SecurityPrivilege.WRITE_ACL_PRIVILEGE,
-                    SecurityPrivilege.WRITE_AUTHENTICATION_PRIVILEGE
-            )
-    );
+    public static List<SecurityPrivilege> administratorPrivileges = Arrays.asList(SecurityPrivilege.values().clone());
 
     static {
         privileges = new HashMap<>();
