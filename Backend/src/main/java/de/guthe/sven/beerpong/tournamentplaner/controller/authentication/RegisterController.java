@@ -16,17 +16,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/authentication")
 public class RegisterController {
 
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
     private RoleRepository roleRepository;
 
-    @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
 
-    @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    public RegisterController(UserRepository userRepository, RoleRepository roleRepository, ConfirmationTokenRepository confirmationTokenRepository, EmailSenderService emailSenderService) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.confirmationTokenRepository = confirmationTokenRepository;
+        this.emailSenderService = emailSenderService;
+    }
 
     @PostMapping("/register")
     public User registerUser(@RequestBody User user) {
