@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "acl_class")
+@NamedQuery(name = "ACLClass.findByClassName", query = "SELECT a FROM ACLClass a WHERE LOWER(a.aclClass) = LOWER(?1)")
 public class ACLClass {
 
     @Id

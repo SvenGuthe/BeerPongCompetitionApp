@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "acl_entry")
+@NamedQuery(name = "ACLEntry.findMasksByACLObjectIdentityACLSid", query = "SELECT a.mask FROM ACLEntry a WHERE LOWER(a.objectIdentity.id) = LOWER(?1) AND LOWER(a.aclSid.id) = LOWER(?2)")
 public class ACLEntry {
 
     @Id

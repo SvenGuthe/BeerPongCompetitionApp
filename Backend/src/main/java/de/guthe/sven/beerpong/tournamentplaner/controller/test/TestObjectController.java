@@ -3,6 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.test;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.model.test.TestObject;
 import de.guthe.sven.beerpong.tournamentplaner.repository.test.TestObjectRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -30,10 +31,13 @@ public class TestObjectController {
 
     private TestObjectRepository testObjectRepository;
 
+    private ACLService ownACLSerivce;
+
     @Autowired
-    public TestObjectController(JdbcMutableAclService aclService, TestObjectRepository testObjectRepository) {
+    public TestObjectController(JdbcMutableAclService aclService, TestObjectRepository testObjectRepository, ACLService ownACLSerivce) {
         this.aclService = aclService;
         this.testObjectRepository = testObjectRepository;
+        this.ownACLSerivce = ownACLSerivce;
     }
 
     @PostMapping("/testobject")
@@ -49,6 +53,13 @@ public class TestObjectController {
     @PostAuthorize("hasPermission(returnObject, 'READ') and hasAuthority('READ_TESTOBJECT_PRIVILEGE')")
     public TestObject getTestObject(@PathVariable Long testObjectId) {
         return testObjectRepository.findById(testObjectId).get();
+    }
+
+    @GetMapping("/testobjectpermissions/{testObjectId}")
+    @PostAuthorize("hasAuthority('READ_TESTOBJECT_PRIVILEGE')")
+    public List<Integer> getTestObjectPermissions(@PathVariable Long testObjectId) {
+        TestObject testObject = testObjectRepository.findById(testObjectId).get();
+        return ownACLSerivce.getMasks(testObject);
     }
 
     @GetMapping("/testobject")

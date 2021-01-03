@@ -1,10 +1,13 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @NamedQuery(name = "Role.findByEmail", query = "SELECT u FROM User u WHERE LOWER(u.email) = LOWER(?1)")
@@ -30,6 +33,9 @@ public class User {
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
+
+    @OneToMany(mappedBy = "user")
+    private List<TeamComposition> teamCompositions;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -100,6 +106,22 @@ public class User {
             this.roles = new LinkedList<>();
         }
         this.roles.add(role);
+    }
+
+    public List<TeamComposition> getTeamCompositions() {
+        return teamCompositions;
+    }
+
+    public void setTeamCompositions(List<TeamComposition> teamCompositions) {
+        this.teamCompositions = teamCompositions;
+    }
+
+    public TeamComposition addTeam(Team team) {
+        TeamComposition teamComposition = new TeamComposition();
+        teamComposition.setUser(this);
+        teamComposition.setTeam(team);
+        teamComposition.setAdmin(true);
+        return teamComposition;
     }
 
 }

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ACLClassRepository extends JpaRepository<ACLClass, Long> {
 
+    ACLClass findByClassName(String className);
+
 }

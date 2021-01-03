@@ -1,10 +1,12 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.test;
 
+import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "test_object")
-public class TestObject {
+public class TestObject implements ACLObjectInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +21,11 @@ public class TestObject {
 
     public TestObject(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String getACLClassName() {
+        return TestObject.class.getName();
     }
 
     public Long getId() {

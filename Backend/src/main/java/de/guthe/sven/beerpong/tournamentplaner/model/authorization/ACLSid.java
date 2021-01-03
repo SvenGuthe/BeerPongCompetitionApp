@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "acl_sid")
+@NamedQuery(name = "ACLSid.findByEmail", query = "SELECT a FROM ACLSid a WHERE LOWER(a.sid) = LOWER(?1) AND a.principle = true")
 public class ACLSid {
 
     @Id
