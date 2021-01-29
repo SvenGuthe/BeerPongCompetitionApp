@@ -17,30 +17,27 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private DataSource securityDataSource;
+	@Autowired
+	private DataSource securityDataSource;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(securityDataSource);
-    }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().dataSource(securityDataSource);
+	}
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .httpBasic()
-                .and().authorizeRequests()
-                .antMatchers("/authentication/register").permitAll()
-                .antMatchers("/authentication/confirm-account").permitAll()
-                .anyRequest().authenticated().and().userDetailsService(userDetailsService);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable().httpBasic().and().authorizeRequests().antMatchers("/authentication/register").permitAll()
+				.antMatchers("/authentication/confirm-account").permitAll().anyRequest().authenticated().and()
+				.userDetailsService(userDetailsService);
+	}
 
 }

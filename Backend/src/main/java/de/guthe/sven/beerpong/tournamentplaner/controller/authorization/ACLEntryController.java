@@ -13,32 +13,36 @@ import java.util.List;
 @RequestMapping("/acl")
 public class ACLEntryController {
 
-    private ACLEntryRepository aclEntryRepository;
+	private ACLEntryRepository aclEntryRepository;
 
-    @Autowired
-    public ACLEntryController(ACLEntryRepository aclEntryRepository) {
-        this.aclEntryRepository = aclEntryRepository;
-    }
+	@Autowired
+	public ACLEntryController(ACLEntryRepository aclEntryRepository) {
+		this.aclEntryRepository = aclEntryRepository;
+	}
 
-    @PostMapping("/aclentry")
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLEntry addACLEntry(@RequestBody ACLEntry aclEntry) { return aclEntryRepository.save(aclEntry); }
+	@PostMapping("/aclentry")
+	@Transactional
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLEntry addACLEntry(@RequestBody ACLEntry aclEntry) {
+		return aclEntryRepository.save(aclEntry);
+	}
 
-    @GetMapping("/aclentry")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public List<ACLEntry> getACLEntries() {
-        return aclEntryRepository.findAll();
-    }
+	@GetMapping("/aclentry")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public List<ACLEntry> getACLEntries() {
+		return aclEntryRepository.findAll();
+	}
 
-    @GetMapping("/aclentry/{aclEntryId}")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public ACLEntry getACLEntry(@PathVariable Long aclEntryId) { return aclEntryRepository.findById(aclEntryId).get(); }
+	@GetMapping("/aclentry/{aclEntryId}")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public ACLEntry getACLEntry(@PathVariable Long aclEntryId) {
+		return aclEntryRepository.findById(aclEntryId).get();
+	}
 
-    @PutMapping("/aclentry")
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLEntry updateACLEntry(@RequestBody ACLEntry aclEntry) {
-        return aclEntryRepository.save(aclEntry);
-    }
+	@PutMapping("/aclentry")
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLEntry updateACLEntry(@RequestBody ACLEntry aclEntry) {
+		return aclEntryRepository.save(aclEntry);
+	}
 
 }

@@ -7,64 +7,66 @@ import java.util.List;
 
 @Entity
 @Table(name = "acl_sid")
-@NamedQuery(name = "ACLSid.findByEmail", query = "SELECT a FROM ACLSid a WHERE LOWER(a.sid) = LOWER(?1) AND a.principle = true")
+@NamedQuery(name = "ACLSid.findByEmail",
+		query = "SELECT a FROM ACLSid a WHERE LOWER(a.sid) = LOWER(?1) AND a.principle = true")
 public class ACLSid {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
-    @Column(name = "principal")
-    private Boolean principle;
+	@Column(name = "principal")
+	private Boolean principle;
 
-    @Column(name = "sid")
-    private String sid;
+	@Column(name = "sid")
+	private String sid;
 
-    @OneToMany(mappedBy = "aclSid", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ACLEntry> aclEntries;
+	@OneToMany(mappedBy = "aclSid", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<ACLEntry> aclEntries;
 
-    @OneToMany(mappedBy = "aclSid", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ACLObjectIdentity> aclObjectIdentities;
+	@OneToMany(mappedBy = "aclSid", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<ACLObjectIdentity> aclObjectIdentities;
 
-    public ACLSid() {
-    }
+	public ACLSid() {
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Boolean getPrinciple() {
-        return principle;
-    }
+	public Boolean getPrinciple() {
+		return principle;
+	}
 
-    public void setPrinciple(Boolean principle) {
-        this.principle = principle;
-    }
+	public void setPrinciple(Boolean principle) {
+		this.principle = principle;
+	}
 
-    public String getSid() {
-        return sid;
-    }
+	public String getSid() {
+		return sid;
+	}
 
-    public void setSid(String sid) {
-        this.sid = sid;
-    }
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
 
-    public List<ACLEntry> getAclEntries() {
-        return aclEntries;
-    }
+	public List<ACLEntry> getAclEntries() {
+		return aclEntries;
+	}
 
-    public void setAclEntries(List<ACLEntry> aclEntries) {
-        this.aclEntries = aclEntries;
-    }
+	public void setAclEntries(List<ACLEntry> aclEntries) {
+		this.aclEntries = aclEntries;
+	}
 
-    public List<ACLObjectIdentity> getAclObjectIdentities() {
-        return aclObjectIdentities;
-    }
+	public List<ACLObjectIdentity> getAclObjectIdentities() {
+		return aclObjectIdentities;
+	}
 
-    public void setAclObjectIdentities(List<ACLObjectIdentity> aclObjectIdentities) {
-        this.aclObjectIdentities = aclObjectIdentities;
-    }
+	public void setAclObjectIdentities(List<ACLObjectIdentity> aclObjectIdentities) {
+		this.aclObjectIdentities = aclObjectIdentities;
+	}
+
 }

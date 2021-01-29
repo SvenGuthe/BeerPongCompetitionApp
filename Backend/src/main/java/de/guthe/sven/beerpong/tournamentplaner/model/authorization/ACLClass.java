@@ -10,38 +10,39 @@ import java.util.List;
 @NamedQuery(name = "ACLClass.findByClassName", query = "SELECT a FROM ACLClass a WHERE LOWER(a.aclClass) = LOWER(?1)")
 public class ACLClass {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
 
-    @Column(name = "class")
-    private String aclClass;
+	@Column(name = "class")
+	private String aclClass;
 
-    @OneToMany(mappedBy = "aclClass", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<ACLObjectIdentity> aclObjectIdentities;
+	@OneToMany(mappedBy = "aclClass", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private List<ACLObjectIdentity> aclObjectIdentities;
 
-    public ACLClass() {
-    }
+	public ACLClass() {
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getAclClass() {
-        return aclClass;
-    }
+	public String getAclClass() {
+		return aclClass;
+	}
 
-    public void setAclClass(String aclClass) {
-        this.aclClass = aclClass;
-    }
+	public void setAclClass(String aclClass) {
+		this.aclClass = aclClass;
+	}
 
-    public List<ACLObjectIdentity> getAclObjectIdentities() {
-        return aclObjectIdentities;
-    }
+	public List<ACLObjectIdentity> getAclObjectIdentities() {
+		return aclObjectIdentities;
+	}
 
-    public void setAclObjectIdentities(List<ACLObjectIdentity> aclObjectIdentities) {
-        this.aclObjectIdentities = aclObjectIdentities;
-    }
+	public void setAclObjectIdentities(List<ACLObjectIdentity> aclObjectIdentities) {
+		this.aclObjectIdentities = aclObjectIdentities;
+	}
+
 }

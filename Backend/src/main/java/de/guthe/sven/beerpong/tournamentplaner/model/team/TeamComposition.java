@@ -7,57 +7,59 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "teamcomposition")
-@NamedQuery(name = "TeamComposition.findByTeamIdAndUserId", query = "SELECT tc FROM TeamComposition tc WHERE tc.team.id = ?1 AND tc.user.userId = ?2")
+@NamedQuery(name = "TeamComposition.findByTeamIdAndUserId",
+		query = "SELECT tc FROM TeamComposition tc WHERE tc.team.id = ?1 AND tc.user.userId = ?2")
 public class TeamComposition implements ACLObjectInterface {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "teamcompositionid")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "teamcompositionid")
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "teamid")
-    private Team team;
+	@ManyToOne
+	@JoinColumn(name = "teamid")
+	private Team team;
 
-    @ManyToOne
-    @JoinColumn(name = "userid")
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "userid")
+	private User user;
 
-    @Column(name = "isadmin", nullable = false)
-    private Boolean isAdmin;
+	@Column(name = "isadmin", nullable = false)
+	private Boolean isAdmin;
 
-    public TeamComposition() {
-    }
+	public TeamComposition() {
+	}
 
-    public String getACLClassName() {
-        return TeamComposition.class.getName();
-    }
+	public Class<TeamComposition> getACLClass() {
+		return TeamComposition.class;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Team getTeam() {
-        return team;
-    }
+	public Team getTeam() {
+		return team;
+	}
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public Boolean getAdmin() {
-        return isAdmin;
-    }
+	public Boolean getAdmin() {
+		return isAdmin;
+	}
 
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
-    }
+	public void setAdmin(Boolean admin) {
+		isAdmin = admin;
+	}
+
 }

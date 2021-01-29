@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeamCompositionRepository extends JpaRepository<TeamComposition, Long> {
 
-    TeamComposition findByTeamIdAndUserId(Long teamId, Long userId);
+	TeamComposition findByTeamIdAndUserId(Long teamId, Long userId);
 
 }

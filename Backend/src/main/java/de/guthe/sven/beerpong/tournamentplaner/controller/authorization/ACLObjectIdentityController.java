@@ -13,34 +13,36 @@ import java.util.List;
 @RequestMapping("/acl")
 public class ACLObjectIdentityController {
 
-    private ACLObjectIdentityRepository aclObjectIdentityRepository;
+	private ACLObjectIdentityRepository aclObjectIdentityRepository;
 
-    @Autowired
-    public ACLObjectIdentityController(ACLObjectIdentityRepository aclObjectIdentityRepository) {
-        this.aclObjectIdentityRepository = aclObjectIdentityRepository;
-    }
+	@Autowired
+	public ACLObjectIdentityController(ACLObjectIdentityRepository aclObjectIdentityRepository) {
+		this.aclObjectIdentityRepository = aclObjectIdentityRepository;
+	}
 
-    @PostMapping("/aclobjectidentity")
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLObjectIdentity addACLObjectIdentity(@RequestBody ACLObjectIdentity aclObjectIdentity) {
-        return aclObjectIdentityRepository.save(aclObjectIdentity);
-    }
+	@PostMapping("/aclobjectidentity")
+	@Transactional
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLObjectIdentity addACLObjectIdentity(@RequestBody ACLObjectIdentity aclObjectIdentity) {
+		return aclObjectIdentityRepository.save(aclObjectIdentity);
+	}
 
-    @GetMapping("/aclobjectidentity")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public List<ACLObjectIdentity> getACLObjectIdentities() { return aclObjectIdentityRepository.findAll(); }
+	@GetMapping("/aclobjectidentity")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public List<ACLObjectIdentity> getACLObjectIdentities() {
+		return aclObjectIdentityRepository.findAll();
+	}
 
-    @GetMapping("/aclobjectidentity/{aclObjectIdentityId}")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public ACLObjectIdentity getACLObjectIdentity(@PathVariable Long aclObjectIdentityId) {
-        return aclObjectIdentityRepository.findById(aclObjectIdentityId).get();
-    }
+	@GetMapping("/aclobjectidentity/{aclObjectIdentityId}")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public ACLObjectIdentity getACLObjectIdentity(@PathVariable Long aclObjectIdentityId) {
+		return aclObjectIdentityRepository.findById(aclObjectIdentityId).get();
+	}
 
-    @PutMapping("/aclobjectidentity")
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLObjectIdentity updateACLObjectIdentity(@RequestBody ACLObjectIdentity aclObjectIdentity) {
-        return aclObjectIdentityRepository.save(aclObjectIdentity);
-    }
+	@PutMapping("/aclobjectidentity")
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLObjectIdentity updateACLObjectIdentity(@RequestBody ACLObjectIdentity aclObjectIdentity) {
+		return aclObjectIdentityRepository.save(aclObjectIdentity);
+	}
 
 }

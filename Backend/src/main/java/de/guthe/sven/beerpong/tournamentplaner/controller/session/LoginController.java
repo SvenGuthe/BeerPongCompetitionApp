@@ -13,25 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class LoginController {
 
-    private UserRepository userRepository;
+	private UserRepository userRepository;
 
-    @Autowired
-    public LoginController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	@Autowired
+	public LoginController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    @GetMapping("/authenticateduser")
-    public User getLogin() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
+	@GetMapping("/authenticateduser")
+	public User getLogin() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username;
 
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails)principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		}
+		else {
+			username = principal.toString();
+		}
 
-        return userRepository.findByEmail(username);
-    }
+		return userRepository.findByEmail(username);
+	}
 
 }

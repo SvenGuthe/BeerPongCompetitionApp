@@ -10,43 +10,43 @@ import java.util.Collection;
 @Table(name = "privilege")
 public class Privilege {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "privilegeid", nullable = false)
-    private Long privilegeId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "privilegeid", nullable = false)
+	private Long privilegeId;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+	@Column(name = "name", nullable = false, unique = true)
+	private String name;
 
-    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Collection<Role> roles;
+	@ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
+	@JsonIgnore
+	private Collection<Role> roles;
 
-    public Privilege() {
-    }
+	public Privilege() {
+	}
 
-    public Privilege(String name) {
-        this.name = name;
-    }
+	public Privilege(String name) {
+		this.name = name;
+	}
 
-    public Long getPrivilegeId() {
-        return privilegeId;
-    }
+	public Long getPrivilegeId() {
+		return privilegeId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
+	public Collection<Role> getRoles() {
+		return roles;
+	}
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
+	}
 
 }

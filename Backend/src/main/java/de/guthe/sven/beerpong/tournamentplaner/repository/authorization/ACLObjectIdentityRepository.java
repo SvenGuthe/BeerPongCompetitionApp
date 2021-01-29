@@ -4,5 +4,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectIden
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ACLObjectIdentityRepository extends JpaRepository<ACLObjectIdentity, Long> {
-    ACLObjectIdentity findByACLClassObjectIdIdentity(Long aclClassId, Long objectIdIdentity);
+
+	ACLObjectIdentity findByACLClassObjectIdIdentity(Long aclClassId, Long objectIdIdentity);
+
 }

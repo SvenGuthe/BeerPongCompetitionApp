@@ -9,55 +9,55 @@ import java.util.Date;
 @Table(name = "teaminvitationlink")
 public class TeamInvitationLink implements ACLObjectInterface {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "teaminvitationlinkid")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "teaminvitationlinkid")
+	private Long id;
 
-    @Column(name = "teaminvitationlink", nullable = false)
-    private String teamInvitationLink;
+	@Column(name = "teaminvitationlink", nullable = false)
+	private String teamInvitationLink;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "creationtime", nullable = false)
-    private Date creationTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "creationtime", nullable = false)
+	private Date creationTime;
 
-    @ManyToOne
-    @JoinColumn(name = "teamid")
-    private Team team;
+	@ManyToOne
+	@JoinColumn(name = "teamid")
+	private Team team;
 
-    public TeamInvitationLink() {
-    }
+	public TeamInvitationLink() {
+	}
 
-    public String getACLClassName() {
-        return TeamInvitationLink.class.getName();
-    }
+	public Class<TeamInvitationLink> getACLClass() {
+		return TeamInvitationLink.class;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getTeamInvitationLink() {
-        return teamInvitationLink;
-    }
+	public String getTeamInvitationLink() {
+		return teamInvitationLink;
+	}
 
-    public void setTeamInvitationLink(String teamInvitationLink) {
-        this.teamInvitationLink = teamInvitationLink;
-    }
+	public void setTeamInvitationLink(String teamInvitationLink) {
+		this.teamInvitationLink = teamInvitationLink;
+	}
 
-    public Date getCreationTime() {
-        return creationTime;
-    }
+	public Date getCreationTime() {
+		return creationTime;
+	}
 
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
-    }
+	public void setCreationTime(Date creationTime) {
+		this.creationTime = creationTime;
+	}
 
-    public Team getTeam() {
-        return team;
-    }
+	public Team getTeam() {
+		return team;
+	}
 
-    public void setTeam(Team team) {
-        this.team = team;
-    }
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
 }

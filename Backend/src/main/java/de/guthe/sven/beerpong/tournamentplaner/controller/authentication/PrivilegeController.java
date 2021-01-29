@@ -13,34 +13,36 @@ import java.util.List;
 @RequestMapping("/authentication")
 public class PrivilegeController {
 
-    private PrivilegeRepository privilegeRepository;
+	private PrivilegeRepository privilegeRepository;
 
-    @Autowired
-    public PrivilegeController(PrivilegeRepository privilegeRepository) {
-        this.privilegeRepository = privilegeRepository;
-    }
+	@Autowired
+	public PrivilegeController(PrivilegeRepository privilegeRepository) {
+		this.privilegeRepository = privilegeRepository;
+	}
 
-    @PostMapping("/privilege")
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-    public Privilege addPrivilege(@RequestBody Privilege privilege) {
-        return privilegeRepository.save(privilege);
-    }
+	@PostMapping("/privilege")
+	@Transactional
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public Privilege addPrivilege(@RequestBody Privilege privilege) {
+		return privilegeRepository.save(privilege);
+	}
 
-    @GetMapping("/privilege/{privilegeId}")
-    @PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-    public Privilege getPrivilege(@PathVariable Long privilegeId) {
-        return privilegeRepository.findById(privilegeId).get();
-    }
+	@GetMapping("/privilege/{privilegeId}")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public Privilege getPrivilege(@PathVariable Long privilegeId) {
+		return privilegeRepository.findById(privilegeId).get();
+	}
 
-    @GetMapping("/privilege")
-    @PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-    public List<Privilege> getPrivileges() { return privilegeRepository.findAll(); }
+	@GetMapping("/privilege")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public List<Privilege> getPrivileges() {
+		return privilegeRepository.findAll();
+	}
 
-    @PutMapping("/privilege")
-    @PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-    public Privilege updatePrivilege(@RequestBody Privilege privilege) {
-        return privilegeRepository.save(privilege);
-    }
+	@PutMapping("/privilege")
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public Privilege updatePrivilege(@RequestBody Privilege privilege) {
+		return privilegeRepository.save(privilege);
+	}
 
 }

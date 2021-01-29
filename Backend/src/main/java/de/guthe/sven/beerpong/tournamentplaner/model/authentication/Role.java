@@ -11,67 +11,63 @@ import java.util.Collection;
 @Table(name = "role")
 public class Role {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "roleid", nullable = false)
-    private Long roleId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "roleid", nullable = false)
+	private Long roleId;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+	@Column(name = "name", nullable = false, unique = true)
+	private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+	@ManyToMany(mappedBy = "roles")
+	private Collection<User> users;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "roleid", referencedColumnName = "roleid"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilegeid", referencedColumnName = "privilegeid"))
-    @JsonIgnore
-    private Collection<Privilege> privileges;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid"),
+			inverseJoinColumns = @JoinColumn(name = "privilegeid", referencedColumnName = "privilegeid"))
+	@JsonIgnore
+	private Collection<Privilege> privileges;
 
-    public Role() {
-    }
+	public Role() {
+	}
 
-    public Role(String name) {
-        this.name = name;
-    }
+	public Role(String name) {
+		this.name = name;
+	}
 
-    public Long getRoleId() {
-        return roleId;
-    }
+	public Long getRoleId() {
+		return roleId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Collection<User> getUsers() {
-        return users;
-    }
+	public Collection<User> getUsers() {
+		return users;
+	}
 
-    public void setUsers(Collection<User> users) {
-        this.users = users;
-    }
+	public void setUsers(Collection<User> users) {
+		this.users = users;
+	}
 
-    public Collection<Privilege> getPrivileges() {
-        return privileges;
-    }
+	public Collection<Privilege> getPrivileges() {
+		return privileges;
+	}
 
-    public void setPrivileges(Collection<Privilege> privileges) {
-        this.privileges = privileges;
-    }
+	public void setPrivileges(Collection<Privilege> privileges) {
+		this.privileges = privileges;
+	}
 
-    public void addPrivilege(Privilege privilege) {
-        if (this.privileges == null) {
-            this.privileges = new ArrayList<>();
-        }
-        this.privileges.add(privilege);
-    }
+	public void addPrivilege(Privilege privilege) {
+		if (this.privileges == null) {
+			this.privileges = new ArrayList<>();
+		}
+		this.privileges.add(privilege);
+	}
 
 }

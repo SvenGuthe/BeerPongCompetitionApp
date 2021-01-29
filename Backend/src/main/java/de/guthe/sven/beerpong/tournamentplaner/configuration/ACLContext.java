@@ -21,69 +21,61 @@ import javax.sql.DataSource;
 @Configuration
 public class ACLContext {
 
-    @Autowired
-    private DataSource dataSource;
+	@Autowired
+	private DataSource dataSource;
 
-    @Bean
-    public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
-        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
-        AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
-        expressionHandler.setPermissionEvaluator(permissionEvaluator);
-        return expressionHandler;
-    }
+	@Bean
+	public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
+		DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
+		AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
+		expressionHandler.setPermissionEvaluator(permissionEvaluator);
+		return expressionHandler;
+	}
 
-    @Bean
-    public JdbcMutableAclService aclService() {
-        JdbcMutableAclService jdbcMutableAclService = new JdbcMutableAclService(dataSource, lookupStrategy(), aclCache());
+	@Bean
+	public JdbcMutableAclService aclService() {
+		JdbcMutableAclService jdbcMutableAclService = new JdbcMutableAclService(dataSource, lookupStrategy(),
+				aclCache());
 
-        jdbcMutableAclService.setClassIdentityQuery("SELECT @@IDENTITY");
-        jdbcMutableAclService.setSidIdentityQuery("SELECT @@IDENTITY");
+		jdbcMutableAclService.setClassIdentityQuery("SELECT @@IDENTITY");
+		jdbcMutableAclService.setSidIdentityQuery("SELECT @@IDENTITY");
 
-        return jdbcMutableAclService;
+		return jdbcMutableAclService;
 
-    }
+	}
 
-    @Bean
-    public AclAuthorizationStrategy aclAuthorizationStrategy() {
-        return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority(SecurityRole.ROLE_ADMINISTRATOR.toString()));
-    }
+	@Bean
+	public AclAuthorizationStrategy aclAuthorizationStrategy() {
+		return new AclAuthorizationStrategyImpl(new SimpleGrantedAuthority(SecurityRole.ROLE_ADMINISTRATOR.toString()));
+	}
 
-    @Bean
-    public PermissionGrantingStrategy permissionGrantingStrategy() {
-        return new DefaultPermissionGrantingStrategy(
-                new ConsoleAuditLogger());
-    }
+	@Bean
+	public PermissionGrantingStrategy permissionGrantingStrategy() {
+		return new DefaultPermissionGrantingStrategy(new ConsoleAuditLogger());
+	}
 
-    @Bean
-    public EhCacheBasedAclCache aclCache() {
-        return new EhCacheBasedAclCache(
-                aclEhCacheFactoryBean().getObject(),
-                permissionGrantingStrategy(),
-                aclAuthorizationStrategy()
-        );
-    }
+	@Bean
+	public EhCacheBasedAclCache aclCache() {
+		return new EhCacheBasedAclCache(aclEhCacheFactoryBean().getObject(), permissionGrantingStrategy(),
+				aclAuthorizationStrategy());
+	}
 
-    @Bean
-    public EhCacheFactoryBean aclEhCacheFactoryBean() {
-        EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
-        ehCacheFactoryBean.setCacheManager(aclCacheManager().getObject());
-        ehCacheFactoryBean.setCacheName("aclCache");
-        return ehCacheFactoryBean;
-    }
+	@Bean
+	public EhCacheFactoryBean aclEhCacheFactoryBean() {
+		EhCacheFactoryBean ehCacheFactoryBean = new EhCacheFactoryBean();
+		ehCacheFactoryBean.setCacheManager(aclCacheManager().getObject());
+		ehCacheFactoryBean.setCacheName("aclCache");
+		return ehCacheFactoryBean;
+	}
 
-    @Bean
-    public EhCacheManagerFactoryBean aclCacheManager() {
-        return new EhCacheManagerFactoryBean();
-    }
+	@Bean
+	public EhCacheManagerFactoryBean aclCacheManager() {
+		return new EhCacheManagerFactoryBean();
+	}
 
-    @Bean
-    public LookupStrategy lookupStrategy() {
-        return new BasicLookupStrategy(
-                dataSource,
-                aclCache(),
-                aclAuthorizationStrategy(),
-                new ConsoleAuditLogger()
-        );
-    }
+	@Bean
+	public LookupStrategy lookupStrategy() {
+		return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
+	}
 
 }

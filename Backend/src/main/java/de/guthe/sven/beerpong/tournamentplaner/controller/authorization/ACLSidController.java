@@ -13,34 +13,36 @@ import java.util.List;
 @RequestMapping("/acl")
 public class ACLSidController {
 
-    private ACLSidRepository aclSidRepository;
+	private ACLSidRepository aclSidRepository;
 
-    @Autowired
-    public ACLSidController(ACLSidRepository aclSidRepository) {
-        this.aclSidRepository = aclSidRepository;
-    }
+	@Autowired
+	public ACLSidController(ACLSidRepository aclSidRepository) {
+		this.aclSidRepository = aclSidRepository;
+	}
 
-    @PostMapping("/aclsid")
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLSid addACLSid(@RequestBody ACLSid aclSid) {
-        return aclSidRepository.save(aclSid);
-    }
+	@PostMapping("/aclsid")
+	@Transactional
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLSid addACLSid(@RequestBody ACLSid aclSid) {
+		return aclSidRepository.save(aclSid);
+	}
 
-    @GetMapping("/aclsid")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public List<ACLSid> getACLSids() { return aclSidRepository.findAll(); }
+	@GetMapping("/aclsid")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public List<ACLSid> getACLSids() {
+		return aclSidRepository.findAll();
+	}
 
-    @GetMapping("/aclsid/{aclSidId}")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public ACLSid getACLSid(@PathVariable Long aclSidId) {
-        return aclSidRepository.findById(aclSidId).get();
-    }
+	@GetMapping("/aclsid/{aclSidId}")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public ACLSid getACLSid(@PathVariable Long aclSidId) {
+		return aclSidRepository.findById(aclSidId).get();
+	}
 
-    @PutMapping("/aclsid")
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLSid updateACLSid(@RequestBody ACLSid aclSid) {
-        return aclSidRepository.save(aclSid);
-    }
+	@PutMapping("/aclsid")
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLSid updateACLSid(@RequestBody ACLSid aclSid) {
+		return aclSidRepository.save(aclSid);
+	}
 
 }

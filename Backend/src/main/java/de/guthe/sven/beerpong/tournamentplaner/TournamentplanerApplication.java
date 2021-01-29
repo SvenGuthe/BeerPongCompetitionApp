@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class TournamentplanerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(TournamentplanerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(TournamentplanerApplication.class, args);
+	}
 
 }

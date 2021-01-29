@@ -13,34 +13,36 @@ import java.util.List;
 @RequestMapping("/authentication")
 public class RoleController {
 
-    private RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
-    @Autowired
-    public RoleController(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
+	@Autowired
+	public RoleController(RoleRepository roleRepository) {
+		this.roleRepository = roleRepository;
+	}
 
-    @PostMapping("/role")
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-    public Role addRole(@RequestBody Role role) {
-        return roleRepository.save(role);
-    }
+	@PostMapping("/role")
+	@Transactional
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public Role addRole(@RequestBody Role role) {
+		return roleRepository.save(role);
+	}
 
-    @GetMapping("/role")
-    @PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-    public List<Role> getRoles() { return roleRepository.findAll(); }
+	@GetMapping("/role")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public List<Role> getRoles() {
+		return roleRepository.findAll();
+	}
 
-    @GetMapping("/role/{roleId}")
-    @PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-    public Role getRole(@PathVariable Long roleId) {
-        return roleRepository.findById(roleId).get();
-    }
+	@GetMapping("/role/{roleId}")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public Role getRole(@PathVariable Long roleId) {
+		return roleRepository.findById(roleId).get();
+	}
 
-    @PutMapping("/role")
-    @PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-    public Role updateRole(@RequestBody Role role) {
-        return roleRepository.save(role);
-    }
+	@PutMapping("/role")
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public Role updateRole(@RequestBody Role role) {
+		return roleRepository.save(role);
+	}
 
 }

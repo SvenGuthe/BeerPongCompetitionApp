@@ -13,34 +13,36 @@ import java.util.List;
 @RequestMapping("/acl")
 public class ACLClassController {
 
-    private ACLClassRepository aclClassRepository;
+	private ACLClassRepository aclClassRepository;
 
-    @Autowired
-    public ACLClassController(ACLClassRepository aclClassRepository) {
-        this.aclClassRepository = aclClassRepository;
-    }
+	@Autowired
+	public ACLClassController(ACLClassRepository aclClassRepository) {
+		this.aclClassRepository = aclClassRepository;
+	}
 
-    @PostMapping("/aclclass")
-    @Transactional
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLClass addACLClass(@RequestBody ACLClass aclClass) {
-        return aclClassRepository.save(aclClass);
-    }
+	@PostMapping("/aclclass")
+	@Transactional
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLClass addACLClass(@RequestBody ACLClass aclClass) {
+		return aclClassRepository.save(aclClass);
+	}
 
-    @GetMapping("/aclclass")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public List<ACLClass> getACLClasses() { return aclClassRepository.findAll(); }
+	@GetMapping("/aclclass")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public List<ACLClass> getACLClasses() {
+		return aclClassRepository.findAll();
+	}
 
-    @GetMapping("/aclclass/{aclClassId}")
-    @PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-    public ACLClass getACLClass(@PathVariable Long aclClassId) {
-        return aclClassRepository.findById(aclClassId).get();
-    }
+	@GetMapping("/aclclass/{aclClassId}")
+	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
+	public ACLClass getACLClass(@PathVariable Long aclClassId) {
+		return aclClassRepository.findById(aclClassId).get();
+	}
 
-    @PutMapping("/aclclass")
-    @PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-    public ACLClass updateACLClass(@RequestBody ACLClass aclClass) {
-        return aclClassRepository.save(aclClass);
-    }
+	@PutMapping("/aclclass")
+	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
+	public ACLClass updateACLClass(@RequestBody ACLClass aclClass) {
+		return aclClassRepository.save(aclClass);
+	}
 
 }

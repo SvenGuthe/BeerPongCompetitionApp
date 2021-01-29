@@ -12,33 +12,35 @@ import java.util.List;
 @RequestMapping("/authentication")
 public class UserController {
 
-    private UserRepository userRepository;
+	private UserRepository userRepository;
 
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	@Autowired
+	public UserController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
-    @PostMapping("/user")
-    @PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-    public User addUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
+	@PostMapping("/user")
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public User addUser(@RequestBody User user) {
+		return userRepository.save(user);
+	}
 
-    @GetMapping("/user")
-    @PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-    public List<User> getUsers() { return userRepository.findAll(); }
+	@GetMapping("/user")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public List<User> getUsers() {
+		return userRepository.findAll();
+	}
 
-    @GetMapping("/user/{userId}")
-    @PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-    public User getUser(@PathVariable Long userId) {
-        return userRepository.findById(userId).get();
-    }
+	@GetMapping("/user/{userId}")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public User getUser(@PathVariable Long userId) {
+		return userRepository.findById(userId).get();
+	}
 
-    @PutMapping("/user")
-    @PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-    public User updateUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
+	@PutMapping("/user")
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public User updateUser(@RequestBody User user) {
+		return userRepository.save(user);
+	}
 
 }
