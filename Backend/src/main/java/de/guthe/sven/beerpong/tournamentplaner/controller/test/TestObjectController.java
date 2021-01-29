@@ -55,13 +55,6 @@ public class TestObjectController {
         return testObjectRepository.findById(testObjectId).get();
     }
 
-    @GetMapping("/testobjectpermissions/{testObjectId}")
-    @PostAuthorize("hasAuthority('READ_TESTOBJECT_PRIVILEGE')")
-    public List<Integer> getTestObjectPermissions(@PathVariable Long testObjectId) {
-        TestObject testObject = testObjectRepository.findById(testObjectId).get();
-        return ownACLSerivce.getMasks(testObject);
-    }
-
     @GetMapping("/testobject")
     @PostFilter("hasPermission(filterObject, 'READ') and hasAuthority('READ_TESTOBJECT_PRIVILEGE')")
     public List<TestObject> getAllTestObjects() {
