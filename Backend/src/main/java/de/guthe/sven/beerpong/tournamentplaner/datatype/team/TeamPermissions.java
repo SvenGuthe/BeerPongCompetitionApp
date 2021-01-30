@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.datatype.team;
 
+import de.guthe.sven.beerpong.tournamentplaner.configuration.CustomPermission;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
-import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;
@@ -18,15 +18,15 @@ public class TeamPermissions {
 	static {
 		initialTeamPermissions = new HashMap<>();
 		initialTeamPermissions.put(new GrantedAuthoritySid(SecurityRole.ROLE_PLAYER.toString()),
-				Arrays.asList(BasePermission.READ));
-		initialTeamPermissions.put(new GrantedAuthoritySid(SecurityRole.ROLE_MODERATOR.toString()),
-				Arrays.asList(BasePermission.READ, BasePermission.WRITE, BasePermission.CREATE, BasePermission.DELETE));
+				Arrays.asList(CustomPermission.READ));
+		initialTeamPermissions.put(new GrantedAuthoritySid(SecurityRole.ROLE_MODERATOR.toString()), Arrays.asList(
+				CustomPermission.READ, CustomPermission.WRITE, CustomPermission.CREATE, CustomPermission.DELETE));
 		initialTeamPermissions.put(new GrantedAuthoritySid(SecurityRole.ROLE_ADMINISTRATOR.toString()),
-				Arrays.asList(BasePermission.READ, BasePermission.WRITE, BasePermission.CREATE,
-						BasePermission.ADMINISTRATION, BasePermission.DELETE));
+				Arrays.asList(CustomPermission.READ, CustomPermission.WRITE, CustomPermission.CREATE,
+						CustomPermission.ADMINISTRATION, CustomPermission.DELETE));
 	}
 
-	public static List<Permission> ownerPermissions = Arrays.asList(BasePermission.READ, BasePermission.WRITE,
-			BasePermission.CREATE);
+	public static List<Permission> ownerPermissions = Arrays.asList(CustomPermission.READ, CustomPermission.WRITE,
+			CustomPermission.CREATE);
 
 }

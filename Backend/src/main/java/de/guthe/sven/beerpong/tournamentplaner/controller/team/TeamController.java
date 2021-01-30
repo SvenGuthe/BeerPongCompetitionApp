@@ -34,13 +34,13 @@ public class TeamController {
 	}
 
 	@GetMapping("/team")
-	@PostFilter("hasPermission(filterObject, 'READ') and hasAuthority('READ_TEAM_PRIVILEGE')")
+	@PostFilter("hasAuthority('READ_TEAM_PRIVILEGE')")
 	public List<Team> getAllTeams() {
 		return teamRepository.findAll();
 	}
 
 	@GetMapping("/team/{teamId}")
-	@PostAuthorize("hasPermission(returnObject, 'READ') and hasAuthority('READ_TEAM_PRIVILEGE')")
+	@PostAuthorize("hasAuthority('READ_TEAM_PRIVILEGE')")
 	public Team getTeam(@PathVariable Long teamId) {
 		return teamRepository.findById(teamId).get();
 	}
