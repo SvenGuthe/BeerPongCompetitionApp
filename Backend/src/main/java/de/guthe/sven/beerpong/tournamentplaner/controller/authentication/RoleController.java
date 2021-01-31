@@ -36,7 +36,7 @@ public class RoleController {
 	@GetMapping("/role/{roleId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public Role getRole(@PathVariable Long roleId) {
-		return roleRepository.findById(roleId).get();
+		return roleRepository.findById(roleId).orElseThrow();
 	}
 
 	@PutMapping("/role")

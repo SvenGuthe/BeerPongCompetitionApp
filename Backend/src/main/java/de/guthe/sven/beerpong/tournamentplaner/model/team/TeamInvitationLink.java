@@ -3,7 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.model.team;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "teaminvitationlink")
@@ -17,9 +17,10 @@ public class TeamInvitationLink implements ACLObjectInterface {
 	@Column(name = "teaminvitationlink", nullable = false)
 	private String teamInvitationLink;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "creationtime", nullable = false)
-	private Date creationTime;
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+
+	;
 
 	@ManyToOne
 	@JoinColumn(name = "teamid")
@@ -44,11 +45,11 @@ public class TeamInvitationLink implements ACLObjectInterface {
 		this.teamInvitationLink = teamInvitationLink;
 	}
 
-	public Date getCreationTime() {
+	public Timestamp getCreationTime() {
 		return creationTime;
 	}
 
-	public void setCreationTime(Date creationTime) {
+	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
 	}
 

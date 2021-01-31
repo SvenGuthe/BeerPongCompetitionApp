@@ -28,8 +28,14 @@ public class ACLContext {
 	public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
 		DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
 		AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
+		permissionEvaluator.setPermissionFactory(permissionFactory());
 		expressionHandler.setPermissionEvaluator(permissionEvaluator);
 		return expressionHandler;
+	}
+
+	@Bean
+	public PermissionFactory permissionFactory() {
+		return new CustomPermissionFactory();
 	}
 
 	@Bean
@@ -75,7 +81,10 @@ public class ACLContext {
 
 	@Bean
 	public LookupStrategy lookupStrategy() {
-		return new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(), new ConsoleAuditLogger());
+		BasicLookupStrategy lookupStrategy = new BasicLookupStrategy(dataSource, aclCache(), aclAuthorizationStrategy(),
+				new ConsoleAuditLogger());
+		lookupStrategy.setPermissionFactory(permissionFactory());
+		return lookupStrategy;
 	}
 
 }

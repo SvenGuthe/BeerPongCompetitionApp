@@ -36,7 +36,7 @@ public class ACLSidController {
 	@GetMapping("/aclsid/{aclSidId}")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLSid getACLSid(@PathVariable Long aclSidId) {
-		return aclSidRepository.findById(aclSidId).get();
+		return aclSidRepository.findById(aclSidId).orElseThrow();
 	}
 
 	@PutMapping("/aclsid")

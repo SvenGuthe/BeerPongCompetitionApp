@@ -8,12 +8,12 @@ public class PredefinedPrivileges {
 
 	public static Map<SecurityRole, List<SecurityPrivilege>> privileges;
 
-	public static List<SecurityPrivilege> playerPrivileges = Arrays.asList(SecurityPrivilege.WRITE_TESTOBJECT_PRIVILEGE,
-			SecurityPrivilege.READ_TESTOBJECT_PRIVILEGE, SecurityPrivilege.READ_TEAM_PRIVILEGE,
+	public static List<SecurityPrivilege> playerPrivileges = Arrays.asList(SecurityPrivilege.READ_TEAM_PRIVILEGE,
 			SecurityPrivilege.WRITE_TEAM_PRIVILEGE);
 
 	public static List<SecurityPrivilege> moderatorPrivileges = ListUtils.union(playerPrivileges,
-			Arrays.asList(SecurityPrivilege.READ_ACL_PRIVILEGE, SecurityPrivilege.READ_AUTHENTICATION_PRIVILEGE));
+			Arrays.asList(SecurityPrivilege.READ_ACL_PRIVILEGE, SecurityPrivilege.READ_AUTHENTICATION_PRIVILEGE,
+					SecurityPrivilege.ADMIN_TEAM_PRIVILEGE));
 
 	public static List<SecurityPrivilege> administratorPrivileges = Arrays.asList(SecurityPrivilege.values().clone());
 

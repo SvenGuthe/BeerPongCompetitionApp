@@ -36,7 +36,7 @@ public class ACLEntryController {
 	@GetMapping("/aclentry/{aclEntryId}")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLEntry getACLEntry(@PathVariable Long aclEntryId) {
-		return aclEntryRepository.findById(aclEntryId).get();
+		return aclEntryRepository.findById(aclEntryId).orElseThrow();
 	}
 
 	@PutMapping("/aclentry")

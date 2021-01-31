@@ -34,20 +34,20 @@ public class TeamController {
 	}
 
 	@GetMapping("/team")
-	@PostFilter("hasAuthority('READ_TEAM_PRIVILEGE')")
+	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public List<Team> getAllTeams() {
 		return teamRepository.findAll();
 	}
 
 	@GetMapping("/team/{teamId}")
-	@PostAuthorize("hasAuthority('READ_TEAM_PRIVILEGE')")
+	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public Team getTeam(@PathVariable Long teamId) {
-		return teamRepository.findById(teamId).get();
+		return teamRepository.findById(teamId).orElseThrow();
 	}
 
 	@PostMapping("/team")
 	@Transactional
-	@PreAuthorize("hasAuthority('WRITE_TEAM_PRIVILEGE')")
+	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public Team addTeam(@RequestBody Team team) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,14 +62,14 @@ public class TeamController {
 	}
 
 	@PutMapping("/team")
-	@PreAuthorize("hasPermission(#team, 'WRITE') and hasAuthority('WRITE_TEAM_PRIVILEGE')")
+	@PreAuthorize("hasPermission(#team, 'UPDATE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public Team updateTeam(@RequestBody Team team) {
 		return teamRepository.save(team);
 	}
 
 	@DeleteMapping("/team")
 	@Transactional
-	@PreAuthorize("hasPermission(#team, 'WRITE') and hasAuthority('WRITE_TEAM_PRIVILEGE')")
+	@PreAuthorize("hasPermission(#team, 'DELETE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public void deleteTeam(@RequestBody Team team) {
 		teamRepository.delete(team);
 	}

@@ -30,7 +30,7 @@ public class PrivilegeController {
 	@GetMapping("/privilege/{privilegeId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public Privilege getPrivilege(@PathVariable Long privilegeId) {
-		return privilegeRepository.findById(privilegeId).get();
+		return privilegeRepository.findById(privilegeId).orElseThrow();
 	}
 
 	@GetMapping("/privilege")

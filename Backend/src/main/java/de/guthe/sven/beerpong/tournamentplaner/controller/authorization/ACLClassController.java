@@ -36,7 +36,7 @@ public class ACLClassController {
 	@GetMapping("/aclclass/{aclClassId}")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLClass getACLClass(@PathVariable Long aclClassId) {
-		return aclClassRepository.findById(aclClassId).get();
+		return aclClassRepository.findById(aclClassId).orElseThrow();
 	}
 
 	@PutMapping("/aclclass")

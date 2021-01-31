@@ -4,6 +4,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,9 @@ public class Team implements ACLObjectInterface {
 
 	@Column(name = "isplayerteam", nullable = false)
 	private boolean isPlayerTeam;
+
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
 	private List<TeamInvitationLink> teamInvitationLinks;
@@ -63,6 +67,14 @@ public class Team implements ACLObjectInterface {
 
 	public void setPlayerTeam(boolean playerTeam) {
 		isPlayerTeam = playerTeam;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public List<TeamInvitationLink> getTeamInvitationLinks() {

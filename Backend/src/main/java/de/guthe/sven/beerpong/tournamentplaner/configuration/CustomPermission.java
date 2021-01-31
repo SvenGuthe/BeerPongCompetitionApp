@@ -5,15 +5,17 @@ import org.springframework.security.acls.model.Permission;
 
 public class CustomPermission extends AbstractPermission {
 
-	public static final Permission READ = new CustomPermission(1, 'R');
+	public static final Permission GET_TEAM = new CustomPermission(1001);
 
-	public static final Permission WRITE = new CustomPermission(2, 'W');
+	public static final Permission UPDATE_TEAM = new CustomPermission(1002);
 
-	public static final Permission CREATE = new CustomPermission(4, 'C');
+	public static final Permission DELETE_TEAM = new CustomPermission(1003);
 
-	public static final Permission DELETE = new CustomPermission(8, 'D');
+	public static final Permission GET_TEAM_INVITATION_LINK = new CustomPermission(1101);
 
-	public static final Permission ADMINISTRATION = new CustomPermission(16, 'A');
+	public static final Permission UPDATE_TEAM_INVITATION_LINK = new CustomPermission(1102);
+
+	public static final Permission DELETE_TEAM_INVITATION_LINK = new CustomPermission(1103);
 
 	protected CustomPermission(int mask) {
 		super(mask);

@@ -4,6 +4,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "teamcomposition")
@@ -26,6 +27,9 @@ public class TeamComposition implements ACLObjectInterface {
 
 	@Column(name = "isadmin", nullable = false)
 	private Boolean isAdmin;
+
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	public TeamComposition() {
 	}
@@ -60,6 +64,14 @@ public class TeamComposition implements ACLObjectInterface {
 
 	public void setAdmin(Boolean admin) {
 		isAdmin = admin;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
 	}
 
 }

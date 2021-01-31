@@ -36,7 +36,7 @@ public class ACLObjectIdentityController {
 	@GetMapping("/aclobjectidentity/{aclObjectIdentityId}")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLObjectIdentity getACLObjectIdentity(@PathVariable Long aclObjectIdentityId) {
-		return aclObjectIdentityRepository.findById(aclObjectIdentityId).get();
+		return aclObjectIdentityRepository.findById(aclObjectIdentityId).orElseThrow();
 	}
 
 	@PutMapping("/aclobjectidentity")

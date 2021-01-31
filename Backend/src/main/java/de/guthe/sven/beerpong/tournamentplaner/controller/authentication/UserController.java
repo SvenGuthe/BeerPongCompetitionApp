@@ -34,13 +34,19 @@ public class UserController {
 	@GetMapping("/user/{userId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public User getUser(@PathVariable Long userId) {
-		return userRepository.findById(userId).get();
+		return userRepository.findById(userId).orElseThrow();
 	}
 
 	@PutMapping("/user")
 	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
 	public User updateUser(@RequestBody User user) {
 		return userRepository.save(user);
+	}
+
+	@DeleteMapping("/user")
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public void deleteUser(@RequestBody User user) {
+		userRepository.delete(user);
 	}
 
 }

@@ -6,9 +6,11 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.PredefinedPrivileges;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -29,6 +31,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private UserStatusRepository userStatusRepository;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -53,6 +58,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			createRoleIfNotFound(entry.getKey(), privileges);
 		}
 
+		UserStatus userStatus = new UserStatus();
+		userStatus.setUserStatus("active");
+
+		userStatusRepository.save(userStatus);
+
 		Role adminRole = roleRepository.findByName(SecurityRole.ROLE_ADMINISTRATOR.toString());
 		Role moderatorRole = roleRepository.findByName(SecurityRole.ROLE_MODERATOR.toString());
 		Role playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
@@ -64,6 +74,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		adminUser.setEmail("admin@admin.com");
 		adminUser.setRoles(Arrays.asList(adminRole, moderatorRole, playerRole));
 		adminUser.setEnabled(true);
+		adminUser.setGamerTag("admin");
+		adminUser.setUserStatus(userStatus);
 		userRepository.save(adminUser);
 
 		User moderatorUser = new User();
@@ -73,6 +85,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		moderatorUser.setEmail("moderator@moderator.com");
 		moderatorUser.setRoles(Arrays.asList(moderatorRole, playerRole));
 		moderatorUser.setEnabled(true);
+		moderatorUser.setGamerTag("moderator");
+		moderatorUser.setUserStatus(userStatus);
 		userRepository.save(moderatorUser);
 
 		User playerUser = new User();
@@ -82,6 +96,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		playerUser.setEmail("player@player.com");
 		playerUser.setRoles(Arrays.asList(playerRole));
 		playerUser.setEnabled(true);
+		playerUser.setGamerTag("player");
+		playerUser.setUserStatus(userStatus);
 		userRepository.save(playerUser);
 
 		alreadySetup = true;

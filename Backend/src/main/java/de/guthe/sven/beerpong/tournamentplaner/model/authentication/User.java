@@ -5,6 +5,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,9 @@ public class User {
 	@Column(name = "lastname", nullable = false)
 	private String lastName;
 
+	@Column(name = "gamertag", nullable = false)
+	private String gamerTag;
+
 	@Column(name = "email", nullable = false)
 	private String email;
 
@@ -34,6 +38,9 @@ public class User {
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+
 	@OneToMany(mappedBy = "user")
 	private List<TeamComposition> teamCompositions;
 
@@ -42,6 +49,10 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid"))
 	@JsonIgnore
 	private Collection<Role> roles;
+
+	@ManyToOne
+	@JoinColumn(name = "userstatusid")
+	private UserStatus userStatus;
 
 	public User() {
 	}
@@ -88,6 +99,30 @@ public class User {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getGamerTag() {
+		return gamerTag;
+	}
+
+	public void setGamerTag(String gamerTag) {
+		this.gamerTag = gamerTag;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
 	}
 
 	public Collection<Role> getRoles() {
