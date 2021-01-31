@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
@@ -19,10 +20,12 @@ public class TeamComposition implements ACLObjectInterface {
 
 	@ManyToOne
 	@JoinColumn(name = "teamid")
+	@JsonIgnore
 	private Team team;
 
 	@ManyToOne
 	@JoinColumn(name = "userid")
+	@JsonIgnore
 	private User user;
 
 	@Column(name = "isadmin", nullable = false)

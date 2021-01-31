@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
@@ -20,10 +21,9 @@ public class TeamInvitationLink implements ACLObjectInterface {
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-	;
-
 	@ManyToOne
 	@JoinColumn(name = "teamid")
+	@JsonIgnore
 	private Team team;
 
 	public TeamInvitationLink() {

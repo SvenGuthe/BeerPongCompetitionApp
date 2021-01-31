@@ -45,4 +45,10 @@ public class RoleController {
 		return roleRepository.save(role);
 	}
 
+	@DeleteMapping("/role")
+	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
+	public void deleteRole(@RequestBody Role role) {
+		roleRepository.delete(role);
+	}
+
 }

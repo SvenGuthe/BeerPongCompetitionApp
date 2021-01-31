@@ -61,12 +61,18 @@ public class TeamController {
 		return team;
 	}
 
+	// TODO: Remove hasPermission later -> currently just a placeholder, the modifications
+	// on raw-database
+	// TODO: entries are just allowed with ADMIN Privileges
 	@PutMapping("/team")
 	@PreAuthorize("hasPermission(#team, 'UPDATE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public Team updateTeam(@RequestBody Team team) {
 		return teamRepository.save(team);
 	}
 
+	// TODO: Remove hasPermission later -> currently just a placeholder, the modifications
+	// on raw-database
+	// TODO: entries are just allowed with ADMIN Privileges
 	@DeleteMapping("/team")
 	@Transactional
 	@PreAuthorize("hasPermission(#team, 'DELETE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")

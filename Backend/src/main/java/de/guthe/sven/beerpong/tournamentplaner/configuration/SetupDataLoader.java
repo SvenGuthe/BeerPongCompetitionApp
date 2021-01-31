@@ -7,10 +7,14 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamInvitationLinkRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -40,6 +44,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private PrivilegeRepository privilegeRepository;
+
+	@Autowired
+	private TeamRepository teamRepository;
+
+	@Autowired
+	private TeamInvitationLinkRepository teamInvitationLinkRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -99,6 +109,35 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		playerUser.setGamerTag("player");
 		playerUser.setUserStatus(userStatus);
 		userRepository.save(playerUser);
+
+		Team teamPlayer = new Team();
+		teamPlayer.setPassword("password");
+		teamPlayer.setPlayerTeam(true);
+		teamPlayer.setTeamName(playerUser.getGamerTag());
+		teamPlayer.addUser(playerUser);
+
+		teamRepository.save(teamPlayer);
+
+		TeamInvitationLink teamInvitationLink1 = new TeamInvitationLink();
+		teamInvitationLink1.setTeamInvitationLink("InvitationLink1");
+
+		teamInvitationLinkRepository.save(teamInvitationLink1);
+
+		TeamInvitationLink teamInvitationLink2 = new TeamInvitationLink();
+		teamInvitationLink2.setTeamInvitationLink("InvitationLink2");
+
+		teamInvitationLinkRepository.save(teamInvitationLink2);
+
+		Team teamModAdmin = new Team();
+		teamModAdmin.setPassword("password");
+		teamModAdmin.setPlayerTeam(false);
+		teamModAdmin.setTeamName("teamModAdmin");
+		teamModAdmin.addUser(moderatorUser);
+		teamModAdmin.addUser(adminUser);
+		teamModAdmin.addTeamInvitationLink(teamInvitationLink1);
+		teamModAdmin.addTeamInvitationLink(teamInvitationLink2);
+
+		teamRepository.save(teamModAdmin);
 
 		alreadySetup = true;
 

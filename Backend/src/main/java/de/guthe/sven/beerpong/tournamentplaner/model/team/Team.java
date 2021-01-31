@@ -5,6 +5,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInte
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,10 +29,10 @@ public class Team implements ACLObjectInterface {
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<TeamInvitationLink> teamInvitationLinks;
 
-	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<TeamComposition> teamCompositions;
 
 	public Team() {
@@ -93,12 +94,22 @@ public class Team implements ACLObjectInterface {
 		this.teamCompositions = teamCompositions;
 	}
 
-	public TeamComposition addUser(User user) {
+	public void addUser(User user) {
 		TeamComposition teamComposition = new TeamComposition();
 		teamComposition.setTeam(this);
 		teamComposition.setUser(user);
 		teamComposition.setAdmin(true);
-		return teamComposition;
+		if (this.teamCompositions == null) {
+			this.teamCompositions = new ArrayList<>();
+		}
+		this.teamCompositions.add(teamComposition);
+	}
+
+	public void addTeamInvitationLink(TeamInvitationLink teamInvitationLink) {
+		if (this.teamInvitationLinks == null) {
+			this.teamInvitationLinks = new ArrayList<>();
+		}
+		teamInvitationLink.setTeam(this);
 	}
 
 }
