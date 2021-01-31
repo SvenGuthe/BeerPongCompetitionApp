@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 
@@ -49,6 +50,9 @@ public class User {
 			inverseJoinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid"))
 	@JsonIgnore
 	private Collection<Role> roles;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<CompetitionPlayer> competitionPlayers;
 
 	@ManyToOne
 	@JoinColumn(name = "userstatusid")
