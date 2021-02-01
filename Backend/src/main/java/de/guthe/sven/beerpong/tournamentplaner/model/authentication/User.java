@@ -42,19 +42,20 @@ public class User {
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<TeamComposition> teamCompositions;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "userid"),
 			inverseJoinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid"))
 	@JsonIgnore
 	private Collection<Role> roles;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<CompetitionPlayer> competitionPlayers;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "userstatusid")
 	private UserStatus userStatus;
 

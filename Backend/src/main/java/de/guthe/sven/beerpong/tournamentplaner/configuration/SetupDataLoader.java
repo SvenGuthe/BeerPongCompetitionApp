@@ -7,12 +7,17 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamInvitationLinkRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -50,6 +56,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private TeamInvitationLinkRepository teamInvitationLinkRepository;
+
+	@Autowired
+	private CompetitionRepository competitionRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -138,6 +147,37 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink2);
 
 		teamRepository.save(teamModAdmin);
+
+		CompetitionPlayerStatus competitionPlayerStatus = new CompetitionPlayerStatus();
+		competitionPlayerStatus.setCompetitionPlayerStatusDescription("Eingeschrieben");
+
+		CompetitionPlayer competitionPlayerMod = new CompetitionPlayer();
+		competitionPlayerMod.setUser(moderatorUser);
+		competitionPlayerMod.setCompetitionPlayerStatus(competitionPlayerStatus);
+
+		CompetitionPlayer competitionPlayerAdmin = new CompetitionPlayer();
+		competitionPlayerAdmin.setUser(adminUser);
+		competitionPlayerAdmin.setCompetitionPlayerStatus(competitionPlayerStatus);
+
+		CompetitionTeam competitionTeam = new CompetitionTeam();
+		competitionTeam.setCompetitionTeamName("CompetitionTeamName");
+		competitionTeam.setTeam(teamModAdmin);
+		competitionTeam.setPassword("password");
+		competitionTeam.addCompetitionPlayer(competitionPlayerMod);
+		competitionTeam.addCompetitionPlayer(competitionPlayerAdmin);
+
+		Competition competition = new Competition();
+		competition.setCompetitionName("Competition");
+		competition.setCompetitionStartTimestamp(new Timestamp(System.currentTimeMillis()));
+		competition.setFee(1.00);
+		competition.setMinTeams(10);
+		competition.setMaxTeams(20);
+		competition.setRegistrationStart(new Timestamp(System.currentTimeMillis()));
+		competition.setRegistrationEnd(new Timestamp(System.currentTimeMillis()));
+		competition.setSetOfRules("abc.de");
+		competition.addCompetitionTeam(competitionTeam);
+
+		competitionRepository.save(competition);
 
 		alreadySetup = true;
 

@@ -29,10 +29,12 @@ public class Team implements ACLObjectInterface {
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<TeamInvitationLink> teamInvitationLinks;
 
-	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<TeamComposition> teamCompositions;
 
 	public Team() {
@@ -110,6 +112,7 @@ public class Team implements ACLObjectInterface {
 			this.teamInvitationLinks = new ArrayList<>();
 		}
 		teamInvitationLink.setTeam(this);
+		this.teamInvitationLinks.add(teamInvitationLink);
 	}
 
 }

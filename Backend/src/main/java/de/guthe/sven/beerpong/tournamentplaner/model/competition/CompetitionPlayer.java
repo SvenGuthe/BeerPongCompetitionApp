@@ -11,58 +11,72 @@ import java.sql.Timestamp;
 @Table(name = "competitionplayer")
 public class CompetitionPlayer implements ACLObjectInterface {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "competitionplayerid")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "competitionplayerid")
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "competitionteamid")
-    @JsonIgnore
-    private CompetitionTeam competitionTeam;
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "competitionteamid")
+	@JsonIgnore
+	private CompetitionTeam competitionTeam;
 
-    @ManyToOne
-    @JoinColumn(name = "userid")
-    @JsonIgnore
-    private User user;
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid")
+	@JsonIgnore
+	private User user;
 
-    @Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
-    private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@JoinColumn(name = "competitionplayerstatusid")
+	@JsonIgnore
+	private CompetitionPlayerStatus competitionPlayerStatus;
 
-    public CompetitionPlayer() {
-    }
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+	public CompetitionPlayer() {
+	}
 
-    @Override
-    public Class getACLClass() {
-        return CompetitionPlayer.class;
-    }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-    public CompetitionTeam getCompetitionTeam() {
-        return competitionTeam;
-    }
+	@Override
+	public Class getACLClass() {
+		return CompetitionPlayer.class;
+	}
 
-    public void setCompetitionTeam(CompetitionTeam competitionTeam) {
-        this.competitionTeam = competitionTeam;
-    }
+	public CompetitionTeam getCompetitionTeam() {
+		return competitionTeam;
+	}
 
-    public User getUser() {
-        return user;
-    }
+	public void setCompetitionTeam(CompetitionTeam competitionTeam) {
+		this.competitionTeam = competitionTeam;
+	}
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+	public User getUser() {
+		return user;
+	}
 
-    public Timestamp getCreationTime() {
-        return creationTime;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public void setCreationTime(Timestamp creationTime) {
-        this.creationTime = creationTime;
-    }
+	public CompetitionPlayerStatus getCompetitionPlayerStatus() {
+		return competitionPlayerStatus;
+	}
+
+	public void setCompetitionPlayerStatus(CompetitionPlayerStatus competitionPlayerStatus) {
+		this.competitionPlayerStatus = competitionPlayerStatus;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
 }

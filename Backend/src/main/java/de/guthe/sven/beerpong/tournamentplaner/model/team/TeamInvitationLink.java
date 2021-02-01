@@ -21,7 +21,7 @@ public class TeamInvitationLink implements ACLObjectInterface {
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "teamid")
 	@JsonIgnore
 	private Team team;

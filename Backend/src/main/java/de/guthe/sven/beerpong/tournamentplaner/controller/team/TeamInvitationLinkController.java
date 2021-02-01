@@ -35,20 +35,20 @@ public class TeamInvitationLinkController {
 	}
 
 	@GetMapping("/teaminvitationlink")
-	@PostFilter("hasAuthority('ADMIN_TEAM_INVITATION_LINK_PRIVILEGE')")
+	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public List<TeamInvitationLink> getTeamInvitationLinks() {
 		return teamInvitationLinkRepository.findAll();
 	}
 
 	@GetMapping("/teaminvitationlink/{teamInvitationLinkId}")
-	@PostAuthorize("hasAuthority('ADMIN_TEAM_INVITATION_LINK_PRIVILEGE')")
+	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamInvitationLink getTeamInvitationLink(@PathVariable Long teamInvitationLinkId) {
 		return teamInvitationLinkRepository.findById(teamInvitationLinkId).orElseThrow();
 	}
 
 	@PostMapping("/teaminvitationlink")
 	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_INVITATION_LINK_PRIVILEGE')")
+	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamInvitationLink addTeamInvitationLink(@RequestBody TeamInvitationLink teamInvitationLink) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -67,7 +67,7 @@ public class TeamInvitationLinkController {
 	// on raw-database
 	// TODO: entries are just allowed with ADMIN Privileges
 	@PutMapping("/teaminvitationlink")
-	@PreAuthorize("hasPermission(#teamInvitationLink, 'UPDATE_TEAM_INVITATION_LINK') or hasAuthority('ADMIN_TEAM_INVITATION_LINK_PRIVILEGE')")
+	@PreAuthorize("hasPermission(#teamInvitationLink, 'UPDATE_TEAM_INVITATION_LINK') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamInvitationLink updateTeamInvitationLink(@RequestBody TeamInvitationLink teamInvitationLink) {
 		return teamInvitationLinkRepository.save(teamInvitationLink);
 	}
@@ -77,7 +77,7 @@ public class TeamInvitationLinkController {
 	// TODO: entries are just allowed with ADMIN Privileges
 	@DeleteMapping("/teaminvitationlink")
 	@Transactional
-	@PreAuthorize("hasPermission(#teamInvitationLink, 'DELETE_TEAM_INVITATION_LINK') or hasAuthority('ADMIN_TEAM_INVITATION_LINK_PRIVILEGE')")
+	@PreAuthorize("hasPermission(#teamInvitationLink, 'DELETE_TEAM_INVITATION_LINK') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public void deleteTeamInvitationLink(@RequestBody TeamInvitationLink teamInvitationLink) {
 		teamInvitationLinkRepository.delete(teamInvitationLink);
 	}

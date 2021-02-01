@@ -13,7 +13,7 @@ public class PredefinedPrivileges {
 
 	public static List<SecurityPrivilege> moderatorPrivileges = ListUtils.union(playerPrivileges,
 			Arrays.asList(SecurityPrivilege.READ_ACL_PRIVILEGE, SecurityPrivilege.READ_AUTHENTICATION_PRIVILEGE,
-					SecurityPrivilege.ADMIN_TEAM_PRIVILEGE));
+					SecurityPrivilege.ADMIN_TEAM_PRIVILEGE, SecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE));
 
 	public static List<SecurityPrivilege> administratorPrivileges = Arrays.asList(SecurityPrivilege.values().clone());
 

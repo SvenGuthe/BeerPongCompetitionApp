@@ -35,7 +35,7 @@ public class TeamController {
 
 	@GetMapping("/team")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<Team> getAllTeams() {
+	public List<Team> getTeams() {
 		return teamRepository.findAll();
 	}
 

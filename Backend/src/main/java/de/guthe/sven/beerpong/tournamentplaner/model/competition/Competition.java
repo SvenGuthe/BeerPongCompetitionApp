@@ -1,133 +1,143 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.competition;
 
-
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "competition")
 public class Competition implements ACLObjectInterface {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "competitionid")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "competitionid")
+	private Long id;
 
-    @Column(name = "competitionname", nullable = false)
-    private String competitionName;
+	@Column(name = "competitionname", nullable = false)
+	private String competitionName;
 
-    @Column(name = "competitionstarttimestamp")
-    private Timestamp competitionStartTimestamp;
+	@Column(name = "competitionstarttimestamp")
+	private Timestamp competitionStartTimestamp;
 
-    @Column(name = "minteams")
-    private Integer minTeams;
+	@Column(name = "minteams")
+	private Integer minTeams;
 
-    @Column(name = "maxteams")
-    private Integer maxTeams;
+	@Column(name = "maxteams")
+	private Integer maxTeams;
 
-    @Column(name = "fee")
-    private Double fee;
+	@Column(name = "fee")
+	private Double fee;
 
-    @Column(name = "registrationstart")
-    private Timestamp registrationStart;
+	@Column(name = "registrationstart")
+	private Timestamp registrationStart;
 
-    @Column(name = "registrationend")
-    private Timestamp registrationEnd;
+	@Column(name = "registrationend")
+	private Timestamp registrationEnd;
 
-    @Column(name = "setofrules")
-    private String setOfRules;
+	@Column(name = "setofrules")
+	private String setOfRules;
 
-    @Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
-    private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-    @OneToMany(mappedBy = "competition", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CompetitionTeam> competitionTeams;
+	@OneToMany(mappedBy = "competition", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<CompetitionTeam> competitionTeams;
 
-    public Competition() {
-    }
+	public Competition() {
+	}
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-    @Override
-    public Class getACLClass() {
-        return Competition.class;
-    }
+	@Override
+	public Class getACLClass() {
+		return Competition.class;
+	}
 
-    public String getCompetitionName() {
-        return competitionName;
-    }
+	public String getCompetitionName() {
+		return competitionName;
+	}
 
-    public void setCompetitionName(String competitionName) {
-        this.competitionName = competitionName;
-    }
+	public void setCompetitionName(String competitionName) {
+		this.competitionName = competitionName;
+	}
 
-    public Timestamp getCompetitionStartTimestamp() {
-        return competitionStartTimestamp;
-    }
+	public Timestamp getCompetitionStartTimestamp() {
+		return competitionStartTimestamp;
+	}
 
-    public void setCompetitionStartTimestamp(Timestamp competitionStartTimestamp) {
-        this.competitionStartTimestamp = competitionStartTimestamp;
-    }
+	public void setCompetitionStartTimestamp(Timestamp competitionStartTimestamp) {
+		this.competitionStartTimestamp = competitionStartTimestamp;
+	}
 
-    public Integer getMinTeams() {
-        return minTeams;
-    }
+	public Integer getMinTeams() {
+		return minTeams;
+	}
 
-    public void setMinTeams(Integer minTeams) {
-        this.minTeams = minTeams;
-    }
+	public void setMinTeams(Integer minTeams) {
+		this.minTeams = minTeams;
+	}
 
-    public Integer getMaxTeams() {
-        return maxTeams;
-    }
+	public Integer getMaxTeams() {
+		return maxTeams;
+	}
 
-    public void setMaxTeams(Integer maxTeams) {
-        this.maxTeams = maxTeams;
-    }
+	public void setMaxTeams(Integer maxTeams) {
+		this.maxTeams = maxTeams;
+	}
 
-    public Double getFee() {
-        return fee;
-    }
+	public Double getFee() {
+		return fee;
+	}
 
-    public void setFee(Double fee) {
-        this.fee = fee;
-    }
+	public void setFee(Double fee) {
+		this.fee = fee;
+	}
 
-    public Timestamp getRegistrationStart() {
-        return registrationStart;
-    }
+	public Timestamp getRegistrationStart() {
+		return registrationStart;
+	}
 
-    public void setRegistrationStart(Timestamp registrationStart) {
-        this.registrationStart = registrationStart;
-    }
+	public void setRegistrationStart(Timestamp registrationStart) {
+		this.registrationStart = registrationStart;
+	}
 
-    public Timestamp getRegistrationEnd() {
-        return registrationEnd;
-    }
+	public Timestamp getRegistrationEnd() {
+		return registrationEnd;
+	}
 
-    public void setRegistrationEnd(Timestamp registrationEnd) {
-        this.registrationEnd = registrationEnd;
-    }
+	public void setRegistrationEnd(Timestamp registrationEnd) {
+		this.registrationEnd = registrationEnd;
+	}
 
-    public String getSetOfRules() {
-        return setOfRules;
-    }
+	public String getSetOfRules() {
+		return setOfRules;
+	}
 
-    public void setSetOfRules(String setOfRules) {
-        this.setOfRules = setOfRules;
-    }
+	public void setSetOfRules(String setOfRules) {
+		this.setOfRules = setOfRules;
+	}
 
-    public Timestamp getCreationTime() {
-        return creationTime;
-    }
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
 
-    public void setCreationTime(Timestamp creationTime) {
-        this.creationTime = creationTime;
-    }
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public void addCompetitionTeam(CompetitionTeam competitionTeam) {
+		if (this.competitionTeams == null) {
+			this.competitionTeams = new ArrayList<>();
+		}
+		competitionTeam.setCompetition(this);
+		this.competitionTeams.add(competitionTeam);
+	}
+
 }

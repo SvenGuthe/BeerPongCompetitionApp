@@ -17,7 +17,8 @@ public class UserStatus {
 	@Column(name = "userstatus", nullable = false)
 	private String userStatus;
 
-	@OneToMany(mappedBy = "userStatus", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "userStatus", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
 	private List<User> users;
 

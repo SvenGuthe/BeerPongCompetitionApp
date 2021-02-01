@@ -18,7 +18,8 @@ public class Privilege {
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
-	@ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
 	private Collection<Role> roles;
 

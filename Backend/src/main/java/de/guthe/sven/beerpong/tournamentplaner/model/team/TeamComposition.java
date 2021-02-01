@@ -18,12 +18,12 @@ public class TeamComposition implements ACLObjectInterface {
 	@Column(name = "teamcompositionid")
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "teamid")
 	@JsonIgnore
 	private Team team;
 
-	@ManyToOne
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
 	@JoinColumn(name = "userid")
 	@JsonIgnore
 	private User user;
