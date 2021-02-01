@@ -1,6 +1,5 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
-import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamInvitationLinkPermissions;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamInvitationLinkRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
@@ -8,11 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.acls.domain.PrincipalSid;
-import org.springframework.security.acls.model.Permission;
-import org.springframework.security.acls.model.Sid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -50,17 +44,7 @@ public class TeamInvitationLinkController {
 	@Transactional
 	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamInvitationLink addTeamInvitationLink(@RequestBody TeamInvitationLink teamInvitationLink) {
-
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Sid sidCreator = new PrincipalSid(authentication);
-
-		Map<Sid, List<Permission>> initialTeamInvitationLinkPermissions = TeamInvitationLinkPermissions.initialTeamInvitationLinkPermissions;
-		initialTeamInvitationLinkPermissions.put(sidCreator, TeamInvitationLinkPermissions.ownerPermissions);
-
-		teamInvitationLinkRepository.save(teamInvitationLink);
-		aclService.setPrivileges(teamInvitationLink, initialTeamInvitationLinkPermissions);
-		return teamInvitationLink;
-
+		return teamInvitationLinkRepository.save(teamInvitationLink);
 	}
 
 	// TODO: Remove hasPermission later -> currently just a placeholder, the modifications

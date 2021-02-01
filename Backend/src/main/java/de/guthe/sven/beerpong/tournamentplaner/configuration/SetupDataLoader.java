@@ -11,6 +11,8 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
@@ -159,12 +161,20 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		competitionPlayerAdmin.setUser(adminUser);
 		competitionPlayerAdmin.setCompetitionPlayerStatus(competitionPlayerStatus);
 
+		BillingStatus billingStatus = new BillingStatus();
+		billingStatus.setBillingStatusDescription("Payed");
+
+		RegistrationStatus registrationStatus = new RegistrationStatus();
+		registrationStatus.setRegistrationStatusDescription("Registered");
+
 		CompetitionTeam competitionTeam = new CompetitionTeam();
 		competitionTeam.setCompetitionTeamName("CompetitionTeamName");
 		competitionTeam.setTeam(teamModAdmin);
 		competitionTeam.setPassword("password");
 		competitionTeam.addCompetitionPlayer(competitionPlayerMod);
 		competitionTeam.addCompetitionPlayer(competitionPlayerAdmin);
+		competitionTeam.addBillingStatus(billingStatus);
+		competitionTeam.addRegistrationStatus(registrationStatus);
 
 		Competition competition = new Competition();
 		competition.setCompetitionName("Competition");

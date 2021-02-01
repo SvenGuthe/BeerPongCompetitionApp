@@ -2,6 +2,10 @@ package de.guthe.sven.beerpong.tournamentplaner.model.competition;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatusHistory;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 
 import javax.persistence.*;
@@ -40,6 +44,14 @@ public class CompetitionTeam implements ACLObjectInterface {
 	@OneToMany(mappedBy = "competitionTeam", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<CompetitionPlayer> competitionPlayers;
+
+	@OneToMany(mappedBy = "competitionTeam", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<BillingStatusHistory> billingStatusHistories;
+
+	@OneToMany(mappedBy = "competitionTeam", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<RegistrationStatusHistory> registrationStatusHistories;
 
 	public CompetitionTeam() {
 	}
@@ -102,12 +114,48 @@ public class CompetitionTeam implements ACLObjectInterface {
 		this.creationTime = creationTime;
 	}
 
+	public List<BillingStatusHistory> getBillingStatusHistories() {
+		return billingStatusHistories;
+	}
+
+	public void setBillingStatusHistories(List<BillingStatusHistory> billingStatusHistories) {
+		this.billingStatusHistories = billingStatusHistories;
+	}
+
+	public List<RegistrationStatusHistory> getRegistrationStatusHistories() {
+		return registrationStatusHistories;
+	}
+
+	public void setRegistrationStatusHistories(List<RegistrationStatusHistory> registrationStatusHistories) {
+		this.registrationStatusHistories = registrationStatusHistories;
+	}
+
 	public void addCompetitionPlayer(CompetitionPlayer competitionPlayer) {
 		if (this.competitionPlayers == null) {
 			this.competitionPlayers = new ArrayList<>();
 		}
 		competitionPlayer.setCompetitionTeam(this);
 		this.competitionPlayers.add(competitionPlayer);
+	}
+
+	public void addBillingStatus(BillingStatus billingStatus) {
+		BillingStatusHistory billingStatusHistory = new BillingStatusHistory();
+		billingStatusHistory.setCompetitionTeam(this);
+		billingStatusHistory.setBillingStatus(billingStatus);
+		if (this.billingStatusHistories == null) {
+			this.billingStatusHistories = new ArrayList<>();
+		}
+		this.billingStatusHistories.add(billingStatusHistory);
+	}
+
+	public void addRegistrationStatus(RegistrationStatus registrationStatus) {
+		RegistrationStatusHistory registrationStatusHistory = new RegistrationStatusHistory();
+		registrationStatusHistory.setCompetitionTeam(this);
+		registrationStatusHistory.setRegistrationStatus(registrationStatus);
+		if (this.registrationStatusHistories == null) {
+			this.registrationStatusHistories = new ArrayList<>();
+		}
+		this.registrationStatusHistories.add(registrationStatusHistory);
 	}
 
 }
