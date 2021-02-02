@@ -2,7 +2,6 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamInvitationLinkRepository;
-import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -11,20 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/team")
 public class TeamInvitationLinkController {
 
-	private ACLService aclService;
-
 	private TeamInvitationLinkRepository teamInvitationLinkRepository;
 
 	@Autowired
-	public TeamInvitationLinkController(ACLService aclService,
-			TeamInvitationLinkRepository teamInvitationLinkRepository) {
-		this.aclService = aclService;
+	public TeamInvitationLinkController(TeamInvitationLinkRepository teamInvitationLinkRepository) {
 		this.teamInvitationLinkRepository = teamInvitationLinkRepository;
 	}
 

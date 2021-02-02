@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.competition;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.CompetitionPlayerStatusType;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.RegistrationStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
@@ -17,7 +19,8 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 	private Long id;
 
 	@Column(name = "competitionplayerstatusdescription", nullable = false)
-	private String competitionPlayerStatusDescription;
+	@Enumerated(EnumType.STRING)
+	private CompetitionPlayerStatusType competitionPlayerStatusDescription;
 
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
@@ -39,11 +42,11 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 		return CompetitionPlayerStatus.class;
 	}
 
-	public String getCompetitionPlayerStatusDescription() {
+	public CompetitionPlayerStatusType getCompetitionPlayerStatusDescription() {
 		return competitionPlayerStatusDescription;
 	}
 
-	public void setCompetitionPlayerStatusDescription(String competitionPlayerStatusDescription) {
+	public void setCompetitionPlayerStatusDescription(CompetitionPlayerStatusType competitionPlayerStatusDescription) {
 		this.competitionPlayerStatusDescription = competitionPlayerStatusDescription;
 	}
 

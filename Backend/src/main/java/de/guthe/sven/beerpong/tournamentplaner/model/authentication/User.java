@@ -7,6 +7,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -153,12 +154,15 @@ public class User {
 		this.teamCompositions = teamCompositions;
 	}
 
-	public TeamComposition addTeam(Team team) {
+	public void addTeam(Team team) {
 		TeamComposition teamComposition = new TeamComposition();
 		teamComposition.setUser(this);
 		teamComposition.setTeam(team);
 		teamComposition.setAdmin(true);
-		return teamComposition;
+		if (this.teamCompositions == null) {
+			this.teamCompositions = new ArrayList<>();
+		}
+		this.teamCompositions.add(teamComposition);
 	}
 
 }

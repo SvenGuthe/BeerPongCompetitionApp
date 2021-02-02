@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.datatype;
+package de.guthe.sven.beerpong.tournamentplaner.datatype.authorization;
 
 import org.apache.commons.collections4.ListUtils;
 

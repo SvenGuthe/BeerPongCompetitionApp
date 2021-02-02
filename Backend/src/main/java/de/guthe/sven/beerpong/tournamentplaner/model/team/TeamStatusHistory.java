@@ -1,19 +1,18 @@
-package de.guthe.sven.beerpong.tournamentplaner.model.competition.billing;
+package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "billingstatushistory")
-public class BillingStatusHistory implements ACLObjectInterface {
+@Table(name = "teamstatushistory")
+public class TeamStatusHistory implements ACLObjectInterface {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "billingstatushistoryid")
+	@Column(name = "teamstatushistoryid")
 	private Long id;
 
 	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp")
@@ -23,16 +22,16 @@ public class BillingStatusHistory implements ACLObjectInterface {
 	private Timestamp validTo;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "competitionteamid")
+	@JoinColumn(name = "teamid")
 	@JsonIgnore
-	private CompetitionTeam competitionTeam;
+	private Team team;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "billingstatusid")
+	@JoinColumn(name = "teamstatusid")
 	@JsonIgnore
-	private BillingStatus billingStatus;
+	private TeamStatus teamStatus;
 
-	public BillingStatusHistory() {
+	public TeamStatusHistory() {
 	}
 
 	@Override
@@ -42,7 +41,7 @@ public class BillingStatusHistory implements ACLObjectInterface {
 
 	@Override
 	public Class getACLClass() {
-		return BillingStatusHistory.class;
+		return TeamStatusHistory.class;
 	}
 
 	public Timestamp getValidFrom() {
@@ -61,20 +60,20 @@ public class BillingStatusHistory implements ACLObjectInterface {
 		this.validTo = validTo;
 	}
 
-	public CompetitionTeam getCompetitionTeam() {
-		return competitionTeam;
+	public Team getTeam() {
+		return team;
 	}
 
-	public void setCompetitionTeam(CompetitionTeam competitionTeam) {
-		this.competitionTeam = competitionTeam;
+	public void setTeam(Team team) {
+		this.team = team;
 	}
 
-	public BillingStatus getBillingStatus() {
-		return billingStatus;
+	public TeamStatus getTeamStatus() {
+		return teamStatus;
 	}
 
-	public void setBillingStatus(BillingStatus billingStatus) {
-		this.billingStatus = billingStatus;
+	public void setTeamStatus(TeamStatus teamStatus) {
+		this.teamStatus = teamStatus;
 	}
 
 }

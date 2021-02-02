@@ -37,6 +37,10 @@ public class Team implements ACLObjectInterface {
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<TeamComposition> teamCompositions;
 
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<TeamStatusHistory> teamStatusHistories;
+
 	public Team() {
 	}
 
@@ -96,6 +100,14 @@ public class Team implements ACLObjectInterface {
 		this.teamCompositions = teamCompositions;
 	}
 
+	public List<TeamStatusHistory> getTeamStatusHistories() {
+		return teamStatusHistories;
+	}
+
+	public void setTeamStatusHistories(List<TeamStatusHistory> teamStatusHistories) {
+		this.teamStatusHistories = teamStatusHistories;
+	}
+
 	public void addUser(User user) {
 		TeamComposition teamComposition = new TeamComposition();
 		teamComposition.setTeam(this);
@@ -113,6 +125,16 @@ public class Team implements ACLObjectInterface {
 		}
 		teamInvitationLink.setTeam(this);
 		this.teamInvitationLinks.add(teamInvitationLink);
+	}
+
+	public void addTeamStatus(TeamStatus teamStatus) {
+		TeamStatusHistory teamStatusHistory = new TeamStatusHistory();
+		teamStatusHistory.setTeam(this);
+		teamStatusHistory.setTeamStatus(teamStatus);
+		if (this.teamStatusHistories == null) {
+			this.teamStatusHistories = new ArrayList<>();
+		}
+		this.teamStatusHistories.add(teamStatusHistory);
 	}
 
 }

@@ -4,4 +4,5 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.Re
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegistrationStatusRepository extends JpaRepository<RegistrationStatus, Long> {
+
 }

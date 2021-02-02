@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +16,8 @@ public class UserStatus {
 	private Long userStatusId;
 
 	@Column(name = "userstatus", nullable = false)
-	private String userStatus;
+	@Enumerated(EnumType.STRING)
+	private UserStatusType userStatus;
 
 	@OneToMany(mappedBy = "userStatus", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
@@ -29,11 +31,11 @@ public class UserStatus {
 		return userStatusId;
 	}
 
-	public String getUserStatus() {
+	public UserStatusType getUserStatus() {
 		return userStatus;
 	}
 
-	public void setUserStatus(String userStatus) {
+	public void setUserStatus(UserStatusType userStatus) {
 		this.userStatus = userStatus;
 	}
 

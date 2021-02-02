@@ -4,4 +4,5 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.Billing
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface BillingStatusRepository extends JpaRepository<BillingStatus, Long> {
+
 }

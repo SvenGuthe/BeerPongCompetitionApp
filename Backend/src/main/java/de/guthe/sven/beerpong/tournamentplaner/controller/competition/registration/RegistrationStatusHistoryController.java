@@ -15,43 +15,46 @@ import java.util.List;
 @RequestMapping("/competition/registration")
 public class RegistrationStatusHistoryController {
 
-    private RegistrationStatusHistoryRepository registrationStatusHistoryRepository;
+	private RegistrationStatusHistoryRepository registrationStatusHistoryRepository;
 
-    @Autowired
-    public RegistrationStatusHistoryController(RegistrationStatusHistoryRepository registrationStatusHistoryRepository) {
-        this.registrationStatusHistoryRepository = registrationStatusHistoryRepository;
-    }
+	@Autowired
+	public RegistrationStatusHistoryController(
+			RegistrationStatusHistoryRepository registrationStatusHistoryRepository) {
+		this.registrationStatusHistoryRepository = registrationStatusHistoryRepository;
+	}
 
-    @GetMapping("/registrationstatushistory")
-    @PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-    public List<RegistrationStatusHistory> getRegistrationStatusHistories() {
-        return registrationStatusHistoryRepository.findAll();
-    }
+	@GetMapping("/registrationstatushistory")
+	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public List<RegistrationStatusHistory> getRegistrationStatusHistories() {
+		return registrationStatusHistoryRepository.findAll();
+	}
 
-    @GetMapping("/registrationstatushistory/{registrationStatusHistoryId}")
-    @PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-    public RegistrationStatusHistory getRegistrationStatusHistory(@PathVariable Long registrationStatusHistoryId) {
-        return registrationStatusHistoryRepository.findById(registrationStatusHistoryId).orElseThrow();
-    }
+	@GetMapping("/registrationstatushistory/{registrationStatusHistoryId}")
+	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public RegistrationStatusHistory getRegistrationStatusHistory(@PathVariable Long registrationStatusHistoryId) {
+		return registrationStatusHistoryRepository.findById(registrationStatusHistoryId).orElseThrow();
+	}
 
-    @PostMapping("/registrationstatushistory")
-    @Transactional
-    @PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-    public RegistrationStatusHistory addRegistrationStatusHistory(@RequestBody RegistrationStatusHistory registrationStatusHistory) {
-        return registrationStatusHistoryRepository.save(registrationStatusHistory);
-    }
+	@PostMapping("/registrationstatushistory")
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public RegistrationStatusHistory addRegistrationStatusHistory(
+			@RequestBody RegistrationStatusHistory registrationStatusHistory) {
+		return registrationStatusHistoryRepository.save(registrationStatusHistory);
+	}
 
-    @PutMapping("/registrationstatushistory")
-    @PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-    public RegistrationStatusHistory updateRegistrationStatusHistory(@RequestBody RegistrationStatusHistory registrationStatusHistory) {
-        return registrationStatusHistoryRepository.save(registrationStatusHistory);
-    }
+	@PutMapping("/registrationstatushistory")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public RegistrationStatusHistory updateRegistrationStatusHistory(
+			@RequestBody RegistrationStatusHistory registrationStatusHistory) {
+		return registrationStatusHistoryRepository.save(registrationStatusHistory);
+	}
 
-    @DeleteMapping("/registrationstatushistory")
-    @Transactional
-    @PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-    public void deleteRegistrationStatusHistory(@RequestBody RegistrationStatusHistory registrationStatusHistory) {
-        registrationStatusHistoryRepository.delete(registrationStatusHistory);
-    }
+	@DeleteMapping("/registrationstatushistory")
+	@Transactional
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public void deleteRegistrationStatusHistory(@RequestBody RegistrationStatusHistory registrationStatusHistory) {
+		registrationStatusHistoryRepository.delete(registrationStatusHistory);
+	}
 
 }

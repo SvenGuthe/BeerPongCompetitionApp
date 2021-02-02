@@ -1,51 +1,67 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.competition.registration;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.RegistrationStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "registrationstatus")
 public class RegistrationStatus implements ACLObjectInterface {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "registrationstatusid")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "registrationstatusid")
+	private Long id;
 
-    @Column(name = "registrationstatusdescription", nullable = false)
-    private String registrationStatusDescription;
+	@Column(name = "registrationstatusdescription", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private RegistrationStatusType registrationStatusDescription;
 
-    @Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
-    private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-    public RegistrationStatus() {
-    }
+	@OneToMany(mappedBy = "registrationStatus", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<RegistrationStatusHistory> registrationStatusHistories;
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+	public RegistrationStatus() {
+	}
 
-    @Override
-    public Class getACLClass() {
-        return RegistrationStatus.class;
-    }
+	@Override
+	public Long getId() {
+		return id;
+	}
 
-    public String getRegistrationStatusDescription() {
-        return registrationStatusDescription;
-    }
+	@Override
+	public Class getACLClass() {
+		return RegistrationStatus.class;
+	}
 
-    public void setRegistrationStatusDescription(String registrationStatusDescription) {
-        this.registrationStatusDescription = registrationStatusDescription;
-    }
+	public RegistrationStatusType getRegistrationStatusDescription() {
+		return registrationStatusDescription;
+	}
 
-    public Timestamp getCreationTime() {
-        return creationTime;
-    }
+	public void setRegistrationStatusDescription(RegistrationStatusType registrationStatusDescription) {
+		this.registrationStatusDescription = registrationStatusDescription;
+	}
 
-    public void setCreationTime(Timestamp creationTime) {
-        this.creationTime = creationTime;
-    }
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public List<RegistrationStatusHistory> getRegistrationStatusHistories() {
+		return registrationStatusHistories;
+	}
+
+	public void setRegistrationStatusHistories(List<RegistrationStatusHistory> registrationStatusHistories) {
+		this.registrationStatusHistories = registrationStatusHistories;
+	}
+
 }

@@ -1,20 +1,19 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
-import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityPrivilege;
-import de.guthe.sven.beerpong.tournamentplaner.datatype.SecurityRole;
-import de.guthe.sven.beerpong.tournamentplaner.datatype.PredefinedPrivileges;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityPrivilege;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.PredefinedPrivileges;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
@@ -80,7 +79,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		}
 
 		UserStatus userStatus = new UserStatus();
-		userStatus.setUserStatus("active");
+		userStatus.setUserStatus(UserStatusType.ACTIVE);
 
 		userStatusRepository.save(userStatus);
 
@@ -121,11 +120,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		playerUser.setUserStatus(userStatus);
 		userRepository.save(playerUser);
 
+		TeamStatus teamStatus = new TeamStatus();
+		teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
+
 		Team teamPlayer = new Team();
 		teamPlayer.setPassword("password");
 		teamPlayer.setPlayerTeam(true);
 		teamPlayer.setTeamName(playerUser.getGamerTag());
 		teamPlayer.addUser(playerUser);
+		teamPlayer.addTeamStatus(teamStatus);
 
 		teamRepository.save(teamPlayer);
 
@@ -147,11 +150,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		teamModAdmin.addUser(adminUser);
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink1);
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink2);
+		teamModAdmin.addTeamStatus(teamStatus);
 
 		teamRepository.save(teamModAdmin);
 
 		CompetitionPlayerStatus competitionPlayerStatus = new CompetitionPlayerStatus();
-		competitionPlayerStatus.setCompetitionPlayerStatusDescription("Eingeschrieben");
+		competitionPlayerStatus.setCompetitionPlayerStatusDescription(CompetitionPlayerStatusType.INVITED);
 
 		CompetitionPlayer competitionPlayerMod = new CompetitionPlayer();
 		competitionPlayerMod.setUser(moderatorUser);
@@ -162,10 +166,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		competitionPlayerAdmin.setCompetitionPlayerStatus(competitionPlayerStatus);
 
 		BillingStatus billingStatus = new BillingStatus();
-		billingStatus.setBillingStatusDescription("Payed");
+		billingStatus.setBillingStatusDescription(BillingStatusType.PAYED);
 
 		RegistrationStatus registrationStatus = new RegistrationStatus();
-		registrationStatus.setRegistrationStatusDescription("Registered");
+		registrationStatus.setRegistrationStatusDescription(RegistrationStatusType.REGISTERED);
 
 		CompetitionTeam competitionTeam = new CompetitionTeam();
 		competitionTeam.setCompetitionTeamName("CompetitionTeamName");
@@ -175,6 +179,13 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		competitionTeam.addCompetitionPlayer(competitionPlayerAdmin);
 		competitionTeam.addBillingStatus(billingStatus);
 		competitionTeam.addRegistrationStatus(registrationStatus);
+
+		CompetitionAdminStatus competitionAdminStatus = new CompetitionAdminStatus();
+		competitionAdminStatus.setCompetitionAdminStatusDescription(CompetitionAdminStatusType.PROMISED);
+
+		CompetitionAdmin competitionAdmin = new CompetitionAdmin();
+		competitionAdmin.setUser(adminUser);
+		competitionAdmin.addCompetitionAdminStatus(competitionAdminStatus);
 
 		Competition competition = new Competition();
 		competition.setCompetitionName("Competition");
@@ -186,6 +197,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		competition.setRegistrationEnd(new Timestamp(System.currentTimeMillis()));
 		competition.setSetOfRules("abc.de");
 		competition.addCompetitionTeam(competitionTeam);
+		competition.addCompetitionAdmin(competitionAdmin);
 
 		competitionRepository.save(competition);
 
