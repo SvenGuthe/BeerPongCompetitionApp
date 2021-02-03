@@ -1,9 +1,12 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
+import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamOverviewDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
+import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -18,6 +21,7 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/team")
@@ -27,10 +31,17 @@ public class TeamController {
 
 	private TeamRepository teamRepository;
 
+	private ModelMapper modelMapper;
+
+	private TeamService teamService;
+
 	@Autowired
-	public TeamController(ACLService aclService, TeamRepository teamRepository) {
+	public TeamController(ACLService aclService, TeamRepository teamRepository, ModelMapper modelMapper,
+			TeamService teamService) {
 		this.aclService = aclService;
 		this.teamRepository = teamRepository;
+		this.modelMapper = modelMapper;
+		this.teamService = teamService;
 	}
 
 	@GetMapping("/team")
@@ -78,6 +89,17 @@ public class TeamController {
 	@PreAuthorize("hasPermission(#team, 'DELETE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public void deleteTeam(@RequestBody Team team) {
 		teamRepository.delete(team);
+	}
+
+	@GetMapping("/team/overview")
+	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
+	public List<TeamOverviewDTO> getActiveTeamsOverview() {
+		List<Team> teams = teamService.getActiveTeams(0, 10);
+		return teams.stream().map(this::convertToDto).collect(Collectors.toList());
+	}
+
+	private TeamOverviewDTO convertToDto(Team team) {
+		return modelMapper.map(team, TeamOverviewDTO.class);
 	}
 
 }
