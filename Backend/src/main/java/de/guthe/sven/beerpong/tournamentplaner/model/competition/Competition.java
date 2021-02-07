@@ -51,6 +51,10 @@ public class Competition implements ACLObjectInterface {
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<CompetitionAdmin> competitionAdmins;
 
+	@OneToMany(mappedBy = "competition", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<CompetitionStatusHistory> competitionStatusHistories;
+
 	public Competition() {
 	}
 
@@ -152,10 +156,19 @@ public class Competition implements ACLObjectInterface {
 		this.competitionAdmins = competitionAdmins;
 	}
 
+	public List<CompetitionStatusHistory> getCompetitionStatusHistories() {
+		return competitionStatusHistories;
+	}
+
+	public void setCompetitionStatusHistories(List<CompetitionStatusHistory> competitionStatusHistories) {
+		this.competitionStatusHistories = competitionStatusHistories;
+	}
+
 	public void addCompetitionTeam(CompetitionTeam competitionTeam) {
 		if (this.competitionTeams == null) {
 			this.competitionTeams = new ArrayList<>();
 		}
+		competitionTeam.setCompetition(this);
 		this.competitionTeams.add(competitionTeam);
 	}
 
@@ -163,7 +176,20 @@ public class Competition implements ACLObjectInterface {
 		if (this.competitionAdmins == null) {
 			this.competitionAdmins = new ArrayList<>();
 		}
+		competitionAdmin.setCompetition(this);
 		this.competitionAdmins.add(competitionAdmin);
+	}
+
+	public void addCompetitionStatus(CompetitionStatus competitionStatus) {
+		CompetitionStatusHistory competitionStatusHistory = new CompetitionStatusHistory();
+		competitionStatusHistory.setCompetition(this);
+		competitionStatusHistory.setCompetitionStatus(competitionStatus);
+
+		if (this.competitionStatusHistories == null) {
+			this.competitionStatusHistories = new ArrayList<>();
+		}
+
+		this.competitionStatusHistories.add(competitionStatusHistory);
 	}
 
 }

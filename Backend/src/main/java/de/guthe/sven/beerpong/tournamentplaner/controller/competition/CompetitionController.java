@@ -1,9 +1,11 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionPermissions;
+import de.guthe.sven.beerpong.tournamentplaner.dto.competition.CompetitionListDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
+import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -27,10 +29,14 @@ public class CompetitionController {
 
 	private CompetitionRepository competitionRepository;
 
+	private CompetitionService competitionService;
+
 	@Autowired
-	public CompetitionController(ACLService aclService, CompetitionRepository competitionRepository) {
+	public CompetitionController(ACLService aclService, CompetitionRepository competitionRepository,
+			CompetitionService competitionService) {
 		this.aclService = aclService;
 		this.competitionRepository = competitionRepository;
+		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competition")
@@ -71,6 +77,11 @@ public class CompetitionController {
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public void deleteCompetition(@RequestBody Competition competition) {
 		competitionRepository.delete(competition);
+	}
+
+	@GetMapping("/competitionoverview")
+	public CompetitionListDTO getActiveClosedOwnCompetitions() {
+		return competitionService.getActiveClosedOwnCompetitions(0, 10);
 	}
 
 }

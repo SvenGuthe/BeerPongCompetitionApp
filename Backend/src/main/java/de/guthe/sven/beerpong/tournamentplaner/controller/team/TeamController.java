@@ -6,7 +6,6 @@ import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -31,16 +30,12 @@ public class TeamController {
 
 	private TeamRepository teamRepository;
 
-	private ModelMapper modelMapper;
-
 	private TeamService teamService;
 
 	@Autowired
-	public TeamController(ACLService aclService, TeamRepository teamRepository, ModelMapper modelMapper,
-			TeamService teamService) {
+	public TeamController(ACLService aclService, TeamRepository teamRepository, TeamService teamService) {
 		this.aclService = aclService;
 		this.teamRepository = teamRepository;
-		this.modelMapper = modelMapper;
 		this.teamService = teamService;
 	}
 
@@ -94,12 +89,7 @@ public class TeamController {
 	@GetMapping("/team/overview")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public List<TeamOverviewDTO> getActiveTeamsOverview() {
-		List<Team> teams = teamService.getActiveTeams(0, 10);
-		return teams.stream().map(this::convertToDto).collect(Collectors.toList());
-	}
-
-	private TeamOverviewDTO convertToDto(Team team) {
-		return modelMapper.map(team, TeamOverviewDTO.class);
+		return teamService.getActiveTeams(0, 10);
 	}
 
 }
