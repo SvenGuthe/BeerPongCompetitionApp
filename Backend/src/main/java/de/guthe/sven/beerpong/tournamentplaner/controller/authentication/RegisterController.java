@@ -2,6 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserRegistrationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
@@ -44,7 +45,14 @@ public class RegisterController {
 	}
 
 	@PostMapping("/register")
-	public User registerUser(@RequestBody User user) {
+	public User registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+		User user = new User();
+		user.setEmail(userRegistrationDTO.getEmail());
+		user.setFirstName(userRegistrationDTO.getFirstName());
+		user.setLastName(userRegistrationDTO.getLastName());
+		user.setGamerTag(userRegistrationDTO.getGamerTag());
+		user.setPassword(userRegistrationDTO.getPassword());
+
 		User checkUser = userRepository.findByEmail(user.getEmail());
 		if (checkUser != null) {
 			return checkUser;

@@ -1,14 +1,18 @@
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import { Provider } from 'react-redux';
+import store from './store/combine-store';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path='/' element={ <App /> } />
-    </Routes>
-  </BrowserRouter>,
+  <Provider store={ store }>
+    <BrowserRouter>
+      <App></App>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
-);
+)
