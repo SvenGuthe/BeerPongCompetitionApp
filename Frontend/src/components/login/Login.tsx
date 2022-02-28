@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import classes from './Login.module.css';
@@ -6,13 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
 import { sendLoginRequest } from "../../store/user-store-actions";
 import { afterLoginCleanup } from "../../store/user-store";
+import { tLogin } from "../../types/authenticate";
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loginData, setLoginData] = useState<tLogin>();
 
     const redirection = useSelector((state: RootState) => {
-        return state.user.redirect;
+        return state.user.redirectToHome;
     });
 
     useEffect(() => {
@@ -21,6 +23,15 @@ const Login: React.FC = () => {
             dispatch(afterLoginCleanup());
         }
     }, [redirection, navigate, dispatch])
+
+    useEffect(() => {
+        if (loginData) {
+            dispatch(sendLoginRequest(
+                loginData.email,
+                loginData.password
+            ));
+        }
+    }, [loginData, dispatch])
 
     const submitHandler = (event: SyntheticEvent): void => {
         event.preventDefault();
@@ -33,10 +44,10 @@ const Login: React.FC = () => {
         const email = target.email.value;
         const password = target.password.value;
 
-        dispatch(sendLoginRequest(
+        setLoginData({
             email,
             password
-        ))
+        })
     }
 
     const registerClass = `mb-3 ${classes.register}`

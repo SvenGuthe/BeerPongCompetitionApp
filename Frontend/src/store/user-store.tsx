@@ -1,18 +1,24 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tLogin } from '../types/authenticate';
+import { tToken } from '../types/authenticate';
 import { tAuthenticatedUser } from '../types/user';
 
 type SliceState = {
     loggedIn: boolean,
-    redirect: boolean,
+    redirectToHome: boolean,
+    redirectToConfirmWait: boolean,
     authenticatedUser: tAuthenticatedUser | null,
+    registeredUser: tAuthenticatedUser | null,
+    confirmedUser: tAuthenticatedUser | null,
     token: string
 }
 
 const initialState: SliceState = {
     loggedIn: false,
-    redirect: false,
+    redirectToHome: false,
+    redirectToConfirmWait: false,
     authenticatedUser: null,
+    registeredUser: null,
+    confirmedUser: null,
     token: ""
 }
 
@@ -29,14 +35,14 @@ export const userSlice = createSlice({
                 state.loggedIn = false;
             }
         },
-        login: (state, action: PayloadAction<tLogin>) => {
+        login: (state, action: PayloadAction<tToken>) => {
             localStorage.setItem('token', action.payload.token);
             state.token = action.payload.token;
-            state.redirect = true;
+            state.redirectToHome = true;
             state.loggedIn = true;
         },
         afterLoginCleanup: state => {
-            state.redirect = false;
+            state.redirectToHome = false;
         },
         logout: state => {
             localStorage.removeItem('token');
@@ -46,11 +52,21 @@ export const userSlice = createSlice({
         },
         setAuthenticatedUser: (state, action: PayloadAction<tAuthenticatedUser>) => {
             state.authenticatedUser = action.payload
+        },
+        register: (state, action: PayloadAction<tAuthenticatedUser>) => {
+            state.redirectToConfirmWait = true;
+            state.registeredUser = action.payload;
+        },
+        afterRegisterCleanup: state => {
+            state.redirectToConfirmWait = false;
+        },
+        confirm: (state, action: PayloadAction<tAuthenticatedUser>) => {
+            state.confirmedUser = action.payload
         }
     }
 })
 
-export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser } = userSlice.actions
+export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm } = userSlice.actions
 
 export const userStore = configureStore({
     reducer: userSlice.reducer

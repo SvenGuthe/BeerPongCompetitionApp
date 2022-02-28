@@ -2,11 +2,14 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserRegistrationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.ConfirmationTokenRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
@@ -15,6 +18,7 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -22,6 +26,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/authentication")
 public class RegisterController {
+
+	private PasswordEncoder passwordEncoder;
 
 	private UserRepository userRepository;
 
@@ -36,22 +42,27 @@ public class RegisterController {
 	@Autowired
 	public RegisterController(TeamRepository teamRepository, UserRepository userRepository,
 			RoleRepository roleRepository, ConfirmationTokenRepository confirmationTokenRepository,
-			EmailSenderService emailSenderService) {
+			EmailSenderService emailSenderService, PasswordEncoder passwordEncoder) {
 		this.teamRepository = teamRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
 		this.emailSenderService = emailSenderService;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@PostMapping("/register")
 	public User registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+		UserStatus userStatus = new UserStatus();
+		userStatus.setUserStatus(UserStatusType.ACTIVE);
+
 		User user = new User();
 		user.setEmail(userRegistrationDTO.getEmail());
 		user.setFirstName(userRegistrationDTO.getFirstName());
 		user.setLastName(userRegistrationDTO.getLastName());
 		user.setGamerTag(userRegistrationDTO.getGamerTag());
-		user.setPassword(userRegistrationDTO.getPassword());
+		user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
+		user.setUserStatus(userStatus);
 
 		User checkUser = userRepository.findByEmail(user.getEmail());
 		if (checkUser != null) {
@@ -81,7 +92,7 @@ public class RegisterController {
 			simpleMailMessage.setTo(user.getEmail());
 			simpleMailMessage.setSubject("Complete Registration!");
 			simpleMailMessage.setFrom("svenguthe@gmail.com");
-			simpleMailMessage.setText("Click here: http://localhost:9999/confirm-account?token="
+			simpleMailMessage.setText("Click here: http://localhost:3000/confirm/result?token="
 					+ confirmationToken.getConfirmationToken());
 
 			emailSenderService.sendEmail(simpleMailMessage);
@@ -98,7 +109,7 @@ public class RegisterController {
 			User user = userRepository.findByEmail(confirmationTokenDataBase.getUser().getEmail());
 			user.setEnabled(true);
 
-			Team team = user.getTeamCompositions().stream().map(teamComposition -> teamComposition.getTeam())
+			Team team = user.getTeamCompositions().stream().map(TeamComposition::getTeam)
 					.filter(Team::isPlayerTeam).collect(Collectors.toList()).get(0);
 
 			TeamStatus teamStatus = new TeamStatus();

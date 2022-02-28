@@ -33,11 +33,11 @@ const UserDetails: React.FC<{ authenticatedUser: tAuthenticatedUser }> = (props)
             </tr>
             <tr>
                 <td>User Status</td>
-                <td>{authenticatedUser?.userStatus.userStatus}</td>
+                <td>{authenticatedUser?.userStatus?.userStatus}</td>
             </tr>
             <tr>
                 <td>User Status ID</td>
-                <td>{authenticatedUser?.userStatus.userStatusId}</td>
+                <td>{authenticatedUser?.userStatus?.userStatusId}</td>
             </tr>
             <tr>
                 <td>Datum</td>

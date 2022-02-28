@@ -11,11 +11,15 @@ import { useEffect } from "react";
 import { instantiation } from "./store/user-store";
 import { sendAuthenticatedUserRequest } from "./store/user-store-actions";
 import { RootState } from "./store/combine-store";
+import NotFound from "./pages/authentication/404/NotFound";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector((state: RootState) => {
         return state.user.loggedIn;
+    });
+    const registeredUser = useSelector((state: RootState) => {
+        return state.user.registeredUser;
     });
     const token = useSelector((state: RootState) => {
         return state.user.token;
@@ -39,9 +43,11 @@ const App: React.FC = () => {
                 <Route path="register" element={<Register />} />
             </Route>
             <Route path="confirm">
-                <Route path="wait" element={<ConfirmWait />} />
+                {registeredUser && <Route path="wait" element={<ConfirmWait />} />}
                 <Route path="result" element={<ConfirmResult />} />
             </Route>
+            <Route path="notfound" element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
         </Route>
     </Routes>
 }
