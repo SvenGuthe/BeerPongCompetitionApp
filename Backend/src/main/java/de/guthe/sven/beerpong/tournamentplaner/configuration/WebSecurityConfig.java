@@ -3,6 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -60,8 +61,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).csrf().disable().authorizeRequests()
 				.antMatchers("/authentication/register").permitAll()
 				.antMatchers("/authentication/confirm-account").permitAll()
-				.antMatchers("/authenticate").permitAll()
-				.antMatchers("/authenticateduser").permitAll()
+				.antMatchers("/authentication/login").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.and().authorizeRequests().anyRequest().authenticated().and()
 				.userDetailsService(userDetailsService).exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

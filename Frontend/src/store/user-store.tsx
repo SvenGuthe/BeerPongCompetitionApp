@@ -1,5 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tToken } from '../types/authenticate';
+import { tPrivilege, tRole, tToken } from '../types/authenticate';
 import { tAuthenticatedUser } from '../types/user';
 
 type SliceState = {
@@ -9,7 +9,9 @@ type SliceState = {
     authenticatedUser: tAuthenticatedUser | null,
     registeredUser: tAuthenticatedUser | null,
     confirmedUser: tAuthenticatedUser | null,
-    token: string
+    token: string | null,
+    privileges: tPrivilege[] | null,
+    roles: tRole[] | null
 }
 
 const initialState: SliceState = {
@@ -19,25 +21,49 @@ const initialState: SliceState = {
     authenticatedUser: null,
     registeredUser: null,
     confirmedUser: null,
-    token: ""
+    token: null,
+    privileges: null,
+    roles: null
 }
 
 export const userSlice = createSlice({
     name: 'userinformation',
     initialState: initialState,
     reducers: {
-        instantiation: state => {
-            const token: string | null = localStorage.getItem('token');
+        instantiation: (state) => {
+            const token = localStorage.getItem('token');
             if (token) {
-                state.loggedIn = true;
                 state.token = token;
+            }
+            const privileges = localStorage.getItem('privileges');
+            if (privileges) {
+                state.privileges = JSON.parse(privileges);
+            }
+            const roles = localStorage.getItem('roles');
+            if (roles) {
+                state.roles = JSON.parse(roles);
+            }
+        },
+        validateToken: (state, action: PayloadAction<boolean>) => {
+            if (action.payload) {
+                state.loggedIn = true;
             } else {
+                localStorage.removeItem('token');
+                localStorage.removeItem('privileges');
+                localStorage.removeItem('roles');
                 state.loggedIn = false;
+                state.token = null;
+                state.privileges = null;
+                state.roles = null;
             }
         },
         login: (state, action: PayloadAction<tToken>) => {
             localStorage.setItem('token', action.payload.token);
+            localStorage.setItem('privileges', JSON.stringify(action.payload.privileges));
+            localStorage.setItem('roles', JSON.stringify(action.payload.roles));
             state.token = action.payload.token;
+            state.privileges = action.payload.privileges;
+            state.roles = action.payload.roles;
             state.redirectToHome = true;
             state.loggedIn = true;
         },
@@ -46,9 +72,13 @@ export const userSlice = createSlice({
         },
         logout: state => {
             localStorage.removeItem('token');
+            localStorage.removeItem('privileges');
+            localStorage.removeItem('roles');
             state.loggedIn = false;
-            state.token = "";
+            state.token = null;
             state.authenticatedUser = null;
+            state.privileges = null;
+            state.roles = null;
         },
         setAuthenticatedUser: (state, action: PayloadAction<tAuthenticatedUser>) => {
             state.authenticatedUser = action.payload
@@ -66,7 +96,7 @@ export const userSlice = createSlice({
     }
 })
 
-export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm } = userSlice.actions
+export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm, validateToken } = userSlice.actions
 
 export const userStore = configureStore({
     reducer: userSlice.reducer

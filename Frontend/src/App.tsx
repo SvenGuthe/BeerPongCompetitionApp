@@ -9,30 +9,42 @@ import ConfirmResult from "./pages/authentication/Confirm/Confirm-Result";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { instantiation } from "./store/user-store";
-import { sendAuthenticatedUserRequest } from "./store/user-store-actions";
+import { checkToken, sendAuthenticatedUserRequest } from "./store/user-store-actions";
 import { RootState } from "./store/combine-store";
 import NotFound from "./pages/authentication/404/NotFound";
+import { Privileges } from "./types/privileges";
+import Team from "./pages/Team/Team";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector((state: RootState) => {
-        return state.user.loggedIn;
-    });
-    const registeredUser = useSelector((state: RootState) => {
-        return state.user.registeredUser;
-    });
-    const token = useSelector((state: RootState) => {
-        return state.user.token;
+    const {loggedIn, registeredUser, token, privileges} = useSelector((state: RootState) => {
+        return {
+            loggedIn: state.user.loggedIn,
+            registeredUser: state.user.registeredUser,
+            token: state.user.token,
+            privileges: state.user.privileges
+        };
     });
 
+    // Instantiation -> Check if token exists in local storage
     useEffect(() => {
+        dispatch(instantiation());
+    }, [dispatch]);
 
-        if(isLoggedIn) {
+    // If there is a token -> Try to validate, if the token will be read from api
+    useEffect(() => {
+        if(token) {
+            dispatch(checkToken(token));
+        }
+    }, [dispatch, token])
+
+    // If the loggedIn state is true and the token is set (which should be always the case) -> get the user information from the database
+    useEffect(() => {
+        if(loggedIn && token) {
             dispatch(sendAuthenticatedUserRequest(token))
         }
 
-        dispatch(instantiation())
-    }, [dispatch, isLoggedIn, token])
+    }, [dispatch, loggedIn, token])
 
     return <Routes>
         <Route element={<Layout />}>
@@ -45,6 +57,9 @@ const App: React.FC = () => {
             <Route path="confirm">
                 {registeredUser && <Route path="wait" element={<ConfirmWait />} />}
                 <Route path="result" element={<ConfirmResult />} />
+            </Route>
+            <Route path="team">
+                {privileges?.find(privilege => privilege.name === Privileges.ADMIN_TEAM_PRIVILEGE) && <Route index element={<Team />} /> }
             </Route>
             <Route path="notfound" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />

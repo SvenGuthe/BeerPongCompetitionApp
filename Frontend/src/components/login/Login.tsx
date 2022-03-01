@@ -11,7 +11,7 @@ import { tLogin } from "../../types/authenticate";
 const Login: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [loginData, setLoginData] = useState<tLogin>();
+    const [loginData, setLoginData] = useState<tLogin | null>();
 
     const redirection = useSelector((state: RootState) => {
         return state.user.redirectToHome;
@@ -20,12 +20,13 @@ const Login: React.FC = () => {
     useEffect(() => {
         if (redirection) {
             navigate('/');
+            setLoginData(null);
             dispatch(afterLoginCleanup());
         }
     }, [redirection, navigate, dispatch])
 
     useEffect(() => {
-        if (loginData) {
+        if (loginData) {            
             dispatch(sendLoginRequest(
                 loginData.email,
                 loginData.password

@@ -10,7 +10,7 @@ const ConfirmWait = () => {
     });
 
     return <>
-        <h1>ConfirmWait</h1>
+        <h2>ConfirmWait</h2>
         <ConfirmWaitComponent />
         {registeredUser && <UserDetails authenticatedUser={registeredUser} />}
     </>;

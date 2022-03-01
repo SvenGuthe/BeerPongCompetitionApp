@@ -1,4 +1,4 @@
-import { Col, Container, Nav, NavItem, Row } from 'react-bootstrap';
+import { Col, Container, Nav, NavItem, Row, NavDropdown } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { Button } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
@@ -7,13 +7,19 @@ import classes from './Layout.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/combine-store';
 import { logout } from '../../store/user-store';
+import { Roles } from '../../types/roles';
+import { Privileges } from '../../types/privileges';
 
 const Layout: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const isLoggedIn = useSelector((state: RootState) => {
-        return state.user.loggedIn;
+    const { loggedIn, privileges, roles } = useSelector((state: RootState) => {
+        return {
+            loggedIn: state.user.loggedIn,
+            privileges: state.user.privileges,
+            roles: state.user.roles
+        };
     });
 
     const logoutHandler = () => {
@@ -21,7 +27,7 @@ const Layout: React.FC = () => {
     };
 
     let logButton;
-    if (isLoggedIn) {
+    if (loggedIn) {
         logButton = <Button variant="outline-danger" onClick={logoutHandler}>Logout</Button>
     } else {
         logButton = <Nav.Link as={Link} to="/authentication/login">
@@ -39,7 +45,16 @@ const Layout: React.FC = () => {
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
-                    <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+                    <Nav className="me-auto">
+                        {roles?.find(role => role.name === Roles.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="collasible-nav-dropdown">
+                            {privileges?.find(privilege => privilege.name === Privileges.ADMIN_TEAM_PRIVILEGE) &&
+                                <NavDropdown.Item>
+                                    <Nav.Link as={Link} to="/team">Teams</Nav.Link>
+                                </NavDropdown.Item>
+                            }
+                        </NavDropdown>}
+                    </Nav>
+                    <Nav>
                         <NavItem>
                             {logButton}
                         </NavItem>

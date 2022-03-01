@@ -4,13 +4,17 @@ import { RootState } from "../../store/combine-store";
 
 const Home = () => {
 
-    const authenticatedUser = useSelector((state: RootState) => {
-        return state.user.authenticatedUser;
+    const { authenticatedUser, roles, privileges } = useSelector((state: RootState) => {
+        return {
+            authenticatedUser: state.user.authenticatedUser,
+            roles: state.user.roles,
+            privileges: state.user.privileges
+        };
     });
 
     return <>
-        <h1>Authenticated User</h1>
-        {authenticatedUser && <UserDetails authenticatedUser={authenticatedUser} />}
+        <h2>Authenticated User</h2>
+        {authenticatedUser && <UserDetails authenticatedUser={authenticatedUser} roles={roles!} privileges={privileges!} />}
     </>;
 };
 

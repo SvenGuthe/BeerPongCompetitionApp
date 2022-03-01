@@ -1,15 +1,19 @@
 import { Dispatch } from "react";
 import axios from "axios";
-import { login, register, setAuthenticatedUser, confirm } from "./user-store";
+import { login, register, setAuthenticatedUser, confirm, validateToken } from "./user-store";
 import { tRegister } from "../types/authenticate";
 
 export const sendLoginRequest = (email: String, password: String) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.post('http://localhost:9999/authenticate', {
+        const sendRequest = async () => await axios.post('http://localhost:9999/authentication/login', {
             username: email,
             password: password
         }).then((response) => {
-            dispatch(login({ token: response.data.token }))
+            dispatch(login({
+                token: response.data.token,
+                privileges: response.data.privileges,
+                roles: response.data.roles
+            }))
         }).catch(function (error) {
             console.log(error);
         });
@@ -20,8 +24,10 @@ export const sendLoginRequest = (email: String, password: String) => {
 
 export const sendAuthenticatedUserRequest = (token: string) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('http://localhost:9999/authenticateduser', {
-            headers: { Authorization: `Bearer ${token}` }
+        const sendRequest = async () => await axios.get('http://localhost:9999/authentication/authenticateduser', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         }).then((response) => {
             dispatch(setAuthenticatedUser(response.data));
         }).catch(function (error) {
@@ -51,6 +57,23 @@ export const sendConfirmRequest = (token: string) => {
         const sendRequest = async () => await axios.get('http://localhost:9999/authentication/confirm-account?token=' + token).then((response) => {
             dispatch(confirm(response.data))
         }).catch(function (error) {
+            console.log(error);
+        });
+
+        return sendRequest();
+    }
+}
+
+export const checkToken = (token: string) => {
+    return async (dispatch: Dispatch<any>) => {
+        const sendRequest = async () => await axios.get('http://localhost:9999/authentication/checktoken', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }).then((response) => {
+            dispatch(validateToken(true));
+        }).catch(function (error) {
+            dispatch(validateToken(false));
             console.log(error);
         });
 

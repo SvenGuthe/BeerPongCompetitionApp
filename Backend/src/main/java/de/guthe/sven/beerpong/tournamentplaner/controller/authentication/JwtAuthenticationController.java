@@ -4,21 +4,29 @@ import de.guthe.sven.beerpong.tournamentplaner.configuration.JwtTokenUtil;
 import de.guthe.sven.beerpong.tournamentplaner.configuration.MyUserDetailsService;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.JwtRequestDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.JwtResponseDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
+@RequestMapping("/authentication")
 public class JwtAuthenticationController {
 
 	@Autowired
@@ -28,19 +36,31 @@ public class JwtAuthenticationController {
 	private MyUserDetailsService userDetailsService;
 
 	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest)
 			throws Exception {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+		User user = userRepository.findByEmail(userDetails.getUsername());
+
+		Collection<Role> roles = user.getRoles();
+		Collection<Privilege> privileges = roles.stream().map(Role::getPrivileges).flatMap(Collection::stream).collect(Collectors.toSet());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
-		return ResponseEntity.ok(new JwtResponseDTO(token));
+		return ResponseEntity.ok(new JwtResponseDTO(token, roles, privileges));
+	}
+
+	@RequestMapping(value = "/checktoken", method = RequestMethod.GET)
+	private ResponseEntity<?> checkTokenValidity() {
+		return ResponseEntity.ok(true);
 	}
 
 	private void authenticate(String username, String password) throws Exception {
@@ -53,6 +73,21 @@ public class JwtAuthenticationController {
 		catch (BadCredentialsException e) {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
+	}
+
+	@GetMapping("/authenticateduser")
+	public User getLogin() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username;
+
+		if (principal instanceof UserDetails) {
+			username = ((UserDetails) principal).getUsername();
+		}
+		else {
+			username = principal.toString();
+		}
+
+		return userRepository.findByEmail(username);
 	}
 
 }
