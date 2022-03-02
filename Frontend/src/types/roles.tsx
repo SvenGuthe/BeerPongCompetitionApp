@@ -1,3 +1,0 @@
-export enum Roles {
-    ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR"
-}

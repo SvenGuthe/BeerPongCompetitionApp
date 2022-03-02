@@ -7,8 +7,8 @@ import classes from './Layout.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/combine-store';
 import { logout } from '../../store/user-store';
-import { Roles } from '../../types/roles';
-import { Privileges } from '../../types/privileges';
+import { Role } from '../../types/enums/role';
+import { Privilege } from '../../types/enums/privilege';
 
 const Layout: React.FC = () => {
 
@@ -27,7 +27,9 @@ const Layout: React.FC = () => {
     };
 
     let logButton;
-    if (loggedIn) {
+    if (loggedIn === null) {
+
+    } else if (loggedIn) {
         logButton = <Button variant="outline-danger" onClick={logoutHandler}>Logout</Button>
     } else {
         logButton = <Nav.Link as={Link} to="/authentication/login">
@@ -46,8 +48,8 @@ const Layout: React.FC = () => {
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                     <Nav className="me-auto">
-                        {roles?.find(role => role.name === Roles.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="collasible-nav-dropdown">
-                            {privileges?.find(privilege => privilege.name === Privileges.ADMIN_TEAM_PRIVILEGE) &&
+                        {roles?.find(role => role.name === Role.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="collasible-nav-dropdown">
+                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_TEAM_PRIVILEGE) &&
                                 <NavDropdown.Item>
                                     <Nav.Link as={Link} to="/team">Teams</Nav.Link>
                                 </NavDropdown.Item>

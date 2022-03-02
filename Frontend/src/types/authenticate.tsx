@@ -1,11 +1,14 @@
+import { Privilege } from "./enums/privilege";
+import { Role } from "./enums/role";
+
 export type tPrivilege = {
     privilegeId: number,
-    name: string
+    name: Privilege
 }
 
 export type tRole = {
     roleId: number,
-    name: string
+    name: Role
 }
 
 export type tToken = {

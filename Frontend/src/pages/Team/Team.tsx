@@ -1,4 +1,4 @@
-import {default as TeamComponent} from "../../components/team/Team";
+import {default as TeamComponent} from "../../components/team/TeamOverview";
 
 const Team = () => {
     return <>

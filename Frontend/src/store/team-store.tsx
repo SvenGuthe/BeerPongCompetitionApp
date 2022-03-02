@@ -1,24 +1,25 @@
-import { createSlice, configureStore } from '@reduxjs/toolkit'
+import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
+import { tTeamWithUsers } from '../types/team';
 
 type SliceState = {
-
+    teams: tTeamWithUsers[] | null
 }
 
 const initialState: SliceState = {
-
+    teams: null
 }
 
 export const teamSlice = createSlice({
     name: 'teams',
     initialState: initialState,
     reducers: {
-        test: (state, action) => {
-            console.log(action);
+        storeTeams: (state, action: PayloadAction<tTeamWithUsers[]>) => {
+            state.teams = action.payload;
         }
     }
 })
 
-export const { test } = teamSlice.actions
+export const { storeTeams } = teamSlice.actions
 
 export const teamStore = configureStore({
     reducer: teamSlice.reducer

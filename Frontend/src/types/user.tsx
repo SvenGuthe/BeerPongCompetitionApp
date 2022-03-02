@@ -1,3 +1,5 @@
+import { UserStatus } from "./enums/userStatus";
+
 export type tAuthenticatedUser = {
     creationTime: {
         date: number,
@@ -37,7 +39,7 @@ export type tAuthenticatedUser = {
     ],
     userId: number,
     userStatus: {
-        userStatus: string,
+        userStatus: UserStatus,
         userStatusId: number
     }
 };

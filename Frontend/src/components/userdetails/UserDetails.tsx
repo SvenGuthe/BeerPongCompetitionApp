@@ -19,10 +19,12 @@ const UserDetails: React.FC<tProps> = (props) => {
 
     if (roles) {
         roleTable = (<Table striped bordered hover size="sm">
-            <tbody>
+            <thead>
                 <tr>
                     <th>Rolle</th>
                 </tr>
+            </thead>
+            <tbody>
                 {roles.map(role => {
                     return <tr key={role.roleId}>
                         <td>{role.name}</td>
@@ -34,10 +36,12 @@ const UserDetails: React.FC<tProps> = (props) => {
 
     if (privileges) {
         privilegesTable = (<Table striped bordered hover size="sm">
-            <tbody>
+            <thead>
                 <tr>
                     <th>Privileges</th>
                 </tr>
+            </thead>
+            <tbody>
                 {privileges.map(privilege => {
                     return <tr key={privilege.privilegeId}>
                         <td>{privilege.name}</td>

@@ -3,7 +3,7 @@ import { tPrivilege, tRole, tToken } from '../types/authenticate';
 import { tAuthenticatedUser } from '../types/user';
 
 type SliceState = {
-    loggedIn: boolean,
+    loggedIn: boolean | null,
     redirectToHome: boolean,
     redirectToConfirmWait: boolean,
     authenticatedUser: tAuthenticatedUser | null,
@@ -15,7 +15,7 @@ type SliceState = {
 }
 
 const initialState: SliceState = {
-    loggedIn: false,
+    loggedIn: null,
     redirectToHome: false,
     redirectToConfirmWait: false,
     authenticatedUser: null,

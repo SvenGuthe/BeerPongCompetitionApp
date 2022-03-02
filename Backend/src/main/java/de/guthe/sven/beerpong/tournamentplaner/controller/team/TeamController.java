@@ -2,6 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
 import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamOverviewDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamUserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,9 +44,15 @@ public class TeamController {
 
 	@GetMapping("/team")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
+	public List<TeamUserDTO> getTeams() {
+		Collection<Team> teams = teamRepository.findAll();
+		return teams.stream().map(TeamUserDTO::new).collect(Collectors.toList());
+	}
+	/*
 	public List<Team> getTeams() {
 		return teamRepository.findAll();
 	}
+	 */
 
 	@GetMapping("/team/{teamId}")
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")

@@ -12,12 +12,13 @@ import { instantiation } from "./store/user-store";
 import { checkToken, sendAuthenticatedUserRequest } from "./store/user-store-actions";
 import { RootState } from "./store/combine-store";
 import NotFound from "./pages/authentication/404/NotFound";
-import { Privileges } from "./types/privileges";
+import { Privilege } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
+import TeamDetails from "./pages/Team/TeamDetails";
 
 const App: React.FC = () => {
     const dispatch = useDispatch();
-    const {loggedIn, registeredUser, token, privileges} = useSelector((state: RootState) => {
+    const { loggedIn, registeredUser, token, privileges } = useSelector((state: RootState) => {
         return {
             loggedIn: state.user.loggedIn,
             registeredUser: state.user.registeredUser,
@@ -33,14 +34,14 @@ const App: React.FC = () => {
 
     // If there is a token -> Try to validate, if the token will be read from api
     useEffect(() => {
-        if(token) {
+        if (token) {
             dispatch(checkToken(token));
         }
     }, [dispatch, token])
 
     // If the loggedIn state is true and the token is set (which should be always the case) -> get the user information from the database
     useEffect(() => {
-        if(loggedIn && token) {
+        if (loggedIn && token) {
             dispatch(sendAuthenticatedUserRequest(token))
         }
 
@@ -59,7 +60,13 @@ const App: React.FC = () => {
                 <Route path="result" element={<ConfirmResult />} />
             </Route>
             <Route path="team">
-                {privileges?.find(privilege => privilege.name === Privileges.ADMIN_TEAM_PRIVILEGE) && <Route index element={<Team />} /> }
+                {privileges?.find(privilege => privilege.name === Privilege.ADMIN_TEAM_PRIVILEGE) ?
+                    <>
+                        <Route index element={<Team />} />
+                        <Route path=":id" element={<TeamDetails />} />
+                    </>
+                    :
+                    <Route index element={<NotFound />} />}
             </Route>
             <Route path="notfound" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
