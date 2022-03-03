@@ -5,7 +5,7 @@ import { changeTeamStatus } from "../store/team-store-actions";
 import { TeamStatus } from "../types/enums/teamStatus";
 import { tTeamWithUsers } from "../types/team";
 
-const useTeamStateButton = (team: tTeamWithUsers) => {
+export const useTeamStateButton = (team: tTeamWithUsers) => {
 
     const dispatch = useDispatch();
 

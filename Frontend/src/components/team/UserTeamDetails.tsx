@@ -1,9 +1,13 @@
 import { Table } from "react-bootstrap";
+import { useTeamStateButton } from "../../hooks/use-teamStateButton";
 import { tTeamWithUsers } from "../../types/team";
 
 const UserTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
 
     const team = props.team;
+
+    const buttons = useTeamStateButton(team);
+    const status = team.teamStatusHistories.filter(teamStatusHistory => teamStatusHistory.validTo === null).map(teamStatusHistory => teamStatusHistory.teamStatusDescription)[0]
 
     const members = <Table striped bordered hover size="sm">
         <tbody>
@@ -77,9 +81,14 @@ const UserTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
                     <td>Erstellt am</td>
                     <td>{team.creationTime}</td>
                 </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{status}</td>
+                </tr>
             </tbody>
         </Table>
-        <h4>Userdaten</h4>
+        {buttons}
+        <h4 style={{marginTop: "1rem"}}>Userdaten</h4>
         {members}
         <h4>Teamstatus Historie</h4>
         {teamStatusHistory}
