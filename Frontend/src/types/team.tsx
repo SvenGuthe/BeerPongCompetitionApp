@@ -31,21 +31,27 @@ export type tTeamWithUsers = {
     creationTime: tTimestamp,
     id: number,
     members: {
-          admin: boolean,
-          creationTime: tTimestamp,
-          enabled: boolean,
-          firstName: string,
-          gamerTag: string,
-          lastName: string,
-          userId: number,
-          userStatus: UserStatus
-        }[],
-      playerTeam: boolean,
-      teamName: string,
-      teamStatusHistories: {
+        admin: boolean,
+        creationTime: tTimestamp,
+        enabled: boolean,
+        firstName: string,
+        gamerTag: string,
+        lastName: string,
+        userId: number,
+        userStatus: UserStatus
+    }[],
+    playerTeam: boolean,
+    teamName: string,
+    teamStatusHistories: {
         id: number,
         teamStatusDescription: TeamStatus,
         validFrom: tTimestamp,
         validTo: tTimestamp
-      }[]
+    }[]
+}
+
+export type tTeamMetaData = {
+    id: number,
+    teamName: string,
+    currentTeamStatusType: TeamStatus
 }

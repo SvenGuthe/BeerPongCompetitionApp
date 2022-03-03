@@ -15,11 +15,23 @@ export const teamSlice = createSlice({
     reducers: {
         storeTeams: (state, action: PayloadAction<tTeamWithUsers[]>) => {
             state.teams = action.payload;
+        },
+        updateTeam: (state, action: PayloadAction<tTeamWithUsers[]>) => {
+            const fetchedTeam = action.payload[0];
+            if (state.teams) {
+                state.teams = state.teams.map(team => {
+                    if (team.id === fetchedTeam.id) {
+                        return fetchedTeam;
+                    } else {
+                        return team;
+                    }
+                })
+            }
         }
     }
 })
 
-export const { storeTeams } = teamSlice.actions
+export const { storeTeams, updateTeam } = teamSlice.actions
 
 export const teamStore = configureStore({
     reducer: teamSlice.reducer

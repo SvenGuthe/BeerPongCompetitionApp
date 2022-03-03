@@ -5,7 +5,7 @@ import { tRegister } from "../types/authenticate";
 
 export const sendLoginRequest = (email: String, password: String) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.post('http://localhost:9999/authentication/login', {
+        const sendRequest = async () => await axios.post('/authentication/login', {
             username: email,
             password: password
         }).then((response) => {
@@ -24,11 +24,7 @@ export const sendLoginRequest = (email: String, password: String) => {
 
 export const sendAuthenticatedUserRequest = (token: string) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('http://localhost:9999/authentication/authenticateduser', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then((response) => {
+        const sendRequest = async () => await axios.get('/authentication/authenticateduser').then((response) => {
             dispatch(setAuthenticatedUser(response.data));
         }).catch(function (error) {
             console.log(error);
@@ -40,7 +36,7 @@ export const sendAuthenticatedUserRequest = (token: string) => {
 
 export const sendRegisterRequest = (registerFormData: tRegister) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.post('http://localhost:9999/authentication/register', {
+        const sendRequest = async () => await axios.post('/authentication/register', {
             ...registerFormData
         }).then((response) => {
             dispatch(register(response.data));
@@ -54,7 +50,7 @@ export const sendRegisterRequest = (registerFormData: tRegister) => {
 
 export const sendConfirmRequest = (token: string) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('http://localhost:9999/authentication/confirm-account?token=' + token).then((response) => {
+        const sendRequest = async () => await axios.get('/authentication/confirm-account?token=' + token).then((response) => {
             dispatch(confirm(response.data))
         }).catch(function (error) {
             console.log(error);
@@ -66,11 +62,7 @@ export const sendConfirmRequest = (token: string) => {
 
 export const checkToken = (token: string) => {
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('http://localhost:9999/authentication/checktoken', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        }).then((response) => {
+        const sendRequest = async () => await axios.get('/authentication/checktoken').then((response) => {
             dispatch(validateToken(true));
         }).catch(function (error) {
             dispatch(validateToken(false));

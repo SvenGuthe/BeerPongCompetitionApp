@@ -5,11 +5,11 @@ import { tTeamWithUsers } from "../../types/team";
 
 const UserTeamTable: React.FC<{
     teams: tTeamWithUsers[],
-    stateToButtons: (state: TeamStatus) => JSX.Element | undefined
+    createButtons: (team: tTeamWithUsers, status: TeamStatus) => JSX.Element | undefined
 }> = (props) => {
 
     const teams = props.teams;
-    const stateToButtons = props.stateToButtons;
+    const createButtons = props.createButtons;
 
     return <Table striped bordered hover size="sm" style={{
         marginBottom: '3rem'
@@ -27,7 +27,7 @@ const UserTeamTable: React.FC<{
             {teams.map(player => {
 
                 const status = player.teamStatusHistories.filter(status => status.validTo === null)[0].teamStatusDescription;
-                let button = stateToButtons(status);
+                let button = createButtons(player, status);
                 const linkToDetails = `${player.id}`
 
                 return <tr key={player.id}>

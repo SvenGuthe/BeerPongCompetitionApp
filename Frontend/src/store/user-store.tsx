@@ -1,4 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
+import axios from 'axios';
 import { tPrivilege, tRole, tToken } from '../types/authenticate';
 import { tAuthenticatedUser } from '../types/user';
 
@@ -34,6 +35,7 @@ export const userSlice = createSlice({
             const token = localStorage.getItem('token');
             if (token) {
                 state.token = token;
+                axios.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
             }
             const privileges = localStorage.getItem('privileges');
             if (privileges) {
@@ -55,6 +57,7 @@ export const userSlice = createSlice({
                 state.token = null;
                 state.privileges = null;
                 state.roles = null;
+                axios.defaults.headers.common['Authorization'] =  false;
             }
         },
         login: (state, action: PayloadAction<tToken>) => {
@@ -66,6 +69,7 @@ export const userSlice = createSlice({
             state.roles = action.payload.roles;
             state.redirectToHome = true;
             state.loggedIn = true;
+            axios.defaults.headers.common['Authorization'] =  `Bearer ${action.payload.token}`;
         },
         afterLoginCleanup: state => {
             state.redirectToHome = false;
@@ -79,6 +83,7 @@ export const userSlice = createSlice({
             state.authenticatedUser = null;
             state.privileges = null;
             state.roles = null;
+            axios.defaults.headers.common['Authorization'] =  false;
         },
         setAuthenticatedUser: (state, action: PayloadAction<tAuthenticatedUser>) => {
             state.authenticatedUser = action.payload

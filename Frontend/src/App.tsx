@@ -15,8 +15,12 @@ import NotFound from "./pages/authentication/404/NotFound";
 import { Privilege } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
 import TeamDetails from "./pages/Team/TeamDetails";
+import axios from "axios";
 
 const App: React.FC = () => {
+
+    axios.defaults.baseURL = 'http://localhost:9999';
+
     const dispatch = useDispatch();
     const { loggedIn, registeredUser, token, privileges } = useSelector((state: RootState) => {
         return {

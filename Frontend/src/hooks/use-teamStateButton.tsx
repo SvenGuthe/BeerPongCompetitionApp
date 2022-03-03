@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/combine-store";
-import { changeTeamStatus, sendFetchTeamsRequest } from "../../store/team-store-actions";
-import UserTeamTable from "./UserTeamTable";
-import RealTeamTable from "./RealTeamTable";
-import { TeamStatus } from "../../types/enums/teamStatus";
-import { tTeamWithUsers } from "../../types/team";
-import { Button } from "react-bootstrap";
-import { ButtonGroup } from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { changeTeamStatus } from "../store/team-store-actions";
+import { TeamStatus } from "../types/enums/teamStatus";
+import { tTeamWithUsers } from "../types/team";
 
-const Team: React.FC = () => {
+const useTeamStateButton = (team: tTeamWithUsers) => {
 
     const dispatch = useDispatch();
 
@@ -18,12 +14,12 @@ const Team: React.FC = () => {
         status: TeamStatus
     } | null>(null);
 
-    const { token, teams } = useSelector((state: RootState) => {
-        return {
-            token: state.user.token,
-            teams: state.team.teams
+    useEffect(() => {
+        if (newStatus) {
+            dispatch(changeTeamStatus(newStatus.team, newStatus.status));
+            setNewStatus(null);
         }
-    });
+    }, [dispatch, newStatus]);
 
     const changeStatusHandler = (team: tTeamWithUsers, status: TeamStatus) => (event: React.MouseEvent<HTMLButtonElement>) => {
         setNewStatus({
@@ -49,25 +45,9 @@ const Team: React.FC = () => {
         }
     }
 
-    useEffect(() => {
-        if (newStatus) {
-            dispatch(changeTeamStatus(newStatus.team, newStatus.status));
-            setNewStatus(null);
-        }
-    }, [dispatch, newStatus]);
+    return createButtons(team, team.teamStatusHistories
+        .filter(teamStatusHistory => teamStatusHistory.validTo === null)
+        .map(teamStatusHistory => teamStatusHistory.teamStatusDescription)[0]
+    )
 
-    useEffect(() => {
-        if (token) {
-            dispatch(sendFetchTeamsRequest(token));
-        }
-    }, [dispatch, token]);
-
-    return <>
-        <h3>Teams</h3>
-        {teams && <RealTeamTable createButtons={createButtons} teams={teams.filter(team => !team.playerTeam)} />}
-        <h3>Einzelspieler</h3>
-        {teams && <UserTeamTable createButtons={createButtons} teams={teams.filter(team => team.playerTeam)} />}
-    </>;
 }
-
-export default Team;

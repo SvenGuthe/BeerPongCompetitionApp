@@ -2,12 +2,14 @@ package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
+@NamedQuery(name = "TeamStatus.findByDescription", query = "SELECT ts FROM TeamStatus ts WHERE teamStatusDescription = ?1")
 @Table(name = "teamstatus")
 public class TeamStatus implements ACLObjectInterface {
 

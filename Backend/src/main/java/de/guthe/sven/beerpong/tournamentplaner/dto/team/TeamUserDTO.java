@@ -3,7 +3,6 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.team;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 
 import java.sql.Timestamp;
 import java.util.Collection;
