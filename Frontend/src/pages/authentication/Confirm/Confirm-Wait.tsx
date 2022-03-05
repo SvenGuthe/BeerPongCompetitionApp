@@ -2,6 +2,8 @@ import AuthenticatedUser from "../../../components/user/authenticatedUser/Authen
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { default as ConfirmWaitComponent } from "../../../components/confirm/wait/ConfirmWait";
+import Hierarchy from "../../../components/ui/Hierarchy";
+import { confirmWaitHierarchy, homeHierarchy } from "../../../types/hierarchy";
 
 const ConfirmWait = () => {
 
@@ -10,6 +12,7 @@ const ConfirmWait = () => {
     });
 
     return <>
+        <Hierarchy hierarchyItems={[homeHierarchy, confirmWaitHierarchy]} />
         <h2>ConfirmWait</h2>
         <ConfirmWaitComponent />
         {registeredUser && <AuthenticatedUser authenticatedUser={registeredUser} />}

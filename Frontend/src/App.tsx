@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home/Home";
-import Authentication from "./pages/authentication/Authentication";
 import Login from "./pages/authentication/Login/Login";
 import Register from "./pages/authentication/Register/Register";
 import ConfirmWait from "./pages/authentication/Confirm/Confirm-Wait";
@@ -60,7 +59,6 @@ const App: React.FC = () => {
         <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="authentication">
-                <Route index element={<Authentication />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
             </Route>

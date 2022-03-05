@@ -1,4 +1,5 @@
-import { Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { tTeamDetail } from "../../../types/team";
 import TeamInvitationLinkHistoryTable from "../general/TeamInvitationLinkHistoryTable";
 import TeamStatusHistoryTable from "../general/TeamStatusHistoryTable";
@@ -6,9 +7,9 @@ import TeamStateButton from "../TeamStateButton";
 
 const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
     const team = props.team;
-    
 
-    const buttons = TeamStateButton({team});
+
+    const buttons = TeamStateButton({ team });
 
     const status = team.teamStatusHistories.filter(teamStatusHistory =>
         teamStatusHistory.validTo === null).map(teamStatusHistory =>
@@ -18,6 +19,7 @@ const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
     const members = <Table striped bordered hover size="sm">
         <thead>
             <tr>
+                <th></th>
                 <th>ID</th>
                 <th>Vorname</th>
                 <th>Nachname</th>
@@ -30,7 +32,13 @@ const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
         <tbody>
             {
                 props.team.members.map(member => {
+                    const linkToDetails = `/user/${member.userId}`
                     return <tr key={member.userId}>
+                        <td style={{ textAlign: 'center' }}>
+                            <Link to={linkToDetails}>
+                                <Button variant="secondary" size="sm">Details</Button>
+                            </Link>
+                        </td>
                         <td>{member.userId}</td>
                         <td>{member.firstName}</td>
                         <td>{member.lastName}</td>

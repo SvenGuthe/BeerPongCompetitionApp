@@ -6,22 +6,22 @@ import { storeUsers } from "../../../store/user/user-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import UserRow from "./UserRow";
 
-const User: React.FC = () => {
+const UserOverview: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { token, users } = useSelector((state: RootState) => {
+    const { authenticatedUser, users } = useSelector((state: RootState) => {
         return {
-            token: state.authentication.token,
+            authenticatedUser: state.authentication.authenticatedUser,
             users: state.user.users
         }
     });
 
     useEffect(() => {
-        if (token) {
+        if (authenticatedUser) {
             dispatch(getRequest("/authentication/user", storeUsers));
         }
-    }, [dispatch, token]);
+    }, [dispatch, authenticatedUser]);
 
     let table;
 
@@ -54,4 +54,4 @@ const User: React.FC = () => {
 
 };
 
-export default User;
+export default UserOverview;

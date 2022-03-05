@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import useUserRoleCheckboxes from "../use-userRoleCheckboxes";
+import useUserRoleCheckboxes from "../UserRoleCheckboxes";
 import { Role } from "../../../types/enums/role";
 import { tUserDetail } from "../../../types/user";
 

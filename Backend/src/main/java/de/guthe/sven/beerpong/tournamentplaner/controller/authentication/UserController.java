@@ -70,8 +70,8 @@ public class UserController {
 
 	@GetMapping("/user/{userId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public User getUser(@PathVariable Long userId) {
-		return userRepository.findById(userId).orElseThrow();
+	public UserDetailDTO getUser(@PathVariable Long userId) {
+		return new UserDetailDTO(userRepository.findById(userId).orElseThrow());
 	}
 
 	/*
