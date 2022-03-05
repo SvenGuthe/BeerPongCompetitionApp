@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionPermissions;
+import de.guthe.sven.beerpong.tournamentplaner.dto.competition.CompetitionDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.competition.CompetitionListDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/competition")
@@ -41,14 +43,22 @@ public class CompetitionController {
 
 	@GetMapping("/competition")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public List<CompetitionDetailDTO> getCompetitions() {
+		return competitionRepository.findAll().stream().map(CompetitionDetailDTO::new).collect(Collectors.toList());
+	}
+
+	/*
+	@GetMapping("/competition")
+	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public List<Competition> getCompetitions() {
 		return competitionRepository.findAll();
 	}
+	 */
 
 	@GetMapping("/competition/{competitionId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Competition getCompetition(@PathVariable Long competitionId) {
-		return competitionRepository.findById(competitionId).orElseThrow();
+	public CompetitionDetailDTO getCompetition(@PathVariable Long competitionId) {
+		return new CompetitionDetailDTO(competitionRepository.findById(competitionId).orElseThrow());
 	}
 
 	@PostMapping("/competition")

@@ -57,7 +57,12 @@ const Layout: React.FC = () => {
                             }
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_AUTHENTICATION_PRIVILEGE) &&
                                 <NavDropdown.Item as={Link} to="/user">
-                                    <Nav.Link as="div">Users</Nav.Link>
+                                    <Nav.Link as="div">Nutzer</Nav.Link>
+                                </NavDropdown.Item>
+                            }
+                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_COMPETITION_PRIVILEGE) &&
+                                <NavDropdown.Item as={Link} to="/competition">
+                                    <Nav.Link as="div">Turniere</Nav.Link>
                                 </NavDropdown.Item>
                             }
                         </NavDropdown>}

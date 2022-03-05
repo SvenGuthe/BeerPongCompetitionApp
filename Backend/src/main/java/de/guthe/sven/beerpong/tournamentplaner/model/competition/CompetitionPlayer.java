@@ -26,7 +26,7 @@ public class CompetitionPlayer implements ACLObjectInterface {
 	@JsonIgnore
 	private User user;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "competitionplayerstatusid")
 	@JsonIgnore
 	private CompetitionPlayerStatus competitionPlayerStatus;

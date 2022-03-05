@@ -13,27 +13,27 @@ const UserTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
     const members = <Table striped bordered hover size="sm">
         <tbody>
             <tr>
-                <td>ID</td>
+                <th>ID</th>
                 <td>{team.members[0].userId}</td>
             </tr>
             <tr>
-                <td>Vorname</td>
+                <th>Vorname</th>
                 <td>{team.members[0].firstName}</td>
             </tr>
             <tr>
-                <td>Nachname</td>
+                <th>Nachname</th>
                 <td>{team.members[0].lastName}</td>
             </tr>
             <tr>
-                <td>Spielername</td>
+                <th>Spielername</th>
                 <td>{team.members[0].gamerTag}</td>
             </tr>
             <tr>
-                <td>Aktiviert</td>
+                <th>Aktiviert</th>
                 <td>{team.members[0].enabled ? "true" : "false"}</td>
             </tr>
             <tr>
-                <td>Status</td>
+                <th>Status</th>
                 <td>{team.members[0].userStatus}</td>
             </tr>
         </tbody>
@@ -43,23 +43,23 @@ const UserTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
         <Table striped bordered hover size="sm">
             <tbody>
                 <tr>
-                    <td>Team ID</td>
+                    <th>Team ID</th>
                     <td>{team.id}</td>
                 </tr>
                 <tr>
-                    <td>Team Name</td>
+                    <th>Team Name</th>
                     <td>{team.teamName}</td>
                 </tr>
                 <tr>
-                    <td>Player Team</td>
+                    <th>Player Team</th>
                     <td>{team.playerTeam ? "true" : "false"}</td>
                 </tr>
                 <tr>
-                    <td>Erstellt am</td>
+                    <th>Erstellt am</th>
                     <td>{team.creationTime}</td>
                 </tr>
                 <tr>
-                    <td>Status</td>
+                    <th>Status</th>
                     <td>{status}</td>
                 </tr>
             </tbody>

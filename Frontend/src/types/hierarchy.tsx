@@ -34,8 +34,13 @@ export const teamHierarchy: HierarchyItem = {
 }
 
 export const userHierarchy: HierarchyItem = {
-    label: "User",
+    label: "Nutzer",
     url: "/user"
+}
+
+export const competitionHierarchy: HierarchyItem = {
+    label: "Turnier",
+    url: "/competition"
 }
 
 export const notFoundHierarchy: HierarchyItem = {

@@ -14,7 +14,7 @@ const Hierarchy: React.FC<{
     })
 
     return <div style={{marginBottom: "1rem"}}>
-        Navigate: / {hierarchyOutput}
+        Navigation: / {hierarchyOutput}
     </div>;
 }
 

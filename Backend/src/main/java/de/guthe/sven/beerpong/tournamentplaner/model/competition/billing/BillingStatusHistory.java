@@ -27,7 +27,7 @@ public class BillingStatusHistory implements ACLObjectInterface {
 	@JsonIgnore
 	private CompetitionTeam competitionTeam;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "billingstatusid")
 	@JsonIgnore
 	private BillingStatus billingStatus;

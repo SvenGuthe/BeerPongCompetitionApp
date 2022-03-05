@@ -56,23 +56,23 @@ const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
         <Table striped bordered hover size="sm">
             <tbody>
                 <tr>
-                    <td>Team ID</td>
+                    <th>Team ID</th>
                     <td>{team.id}</td>
                 </tr>
                 <tr>
-                    <td>Team Name</td>
+                    <th>Team Name</th>
                     <td>{team.teamName}</td>
                 </tr>
                 <tr>
-                    <td>Player Team</td>
+                    <th>Player Team</th>
                     <td>{team.playerTeam ? "true" : "false"}</td>
                 </tr>
                 <tr>
-                    <td>Erstellt am</td>
+                    <th>Erstellt am</th>
                     <td>{team.creationTime}</td>
                 </tr>
                 <tr>
-                    <td>Status</td>
+                    <th>Status</th>
                     <td>{status}</td>
                 </tr>
             </tbody>

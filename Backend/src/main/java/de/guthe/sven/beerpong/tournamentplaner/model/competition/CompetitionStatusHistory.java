@@ -26,7 +26,7 @@ public class CompetitionStatusHistory implements ACLObjectInterface {
 	@JsonIgnore
 	private Competition competition;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	@JoinColumn(name = "competitionstatusid")
 	@JsonIgnore
 	private CompetitionStatus competitionStatus;

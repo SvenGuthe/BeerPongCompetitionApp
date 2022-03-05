@@ -19,6 +19,8 @@ import Team from "./pages/Team/Team";
 import User from "./pages/User/User";
 import UserDetails from "./pages/User/UserDetails";
 import { removePriviligeDuplicates } from "./utility/arrayFunctions";
+import Competition from "./pages/Competition/Competition";
+import CompetitionDetails from "./pages/Competition/CompetitionDetails";
 
 const App: React.FC = () => {
 
@@ -80,6 +82,15 @@ const App: React.FC = () => {
                     <>
                         <Route index element={<User />} />
                         <Route path=":id" element={<UserDetails />} />
+                    </>
+                    :
+                    <Route index element={<NotFound />} />}
+            </Route>
+            <Route path="competition">
+                {privileges?.find(privilege => privilege.name === Privilege.ADMIN_COMPETITION_PRIVILEGE) ?
+                    <>
+                        <Route index element={<Competition />} />
+                        <Route path=":id" element={<CompetitionDetails />} />
                     </>
                     :
                     <Route index element={<NotFound />} />}
