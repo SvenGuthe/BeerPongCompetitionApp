@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Row, NavDropdown } from 'react-bootstrap';
+import { Col, Container, Nav, Row, NavDropdown, Spinner } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import { Button } from 'react-bootstrap';
 import { Outlet } from 'react-router-dom';
@@ -15,10 +15,11 @@ const Layout: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { loggedIn, authenticatedUser } = useSelector((state: RootState) => {
+    const { loggedIn, authenticatedUser, loading } = useSelector((state: RootState) => {
         return {
             loggedIn: state.authentication.loggedIn,
-            authenticatedUser: state.authentication.authenticatedUser
+            authenticatedUser: state.authentication.authenticatedUser,
+            loading: state.authentication.loadAuthentication
         };
     });
 
@@ -74,7 +75,7 @@ const Layout: React.FC = () => {
         <Container>
             <Row>
                 <Col className={classes.main} md={{ span: 12, offset: 0.5 }}>
-                    <Outlet />
+                    {loading ? <div style={{textAlign: 'center'}}><Spinner animation="border"/></div>  : <Outlet />}
                 </Col>
             </Row>
         </Container>

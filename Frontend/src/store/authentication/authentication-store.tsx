@@ -7,6 +7,7 @@ type SliceState = {
     redirectToHome: boolean,
     redirectToConfirmWait: boolean,
     authenticatedUser: tUserDetail | null,
+    loadAuthentication: boolean,
     registeredUser: tUserDetail | null,
     confirmedUser: tUserDetail | null,
     token: string | null
@@ -17,6 +18,7 @@ const initialState: SliceState = {
     redirectToHome: false,
     redirectToConfirmWait: false,
     authenticatedUser: null,
+    loadAuthentication: true,
     registeredUser: null,
     confirmedUser: null,
     token: null
@@ -26,6 +28,9 @@ export const authenticationSlice = createSlice({
     name: 'authenticationinformation',
     initialState: initialState,
     reducers: {
+        setLoading: (state, action: PayloadAction<boolean>) => {
+            state.loadAuthentication = action.payload;
+        },
         instantiation: (state) => {
             const token = localStorage.getItem('token');
             if (token) {
@@ -81,7 +86,7 @@ export const authenticationSlice = createSlice({
     }
 })
 
-export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm, validateToken } = authenticationSlice.actions
+export const { setLoading, login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm, validateToken } = authenticationSlice.actions
 
 export const authenticationStore = configureStore({
     reducer: authenticationSlice.reducer

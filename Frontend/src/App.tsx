@@ -7,12 +7,11 @@ import ConfirmWait from "./pages/authentication/Confirm/Confirm-Wait";
 import ConfirmResult from "./pages/authentication/Confirm/Confirm-Result";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { instantiation, setAuthenticatedUser } from "./store/authentication/authentication-store";
-import { checkToken } from "./store/authentication/authentication-store-actions";
+import { instantiation, setLoading } from "./store/authentication/authentication-store";
+import { checkToken, sendAuthenticationRequest } from "./store/authentication/authentication-store-actions";
 import { RootState } from "./store/combine-store";
 import NotFound from "./pages/authentication/404/NotFound";
 import axios from "axios";
-import { getRequest } from "./utility/genericHTTPFunctions";
 import TeamDetails from "./pages/Team/TeamDetails";
 import { Privilege } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
@@ -46,14 +45,15 @@ const App: React.FC = () => {
         if (token) {
             dispatch(checkToken());
         }
-    }, [dispatch, token])
+    }, [dispatch, token]);
 
     // If the loggedIn state is true and the token is set (which should be always the case) -> get the user information from the database
     useEffect(() => {
         if (loggedIn && token) {
-            dispatch(getRequest("/authentication/authenticateduser", setAuthenticatedUser))
+            dispatch(setLoading(true));
+            dispatch(sendAuthenticationRequest());
         }
-    }, [dispatch, loggedIn, token])
+    }, [dispatch, loggedIn, token]);
 
     const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
     
