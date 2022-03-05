@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
-import { sendFetchTeamsRequest } from "../../store/team-store-actions";
-import UserTeamTable from "./UserTeamTable";
-import RealTeamTable from "./RealTeamTable";
+import UserTeamTable from "./userteam/UserTeamTable";
+import RealTeamTable from "./realteam/RealTeamTable";
+import { storeTeams } from "../../store/team/team-store";
+import { getRequest } from "../../utility/genericHTTPFunctions";
 
 const Team: React.FC = () => {
 
@@ -11,19 +12,19 @@ const Team: React.FC = () => {
 
     const { token, teams } = useSelector((state: RootState) => {
         return {
-            token: state.user.token,
+            token: state.authentication.token,
             teams: state.team.teams
         }
     });
 
     useEffect(() => {
         if (token) {
-            dispatch(sendFetchTeamsRequest(token));
+            dispatch(getRequest("/team/team", storeTeams));
         }
     }, [dispatch, token]);
 
     return <>
-        <h3>Teams</h3>
+        <h3>Richtige Teams</h3>
         {teams && <RealTeamTable teams={teams.filter(team => !team.playerTeam)} />}
         <h3>Einzelspieler</h3>
         {teams && <UserTeamTable teams={teams.filter(team => team.playerTeam)} />}

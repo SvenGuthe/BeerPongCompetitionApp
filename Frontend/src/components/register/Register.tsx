@@ -2,11 +2,11 @@ import { Form, Button } from "react-bootstrap";
 import { SyntheticEvent, useEffect, useState } from "react";
 import classes from './Register.module.css';
 import { useDispatch, useSelector } from "react-redux";
-import { sendRegisterRequest } from "../../store/user-store-actions";
+import { sendRegisterRequest } from "../../store/authentication/authentication-store-actions";
 import { tRegister } from "../../types/authenticate";
 import { RootState } from "../../store/combine-store";
 import { useNavigate } from "react-router-dom";
-import { afterRegisterCleanup } from "../../store/user-store";
+import { afterRegisterCleanup } from "../../store/authentication/authentication-store";
 
 const Register: React.FC = () => {
 
@@ -15,7 +15,7 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
 
     const redirection = useSelector((state: RootState) => {
-        return state.user.redirectToConfirmWait;
+        return state.authentication.redirectToConfirmWait;
     });
 
     useEffect(() => {

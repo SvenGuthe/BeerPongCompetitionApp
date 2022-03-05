@@ -11,16 +11,21 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.ConfirmationTokenRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,6 +40,8 @@ public class RegisterController {
 
 	private TeamRepository teamRepository;
 
+	private TeamStatusRepository teamStatusRepository;
+
 	private ConfirmationTokenRepository confirmationTokenRepository;
 
 	private EmailSenderService emailSenderService;
@@ -42,13 +49,14 @@ public class RegisterController {
 	@Autowired
 	public RegisterController(TeamRepository teamRepository, UserRepository userRepository,
 			RoleRepository roleRepository, ConfirmationTokenRepository confirmationTokenRepository,
-			EmailSenderService emailSenderService, PasswordEncoder passwordEncoder) {
+			EmailSenderService emailSenderService, PasswordEncoder passwordEncoder, TeamStatusRepository teamStatusRepository) {
 		this.teamRepository = teamRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
 		this.emailSenderService = emailSenderService;
 		this.passwordEncoder = passwordEncoder;
+		this.teamStatusRepository = teamStatusRepository;
 	}
 
 	@PostMapping("/register")
@@ -109,15 +117,39 @@ public class RegisterController {
 			User user = userRepository.findByEmail(confirmationTokenDataBase.getUser().getEmail());
 			user.setEnabled(true);
 
-			Team team = user.getTeamCompositions().stream().map(TeamComposition::getTeam)
-					.filter(Team::isPlayerTeam).collect(Collectors.toList()).get(0);
+			TeamStatus teamStatusActive;
+			List<TeamStatus> teamStatusActiveDatabase = teamStatusRepository.findByDescription(TeamStatusType.ACTIVE);
 
-			TeamStatus teamStatus = new TeamStatus();
-			teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
+			if (teamStatusActiveDatabase.size() == 0) {
+				TeamStatus teamStatus = new TeamStatus();
+				teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
+				teamStatusActive = teamStatus;
+			} else {
+				teamStatusActive = teamStatusActiveDatabase.get(0);
+			}
 
-			team.addTeamStatus(teamStatus);
+			List<TeamComposition> teamCompositions = user.getTeamCompositions().stream().peek(teamComposition -> {
+				if (teamComposition.getTeam().isPlayerTeam()) {
+					Team team = teamComposition.getTeam();
+					List <TeamStatusHistory> teamStatusHistories = team.getTeamStatusHistories().stream().peek(teamStatusHistory -> {
+						if (teamStatusHistory.getValidTo() == null) {
+							teamStatusHistory.setValidTo(new Timestamp(System.currentTimeMillis()));
+						}
+					}).collect(Collectors.toList());
 
-			teamRepository.save(team);
+					TeamStatusHistory newTeamStatusHistory = new TeamStatusHistory();
+					newTeamStatusHistory.setTeamStatus(teamStatusActive);
+					newTeamStatusHistory.setTeam(teamComposition.getTeam());
+
+					teamStatusHistories.add(newTeamStatusHistory);
+
+					team.setTeamStatusHistories(teamStatusHistories);
+
+					teamComposition.setTeam(team);
+				}
+			}).collect(Collectors.toList());
+
+			user.setTeamCompositions(teamCompositions);
 
 			userRepository.save(user);
 			return user;

@@ -1,4 +1,4 @@
-import UserDetails from "../../../components/userdetails/UserDetails";
+import AuthenticatedUser from "../../../components/user/authenticatedUser/AuthenticatedUser";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { default as ConfirmWaitComponent } from "../../../components/confirm/wait/ConfirmWait";
@@ -6,13 +6,13 @@ import { default as ConfirmWaitComponent } from "../../../components/confirm/wai
 const ConfirmWait = () => {
 
     const registeredUser = useSelector((state: RootState) => {
-        return state.user.registeredUser;
+        return state.authentication.registeredUser;
     });
 
     return <>
         <h2>ConfirmWait</h2>
         <ConfirmWaitComponent />
-        {registeredUser && <UserDetails authenticatedUser={registeredUser} />}
+        {registeredUser && <AuthenticatedUser authenticatedUser={registeredUser} />}
     </>;
 };
 

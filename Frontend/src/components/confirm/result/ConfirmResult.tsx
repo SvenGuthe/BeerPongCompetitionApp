@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { sendConfirmRequest } from "../../../store/user-store-actions";
+import { sendConfirmRequest } from "../../../store/authentication/authentication-store-actions";
 import { Alert } from "react-bootstrap";
 
 const ConfirmResult: React.FC = () => {

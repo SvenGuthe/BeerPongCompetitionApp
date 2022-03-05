@@ -1,8 +1,9 @@
 import { Table } from "react-bootstrap";
-import { useTeamStateButton } from "../../hooks/use-teamStateButton";
-import { tTeamWithUsers } from "../../types/team";
+import { useTeamStateButton } from "../../../hooks/use-teamStateButton";
+import { tTeamDetail } from "../../../types/team";
+import TeamStatusHistoryTable from "../general/TeamStatusHistoryTable";
 
-const UserTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
+const UserTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
 
     const team = props.team;
 
@@ -38,30 +39,6 @@ const UserTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
         </tbody>
     </Table>
 
-    const teamStatusHistory = <Table striped bordered hover size="sm">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Status</th>
-                <th>Valid Von</th>
-                <th>Valid Bis</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                props.team.teamStatusHistories.map(teamStatusHistory => {
-                    return <tr key={teamStatusHistory.id}>
-                        <td>{teamStatusHistory.id}</td>
-                        <td>{teamStatusHistory.teamStatusDescription}</td>
-                        <td>{teamStatusHistory.validFrom}</td>
-                        <td>{teamStatusHistory.validTo}</td>
-                    </tr>
-                })
-            }
-        </tbody>
-    </Table>
-
-
     return <>
         <Table striped bordered hover size="sm">
             <tbody>
@@ -90,8 +67,7 @@ const UserTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
         {buttons}
         <h4 style={{marginTop: "1rem"}}>Userdaten</h4>
         {members}
-        <h4>Teamstatus Historie</h4>
-        {teamStatusHistory}
+        <TeamStatusHistoryTable teamStatusHistories={props.team.teamStatusHistories} />
     </>;
 
 };

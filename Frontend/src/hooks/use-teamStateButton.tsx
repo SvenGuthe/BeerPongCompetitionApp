@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { changeTeamStatus } from "../store/team-store-actions";
+import { changeTeamStatus } from "../store/team/team-store-actions";
 import { TeamStatus } from "../types/enums/teamStatus";
-import { tTeamWithUsers } from "../types/team";
+import { tTeamDetail } from "../types/team";
 
-export const useTeamStateButton = (team: tTeamWithUsers) => {
+export const useTeamStateButton = (team: tTeamDetail) => {
 
     const dispatch = useDispatch();
 
     const [newStatus, setNewStatus] = useState<{
-        team: tTeamWithUsers,
+        team: tTeamDetail,
         status: TeamStatus
     } | null>(null);
 
@@ -21,14 +21,14 @@ export const useTeamStateButton = (team: tTeamWithUsers) => {
         }
     }, [dispatch, newStatus]);
 
-    const changeStatusHandler = (team: tTeamWithUsers, status: TeamStatus) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    const changeStatusHandler = (team: tTeamDetail, status: TeamStatus) => (event: React.MouseEvent<HTMLButtonElement>) => {
         setNewStatus({
             team: team,
             status: status
         });
     };
 
-    const createButtons = (team: tTeamWithUsers, status: TeamStatus) => {
+    const createButtons = (team: tTeamDetail, status: TeamStatus) => {
         if (status === TeamStatus.ACTIVE) {
             return <ButtonGroup aria-label="status">
                 <Button variant="warning" size="sm" onClick={changeStatusHandler(team, TeamStatus.INACTIVE)}>Deaktivieren</Button> { }

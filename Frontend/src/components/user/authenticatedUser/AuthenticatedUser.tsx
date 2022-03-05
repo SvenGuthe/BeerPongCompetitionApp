@@ -1,6 +1,6 @@
 import { Table } from "react-bootstrap";
-import { tPrivilege, tRole } from "../../types/authenticate";
-import { tAuthenticatedUser } from "../../types/user";
+import { tPrivilege, tRole } from "../../../types/authenticate";
+import { tAuthenticatedUser } from "../../../types/user";
 
 interface tProps {
     authenticatedUser?: tAuthenticatedUser,
@@ -8,7 +8,7 @@ interface tProps {
     privileges?: tPrivilege[]
 }
 
-const UserDetails: React.FC<tProps> = (props) => {
+const AuthenticatedUser: React.FC<tProps> = (props) => {
 
     const authenticatedUser = props.authenticatedUser;
     const roles = props.roles;
@@ -101,4 +101,4 @@ const UserDetails: React.FC<tProps> = (props) => {
 
 }
 
-export default UserDetails;
+export default AuthenticatedUser;

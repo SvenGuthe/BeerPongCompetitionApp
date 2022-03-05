@@ -1,10 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "teaminvitationlink")
@@ -21,10 +21,9 @@ public class TeamInvitationLink implements ACLObjectInterface {
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "teamid")
-	@JsonIgnore
-	private Team team;
+	@OneToMany(mappedBy = "teamInvitationLink", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<TeamInvitationLinkHistory> teamInvitationLinkHistories;
 
 	public TeamInvitationLink() {
 	}
@@ -53,12 +52,11 @@ public class TeamInvitationLink implements ACLObjectInterface {
 		this.creationTime = creationTime;
 	}
 
-	public Team getTeam() {
-		return team;
+	public List<TeamInvitationLinkHistory> getTeamInvitationLinkHistories() {
+		return teamInvitationLinkHistories;
 	}
 
-	public void setTeam(Team team) {
-		this.team = team;
+	public void setTeamInvitationLinkHistories(List<TeamInvitationLinkHistory> teamInvitationLinkHistories) {
+		this.teamInvitationLinkHistories = teamInvitationLinkHistories;
 	}
-
 }

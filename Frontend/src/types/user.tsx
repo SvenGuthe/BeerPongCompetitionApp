@@ -1,3 +1,6 @@
+import { tTimestamp } from "./defaults/timestamp";
+import { Privilege } from "./enums/privilege";
+import { Role } from "./enums/role";
 import { UserStatus } from "./enums/userStatus";
 
 export type tAuthenticatedUser = {
@@ -43,3 +46,38 @@ export type tAuthenticatedUser = {
         userStatusId: number
     }
 };
+
+export type tUserDetail = {
+    confirmationToken: {
+        confirmationToken: string,
+        createdDate: tTimestamp,
+        tokenid: number
+    }[],
+    creationTime: tTimestamp,
+    email: string,
+    enabled: boolean,
+    firstName: string,
+    gamerTag: string,
+    lastName: string,
+    roles: {
+        name: Role,
+        privileges:
+        {
+            name: Privilege,
+            privilegeId: number
+        }[],
+        roleId: number
+    }[],
+    userId: number,
+    userStatus: {
+        userStatus: UserStatus,
+        userStatusId: number
+    },
+    teams: {
+        admin: boolean,
+        creationTime: tTimestamp,
+        id: number,
+        playerTeam: boolean,
+        teamName: string
+    }[]
+}

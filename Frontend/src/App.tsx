@@ -8,14 +8,17 @@ import ConfirmWait from "./pages/authentication/Confirm/Confirm-Wait";
 import ConfirmResult from "./pages/authentication/Confirm/Confirm-Result";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { instantiation } from "./store/user-store";
-import { checkToken, sendAuthenticatedUserRequest } from "./store/user-store-actions";
+import { instantiation, setAuthenticatedUser } from "./store/authentication/authentication-store";
+import { checkToken } from "./store/authentication/authentication-store-actions";
 import { RootState } from "./store/combine-store";
 import NotFound from "./pages/authentication/404/NotFound";
+import axios from "axios";
+import { getRequest } from "./utility/genericHTTPFunctions";
+import TeamDetails from "./pages/Team/TeamDetails";
 import { Privilege } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
-import TeamDetails from "./pages/Team/TeamDetails";
-import axios from "axios";
+import User from "./pages/User/User";
+import UserDetails from "./pages/User/UserDetails";
 
 const App: React.FC = () => {
 
@@ -24,10 +27,10 @@ const App: React.FC = () => {
     const dispatch = useDispatch();
     const { loggedIn, registeredUser, token, privileges } = useSelector((state: RootState) => {
         return {
-            loggedIn: state.user.loggedIn,
-            registeredUser: state.user.registeredUser,
-            token: state.user.token,
-            privileges: state.user.privileges
+            loggedIn: state.authentication.loggedIn,
+            registeredUser: state.authentication.registeredUser,
+            token: state.authentication.token,
+            privileges: state.authentication.privileges
         };
     });
 
@@ -39,16 +42,15 @@ const App: React.FC = () => {
     // If there is a token -> Try to validate, if the token will be read from api
     useEffect(() => {
         if (token) {
-            dispatch(checkToken(token));
+            dispatch(checkToken());
         }
     }, [dispatch, token])
 
     // If the loggedIn state is true and the token is set (which should be always the case) -> get the user information from the database
     useEffect(() => {
         if (loggedIn && token) {
-            dispatch(sendAuthenticatedUserRequest(token))
+            dispatch(getRequest("/authentication/authenticateduser", setAuthenticatedUser))
         }
-
     }, [dispatch, loggedIn, token])
 
     return <Routes>
@@ -68,6 +70,15 @@ const App: React.FC = () => {
                     <>
                         <Route index element={<Team />} />
                         <Route path=":id" element={<TeamDetails />} />
+                    </>
+                    :
+                    <Route index element={<NotFound />} />}
+            </Route>
+            <Route path="user">
+                {privileges?.find(privilege => privilege.name === Privilege.ADMIN_AUTHENTICATION_PRIVILEGE) ?
+                    <>
+                        <Route index element={<User />} />
+                        <Route path=":id" element={<UserDetails />} />
                     </>
                     :
                     <Route index element={<NotFound />} />}

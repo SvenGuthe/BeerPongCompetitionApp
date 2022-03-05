@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/authentication")
@@ -25,10 +27,18 @@ public class UserController {
 		return userRepository.save(user);
 	}
 
+	/*
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public List<User> getUsers() {
 		return userRepository.findAll();
+	}
+	 */
+
+	@GetMapping("/user")
+	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
+	public List<UserDetailDTO> getUsers() {
+		return userRepository.findAll().stream().map(UserDetailDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/user/{userId}")

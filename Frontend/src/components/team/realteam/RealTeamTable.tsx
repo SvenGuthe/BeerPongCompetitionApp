@@ -1,9 +1,9 @@
 import { Table } from "react-bootstrap";
-import { tTeamWithUsers } from "../../types/team";
+import { tTeamDetail } from "../../../types/team";
 import RealTeamTableRow from "./RealTeamTableRow";
 
 const RealTeamTable: React.FC<{ 
-    teams: tTeamWithUsers[]
+    teams: tTeamDetail[]
 }> = (props) => {
 
     const teams = props.teams;
@@ -14,13 +14,13 @@ const RealTeamTable: React.FC<{
     }}>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Team Name</th>
-                <th>Mitglieder</th>
-                <th>Admins</th>
-                <th>Status</th>
-                <th></th>
-                <th></th>
+                <th style={{width: "10%"}}></th>
+                <th style={{width: "5%"}}>ID</th>
+                <th style={{width: "35%"}}>Team Name</th>
+                <th style={{width: "10%"}}>Mitglieder</th>
+                <th style={{width: "10%"}}>Admins</th>
+                <th style={{width: "10%"}}>Status</th>
+                <th style={{width: "20%"}}></th>
             </tr>
         </thead>
         <tbody>

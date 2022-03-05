@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import classes from './Login.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
-import { sendLoginRequest } from "../../store/user-store-actions";
-import { afterLoginCleanup } from "../../store/user-store";
+import { sendLoginRequest } from "../../store/authentication/authentication-store-actions";
 import { tLogin } from "../../types/authenticate";
+import { afterLoginCleanup } from "../../store/authentication/authentication-store";
 
 const Login: React.FC = () => {
     const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const Login: React.FC = () => {
     const [loginData, setLoginData] = useState<tLogin | null>();
 
     const redirection = useSelector((state: RootState) => {
-        return state.user.redirectToHome;
+        return state.authentication.redirectToHome;
     });
 
     useEffect(() => {

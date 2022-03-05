@@ -1,7 +1,7 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { tPrivilege, tRole, tToken } from '../types/authenticate';
-import { tAuthenticatedUser } from '../types/user';
+import { tPrivilege, tRole, tToken } from '../../types/authenticate';
+import { tAuthenticatedUser } from '../../types/user';
 
 type SliceState = {
     loggedIn: boolean | null,
@@ -27,8 +27,8 @@ const initialState: SliceState = {
     roles: null
 }
 
-export const userSlice = createSlice({
-    name: 'userinformation',
+export const authenticationSlice = createSlice({
+    name: 'authenticationinformation',
     initialState: initialState,
     reducers: {
         instantiation: (state) => {
@@ -101,10 +101,10 @@ export const userSlice = createSlice({
     }
 })
 
-export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm, validateToken } = userSlice.actions
+export const { login, logout, afterLoginCleanup, instantiation, setAuthenticatedUser, register, afterRegisterCleanup, confirm, validateToken } = authenticationSlice.actions
 
-export const userStore = configureStore({
-    reducer: userSlice.reducer
+export const authenticationStore = configureStore({
+    reducer: authenticationSlice.reducer
 })
 
-export type UserState = ReturnType<typeof userSlice.reducer>
+export type AuthenticationState = ReturnType<typeof authenticationSlice.reducer>

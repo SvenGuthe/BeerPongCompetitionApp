@@ -1,12 +1,19 @@
 import { Table } from "react-bootstrap";
-import { useTeamStateButton } from "../../hooks/use-teamStateButton";
-import { tTeamWithUsers } from "../../types/team";
+import { useTeamStateButton } from "../../../hooks/use-teamStateButton";
+import { tTeamDetail } from "../../../types/team";
+import TeamInvitationLinkHistoryTable from "../general/TeamInvitationLinkHistoryTable";
+import TeamStatusHistoryTable from "../general/TeamStatusHistoryTable";
 
-const RealTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
+const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
     const team = props.team;
+    
 
     const buttons = useTeamStateButton(team);
-    const status = team.teamStatusHistories.filter(teamStatusHistory => teamStatusHistory.validTo === null).map(teamStatusHistory => teamStatusHistory.teamStatusDescription)[0]
+
+    const status = team.teamStatusHistories.filter(teamStatusHistory =>
+        teamStatusHistory.validTo === null).map(teamStatusHistory =>
+            teamStatusHistory.teamStatusDescription
+        )[0]
 
     const members = <Table striped bordered hover size="sm">
         <thead>
@@ -37,30 +44,6 @@ const RealTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
         </tbody>
     </Table>
 
-    const teamStatusHistory = <Table striped bordered hover size="sm">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Status</th>
-                <th>Valid Von</th>
-                <th>Valid Bis</th>
-            </tr>
-        </thead>
-        <tbody>
-            {
-                props.team.teamStatusHistories.map(teamStatusHistory => {
-                    return <tr key={teamStatusHistory.id}>
-                        <td>{teamStatusHistory.id}</td>
-                        <td>{teamStatusHistory.teamStatusDescription}</td>
-                        <td>{teamStatusHistory.validFrom}</td>
-                        <td>{teamStatusHistory.validTo}</td>
-                    </tr>
-                })
-            }
-        </tbody>
-    </Table>
-
-
     return <>
         <Table striped bordered hover size="sm">
             <tbody>
@@ -87,10 +70,10 @@ const RealTeamDetails: React.FC<{ team: tTeamWithUsers }> = (props) => {
             </tbody>
         </Table>
         {buttons}
-        <h4 style={{marginTop: "1rem"}}>Teammitglieder</h4>
+        <h4 style={{ marginTop: "1rem" }}>Teammitglieder</h4>
         {members}
-        <h4>Teamstatus Historie</h4>
-        {teamStatusHistory}
+        <TeamStatusHistoryTable teamStatusHistories={team.teamStatusHistories} />
+        <TeamInvitationLinkHistoryTable teamInvitationLinkHistories={team.teamInvitationLinkHistories} />
     </>;
 };
 

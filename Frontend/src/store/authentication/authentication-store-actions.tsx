@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import axios from "axios";
-import { login, register, setAuthenticatedUser, confirm, validateToken } from "./user-store";
-import { tRegister } from "../types/authenticate";
+import { login, register, confirm, validateToken } from "./authentication-store";
+import { tRegister } from "../../types/authenticate";
 
 export const sendLoginRequest = (email: String, password: String) => {
     return async (dispatch: Dispatch<any>) => {
@@ -14,18 +14,6 @@ export const sendLoginRequest = (email: String, password: String) => {
                 privileges: response.data.privileges,
                 roles: response.data.roles
             }))
-        }).catch(function (error) {
-            console.log(error);
-        });
-
-        return sendRequest();
-    }
-}
-
-export const sendAuthenticatedUserRequest = (token: string) => {
-    return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('/authentication/authenticateduser').then((response) => {
-            dispatch(setAuthenticatedUser(response.data));
         }).catch(function (error) {
             console.log(error);
         });
@@ -60,7 +48,7 @@ export const sendConfirmRequest = (token: string) => {
     }
 }
 
-export const checkToken = (token: string) => {
+export const checkToken = () => {
     return async (dispatch: Dispatch<any>) => {
         const sendRequest = async () => await axios.get('/authentication/checktoken').then((response) => {
             dispatch(validateToken(true));

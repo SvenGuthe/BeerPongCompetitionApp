@@ -1,17 +1,20 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { teamSlice } from "./team-store";
-import { userSlice } from "./user-store";
+import { teamSlice } from "./team/team-store";
+import { authenticationSlice } from "./authentication/authentication-store";
+import { userSlice } from "./user/user-store";
 
 const store = configureStore({
     reducer: {
-        user: userSlice.reducer,
-        team: teamSlice.reducer
+        authentication: authenticationSlice.reducer,
+        team: teamSlice.reducer,
+        user: userSlice.reducer
     },
 })
 
 export const rootReducer = combineReducers({
-    user: userSlice.reducer,
-    team: teamSlice.reducer
+    authentication: authenticationSlice.reducer,
+    team: teamSlice.reducer,
+    user: userSlice.reducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>

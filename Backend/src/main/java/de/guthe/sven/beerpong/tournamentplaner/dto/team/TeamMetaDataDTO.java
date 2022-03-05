@@ -31,6 +31,10 @@ public class TeamMetaDataDTO {
         ).map(TeamStatusHistory::getTeamStatus).collect(Collectors.toList()).get(0).getTeamStatusDescription();
     }
 
+    public Class<Team> getACLClass() {
+        return Team.class;
+    }
+
     public Long getId() {
         return id;
     }

@@ -31,7 +31,7 @@ public class Team implements ACLObjectInterface {
 
 	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	private List<TeamInvitationLink> teamInvitationLinks;
+	private List<TeamInvitationLinkHistory> teamInvitationLinkHistories;
 
 	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
@@ -84,12 +84,12 @@ public class Team implements ACLObjectInterface {
 		this.creationTime = creationTime;
 	}
 
-	public List<TeamInvitationLink> getTeamInvitationLinks() {
-		return teamInvitationLinks;
+	public List<TeamInvitationLinkHistory> getTeamInvitationLinkHistories() {
+		return teamInvitationLinkHistories;
 	}
 
-	public void setTeamInvitationLinks(List<TeamInvitationLink> teamInvitationLinks) {
-		this.teamInvitationLinks = teamInvitationLinks;
+	public void setTeamInvitationLinkHistories(List<TeamInvitationLinkHistory> teamInvitationLinkHistories) {
+		this.teamInvitationLinkHistories = teamInvitationLinkHistories;
 	}
 
 	public List<TeamComposition> getTeamCompositions() {
@@ -120,11 +120,13 @@ public class Team implements ACLObjectInterface {
 	}
 
 	public void addTeamInvitationLink(TeamInvitationLink teamInvitationLink) {
-		if (this.teamInvitationLinks == null) {
-			this.teamInvitationLinks = new ArrayList<>();
+		TeamInvitationLinkHistory teamInvitationLinkHistory = new TeamInvitationLinkHistory();
+		teamInvitationLinkHistory.setTeam(this);
+		teamInvitationLinkHistory.setTeamInvitationLink(teamInvitationLink);
+		if (this.teamInvitationLinkHistories == null) {
+			this.teamInvitationLinkHistories = new ArrayList<>();
 		}
-		teamInvitationLink.setTeam(this);
-		this.teamInvitationLinks.add(teamInvitationLink);
+		this.teamInvitationLinkHistories.add(teamInvitationLinkHistory);
 	}
 
 	public void addTeamStatus(TeamStatus teamStatus) {

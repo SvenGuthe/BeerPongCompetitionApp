@@ -3,7 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
 import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamMetaDataDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamOverviewDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamUserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatusHistory;
@@ -50,14 +50,14 @@ public class TeamController {
 
 	@GetMapping("/team")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamUserDTO> getTeams() {
+	public List<TeamDetailDTO> getTeams() {
 		Collection<Team> teams = teamRepository.findAll();
-		return teams.stream().map(TeamUserDTO::new).collect(Collectors.toList());
+		return teams.stream().map(TeamDetailDTO::new).collect(Collectors.toList());
 	}
 
 	@PutMapping("/team")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamUserDTO> updateTeamMetaData(@RequestBody TeamMetaDataDTO teamMetaDataDTO) {
+	public List<TeamDetailDTO> updateTeamMetaData(@RequestBody TeamMetaDataDTO teamMetaDataDTO) {
 		Optional<Team> effectedTeamOption = teamRepository.findById(teamMetaDataDTO.getId());
 
 		if (effectedTeamOption.isPresent()) {
@@ -92,10 +92,10 @@ public class TeamController {
 
 			teamRepository.save(effectedTeam);
 
-			List<TeamUserDTO> teamUserDTOs = new LinkedList<>();
-			teamUserDTOs.add(new TeamUserDTO(effectedTeam));
+			List<TeamDetailDTO> teamDetailDTOS = new LinkedList<>();
+			teamDetailDTOS.add(new TeamDetailDTO(effectedTeam));
 
-			return teamUserDTOs;
+			return teamDetailDTOS;
 
 		} else {
 			throw new NotFoundException("No Team found with id " + teamMetaDataDTO.getId());
@@ -110,8 +110,9 @@ public class TeamController {
 
 	@GetMapping("/team/{teamId}")
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public Team getTeam(@PathVariable Long teamId) {
-		return teamRepository.findById(teamId).orElseThrow();
+	public TeamDetailDTO getTeam(@PathVariable Long teamId) {
+		Team team = teamRepository.findById(teamId).orElseThrow();
+		return new TeamDetailDTO(team);
 	}
 
 	@PostMapping("/team")

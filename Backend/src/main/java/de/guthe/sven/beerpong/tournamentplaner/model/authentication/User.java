@@ -54,11 +54,14 @@ public class User {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	private List<CompetitionPlayer> competitionPlayers;
+	private Collection<CompetitionPlayer> competitionPlayers;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "userstatusid")
 	private UserStatus userStatus;
+
+	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private Collection<ConfirmationToken> confirmationToken;
 
 	public User() {
 	}
@@ -165,4 +168,19 @@ public class User {
 		this.teamCompositions.add(teamComposition);
 	}
 
+	public Collection<CompetitionPlayer> getCompetitionPlayers() {
+		return competitionPlayers;
+	}
+
+	public void setCompetitionPlayers(List<CompetitionPlayer> competitionPlayers) {
+		this.competitionPlayers = competitionPlayers;
+	}
+
+	public Collection<ConfirmationToken> getConfirmationToken() {
+		return confirmationToken;
+	}
+
+	public void setConfirmationToken(List<ConfirmationToken> confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
 }

@@ -2,53 +2,41 @@ import { tTimestamp } from "./defaults/timestamp"
 import { TeamStatus } from "./enums/teamStatus"
 import { UserStatus } from "./enums/userStatus"
 
-export type tTeam = {
+export type tTeamDetail = {
     creationTime: tTimestamp,
     id: number,
     password: string,
     playerTeam: boolean,
-    teamCompositions: {
-        admin: boolean,
-        creationTime: tTimestamp,
-        id: number
-    }[],
-    teamInvitationLinks: {
-        creationTime: tTimestamp,
-        id: number,
-        teamInvitationLink: string
-    }[],
+    members: tTeamMemers[],
+    teamInvitationLinkHistories: tTeamInvitationLink[],
     teamName: string,
-    teamStatusHistories: [
-        {
-            id: number,
-            validFrom: tTimestamp,
-            validTo: tTimestamp
-        }
-    ]
+    teamStatusHistories: tTeamStatusHistory[]
 }
 
-export type tTeamWithUsers = {
-    creationTime: tTimestamp,
+export type tTeamStatusHistory = {
     id: number,
-    members: {
-        admin: boolean,
-        creationTime: tTimestamp,
-        enabled: boolean,
-        firstName: string,
-        gamerTag: string,
-        lastName: string,
-        userId: number,
-        userStatus: UserStatus
-    }[],
-    playerTeam: boolean,
-    teamName: string,
-    teamStatusHistories: {
-        id: number,
-        teamStatusDescription: TeamStatus,
-        validFrom: tTimestamp,
-        validTo: tTimestamp
-    }[]
-}
+    teamStatusDescription: TeamStatus,
+    validFrom: tTimestamp,
+    validTo: tTimestamp
+};
+
+export type tTeamInvitationLink = {
+    id: number,
+    teamInvitationLink: string,
+    validFrom: tTimestamp,
+    validTo: tTimestamp
+};
+
+export type tTeamMemers = {
+    admin: boolean,
+    creationTime: tTimestamp,
+    enabled: boolean,
+    firstName: string,
+    gamerTag: string,
+    lastName: string,
+    userId: number,
+    userStatus: UserStatus
+};
 
 export type tTeamMetaData = {
     id: number,

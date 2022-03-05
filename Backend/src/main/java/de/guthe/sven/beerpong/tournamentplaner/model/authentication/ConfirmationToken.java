@@ -1,7 +1,9 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -17,20 +19,25 @@ public class ConfirmationToken {
 	@Column(name = "confirmationtoken")
 	private String confirmationToken;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdDate;
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	private Timestamp createdDate = new Timestamp(System.currentTimeMillis());
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false, name = "userid")
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@JoinColumn(name = "userId", nullable=false)
+	@JsonIgnore
 	private User user;
 
 	public ConfirmationToken(User user) {
 		this.user = user;
-		createdDate = new Date();
+		createdDate = new Timestamp(System.currentTimeMillis());
 		confirmationToken = UUID.randomUUID().toString();
 	}
 
 	public ConfirmationToken() {
+	}
+
+	public void setTokenid(Long tokenid) {
+		this.tokenid = tokenid;
 	}
 
 	public Long getTokenid() {
@@ -45,11 +52,11 @@ public class ConfirmationToken {
 		this.confirmationToken = confirmationToken;
 	}
 
-	public Date getCreatedDate() {
+	public Timestamp getCreatedDate() {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(Timestamp createdDate) {
 		this.createdDate = createdDate;
 	}
 

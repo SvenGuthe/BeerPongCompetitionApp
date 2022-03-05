@@ -1,9 +1,9 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useTeamStateButton } from "../../hooks/use-teamStateButton";
-import { tTeamWithUsers } from "../../types/team";
+import { useTeamStateButton } from "../../../hooks/use-teamStateButton";
+import { tTeamDetail } from "../../../types/team";
 
-const UserTeamTableRow: React.FC<{ team: tTeamWithUsers }> = (props) => {
+const UserTeamTableRow: React.FC<{ team: tTeamDetail }> = (props) => {
 
     const team = props.team;
 
@@ -13,15 +13,15 @@ const UserTeamTableRow: React.FC<{ team: tTeamWithUsers }> = (props) => {
     const linkToDetails = `${team.id}`
 
     return <tr key={team.id}>
-        <td>{team.id}</td>
-        <td>{team.teamName}</td>
-        <td>{status}</td>
-        <td>
+        <td style={{textAlign: 'center'}}>
             <Link to={linkToDetails}>
                 <Button variant="secondary" size="sm">Details</Button>
             </Link>
         </td>
-        <td>{buttons}</td>
+        <td>{team.id}</td>
+        <td>{team.teamName}</td>
+        <td>{status}</td>
+        <td style={{textAlign: 'right'}}>{buttons}</td>
     </tr>
 
 };
