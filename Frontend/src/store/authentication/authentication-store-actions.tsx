@@ -11,9 +11,8 @@ export const sendLoginRequest = (email: String, password: String) => {
             password: password
         }).then((response) => {
             dispatch(login({
-                token: response.data.token,
-                privileges: response.data.privileges,
-                roles: response.data.roles
+                token: response.data.jwtToken,
+                userDetail: response.data.userDetailDTO
             }))
         }).catch(function (error) {
             console.log(error);

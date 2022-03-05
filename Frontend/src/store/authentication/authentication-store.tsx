@@ -1,6 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { tPrivilege, tRole, tToken } from '../../types/authenticate';
 import { tUserDetail } from '../../types/user';
 
 type SliceState = {
@@ -10,9 +9,7 @@ type SliceState = {
     authenticatedUser: tUserDetail | null,
     registeredUser: tUserDetail | null,
     confirmedUser: tUserDetail | null,
-    token: string | null,
-    privileges: tPrivilege[] | null,
-    roles: tRole[] | null
+    token: string | null
 }
 
 const initialState: SliceState = {
@@ -22,9 +19,7 @@ const initialState: SliceState = {
     authenticatedUser: null,
     registeredUser: null,
     confirmedUser: null,
-    token: null,
-    privileges: null,
-    roles: null
+    token: null
 }
 
 export const authenticationSlice = createSlice({
@@ -37,36 +32,25 @@ export const authenticationSlice = createSlice({
                 state.token = token;
                 axios.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
             }
-            const privileges = localStorage.getItem('privileges');
-            if (privileges) {
-                state.privileges = JSON.parse(privileges);
-            }
-            const roles = localStorage.getItem('roles');
-            if (roles) {
-                state.roles = JSON.parse(roles);
-            }
         },
         validateToken: (state, action: PayloadAction<tUserDetail | null>) => {
             if (action.payload) {
                 state.loggedIn = true;
             } else {
                 localStorage.removeItem('token');
-                localStorage.removeItem('privileges');
-                localStorage.removeItem('roles');
                 state.loggedIn = false;
                 state.token = null;
-                state.privileges = null;
-                state.roles = null;
+                state.authenticatedUser = null;
                 axios.defaults.headers.common['Authorization'] =  false;
             }
         },
-        login: (state, action: PayloadAction<tToken>) => {
+        login: (state, action: PayloadAction<{
+            userDetail: tUserDetail | null,
+            token: string
+        }>) => {
             localStorage.setItem('token', action.payload.token);
-            localStorage.setItem('privileges', JSON.stringify(action.payload.privileges));
-            localStorage.setItem('roles', JSON.stringify(action.payload.roles));
             state.token = action.payload.token;
-            state.privileges = action.payload.privileges;
-            state.roles = action.payload.roles;
+            state.authenticatedUser = action.payload.userDetail;
             state.redirectToHome = true;
             state.loggedIn = true;
             axios.defaults.headers.common['Authorization'] =  `Bearer ${action.payload.token}`;
@@ -76,13 +60,9 @@ export const authenticationSlice = createSlice({
         },
         logout: state => {
             localStorage.removeItem('token');
-            localStorage.removeItem('privileges');
-            localStorage.removeItem('roles');
             state.loggedIn = false;
             state.token = null;
             state.authenticatedUser = null;
-            state.privileges = null;
-            state.roles = null;
             axios.defaults.headers.common['Authorization'] =  false;
         },
         setAuthenticatedUser: (state, action: PayloadAction<tUserDetail>) => {

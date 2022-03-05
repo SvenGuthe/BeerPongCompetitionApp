@@ -43,7 +43,7 @@ public class JwtAuthenticationController {
 	private AuthenticationManager authenticationManager;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest)
+	public JwtResponseDTO createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest)
 			throws Exception {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -51,12 +51,9 @@ public class JwtAuthenticationController {
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		User user = userRepository.findByEmail(userDetails.getUsername());
 
-		Collection<Role> roles = user.getRoles();
-		Collection<Privilege> privileges = roles.stream().map(Role::getPrivileges).flatMap(Collection::stream).collect(Collectors.toSet());
-
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
-		return ResponseEntity.ok(new JwtResponseDTO(token, roles, privileges));
+		return new JwtResponseDTO(token, new UserDetailDTO(user));
 	}
 
 	private void authenticate(String username, String password) throws Exception {

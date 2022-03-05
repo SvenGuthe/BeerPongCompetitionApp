@@ -19,18 +19,19 @@ import { Privilege } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
 import User from "./pages/User/User";
 import UserDetails from "./pages/User/UserDetails";
+import { removePriviligeDuplicates } from "./utility/arrayFunctions";
 
 const App: React.FC = () => {
 
     axios.defaults.baseURL = 'http://localhost:9999';
 
     const dispatch = useDispatch();
-    const { loggedIn, registeredUser, token, privileges } = useSelector((state: RootState) => {
+    const { loggedIn, registeredUser, authenticatedUser, token } = useSelector((state: RootState) => {
         return {
             loggedIn: state.authentication.loggedIn,
             registeredUser: state.authentication.registeredUser,
-            token: state.authentication.token,
-            privileges: state.authentication.privileges
+            authenticatedUser: state.authentication.authenticatedUser,
+            token: state.authentication.token
         };
     });
 
@@ -53,6 +54,8 @@ const App: React.FC = () => {
         }
     }, [dispatch, loggedIn, token])
 
+    const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
+    
     return <Routes>
         <Route element={<Layout />}>
             <Route path="/" element={<Home />} />

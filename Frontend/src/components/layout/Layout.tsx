@@ -9,16 +9,16 @@ import { RootState } from '../../store/combine-store';
 import { logout } from '../../store/authentication/authentication-store';
 import { Role } from '../../types/enums/role';
 import { Privilege } from '../../types/enums/privilege';
+import { removePriviligeDuplicates } from '../../utility/arrayFunctions';
 
 const Layout: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { loggedIn, privileges, roles } = useSelector((state: RootState) => {
+    const { loggedIn, authenticatedUser } = useSelector((state: RootState) => {
         return {
             loggedIn: state.authentication.loggedIn,
-            privileges: state.authentication.privileges,
-            roles: state.authentication.roles
+            authenticatedUser: state.authentication.authenticatedUser
         };
     });
 
@@ -34,6 +34,9 @@ const Layout: React.FC = () => {
             <Button variant="outline-success">Login</Button>
         </Nav.Link>
     }
+
+    const roles = authenticatedUser?.roles;
+    const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
 
     return <>
         <Navbar expand="lg" bg="dark" variant="dark" sticky="top">

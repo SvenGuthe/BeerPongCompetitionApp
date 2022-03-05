@@ -1,13 +1,13 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useTeamStateButton } from "../../../hooks/use-teamStateButton";
 import { tTeamDetail } from "../../../types/team";
+import TeamStateButton from "../TeamStateButton";
 
 const UserTeamTableRow: React.FC<{ team: tTeamDetail }> = (props) => {
 
     const team = props.team;
 
-    const buttons = useTeamStateButton(team);
+    const buttons = TeamStateButton({team});
 
     const status = team.teamStatusHistories.filter(status => status.validTo === null)[0].teamStatusDescription;
     const linkToDetails = `${team.id}`

@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { changeTeamStatus } from "../store/team/team-store-actions";
-import { TeamStatus } from "../types/enums/teamStatus";
-import { tTeamDetail } from "../types/team";
+import { changeTeamStatus } from "../../store/team/team-store-actions";
+import { TeamStatus } from "../../types/enums/teamStatus";
+import { tTeamDetail } from "../../types/team";
 
-export const useTeamStateButton = (team: tTeamDetail) => {
+const TeamStateButton: React.FC<{
+    team: tTeamDetail
+}> = (props) => {
+
+    const team = props.team;
 
     const dispatch = useDispatch();
 
@@ -42,6 +46,8 @@ export const useTeamStateButton = (team: tTeamDetail) => {
 
         } else if (status === TeamStatus.BANNED) {
             return <Button variant="info" size="sm" onClick={changeStatusHandler(team, TeamStatus.INACTIVE)}>Entbannen</Button>
+        } else {
+            return <></>
         }
     }
 
@@ -51,3 +57,5 @@ export const useTeamStateButton = (team: tTeamDetail) => {
     )
 
 }
+
+export default TeamStateButton;

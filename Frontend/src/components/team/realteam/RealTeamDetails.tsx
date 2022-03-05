@@ -1,14 +1,14 @@
 import { Table } from "react-bootstrap";
-import { useTeamStateButton } from "../../../hooks/use-teamStateButton";
 import { tTeamDetail } from "../../../types/team";
 import TeamInvitationLinkHistoryTable from "../general/TeamInvitationLinkHistoryTable";
 import TeamStatusHistoryTable from "../general/TeamStatusHistoryTable";
+import TeamStateButton from "../TeamStateButton";
 
 const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
     const team = props.team;
     
 
-    const buttons = useTeamStateButton(team);
+    const buttons = TeamStateButton({team});
 
     const status = team.teamStatusHistories.filter(teamStatusHistory =>
         teamStatusHistory.validTo === null).map(teamStatusHistory =>
