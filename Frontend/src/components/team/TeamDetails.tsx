@@ -14,9 +14,10 @@ const TeamDetails: React.FC = () => {
     const dispatch = useDispatch();
     const id = useParams().id;
 
-    const { teams } = useSelector((state: RootState) => {
+    const { teams, token } = useSelector((state: RootState) => {
         return {
-            teams: state.team.teams
+            teams: state.team.teams,
+            token: state.authentication.token
         };
     });
 
@@ -26,12 +27,12 @@ const TeamDetails: React.FC = () => {
             const team = teams?.find(team => team.id === +id);
             if (team) {
                 setSelectedTeam(team)
-            } else {
+            } else if (token) {
                 dispatch(getRequestWithID(+id, "/team/team", addTeam));
             }
         }
 
-    }, [teams, id, dispatch]);
+    }, [teams, id, dispatch, token]);
 
     const detailComponent = useMemo(() => {
         if (selectedTeam?.playerTeam) {

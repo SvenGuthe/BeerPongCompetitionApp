@@ -3,49 +3,16 @@ import { Privilege } from "./enums/privilege";
 import { Role } from "./enums/role";
 import { UserStatus } from "./enums/userStatus";
 
-export type tAuthenticatedUser = {
-    creationTime: {
-        date: number,
-        day: number,
-        hours: number,
-        minutes: number,
-        month: number,
-        nanos: number,
-        seconds: number,
-        time: number,
-        timezoneOffset: number,
-        year: number
-    },
-    email: string,
-    enabled: boolean,
-    firstName: string,
-    gamerTag: string,
-    lastName: string,
-    password: string,
-    teamCompositions: [
-        {
-            admin: boolean,
-            creationTime: {
-                date: number,
-                day: number,
-                hours: number,
-                minutes: number,
-                month: number,
-                nanos: number,
-                seconds: number,
-                time: number,
-                timezoneOffset: number,
-                year: number
-            },
-            id: number
-        }
-    ],
-    userId: number,
-    userStatus: {
-        userStatus: UserStatus,
-        userStatusId: number
-    }
-};
+export type tPrivilege = {
+    privilegeId: number,
+    name: Privilege
+}
+
+export type tRole = {
+    roleId: number,
+    name: Role
+    privileges: tPrivilege[]
+}
 
 export type tUserDetail = {
     confirmationToken: {
@@ -59,15 +26,7 @@ export type tUserDetail = {
     firstName: string,
     gamerTag: string,
     lastName: string,
-    roles: {
-        name: Role,
-        privileges:
-        {
-            name: Privilege,
-            privilegeId: number
-        }[],
-        roleId: number
-    }[],
+    roles: tRole[],
     userId: number,
     userStatus: {
         userStatus: UserStatus,

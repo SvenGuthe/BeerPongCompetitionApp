@@ -1,9 +1,9 @@
 import { Table } from "react-bootstrap";
 import { tPrivilege, tRole } from "../../../types/authenticate";
-import { tAuthenticatedUser } from "../../../types/user";
+import { tUserDetail } from "../../../types/user";
 
 interface tProps {
-    authenticatedUser?: tAuthenticatedUser,
+    authenticatedUser?: tUserDetail,
     roles?: tRole[],
     privileges?: tPrivilege[]
 }

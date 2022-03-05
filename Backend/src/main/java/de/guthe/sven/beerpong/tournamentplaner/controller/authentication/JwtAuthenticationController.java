@@ -4,6 +4,7 @@ import de.guthe.sven.beerpong.tournamentplaner.configuration.JwtTokenUtil;
 import de.guthe.sven.beerpong.tournamentplaner.configuration.MyUserDetailsService;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.JwtRequestDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.JwtResponseDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
@@ -58,11 +59,6 @@ public class JwtAuthenticationController {
 		return ResponseEntity.ok(new JwtResponseDTO(token, roles, privileges));
 	}
 
-	@RequestMapping(value = "/checktoken", method = RequestMethod.GET)
-	private ResponseEntity<?> checkTokenValidity() {
-		return ResponseEntity.ok(true);
-	}
-
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -76,7 +72,7 @@ public class JwtAuthenticationController {
 	}
 
 	@GetMapping("/authenticateduser")
-	public User getLogin() {
+	public UserDetailDTO getLogin() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
 
@@ -87,7 +83,7 @@ public class JwtAuthenticationController {
 			username = principal.toString();
 		}
 
-		return userRepository.findByEmail(username);
+		return new UserDetailDTO(userRepository.findByEmail(username));
 	}
 
 }

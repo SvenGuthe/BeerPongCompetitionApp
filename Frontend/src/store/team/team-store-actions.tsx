@@ -7,6 +7,7 @@ import { updateTeam } from "./team-store";
 export const changeTeamStatus = (team: tTeamDetail, status: TeamStatus) => {
     return async (dispatch: Dispatch<any>) => {
 
+        console.log("Send /team/team [PUT] Request");
         const teamMetaData: tTeamMetaData = {
             id: team.id,
             teamName: team.teamName,

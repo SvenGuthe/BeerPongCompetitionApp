@@ -5,6 +5,7 @@ import { tRegister } from "../../types/authenticate";
 
 export const sendLoginRequest = (email: String, password: String) => {
     return async (dispatch: Dispatch<any>) => {
+        console.log("Send /authentication/login [POST] Request");
         const sendRequest = async () => await axios.post('/authentication/login', {
             username: email,
             password: password
@@ -23,6 +24,7 @@ export const sendLoginRequest = (email: String, password: String) => {
 }
 
 export const sendRegisterRequest = (registerFormData: tRegister) => {
+    console.log("Send /authentication/register [POST] Request");
     return async (dispatch: Dispatch<any>) => {
         const sendRequest = async () => await axios.post('/authentication/register', {
             ...registerFormData
@@ -37,6 +39,7 @@ export const sendRegisterRequest = (registerFormData: tRegister) => {
 }
 
 export const sendConfirmRequest = (token: string) => {
+    console.log("Send /authentication/confirm-account [GET] Request");
     return async (dispatch: Dispatch<any>) => {
         const sendRequest = async () => await axios.get('/authentication/confirm-account?token=' + token).then((response) => {
             dispatch(confirm(response.data))
@@ -49,11 +52,12 @@ export const sendConfirmRequest = (token: string) => {
 }
 
 export const checkToken = () => {
+    console.log("Send /authentication/authenticateduser [GET] Request");
     return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('/authentication/checktoken').then((response) => {
-            dispatch(validateToken(true));
+        const sendRequest = async () => await axios.get('/authentication/authenticateduser').then((response) => {
+            dispatch(validateToken(response.data));
         }).catch(function (error) {
-            dispatch(validateToken(false));
+            dispatch(validateToken(null));
             console.log(error);
         });
 

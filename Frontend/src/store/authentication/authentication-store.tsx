@@ -1,15 +1,15 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios';
 import { tPrivilege, tRole, tToken } from '../../types/authenticate';
-import { tAuthenticatedUser } from '../../types/user';
+import { tUserDetail } from '../../types/user';
 
 type SliceState = {
     loggedIn: boolean | null,
     redirectToHome: boolean,
     redirectToConfirmWait: boolean,
-    authenticatedUser: tAuthenticatedUser | null,
-    registeredUser: tAuthenticatedUser | null,
-    confirmedUser: tAuthenticatedUser | null,
+    authenticatedUser: tUserDetail | null,
+    registeredUser: tUserDetail | null,
+    confirmedUser: tUserDetail | null,
     token: string | null,
     privileges: tPrivilege[] | null,
     roles: tRole[] | null
@@ -46,7 +46,7 @@ export const authenticationSlice = createSlice({
                 state.roles = JSON.parse(roles);
             }
         },
-        validateToken: (state, action: PayloadAction<boolean>) => {
+        validateToken: (state, action: PayloadAction<tUserDetail | null>) => {
             if (action.payload) {
                 state.loggedIn = true;
             } else {
@@ -85,17 +85,17 @@ export const authenticationSlice = createSlice({
             state.roles = null;
             axios.defaults.headers.common['Authorization'] =  false;
         },
-        setAuthenticatedUser: (state, action: PayloadAction<tAuthenticatedUser>) => {
+        setAuthenticatedUser: (state, action: PayloadAction<tUserDetail>) => {
             state.authenticatedUser = action.payload
         },
-        register: (state, action: PayloadAction<tAuthenticatedUser>) => {
+        register: (state, action: PayloadAction<tUserDetail>) => {
             state.redirectToConfirmWait = true;
             state.registeredUser = action.payload;
         },
         afterRegisterCleanup: state => {
             state.redirectToConfirmWait = false;
         },
-        confirm: (state, action: PayloadAction<tAuthenticatedUser>) => {
+        confirm: (state, action: PayloadAction<tUserDetail>) => {
             state.confirmedUser = action.payload
         }
     }
