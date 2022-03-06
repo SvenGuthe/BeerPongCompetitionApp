@@ -10,18 +10,15 @@ const CompetitionOverview: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { authenticatedUser, competitions } = useSelector((state: RootState) => {
+    const { competitions } = useSelector((state: RootState) => {
         return {
-            authenticatedUser: state.authentication.authenticatedUser,
             competitions: state.competition.competitions
         }
     });
 
     useEffect(() => {
-        if (authenticatedUser) {
-            dispatch(getRequest("/competition/competition", storeCompetitions));
-        }
-    }, [dispatch, authenticatedUser])
+        dispatch(getRequest("/competition/competition", storeCompetitions));
+    }, [dispatch])
 
     let table;
 

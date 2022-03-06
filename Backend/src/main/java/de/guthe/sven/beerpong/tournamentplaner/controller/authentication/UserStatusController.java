@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/authentication")
@@ -28,8 +30,8 @@ public class UserStatusController {
 	// I know that the plural of status = status but I need a unique function name
 	@GetMapping("/userstatus")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<UserStatus> getUserStati() {
-		return userStatusRepository.findAll();
+	public List<EnumDTO> getUserStati() {
+		return userStatusRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/userstatus/{userStatusId}")

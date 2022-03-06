@@ -1,12 +1,19 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
+import { tEnum } from '../../types/enum'
 import { tUserDetail } from '../../types/user'
 
 type SliceState = {
-    users: tUserDetail[] | null
+    users: tUserDetail[] | null,
+    userStatus: tEnum[] | null,
+    roles: tEnum[] | null,
+    privileges: tEnum[] | null
 }
 
 const initialState: SliceState = {
-    users: null
+    users: null,
+    userStatus: null,
+    roles: null,
+    privileges: null
 }
 
 export const userSlice = createSlice({
@@ -15,6 +22,15 @@ export const userSlice = createSlice({
     reducers: {
         storeUsers: (state, action: PayloadAction<tUserDetail[]>) => {
             state.users = action.payload;
+        },
+        storeUserStatus: (state, action: PayloadAction<tEnum[]>) => {
+            state.userStatus = action.payload;
+        },
+        storeRoles: (state, action: PayloadAction<tEnum[]>) => {
+            state.roles = action.payload;
+        },
+        storePrivileges: (state, action: PayloadAction<tEnum[]>) => {
+            state.privileges = action.payload;
         },
         addUser: (state, action: PayloadAction<tUserDetail>) => {
             const newUser = action.payload;
@@ -39,7 +55,14 @@ export const userSlice = createSlice({
     }
 })
 
-export const { storeUsers, addUser, changeRole} = userSlice.actions
+export const {
+    storeUsers,
+    addUser,
+    changeRole,
+    storeUserStatus,
+    storeRoles,
+    storePrivileges
+} = userSlice.actions
 
 export const teamStore = configureStore({
     reducer: userSlice.reducer

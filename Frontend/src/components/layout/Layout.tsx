@@ -52,19 +52,57 @@ const Layout: React.FC = () => {
                     <Nav className="me-auto my-2 my-lg-0">
                         {roles?.find(role => role.name === Role.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="navbarScrollingDropdown" menuVariant="dark">
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_TEAM_PRIVILEGE) &&
-                                <NavDropdown.Item as={Link} to="/team">
-                                    <Nav.Link as="div">Teams</Nav.Link>
-                                </NavDropdown.Item>
+                                <>
+                                    <NavDropdown.Item as={Link} to="/team">
+                                        <Nav.Link as="div">Teams</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/teamstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Team Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                </>
                             }
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_AUTHENTICATION_PRIVILEGE) &&
-                                <NavDropdown.Item as={Link} to="/user">
-                                    <Nav.Link as="div">Nutzer</Nav.Link>
+                                <>
+                                    <NavDropdown.Item as={Link} to="/user">
+                                        <Nav.Link as="div">Nutzer</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/userstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Nutzer Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/role" className={classes.sub}>
+                                        <Nav.Link as="div">Rollen</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/privilege" className={classes.sub}>
+                                        <Nav.Link as="div">Privilegien</Nav.Link>
+                                    </NavDropdown.Item>
+                                </>
+                            }
+                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_ACL_PRIVILEGE) &&
+                                <NavDropdown.Item as={Link} to="/aclclass">
+                                    <Nav.Link as="div">ACL Klassen</Nav.Link>
                                 </NavDropdown.Item>
                             }
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_COMPETITION_PRIVILEGE) &&
-                                <NavDropdown.Item as={Link} to="/competition">
-                                    <Nav.Link as="div">Turniere</Nav.Link>
-                                </NavDropdown.Item>
+                                <>
+                                    <NavDropdown.Item as={Link} to="/competition">
+                                        <Nav.Link as="div">Turniere</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/competitionstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Turniere Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/competitionadminstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Turnier Admin Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/competitionplayerstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Turnier Spieler Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/registrationstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Registrations Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/billingstatus" className={classes.sub}>
+                                        <Nav.Link as="div">Zahlungs Status</Nav.Link>
+                                    </NavDropdown.Item>
+                                </>
                             }
                         </NavDropdown>}
                     </Nav>
@@ -75,7 +113,7 @@ const Layout: React.FC = () => {
         <Container>
             <Row>
                 <Col className={classes.main} md={{ span: 12, offset: 0.5 }}>
-                    {loading ? <div style={{textAlign: 'center'}}><Spinner animation="border"/></div>  : <Outlet />}
+                    {loading ? <div style={{ textAlign: 'center' }}><Spinner animation="border" /></div> : <Outlet />}
                 </Col>
             </Row>
         </Container>

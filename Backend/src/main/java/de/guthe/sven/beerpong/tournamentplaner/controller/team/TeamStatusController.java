@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/team")
@@ -24,8 +26,8 @@ public class TeamStatusController {
 
 	@GetMapping("/teamstatus")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamStatus> getTeamStati() {
-		return teamStatusRepository.findAll();
+	public List<EnumDTO> getTeamStati() {
+		return teamStatusRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/teamstatus/{teamStatusId}")

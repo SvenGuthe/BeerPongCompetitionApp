@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition.registration;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.registration.RegistrationStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/competition/registration")
@@ -24,8 +26,8 @@ public class RegistrationStatusController {
 
 	@GetMapping("/registrationstatus")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<RegistrationStatus> getRegistrationStati() {
-		return registrationStatusRepository.findAll();
+	public List<EnumDTO> getRegistrationStati() {
+		return registrationStatusRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/registrationstatus/{registrationStatusId}")

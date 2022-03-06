@@ -16,10 +16,9 @@ const CompetitionDetails: React.FC = () => {
     const dispatch = useDispatch();
     const id = useParams().id;
 
-    const { competitions, authenticatedUser } = useSelector((state: RootState) => {
+    const { competitions } = useSelector((state: RootState) => {
         return {
-            competitions: state.competition.competitions,
-            authenticatedUser: state.authentication.authenticatedUser
+            competitions: state.competition.competitions
         };
     });
 
@@ -29,12 +28,12 @@ const CompetitionDetails: React.FC = () => {
             const competition = competitions?.find(competition => competition.id === +id);
             if (competition) {
                 setSelectedCompetition(competition)
-            } else if (authenticatedUser) {
+            } else {
                 dispatch(getRequestWithID(+id, "/competition/competition", addCompetition));
             }
         }
 
-    }, [id, dispatch, authenticatedUser, competitions]);
+    }, [id, dispatch, competitions]);
 
     return <>
         <h3>{selectedCompetition?.competitionName}</h3>

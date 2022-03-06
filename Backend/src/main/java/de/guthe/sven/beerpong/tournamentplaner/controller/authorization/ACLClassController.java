@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authorization;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLClass;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authorization.ACLClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/acl")
@@ -29,8 +31,8 @@ public class ACLClassController {
 
 	@GetMapping("/aclclass")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-	public List<ACLClass> getACLClasses() {
-		return aclClassRepository.findAll();
+	public List<EnumDTO> getACLClasses() {
+		return aclClassRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/aclclass/{aclClassId}")

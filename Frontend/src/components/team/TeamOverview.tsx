@@ -10,18 +10,15 @@ const Team: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { authenticatedUser, teams } = useSelector((state: RootState) => {
+    const { teams } = useSelector((state: RootState) => {
         return {
-            authenticatedUser: state.authentication.authenticatedUser,
             teams: state.team.teams
         }
     });
 
     useEffect(() => {
-        if (authenticatedUser) {
-            dispatch(getRequest("/team/team", storeTeams));
-        }
-    }, [dispatch, authenticatedUser]);
+        dispatch(getRequest("/team/team", storeTeams));
+    }, [dispatch]);
 
     return <>
         <h3>Richtige Teams</h3>
