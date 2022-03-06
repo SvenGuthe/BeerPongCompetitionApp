@@ -15,10 +15,9 @@ const UserDetails: React.FC = () => {
     const dispatch = useDispatch();
     const id = useParams().id;
 
-    const { users, authenticatedUser } = useSelector((state: RootState) => {
+    const { users } = useSelector((state: RootState) => {
         return {
-            users: state.user.users,
-            authenticatedUser: state.authentication.authenticatedUser
+            users: state.user.users
         };
     });
 
@@ -28,12 +27,12 @@ const UserDetails: React.FC = () => {
             const user = users?.find(user => user.userId === +id);
             if (user) {
                 setSelectedUser(user)
-            } else if (authenticatedUser) {
+            } else {
                 dispatch(getRequestWithID(+id, "/authentication/user", addUser));
             }
         }
 
-    }, [id, dispatch, authenticatedUser, users]);
+    }, [id, dispatch, users]);
 
     return <>
         <h3>{selectedUser?.gamerTag}</h3>

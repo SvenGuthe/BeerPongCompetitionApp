@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/authentication")
@@ -35,8 +37,8 @@ public class PrivilegeController {
 
 	@GetMapping("/privilege")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<Privilege> getPrivileges() {
-		return privilegeRepository.findAll();
+	public List<EnumDTO> getPrivileges() {
+		return privilegeRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
 	}
 
 	@PutMapping("/privilege")

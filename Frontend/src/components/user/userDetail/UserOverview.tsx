@@ -10,18 +10,16 @@ const UserOverview: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { authenticatedUser, users } = useSelector((state: RootState) => {
+    const { users } = useSelector((state: RootState) => {
         return {
-            authenticatedUser: state.authentication.authenticatedUser,
             users: state.user.users
         }
     });
 
+    // the if statement have to be restructered
     useEffect(() => {
-        if (authenticatedUser) {
-            dispatch(getRequest("/authentication/user", storeUsers));
-        }
-    }, [dispatch, authenticatedUser]);
+        dispatch(getRequest("/authentication/user", storeUsers));
+    }, [dispatch]);
 
     let table;
 

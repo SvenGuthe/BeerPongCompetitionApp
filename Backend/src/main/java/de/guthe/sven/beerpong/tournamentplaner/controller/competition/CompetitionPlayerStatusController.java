@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionPlayerStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/competition")
@@ -25,8 +27,8 @@ public class CompetitionPlayerStatusController {
 	// I know that the plural of status = status but I need a unique function name
 	@GetMapping("/competitionplayerstatus")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<CompetitionPlayerStatus> getCompetitionPlayerStati() {
-		return competitionPlayerStatusRepository.findAll();
+	public List<EnumDTO> getCompetitionPlayerStati() {
+		return competitionPlayerStatusRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/competitionplayerstatus/{competitionPlayerStatusId}")

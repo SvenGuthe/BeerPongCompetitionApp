@@ -18,7 +18,7 @@ const initialState: SliceState = {
     redirectToHome: false,
     redirectToConfirmWait: false,
     authenticatedUser: null,
-    loadAuthentication: true,
+    loadAuthentication: false,
     registeredUser: null,
     confirmedUser: null,
     token: null
