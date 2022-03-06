@@ -10,6 +10,7 @@ import { logout } from '../../store/authentication/authentication-store';
 import { Role } from '../../types/enums/role';
 import { Privilege } from '../../types/enums/privilege';
 import { removePriviligeDuplicates } from '../../utility/arrayFunctions';
+import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, privilegeHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from '../../types/hierarchy';
 
 const Layout: React.FC = () => {
 
@@ -53,54 +54,54 @@ const Layout: React.FC = () => {
                         {roles?.find(role => role.name === Role.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="navbarScrollingDropdown" menuVariant="dark">
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_TEAM_PRIVILEGE) &&
                                 <>
-                                    <NavDropdown.Item as={Link} to="/team">
-                                        <Nav.Link as="div">Teams</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={teamHierarchy.relative}>
+                                        <Nav.Link as="div">{teamHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/teamstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Team Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={teamStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{teamStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
                                 </>
                             }
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_AUTHENTICATION_PRIVILEGE) &&
                                 <>
-                                    <NavDropdown.Item as={Link} to="/user">
-                                        <Nav.Link as="div">Nutzer</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={userHierarchy.relative}>
+                                        <Nav.Link as="div">{userHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/userstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Nutzer Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={userStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{userStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/role" className={classes.sub}>
-                                        <Nav.Link as="div">Rollen</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={roleHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{roleHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/privilege" className={classes.sub}>
-                                        <Nav.Link as="div">Privilegien</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={privilegeHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{privilegeHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
                                 </>
                             }
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_ACL_PRIVILEGE) &&
-                                <NavDropdown.Item as={Link} to="/aclclass">
-                                    <Nav.Link as="div">ACL Klassen</Nav.Link>
+                                <NavDropdown.Item as={Link} to={aclClassHierarchy.relative}>
+                                    <Nav.Link as="div">{aclClassHierarchy.label}</Nav.Link>
                                 </NavDropdown.Item>
                             }
                             {privileges?.find(privilege => privilege.name === Privilege.ADMIN_COMPETITION_PRIVILEGE) &&
                                 <>
-                                    <NavDropdown.Item as={Link} to="/competition">
-                                        <Nav.Link as="div">Turniere</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={competitionHierarchy.relative}>
+                                        <Nav.Link as="div">{competitionHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/competitionstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Turniere Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={competitionStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{competitionStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/competitionadminstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Turnier Admin Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={competitionAdminStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{competitionAdminStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/competitionplayerstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Turnier Spieler Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={competitionPlayerStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{competitionPlayerStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/registrationstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Registrations Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={registrationStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{registrationStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to="/billingstatus" className={classes.sub}>
-                                        <Nav.Link as="div">Zahlungs Status</Nav.Link>
+                                    <NavDropdown.Item as={Link} to={billingStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{billingStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
                                 </>
                             }
