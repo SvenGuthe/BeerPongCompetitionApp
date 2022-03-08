@@ -1,48 +1,76 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useMemo, useState } from "react";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import PageNavigator from "./PageNavigator";
 import PageSize from "./PageSize";
 import Search from "./Search";
 
 const TableWithSearchAndFilter: React.FC<{
-    onChangeFunction: (search: string) => void,
-    // ToDo: Implement the onChangeFunction for the PageNavigator
+    changeFunction: (page: number, size: number, search: string) => void,
     waitTillChangeHandlerStarts?: number,
-    pageSize: number,
     itemCount: number,
-    pageSizes?: number[]
+    pageSizes: number[]
 }> = (props) => {
 
     const pageSizes = props.pageSizes;
-    let usedPageSizes: number[] = [];
+    const changeFunction = props.changeFunction;
 
-    if(pageSizes && pageSizes.length < 0) {
-        usedPageSizes = pageSizes;
-    } else {
-        usedPageSizes = [5, 10, 20];
+    const [pageSize, setPageSize] = useState(pageSizes[0]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchValue, setSearchValue] = useState("");
+    const [initialized, setInitialized] = useState(true);
+
+    useEffect(() => {
+        if (!initialized) {
+            changeFunction(currentPage, pageSize, searchValue);
+        }
+    }, [initialized, pageSize, currentPage, searchValue, changeFunction]);
+
+    let timer: ReturnType<typeof setTimeout>;
+    const time = useMemo(() => props.waitTillChangeHandlerStarts ? props.waitTillChangeHandlerStarts : 1000, [props.waitTillChangeHandlerStarts]);
+
+    const onChangeSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            setSearchValue(event.target.value);
+            setInitialized(false);
+        }, time);
     }
 
-    const [pageSize, setPageSize] = useState(usedPageSizes[0]);
+    const onChangePageHandler = (page: number) => (event: MouseEvent<HTMLButtonElement>) => {
+        setInitialized(false);
+        setCurrentPage(page);
+    }
 
-    const onClickHandler = (pageSize: number) => (event: MouseEvent<HTMLButtonElement>) => {
+    const onChangePageSizeHandler = (pageSize: number) => (event: MouseEvent<HTMLButtonElement>) => {
+        setInitialized(false);
+        const pageCount = Math.ceil(1.0 * (props.itemCount / pageSize));
+
+        if (currentPage > pageCount) {
+            setCurrentPage(pageCount);
+        }
         setPageSize(pageSize);
     }
 
     return <>
-        <Search
-            onChangeFunction={props.onChangeFunction}
-            waitTillChangeHandlerStarts={props.waitTillChangeHandlerStarts}
-        />
+        <Container style={{ paddingLeft: '0px', paddingRight: '0px' }}>
+            <Row>
+                <Col md={{ span: 3, offset: 9 }}>
+                    <Search
+                        onChangeSearchHandler={onChangeSearchHandler}
+                    />
+                </Col>
+            </Row>
+        </Container>
         <Table striped bordered hover size="sm">
             {props.children}
         </Table>
         <Container style={{ paddingLeft: '0px', paddingRight: '0px' }}>
             <Row>
                 <Col style={{ textAlign: 'left' }}>
-                    <PageNavigator pageSize={pageSize} itemCount={props.itemCount} />
+                    <PageNavigator pageSize={pageSize} itemCount={props.itemCount} currentPage={currentPage} onChangePageHandler={onChangePageHandler} />
                 </Col>
                 <Col style={{ textAlign: 'right' }}>
-                    <PageSize currentPageSize={pageSize} onClickHandler={onClickHandler} pageSizes={usedPageSizes} />
+                    <PageSize currentPageSize={pageSize} onChangePageSizeHandler={onChangePageSizeHandler} pageSizes={pageSizes} />
                 </Col>
             </Row>
         </Container>

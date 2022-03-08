@@ -1,36 +1,26 @@
-import { MouseEvent, useEffect, useMemo, useState } from "react";
+import { MouseEvent, useMemo } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 
 const PageNavigator: React.FC<{
     pageSize: number,
     itemCount: number,
-    startingPage?: number,
-    countOfPages?: number
+    currentPage: number,
+    leftRightItems?: number,
+    onChangePageHandler: (page: number) => (event: MouseEvent<HTMLButtonElement>) => void
 }> = (props) => {
 
-    const { pageSize, itemCount, startingPage, countOfPages } = props;
-    const usedCountOfPages = countOfPages ? countOfPages : 2;
+    const { pageSize, itemCount, currentPage, leftRightItems, onChangePageHandler } = props;
 
-    const [currentPage, setCurrentPage] = useState(startingPage ? startingPage : 1);
+    const usedLeftRightItems = useMemo(() => leftRightItems ? leftRightItems : 2, [leftRightItems]);
 
     const pageCount = useMemo(() => Math.ceil(1.0 * (itemCount / pageSize)), [itemCount, pageSize]);
 
-    useEffect(() => {
-        if(currentPage > pageCount) {
-            setCurrentPage(pageCount);
-        }
-    }, [currentPage, pageCount])
-
-    const lowestPageNumber = (currentPage - usedCountOfPages > 0) ? currentPage - usedCountOfPages : 1;
+    const lowestPageNumber = (currentPage - usedLeftRightItems > 0) ? currentPage - usedLeftRightItems : 1;
 
     const pages: {
         label: string,
         page: number
     }[] = [];
-
-    const onClickHandler = (page: number) => (event: MouseEvent<HTMLButtonElement>) => {
-        setCurrentPage(page);
-    }
 
     if (lowestPageNumber >= 2) {
         pages.push({
@@ -51,23 +41,23 @@ const PageNavigator: React.FC<{
         page: currentPage
     });
 
-    for (let page = currentPage + 1; (page - currentPage) <= usedCountOfPages && page <= pageCount; page++) {
+    for (let page = currentPage + 1; (page - currentPage) <= usedLeftRightItems && page <= pageCount; page++) {
         pages.push({
             label: `${page}`,
             page: page
         });
     }
 
-    if (currentPage + usedCountOfPages < pageCount) {
+    if (currentPage + usedLeftRightItems < pageCount) {
         pages.push({
             label: ">>",
-            page: (currentPage + usedCountOfPages + 1)
+            page: (currentPage + usedLeftRightItems + 1)
         });
     }
 
-    return <ButtonGroup className="mb-2">
+    return <ButtonGroup size="sm" className="mb-2">
         {pages.map(page =>
-            <Button key={page.page} variant={page.page === currentPage ? 'secondary' : 'light'} onClick={onClickHandler(page.page)}>
+            <Button key={page.page} variant={page.page === currentPage ? 'secondary' : 'light'} onClick={onChangePageHandler(page.page)}>
                 {page.label}
             </Button>
         )}

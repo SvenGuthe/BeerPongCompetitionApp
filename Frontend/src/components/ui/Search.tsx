@@ -1,35 +1,15 @@
-import { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import { FormControl, InputGroup } from "react-bootstrap";
 
 const Search: React.FC<{
-    onChangeFunction: (search: string) => void,
-    waitTillChangeHandlerStarts?: number
+    onChangeSearchHandler: (event: React.ChangeEvent<HTMLInputElement>) => void
 }> = (props) => {
 
-    const { onChangeFunction } = props;
-    const [searchValue, setSearchValue] = useState("");
+    const { onChangeSearchHandler } = props;
 
-    let timer: ReturnType<typeof setTimeout>;
-
-    const time = props.waitTillChangeHandlerStarts ? props.waitTillChangeHandlerStarts : 1000;
-
-    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-
-        clearTimeout(timer);
-
-        timer = setTimeout(() => {
-            setSearchValue(event.target.value);
-        }, time);
-
-    }
-
-    useEffect(() => {
-        onChangeFunction(searchValue);
-    }, [searchValue, onChangeFunction]);
-
-    return <Form.Group className="mb-3" controlId="search">
-        <Form.Control type="text" placeholder="Search ..." onChange={onChangeHandler} />
-    </Form.Group>;
+    return <InputGroup size="sm" className="mb-3">
+        <FormControl aria-label="Filter" aria-describedby="inputGroup-sizing-sm " onChange={onChangeSearchHandler}/>
+        <InputGroup.Text id="inputGroup-sizing-sm">Filter</InputGroup.Text>
+    </InputGroup>;
 
 }
 
