@@ -17,6 +17,14 @@ public class EnumDTO {
 
     private String value;
 
+    private Long size;
+
+    public EnumDTO(Long id, String value, Long size) {
+        this.id = id;
+        this.value = value;
+        this.size = size;
+    }
+
     public EnumDTO(Long id, String value) {
         this.id = id;
         this.value = value;
@@ -91,4 +99,11 @@ public class EnumDTO {
         this.value = value;
     }
 
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
 }

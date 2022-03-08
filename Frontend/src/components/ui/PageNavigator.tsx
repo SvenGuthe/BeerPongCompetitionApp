@@ -20,7 +20,7 @@ const PageNavigator: React.FC<{
     const pages: {
         label: string,
         page: number
-    }[] = [];
+    }[] = [];    
 
     if (lowestPageNumber >= 2) {
         pages.push({

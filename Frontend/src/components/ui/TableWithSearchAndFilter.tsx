@@ -17,9 +17,9 @@ const TableWithSearchAndFilter: React.FC<{
     const [pageSize, setPageSize] = useState(pageSizes[0]);
     const [currentPage, setCurrentPage] = useState(1);
     const [searchValue, setSearchValue] = useState("");
-    const [initialized, setInitialized] = useState(true);
+    const [initialized, setInitialized] = useState(true);    
 
-    useEffect(() => {
+    useEffect(() => {        
         if (!initialized) {
             changeFunction(currentPage, pageSize, searchValue);
         }
@@ -32,6 +32,7 @@ const TableWithSearchAndFilter: React.FC<{
         clearTimeout(timer);
         timer = setTimeout(() => {
             setSearchValue(event.target.value);
+            setCurrentPage(1);
             setInitialized(false);
         }, time);
     }
@@ -64,7 +65,7 @@ const TableWithSearchAndFilter: React.FC<{
         <Table striped bordered hover size="sm">
             {props.children}
         </Table>
-        <Container style={{ paddingLeft: '0px', paddingRight: '0px' }}>
+        {props.itemCount > 0 && <Container style={{ paddingLeft: '0px', paddingRight: '0px' }}>
             <Row>
                 <Col style={{ textAlign: 'left' }}>
                     <PageNavigator pageSize={pageSize} itemCount={props.itemCount} currentPage={currentPage} onChangePageHandler={onChangePageHandler} />
@@ -73,7 +74,7 @@ const TableWithSearchAndFilter: React.FC<{
                     <PageSize currentPageSize={pageSize} onChangePageSizeHandler={onChangePageSizeHandler} pageSizes={pageSizes} />
                 </Col>
             </Row>
-        </Container>
+        </Container>}
     </>;
 
 };

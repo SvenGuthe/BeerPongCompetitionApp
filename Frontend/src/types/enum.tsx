@@ -1,4 +1,5 @@
 export type tEnum = {
     id: number,
-    value: string
+    value: string,
+    size: number
 }

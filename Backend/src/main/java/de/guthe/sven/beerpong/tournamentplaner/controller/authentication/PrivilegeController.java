@@ -4,6 +4,8 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +39,21 @@ public class PrivilegeController {
 
 	@GetMapping("/privilege")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<EnumDTO> getPrivileges() {
-		return privilegeRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
+	public List<EnumDTO> getPrivileges(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+		System.out.println(search);
+
+		Page<Privilege> pageRequest;
+		if (search.equals("")) {
+			pageRequest = privilegeRepository.findAll(PageRequest.of(page, size));
+		} else {
+			pageRequest = privilegeRepository.findAll(search, PageRequest.of(page, size));
+		}
+
+		return pageRequest.stream().map(privilege -> new EnumDTO(
+				privilege.getPrivilegeId(),
+				privilege.getName(),
+				pageRequest.getTotalElements()
+		)).collect(Collectors.toList());
 	}
 
 	@PutMapping("/privilege")
