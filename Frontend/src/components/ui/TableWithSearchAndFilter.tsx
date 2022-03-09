@@ -15,7 +15,7 @@ const TableWithSearchAndFilter: React.FC<{
     const changeFunction = props.changeFunction;
 
     const [pageSize, setPageSize] = useState(pageSizes[0]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const [searchValue, setSearchValue] = useState("");
     const [initialized, setInitialized] = useState(true);    
 
@@ -32,7 +32,7 @@ const TableWithSearchAndFilter: React.FC<{
         clearTimeout(timer);
         timer = setTimeout(() => {
             setSearchValue(event.target.value);
-            setCurrentPage(1);
+            setCurrentPage(0);
             setInitialized(false);
         }, time);
     }
@@ -44,7 +44,7 @@ const TableWithSearchAndFilter: React.FC<{
 
     const onChangePageSizeHandler = (pageSize: number) => (event: MouseEvent<HTMLButtonElement>) => {
         setInitialized(false);
-        const pageCount = Math.ceil(1.0 * (props.itemCount / pageSize));
+        const pageCount = Math.ceil(1.0 * (props.itemCount / pageSize)) - 1;
 
         if (currentPage > pageCount) {
             setCurrentPage(pageCount);

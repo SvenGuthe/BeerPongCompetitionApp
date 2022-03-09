@@ -13,37 +13,37 @@ const PageNavigator: React.FC<{
 
     const usedLeftRightItems = useMemo(() => leftRightItems ? leftRightItems : 2, [leftRightItems]);
 
-    const pageCount = useMemo(() => Math.ceil(1.0 * (itemCount / pageSize)), [itemCount, pageSize]);
+    const pageCount = useMemo(() => Math.ceil(1.0 * (itemCount / pageSize)) - 1, [itemCount, pageSize]);
 
-    const lowestPageNumber = (currentPage - usedLeftRightItems > 0) ? currentPage - usedLeftRightItems : 1;
+    const lowestPageNumber = (currentPage - usedLeftRightItems >= 0) ? currentPage - usedLeftRightItems : 0;
 
     const pages: {
         label: string,
         page: number
     }[] = [];    
 
-    if (lowestPageNumber >= 2) {
+    if (lowestPageNumber >= 1) {
         pages.push({
             label: "<<",
             page: (lowestPageNumber - 1)
         });
     }
 
-    for (let page = lowestPageNumber; page > 0 && page < currentPage; page++) {
+    for (let page = lowestPageNumber; page >= 0 && page < currentPage; page++) {
         pages.push({
-            label: `${page}`,
+            label: `${page + 1}`,
             page: page
         });
     }
 
     pages.push({
-        label: `${currentPage}`,
+        label: `${currentPage + 1}`,
         page: currentPage
     });
 
     for (let page = currentPage + 1; (page - currentPage) <= usedLeftRightItems && page <= pageCount; page++) {
         pages.push({
-            label: `${page}`,
+            label: `${page + 1}`,
             page: page
         });
     }
@@ -51,7 +51,7 @@ const PageNavigator: React.FC<{
     if (currentPage + usedLeftRightItems < pageCount) {
         pages.push({
             label: ">>",
-            page: (currentPage + usedLeftRightItems + 1)
+            page: (currentPage + usedLeftRightItems + 2)
         });
     }
 
