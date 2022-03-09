@@ -1,9 +1,13 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionPlayerStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,9 +30,27 @@ public class CompetitionPlayerStatusController {
 
 	// I know that the plural of status = status but I need a unique function name
 	@GetMapping("/competitionplayerstatus")
-	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<EnumDTO> getCompetitionPlayerStati() {
-		return competitionPlayerStatusRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public PaginationDTO<EnumDTO> getCompetitionPlayerStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+
+		Page<CompetitionPlayerStatus> pageRequest;
+		if (search.equals("")) {
+			pageRequest = competitionPlayerStatusRepository.findAll(PageRequest.of(page, size));
+		} else {
+			pageRequest = competitionPlayerStatusRepository.findAll(search, PageRequest.of(page, size));
+		}
+
+		List<EnumDTO> data = pageRequest.stream().map(competitionPlayerStatus -> new EnumDTO(
+				competitionPlayerStatus.getId(),
+				competitionPlayerStatus.getCompetitionPlayerStatusDescription().toString()
+		)).collect(Collectors.toList());
+
+		return new PaginationDTO<>(
+				pageRequest.getTotalElements(),
+				pageRequest.getTotalPages(),
+				data
+		);
+
 	}
 
 	@GetMapping("/competitionplayerstatus/{competitionPlayerStatusId}")

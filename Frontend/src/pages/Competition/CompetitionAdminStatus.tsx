@@ -15,7 +15,7 @@ const CompetitionAdminStatus = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, competitionAdminStatusHierarchy]} />
         <h2>Turnier Administrator Status</h2>
-        <EnumOverview url={competitionAdminStatusRoute} storeFunction={storeCompetitionAdminStatus} data={competitionAdminStatus} />
+        <EnumOverview url={competitionAdminStatusRoute} storeFunction={storeCompetitionAdminStatus} paginationData={competitionAdminStatus} />
     </>
 
 };

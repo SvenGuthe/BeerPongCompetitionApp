@@ -1,9 +1,12 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +40,25 @@ public class PrivilegeController {
 
 	@GetMapping("/privilege")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<EnumDTO> getPrivileges() {
-		return privilegeRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
+	public PaginationDTO<EnumDTO> getPrivileges(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+
+		Page<Privilege> pageRequest;
+		if (search.equals("")) {
+			pageRequest = privilegeRepository.findAll(PageRequest.of(page, size));
+		} else {
+			pageRequest = privilegeRepository.findAll(search, PageRequest.of(page, size));
+		}
+
+		List<EnumDTO> data = pageRequest.stream().map(privilege -> new EnumDTO(
+				privilege.getPrivilegeId(),
+				privilege.getName()
+		)).collect(Collectors.toList());
+
+		return new PaginationDTO<>(
+				pageRequest.getTotalElements(),
+				pageRequest.getTotalPages(),
+				data
+		);
 	}
 
 	@PutMapping("/privilege")

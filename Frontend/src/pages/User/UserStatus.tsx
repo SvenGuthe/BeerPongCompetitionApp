@@ -15,7 +15,7 @@ const UserStatus = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, userStatusHierarchy]} />
         <h2>Nutzer Status</h2>
-        <EnumOverview url={userStatusRoute} storeFunction={storeUserStatus} data={userStatus} />
+        <EnumOverview url={userStatusRoute} storeFunction={storeUserStatus} paginationData={userStatus} />
     </>
 
 };

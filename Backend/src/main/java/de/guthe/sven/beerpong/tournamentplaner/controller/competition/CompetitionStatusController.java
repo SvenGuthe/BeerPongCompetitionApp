@@ -1,9 +1,13 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,9 +29,26 @@ public class CompetitionStatusController {
 	}
 
 	@GetMapping("/competitionstatus")
-	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<EnumDTO> getCompetitionStati() {
-		return competitionStatusRepository.findAll().stream().map(EnumDTO::new).collect(Collectors.toList());
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public PaginationDTO<EnumDTO> getCompetitionStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+
+		Page<CompetitionStatus> pageRequest;
+		if (search.equals("")) {
+			pageRequest = competitionStatusRepository.findAll(PageRequest.of(page, size));
+		} else {
+			pageRequest = competitionStatusRepository.findAll(search, PageRequest.of(page, size));
+		}
+
+		List<EnumDTO> data = pageRequest.stream().map(competitionStatus -> new EnumDTO(
+				competitionStatus.getId(),
+				competitionStatus.getCompetitionStatusType().toString()
+		)).collect(Collectors.toList());
+
+		return new PaginationDTO<>(
+				pageRequest.getTotalElements(),
+				pageRequest.getTotalPages(),
+				data
+		);
 	}
 
 	@GetMapping("/competitionstatus/{competitionStatusId}")

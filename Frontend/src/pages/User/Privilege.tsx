@@ -15,7 +15,7 @@ const Privilege = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, privilegeHierarchy]} />
         <h2>Privilegien</h2>
-        <EnumOverview url={privilegeRoute} storeFunction={storePrivileges} data={privileges} />
+        <EnumOverview url={privilegeRoute} storeFunction={storePrivileges} paginationData={privileges} />
     </>
 
 };

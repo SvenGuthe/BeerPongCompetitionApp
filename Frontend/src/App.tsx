@@ -29,7 +29,7 @@ import CompetitionStatus from "./pages/Competition/CompetitionStatus";
 import CompetitionAdminStatus from "./pages/Competition/CompetitionAdminStatus";
 import CompetitionPlayerStatus from "./pages/Competition/CompetitionPlayerStatus";
 import RegistrationStatus from "./pages/Competition/RegistrationStatus";
-import BillingStatus from "./pages/Competition/RegistrationStatus copy";
+import BillingStatus from "./pages/Competition/BillingStatus";
 import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, confirmResultHierarchy, confirmWaitHierarchy, homeHierarchy, loginHierarchy, notFoundHierarchy, privilegeHierarchy, registerHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from "./types/hierarchy";
 
 const App: React.FC = () => {

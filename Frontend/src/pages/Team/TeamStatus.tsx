@@ -15,7 +15,7 @@ const TeamStatus = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, teamStatusHierarchy]} />
         <h2>Team Status</h2>
-        <EnumOverview url={teamStatusRoute} storeFunction={storeTeamStatus} data={teamStatus} />
+        <EnumOverview url={teamStatusRoute} storeFunction={storeTeamStatus} paginationData={teamStatus} />
     </>
 
 };
