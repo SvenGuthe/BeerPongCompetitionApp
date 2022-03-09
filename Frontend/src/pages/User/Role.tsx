@@ -15,7 +15,7 @@ const Role = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, roleHierarchy]} />
         <h2>Rollen</h2>
-        <EnumOverview url={roleRoute} storeFunction={storeRoles} data={roles} />
+        <EnumOverview url={roleRoute} storeFunction={storeRoles} paginationData={roles} />
     </>
 
 };

@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
@@ -39,8 +40,7 @@ public class PrivilegeController {
 
 	@GetMapping("/privilege")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<EnumDTO> getPrivileges(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
-		System.out.println(search);
+	public PaginationDTO<EnumDTO> getPrivileges(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
 
 		Page<Privilege> pageRequest;
 		if (search.equals("")) {
@@ -49,11 +49,16 @@ public class PrivilegeController {
 			pageRequest = privilegeRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		return pageRequest.stream().map(privilege -> new EnumDTO(
+		List<EnumDTO> data = pageRequest.stream().map(privilege -> new EnumDTO(
 				privilege.getPrivilegeId(),
-				privilege.getName(),
-				pageRequest.getTotalElements()
+				privilege.getName()
 		)).collect(Collectors.toList());
+
+		return new PaginationDTO<>(
+				pageRequest.getTotalElements(),
+				pageRequest.getTotalPages(),
+				data
+		);
 	}
 
 	@PutMapping("/privilege")

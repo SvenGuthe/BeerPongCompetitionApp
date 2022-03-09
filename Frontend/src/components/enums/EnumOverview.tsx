@@ -1,19 +1,19 @@
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { tEnum } from "../../types/enum";
+import { tPaginationDTO } from "../../types/enum";
 import { getRequest } from "../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../ui/TableWithSearchAndFilter";
 
 const EnumOverview: React.FC<{
     url: string,
-    storeFunction: ActionCreatorWithPayload<tEnum[], string>,
-    data: tEnum[] | null
+    storeFunction: ActionCreatorWithPayload<tPaginationDTO, string>,
+    paginationData: tPaginationDTO | null
 }> = (props) => {
 
     const dispatch = useDispatch();
 
-    const { url, storeFunction, data } = props;
+    const { url, storeFunction, paginationData } = props;
 
     const pageSizes = [10, 20, 30];
     const [filterValues, setFilterValues] = useState({
@@ -32,7 +32,7 @@ const EnumOverview: React.FC<{
 
     let table;
 
-    if (data) {
+    if (paginationData) {
         table = <>
             <thead>
                 <tr>
@@ -41,7 +41,7 @@ const EnumOverview: React.FC<{
                 </tr>
             </thead>
             <tbody>
-                {data.map(singleData => {
+                {paginationData.data.map(singleData => {
                     return <tr key={singleData.id}>
                         <td>{singleData.id}</td>
                         <td>{singleData.value}</td>
@@ -52,7 +52,7 @@ const EnumOverview: React.FC<{
     }
 
     // Refactore Datastructur, The size should be beside the items - also in the backend
-    return data ? <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={data.length >= 1 ? data[0].size : 0} pageSizes={pageSizes}>
+    return paginationData ? <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={paginationData.size} pageSizes={pageSizes}>
         {table}
     </TableWithSearchAndFilter> : <></>
 

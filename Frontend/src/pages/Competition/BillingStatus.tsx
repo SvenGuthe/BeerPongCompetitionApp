@@ -15,7 +15,7 @@ const BillingStatus = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, billingStatusHierarchy]} />
         <h2>Zahlungs Status</h2>
-        <EnumOverview url={billingStatusRoute} storeFunction={storeBillingStatus} data={billingStatus} />
+        <EnumOverview url={billingStatusRoute} storeFunction={storeBillingStatus} paginationData={billingStatus} />
     </>
 
 };

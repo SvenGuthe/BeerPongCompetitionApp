@@ -15,7 +15,7 @@ const ACLClass = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, aclClassHierarchy]} />
         <h2>ACL Klassen</h2>
-        <EnumOverview url={aclClassRoute} storeFunction={storeACLClasses} data={aclClasses} />
+        <EnumOverview url={aclClassRoute} storeFunction={storeACLClasses} paginationData={aclClasses} />
     </>
 
 };

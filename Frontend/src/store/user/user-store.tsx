@@ -1,12 +1,12 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tEnum } from '../../types/enum'
+import { tPaginationDTO } from '../../types/enum'
 import { tUserDetail } from '../../types/user'
 
 type SliceState = {
     users: tUserDetail[] | null,
-    userStatus: tEnum[] | null,
-    roles: tEnum[] | null,
-    privileges: tEnum[] | null
+    userStatus: tPaginationDTO | null,
+    roles: tPaginationDTO | null,
+    privileges: tPaginationDTO | null
 }
 
 const initialState: SliceState = {
@@ -23,13 +23,13 @@ export const userSlice = createSlice({
         storeUsers: (state, action: PayloadAction<tUserDetail[]>) => {
             state.users = action.payload;
         },
-        storeUserStatus: (state, action: PayloadAction<tEnum[]>) => {
+        storeUserStatus: (state, action: PayloadAction<tPaginationDTO>) => {
             state.userStatus = action.payload;
         },
-        storeRoles: (state, action: PayloadAction<tEnum[]>) => {
+        storeRoles: (state, action: PayloadAction<tPaginationDTO>) => {
             state.roles = action.payload;
         },
-        storePrivileges: (state, action: PayloadAction<tEnum[]>) => {
+        storePrivileges: (state, action: PayloadAction<tPaginationDTO>) => {
             state.privileges = action.payload;
         },
         addUser: (state, action: PayloadAction<tUserDetail>) => {
