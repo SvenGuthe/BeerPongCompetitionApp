@@ -1,6 +1,6 @@
 import { Table } from "react-bootstrap";
 import { tUserDetail } from "../../../types/user";
-import { removePriviligeDuplicates } from "../../../utility/arrayFunctions";
+import { removeDuplicates } from "../../../utility/arrayFunctions";
 
 interface tProps {
     authenticatedUser?: tUserDetail
@@ -11,7 +11,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
     const authenticatedUser = props.authenticatedUser;
     const roles = authenticatedUser?.roles;
     
-    const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
+    const privileges = removeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
 
     let roleTable;
     let privilegesTable;

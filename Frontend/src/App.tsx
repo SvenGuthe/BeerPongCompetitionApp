@@ -17,7 +17,7 @@ import { Privilege as PrivilegeEnum } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
 import User from "./pages/User/User";
 import UserDetails from "./pages/User/UserDetails";
-import { removePriviligeDuplicates } from "./utility/arrayFunctions";
+import { removeDuplicates } from "./utility/arrayFunctions";
 import Competition from "./pages/Competition/Competition";
 import CompetitionDetails from "./pages/Competition/CompetitionDetails";
 import UserStatus from "./pages/User/UserStatus";
@@ -66,7 +66,7 @@ const App: React.FC = () => {
         }
     }, [dispatch, loggedIn, token]);
 
-    const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
+    const privileges = removeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
 
     return <Routes>
         <Route element={<Layout />}>

@@ -9,7 +9,7 @@ import { RootState } from '../../store/combine-store';
 import { logout } from '../../store/authentication/authentication-store';
 import { Role } from '../../types/enums/role';
 import { Privilege } from '../../types/enums/privilege';
-import { removePriviligeDuplicates } from '../../utility/arrayFunctions';
+import { removeDuplicates } from '../../utility/arrayFunctions';
 import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, privilegeHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from '../../types/hierarchy';
 
 const Layout: React.FC = () => {
@@ -38,7 +38,7 @@ const Layout: React.FC = () => {
     }
 
     const roles = authenticatedUser?.roles;
-    const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
+    const privileges = removeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
 
     return <>
         <Navbar expand="lg" bg="dark" variant="dark" sticky="top">
