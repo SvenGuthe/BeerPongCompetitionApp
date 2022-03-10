@@ -2,17 +2,12 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.configuration.JwtTokenUtil;
 import de.guthe.sven.beerpong.tournamentplaner.configuration.MyUserDetailsService;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.JwtRequestDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.JwtResponseDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserDetailDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.JwtRequestDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.JwtResponseDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -20,10 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -53,7 +44,7 @@ public class JwtAuthenticationController {
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
-		return new JwtResponseDTO(token, new UserDetailDTO(user));
+		return new JwtResponseDTO(token, new UserDTO(user));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
@@ -69,7 +60,7 @@ public class JwtAuthenticationController {
 	}
 
 	@GetMapping("/authenticateduser")
-	public UserDetailDTO getLogin() {
+	public UserDTO getLogin() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
 
@@ -80,7 +71,7 @@ public class JwtAuthenticationController {
 			username = principal.toString();
 		}
 
-		return new UserDetailDTO(userRepository.findByEmail(username));
+		return new UserDTO(userRepository.findByEmail(username));
 	}
 
 }

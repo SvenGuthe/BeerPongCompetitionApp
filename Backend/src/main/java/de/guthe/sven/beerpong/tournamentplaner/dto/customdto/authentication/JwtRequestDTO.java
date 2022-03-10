@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.authentication;
+package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 
 import java.io.Serializable;
 

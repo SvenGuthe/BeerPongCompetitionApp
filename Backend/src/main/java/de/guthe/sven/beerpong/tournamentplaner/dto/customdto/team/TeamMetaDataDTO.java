@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.team;
+package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;

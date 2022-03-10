@@ -1,15 +1,14 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamCompositionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamCompositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/team")
@@ -24,21 +23,14 @@ public class TeamCompositionController {
 
 	@GetMapping("/teamcomposition")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamComposition> getTeamCompositions() {
-		return teamCompositionRepository.findAll();
+	public List<TeamCompositionDTO> getTeamCompositions() {
+		return teamCompositionRepository.findAll().stream().map(TeamCompositionDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/teamcomposition/{teamCompositionId}")
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamComposition getTeamComposition(@PathVariable Long teamCompositionId) {
-		return teamCompositionRepository.findById(teamCompositionId).orElseThrow();
-	}
-
-	@PostMapping("/teamcomposition")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamComposition addTeamComposition(@RequestBody TeamComposition teamComposition) {
-		return teamCompositionRepository.save(teamComposition);
+	public TeamCompositionDTO getTeamComposition(@PathVariable Long teamCompositionId) {
+		return new TeamCompositionDTO(teamCompositionRepository.findById(teamCompositionId).orElseThrow());
 	}
 
 }

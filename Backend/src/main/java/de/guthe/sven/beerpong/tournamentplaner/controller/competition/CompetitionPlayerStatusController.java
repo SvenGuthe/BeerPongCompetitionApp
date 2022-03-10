@@ -1,19 +1,17 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionPlayerStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionPlayerStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +26,6 @@ public class CompetitionPlayerStatusController {
 		this.competitionPlayerStatusRepository = competitionPlayerStatusRepository;
 	}
 
-	// I know that the plural of status = status but I need a unique function name
 	@GetMapping("/competitionplayerstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public PaginationDTO<EnumDTO> getCompetitionPlayerStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
@@ -40,10 +37,7 @@ public class CompetitionPlayerStatusController {
 			pageRequest = competitionPlayerStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		List<EnumDTO> data = pageRequest.stream().map(competitionPlayerStatus -> new EnumDTO(
-				competitionPlayerStatus.getId(),
-				competitionPlayerStatus.getCompetitionPlayerStatusDescription().toString()
-		)).collect(Collectors.toList());
+		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
 		return new PaginationDTO<>(
 				pageRequest.getTotalElements(),
@@ -55,8 +49,8 @@ public class CompetitionPlayerStatusController {
 
 	@GetMapping("/competitionplayerstatus/{competitionPlayerStatusId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionPlayerStatus getCompetitionPlayerStatus(@PathVariable Long competitionPlayerStatusId) {
-		return competitionPlayerStatusRepository.findById(competitionPlayerStatusId).orElseThrow();
+	public CompetitionPlayerStatusDTO getCompetitionPlayerStatus(@PathVariable Long competitionPlayerStatusId) {
+		return new CompetitionPlayerStatusDTO(competitionPlayerStatusRepository.findById(competitionPlayerStatusId).orElseThrow());
 	}
 
 

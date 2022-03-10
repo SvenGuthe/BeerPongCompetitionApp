@@ -1,7 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,7 @@ public class UserStatusController {
 			pageRequest = userStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		List<EnumDTO> data = pageRequest.stream().map(userStatus -> new EnumDTO(
-				userStatus.getId(),
-				userStatus.getUserStatus().toString()
-		)).collect(Collectors.toList());
+		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
 		return new PaginationDTO<>(
 				pageRequest.getTotalElements(),
@@ -56,8 +54,8 @@ public class UserStatusController {
 
 	@GetMapping("/userstatus/{userStatusId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public UserStatus getUserStatus(@PathVariable Long userStatusId) {
-		return userStatusRepository.findById(userStatusId).orElseThrow();
+	public UserStatusDTO getUserStatus(@PathVariable Long userStatusId) {
+		return new UserStatusDTO(userStatusRepository.findById(userStatusId).orElseThrow());
 	}
 
 }

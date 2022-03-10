@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.ChangeUserRoleDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserDetailDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.ChangeUserRoleDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
@@ -36,13 +36,13 @@ public class UserController {
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<UserDetailDTO> getUsers() {
-		return userRepository.findAll().stream().map(UserDetailDTO::new).collect(Collectors.toList());
+	public List<UserDTO> getUsers() {
+		return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
 	}
 
 	@PutMapping("/user")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public UserDetailDTO changeUserRole(@RequestBody ChangeUserRoleDTO changeUserRoleDTO) {
+	public UserDTO changeUserRole(@RequestBody ChangeUserRoleDTO changeUserRoleDTO) {
 		User user = userRepository.findById(changeUserRoleDTO.getId()).get();
 		Role role = roleRepository.findByName(changeUserRoleDTO.getRole());
 
@@ -57,13 +57,13 @@ public class UserController {
 		user.setRoles(userRoles);
 		userRepository.save(user);
 
-		return new UserDetailDTO(user);
+		return new UserDTO(user);
 	}
 
 	@GetMapping("/user/{userId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public UserDetailDTO getUser(@PathVariable Long userId) {
-		return new UserDetailDTO(userRepository.findById(userId).orElseThrow());
+	public UserDTO getUser(@PathVariable Long userId) {
+		return new UserDTO(userRepository.findById(userId).orElseThrow());
 	}
 
 }

@@ -1,5 +1,6 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin;
+package de.guthe.sven.beerpong.tournamentplaner.dto.customdto;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
@@ -11,76 +12,67 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.Billing
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 
-public class EnumDTO {
-
-    private Long id;
+public class EnumDTO extends ID {
 
     private String value;
 
     public EnumDTO(Long id, String value) {
-        this.id = id;
+        super(id);
         this.value = value;
     }
 
-    public EnumDTO() {
+    public EnumDTO(Long id) {
+        super(id);
     }
 
     public EnumDTO(UserStatus userStatus) {
-        this.id = userStatus.getId();
+        super(userStatus.getId());
         this.value = userStatus.getUserStatus().name();
     }
 
     public EnumDTO(Role role) {
-        this.id = role.getId();
-        this.value = role.getName();
+        super(role.getId());
+        this.value = role.getRole().name();
     }
 
     public EnumDTO(Privilege privilege) {
-        this.id = privilege.getId();
-        this.value = privilege.getName();
+        super(privilege.getId());
+        this.value = privilege.getPrivilege().name();
     }
 
     public EnumDTO(TeamStatus teamStatus) {
-        this.id = teamStatus.getId();
+        super(teamStatus.getId());
         this.value = teamStatus.getTeamStatusDescription().name();
     }
 
     public EnumDTO(BillingStatus billingStatus) {
-        this.id = billingStatus.getId();
+        super(billingStatus.getId());
         this.value = billingStatus.getBillingStatusDescription().name();
     }
 
     public EnumDTO(RegistrationStatus registrationStatus) {
-        this.id = registrationStatus.getId();
+        super(registrationStatus.getId());
         this.value = registrationStatus.getRegistrationStatusDescription().name();
     }
 
     public EnumDTO(CompetitionPlayerStatus competitionPlayerStatus) {
-        this.id = competitionPlayerStatus.getId();
+        super(competitionPlayerStatus.getId());
         this.value = competitionPlayerStatus.getCompetitionPlayerStatusDescription().toString();
     }
 
     public EnumDTO(ACLClass aclClass) {
-        this.id = aclClass.getId();
+        super(aclClass.getId());
         this.value = aclClass.getAclClass();
     }
 
     public EnumDTO(CompetitionStatus competitionStatus) {
-        this.id = competitionStatus.getId();
+        super(competitionStatus.getId());
         this.value = competitionStatus.getCompetitionStatusType().name();
     }
 
     public EnumDTO(CompetitionAdminStatus competitionAdminStatus) {
-        this.id = competitionAdminStatus.getId();
+        super(competitionAdminStatus.getId());
         this.value = competitionAdminStatus.getCompetitionAdminStatusDescription().name();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getValue() {

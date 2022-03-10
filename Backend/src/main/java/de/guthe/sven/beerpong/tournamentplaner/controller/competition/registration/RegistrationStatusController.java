@@ -1,7 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition.registration;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.RegistrationStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.registration.RegistrationStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,10 +37,7 @@ public class RegistrationStatusController {
 			pageRequest = registrationStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		List<EnumDTO> data = pageRequest.stream().map(registrationStatus -> new EnumDTO(
-				registrationStatus.getId(),
-				registrationStatus.getRegistrationStatusDescription().toString()
-		)).collect(Collectors.toList());
+		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
 		return new PaginationDTO<>(
 				pageRequest.getTotalElements(),
@@ -52,8 +49,8 @@ public class RegistrationStatusController {
 
 	@GetMapping("/registrationstatus/{registrationStatusId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public RegistrationStatus getRegistrationStatus(@PathVariable Long registrationStatusId) {
-		return registrationStatusRepository.findById(registrationStatusId).orElseThrow();
+	public RegistrationStatusDTO getRegistrationStatus(@PathVariable Long registrationStatusId) {
+		return new RegistrationStatusDTO(registrationStatusRepository.findById(registrationStatusId).orElseThrow());
 	}
 
 }

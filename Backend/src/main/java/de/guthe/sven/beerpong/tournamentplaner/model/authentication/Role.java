@@ -1,13 +1,14 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE LOWER(r.name) = LOWER(?1)")
+@NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE LOWER(r.role) = LOWER(?1)")
 @Table(name = "role")
 public class Role {
 
@@ -16,8 +17,9 @@ public class Role {
 	@Column(name = "roleid", nullable = false)
 	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true)
-	private String name;
+	@Column(name = "role", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private SecurityRole role;
 
 	@ManyToMany(mappedBy = "roles", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private Collection<User> users;
@@ -31,20 +33,20 @@ public class Role {
 	public Role() {
 	}
 
-	public Role(String name) {
-		this.name = name;
+	public Role(SecurityRole role) {
+		this.role = role;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public String getName() {
-		return name;
+	public SecurityRole getRole() {
+		return role;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setRole(SecurityRole role) {
+		this.role = role;
 	}
 
 	public Collection<User> getUsers() {

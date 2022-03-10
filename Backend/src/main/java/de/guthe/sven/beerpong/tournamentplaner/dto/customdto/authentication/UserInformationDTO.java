@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.authentication;
+package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 

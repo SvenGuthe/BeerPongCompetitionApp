@@ -213,7 +213,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	Privilege createPrivilegeIfNotFound(SecurityPrivilege securityPrivilege) {
 		Privilege privilege = privilegeRepository.findByName(securityPrivilege.toString());
 		if (privilege == null) {
-			privilege = new Privilege(securityPrivilege.toString());
+			privilege = new Privilege(securityPrivilege);
 			privilegeRepository.save(privilege);
 		}
 		return privilege;
@@ -223,7 +223,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	Role createRoleIfNotFound(SecurityRole securityRole, Collection<Privilege> privileges) {
 		Role role = roleRepository.findByName(securityRole.toString());
 		if (role == null) {
-			role = new Role(securityRole.toString());
+			role = new Role(securityRole);
 			role.setPrivileges(privileges);
 			roleRepository.save(role);
 		}
