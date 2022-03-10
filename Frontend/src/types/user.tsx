@@ -17,7 +17,7 @@ export type tUserDetail = tID & {
     confirmationToken: {
         confirmationToken: string,
         createdDate: tTimestamp,
-        tokenid: number
+        id: number
     }[],
     creationTime: tTimestamp,
     email: string,
@@ -28,7 +28,7 @@ export type tUserDetail = tID & {
     roles: tRole[],
     userStatus: {
         userStatus: UserStatus,
-        userStatusId: number
+        id: number
     },
     teams: {
         admin: boolean,

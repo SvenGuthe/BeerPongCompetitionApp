@@ -3,13 +3,13 @@ import { Dispatch } from "react"
 import { Role } from "../../types/enums/role"
 import { changeRole } from "./user-store"
 
-export const changeUserStatus = (userId: number, role: Role, value: boolean) => {
+export const changeUserStatus = (id: number, role: Role, value: boolean) => {
     return async (dispatch: Dispatch<any>) => {
 
         console.log("Send /authentication/user [PUT] Request");
         
         const sendRequest = async () => await axios.put('/authentication/user', {
-            userId,
+            id,
             role,
             value
         }).then((response) => {

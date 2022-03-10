@@ -83,7 +83,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
                 </tr>
                 <tr>
                     <td>User Status ID</td>
-                    <td>{authenticatedUser?.userStatus?.userStatusId}</td>
+                    <td>{authenticatedUser?.userStatus?.id}</td>
                 </tr>
                 <tr>
                     <td>Datum</td>
