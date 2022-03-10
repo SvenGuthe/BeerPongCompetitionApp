@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// JUST AN EXAMPLE HOW A SERVICE COULD LOOKS LIKE
+
 @Service
 public class CompetitionService {
 

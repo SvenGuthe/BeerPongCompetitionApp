@@ -61,16 +61,4 @@ public class PrivilegeController {
 		);
 	}
 
-	@PutMapping("/privilege")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public Privilege updatePrivilege(@RequestBody Privilege privilege) {
-		return privilegeRepository.save(privilege);
-	}
-
-	@DeleteMapping("/privilege")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public void deletePrivilege(@RequestBody Privilege privilege) {
-		privilegeRepository.delete(privilege);
-	}
-
 }

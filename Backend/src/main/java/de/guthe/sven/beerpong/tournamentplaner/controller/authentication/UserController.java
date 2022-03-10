@@ -34,14 +34,6 @@ public class UserController {
 		return userRepository.save(user);
 	}
 
-	/*
-	@GetMapping("/user")
-	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public List<User> getUsers() {
-		return userRepository.findAll();
-	}
-	 */
-
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public List<UserDetailDTO> getUsers() {
@@ -72,20 +64,6 @@ public class UserController {
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public UserDetailDTO getUser(@PathVariable Long userId) {
 		return new UserDetailDTO(userRepository.findById(userId).orElseThrow());
-	}
-
-	/*
-	@PutMapping("/user")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public User updateUser(@RequestBody User user) {
-		return userRepository.save(user);
-	}
-	 */
-
-	@DeleteMapping("/user")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public void deleteUser(@RequestBody User user) {
-		userRepository.delete(user);
 	}
 
 }

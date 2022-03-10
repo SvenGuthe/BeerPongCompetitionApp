@@ -60,17 +60,4 @@ public class CompetitionTeamController {
 		return competitionTeam;
 	}
 
-	@PutMapping("/competitionteam")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionTeam updateCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) {
-		return competitionTeamRepository.save(competitionTeam);
-	}
-
-	@DeleteMapping("/competitionteam")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) {
-		competitionTeamRepository.delete(competitionTeam);
-	}
-
 }

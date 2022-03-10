@@ -41,17 +41,4 @@ public class CompetitionAdminController {
 		return competitionAdminRepository.save(competitionAdmin);
 	}
 
-	@PutMapping("/competitionadmin")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionAdmin updateCompetitionAdmin(@RequestBody CompetitionAdmin competitionAdmin) {
-		return competitionAdminRepository.save(competitionAdmin);
-	}
-
-	@DeleteMapping("/competitionadmin")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetitionAdmin(@RequestBody CompetitionAdmin competitionAdmin) {
-		competitionAdminRepository.delete(competitionAdmin);
-	}
-
 }

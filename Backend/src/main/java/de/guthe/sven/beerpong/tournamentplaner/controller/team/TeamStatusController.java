@@ -56,24 +56,4 @@ public class TeamStatusController {
 		return teamStatusRepository.findById(teamStatusId).orElseThrow();
 	}
 
-	@PostMapping("/teamstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamStatus addTeamStatus(@RequestBody TeamStatus teamStatus) {
-		return teamStatusRepository.save(teamStatus);
-	}
-
-	@PutMapping("/teamstatus")
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamStatus updateTeamStatus(@RequestBody TeamStatus teamStatus) {
-		return teamStatusRepository.save(teamStatus);
-	}
-
-	@DeleteMapping("/teamstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public void deleteTeamStatus(@RequestBody TeamStatus teamStatus) {
-		teamStatusRepository.delete(teamStatus);
-	}
-
 }

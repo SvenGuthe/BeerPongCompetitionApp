@@ -41,23 +41,4 @@ public class TeamInvitationLinkController {
 		return teamInvitationLinkRepository.save(teamInvitationLink);
 	}
 
-	// TODO: Remove hasPermission later -> currently just a placeholder, the modifications
-	// on raw-database
-	// TODO: entries are just allowed with ADMIN Privileges
-	@PutMapping("/teaminvitationlink")
-	@PreAuthorize("hasPermission(#teamInvitationLink, 'UPDATE_TEAM_INVITATION_LINK') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamInvitationLink updateTeamInvitationLink(@RequestBody TeamInvitationLink teamInvitationLink) {
-		return teamInvitationLinkRepository.save(teamInvitationLink);
-	}
-
-	// TODO: Remove hasPermission later -> currently just a placeholder, the modifications
-	// on raw-database
-	// TODO: entries are just allowed with ADMIN Privileges
-	@DeleteMapping("/teaminvitationlink")
-	@Transactional
-	@PreAuthorize("hasPermission(#teamInvitationLink, 'DELETE_TEAM_INVITATION_LINK') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public void deleteTeamInvitationLink(@RequestBody TeamInvitationLink teamInvitationLink) {
-		teamInvitationLinkRepository.delete(teamInvitationLink);
-	}
-
 }

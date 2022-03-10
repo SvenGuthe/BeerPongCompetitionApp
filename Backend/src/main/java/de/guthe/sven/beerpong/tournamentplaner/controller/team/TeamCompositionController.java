@@ -41,17 +41,4 @@ public class TeamCompositionController {
 		return teamCompositionRepository.save(teamComposition);
 	}
 
-	@PutMapping("/teamcomposition")
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamComposition updateTeamComposition(@RequestBody TeamComposition teamComposition) {
-		return teamCompositionRepository.save(teamComposition);
-	}
-
-	@DeleteMapping("/teamcomposition")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public void deleteTeamComposition(@RequestBody TeamComposition teamComposition) {
-		teamCompositionRepository.delete(teamComposition);
-	}
-
 }

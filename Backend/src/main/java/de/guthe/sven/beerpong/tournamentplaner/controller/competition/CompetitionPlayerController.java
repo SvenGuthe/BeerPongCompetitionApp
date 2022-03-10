@@ -60,17 +60,4 @@ public class CompetitionPlayerController {
 		return competitionPlayer;
 	}
 
-	@PutMapping("/competitionplayer")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionPlayer updateCompetitionPlayer(@RequestBody CompetitionPlayer competitionPlayer) {
-		return competitionPlayerRepository.save(competitionPlayer);
-	}
-
-	@DeleteMapping("/competitionplayer")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetitionPlayer(@RequestBody CompetitionPlayer competitionPlayer) {
-		competitionPlayerRepository.delete(competitionPlayer);
-	}
-
 }

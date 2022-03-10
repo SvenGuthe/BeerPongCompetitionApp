@@ -56,24 +56,4 @@ public class RegistrationStatusController {
 		return registrationStatusRepository.findById(registrationStatusId).orElseThrow();
 	}
 
-	@PostMapping("/registrationstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public RegistrationStatus addRegistrationStatus(@RequestBody RegistrationStatus registrationStatus) {
-		return registrationStatusRepository.save(registrationStatus);
-	}
-
-	@PutMapping("/registrationstatus")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public RegistrationStatus updateRegistrationStatus(@RequestBody RegistrationStatus registrationStatus) {
-		return registrationStatusRepository.save(registrationStatus);
-	}
-
-	@DeleteMapping("/registrationstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteRegistrationStatus(@RequestBody RegistrationStatus registrationStatus) {
-		registrationStatusRepository.delete(registrationStatus);
-	}
-
 }

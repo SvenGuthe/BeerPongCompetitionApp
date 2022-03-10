@@ -57,24 +57,4 @@ public class CompetitionStatusController {
 		return competitionStatusRepository.findById(competitionStatusId).orElseThrow();
 	}
 
-	@PostMapping("/competitionstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionStatus addCompetitionStatus(@RequestBody CompetitionStatus competitionStatus) {
-		return competitionStatusRepository.save(competitionStatus);
-	}
-
-	@PutMapping("/competitionstatus")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionStatus updateCompetitionStatus(@RequestBody CompetitionStatus competitionStatus) {
-		return competitionStatusRepository.save(competitionStatus);
-	}
-
-	@DeleteMapping("/competitionstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetitionStatus(@RequestBody CompetitionStatus competitionStatus) {
-		competitionStatusRepository.delete(competitionStatus);
-	}
-
 }

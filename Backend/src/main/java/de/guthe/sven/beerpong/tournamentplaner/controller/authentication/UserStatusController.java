@@ -60,16 +60,4 @@ public class UserStatusController {
 		return userStatusRepository.findById(userStatusId).orElseThrow();
 	}
 
-	@PutMapping("/userstatus")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public UserStatus updateUserStatus(@RequestBody UserStatus userStatus) {
-		return userStatusRepository.save(userStatus);
-	}
-
-	@DeleteMapping("/userstatus")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public void deleteUserStatus(@RequestBody UserStatus userStatus) {
-		userStatusRepository.delete(userStatus);
-	}
-
 }

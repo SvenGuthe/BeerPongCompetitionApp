@@ -47,14 +47,6 @@ public class CompetitionController {
 		return competitionRepository.findAll().stream().map(CompetitionDetailDTO::new).collect(Collectors.toList());
 	}
 
-	/*
-	@GetMapping("/competition")
-	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<Competition> getCompetitions() {
-		return competitionRepository.findAll();
-	}
-	 */
-
 	@GetMapping("/competition/{competitionId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionDetailDTO getCompetition(@PathVariable Long competitionId) {
@@ -74,24 +66,6 @@ public class CompetitionController {
 		competitionRepository.save(competition);
 		aclService.setPrivileges(competition, initialCompetitionPermissions);
 		return competition;
-	}
-
-	@PutMapping("/competition")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Competition updateCompetition(@RequestBody Competition competition) {
-		return competitionRepository.save(competition);
-	}
-
-	@DeleteMapping("/competition")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetition(@RequestBody Competition competition) {
-		competitionRepository.delete(competition);
-	}
-
-	@GetMapping("/competitionoverview")
-	public CompetitionListDTO getActiveClosedOwnCompetitions() {
-		return competitionService.getActiveClosedOwnCompetitions(0, 10);
 	}
 
 }

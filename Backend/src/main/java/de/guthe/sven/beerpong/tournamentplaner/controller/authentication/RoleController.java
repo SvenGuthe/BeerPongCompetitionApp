@@ -55,22 +55,4 @@ public class RoleController {
 		);
 	}
 
-	@GetMapping("/role/{roleId}")
-	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public Role getRole(@PathVariable Long roleId) {
-		return roleRepository.findById(roleId).orElseThrow();
-	}
-
-	@PutMapping("/role")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public Role updateRole(@RequestBody Role role) {
-		return roleRepository.save(role);
-	}
-
-	@DeleteMapping("/role")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public void deleteRole(@RequestBody Role role) {
-		roleRepository.delete(role);
-	}
-
 }

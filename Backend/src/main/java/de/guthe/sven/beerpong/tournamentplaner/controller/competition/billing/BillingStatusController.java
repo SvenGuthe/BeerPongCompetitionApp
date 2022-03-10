@@ -58,24 +58,4 @@ public class BillingStatusController {
 		return billingStatusRepository.findById(billingStatusId).orElseThrow();
 	}
 
-	@PostMapping("/billingstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public BillingStatus addBillingStatus(@RequestBody BillingStatus billingStatus) {
-		return billingStatusRepository.save(billingStatus);
-	}
-
-	@PutMapping("/billingstatus")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public BillingStatus updateBillingStatus(@RequestBody BillingStatus billingStatus) {
-		return billingStatusRepository.save(billingStatus);
-	}
-
-	@DeleteMapping("/billingstatus")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteBillingStatus(@RequestBody BillingStatus billingStatus) {
-		billingStatusRepository.delete(billingStatus);
-	}
-
 }
