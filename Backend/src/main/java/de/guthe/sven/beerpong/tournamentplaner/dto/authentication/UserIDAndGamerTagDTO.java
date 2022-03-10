@@ -2,19 +2,19 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.authentication;
 
 public class UserIDAndGamerTagDTO {
 
-	private Long userId;
+	private Long id;
 
 	private String gamerTag;
 
 	public UserIDAndGamerTagDTO() {
 	}
 
-	public Long getUserId() {
-		return userId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getGamerTag() {
@@ -27,7 +27,7 @@ public class UserIDAndGamerTagDTO {
 
 	@Override
 	public String toString() {
-		return "UserIDAndGamerTagDTO{" + "userId=" + userId + ", gamerTag='" + gamerTag + '\'' + '}';
+		return "UserIDAndGamerTagDTO{" + "userId=" + id + ", gamerTag='" + gamerTag + '\'' + '}';
 	}
 
 }

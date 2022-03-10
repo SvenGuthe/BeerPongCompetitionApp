@@ -63,7 +63,7 @@ public class TeamDetailDTO {
 
     static class User {
 
-        private Long userId;
+        private Long id;
 
         private String firstName;
 
@@ -79,8 +79,8 @@ public class TeamDetailDTO {
 
         private UserStatusType userStatus;
 
-        public User(Long userId, String firstName, String lastName, String gamerTag, boolean enabled, boolean isAdmin, Timestamp creationTime, UserStatusType userStatus) {
-            this.userId = userId;
+        public User(Long id, String firstName, String lastName, String gamerTag, boolean enabled, boolean isAdmin, Timestamp creationTime, UserStatusType userStatus) {
+            this.id = id;
             this.firstName = firstName;
             this.lastName = lastName;
             this.gamerTag = gamerTag;
@@ -90,12 +90,12 @@ public class TeamDetailDTO {
             this.userStatus = userStatus;
         }
 
-        public Long getUserId() {
-            return userId;
+        public Long getId() {
+            return id;
         }
 
-        public void setUserId(Long userId) {
-            this.userId = userId;
+        public void setId(Long id) {
+            this.id = id;
         }
 
         public String getFirstName() {
@@ -232,7 +232,7 @@ public class TeamDetailDTO {
 
     public TeamDetailDTO(Team team) {
         List<User> members = team.getTeamCompositions().stream().map(teamComposition -> {
-                Long userId = teamComposition.getUser().getUserId();
+                Long userId = teamComposition.getUser().getId();
                 String firstName = teamComposition.getUser().getFirstName();
                 String lastName= teamComposition.getUser().getLastName();
                 String gamerTag = teamComposition.getUser().getGamerTag();

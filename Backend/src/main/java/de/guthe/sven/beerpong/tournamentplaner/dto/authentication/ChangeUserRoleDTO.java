@@ -2,24 +2,24 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.authentication;
 
 public class ChangeUserRoleDTO {
 
-    private Long userId;
+    private Long id;
 
     private Boolean value;
 
     private String role;
 
-    public ChangeUserRoleDTO(Long userId, Boolean value, String role) {
-        this.userId = userId;
+    public ChangeUserRoleDTO(Long id, Boolean value, String role) {
+        this.id = id;
         this.value = value;
         this.role = role;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Boolean getValue() {

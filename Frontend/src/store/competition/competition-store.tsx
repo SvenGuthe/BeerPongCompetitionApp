@@ -1,14 +1,15 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { tCompetitionDetail } from '../../types/competition'
-import { tPaginationDTO } from '../../types/enum'
+import { tPaginationDTO } from '../../types/defaults/generics'
+import { tEnum } from '../../types/enum'
 
 type SliceState = {
     competitions: tCompetitionDetail[] | null,
-    competitionAdminStatus: tPaginationDTO | null,
-    competitionStatus: tPaginationDTO | null,
-    registrationStatus: tPaginationDTO | null,
-    competitionPlayerStatus: tPaginationDTO | null,
-    billingStatus: tPaginationDTO | null
+    competitionAdminStatus: tPaginationDTO<tEnum> | null,
+    competitionStatus: tPaginationDTO<tEnum> | null,
+    registrationStatus: tPaginationDTO<tEnum> | null,
+    competitionPlayerStatus: tPaginationDTO<tEnum> | null,
+    billingStatus: tPaginationDTO<tEnum> | null
 }
 
 const initialState: SliceState = {
@@ -27,19 +28,19 @@ export const competitionSlice = createSlice({
         storeCompetitions: (state, action: PayloadAction<tCompetitionDetail[]>) => {
             state.competitions = action.payload;
         },
-        storeCompetitionAdminStatus: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeCompetitionAdminStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.competitionAdminStatus = action.payload;
         },
-        storeCompetitionStatus: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeCompetitionStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.competitionStatus = action.payload;
         },
-        storeRegistrationStatus: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeRegistrationStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.registrationStatus = action.payload;
         },
-        storeCompetitionPlayerStatus: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeCompetitionPlayerStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.competitionPlayerStatus = action.payload;
         },
-        storeBillingStatus: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeBillingStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.billingStatus = action.payload;
         },
         updateCompetition: (state, action: PayloadAction<tCompetitionDetail[]>) => {

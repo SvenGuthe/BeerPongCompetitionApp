@@ -1,10 +1,11 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tEnum, tPaginationDTO } from '../../types/enum'
+import { tPaginationDTO } from '../../types/defaults/generics'
+import { tEnum } from '../../types/enum'
 import { tTeamDetail } from '../../types/team'
 
 type SliceState = {
     teams: tTeamDetail[] | null,
-    teamStatus: tPaginationDTO | null
+    teamStatus: tPaginationDTO<tEnum> | null
 }
 
 const initialState: SliceState = {
@@ -19,7 +20,7 @@ export const teamSlice = createSlice({
         storeTeams: (state, action: PayloadAction<tTeamDetail[]>) => {
             state.teams = action.payload;
         },
-        storeTeamStatus: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeTeamStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.teamStatus = action.payload;
         },
         updateTeam: (state, action: PayloadAction<tTeamDetail[]>) => {

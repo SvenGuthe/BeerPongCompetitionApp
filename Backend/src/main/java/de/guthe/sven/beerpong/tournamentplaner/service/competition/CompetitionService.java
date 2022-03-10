@@ -111,7 +111,7 @@ public class CompetitionService {
 		Boolean isPaid = isPaid(competition, user);
 		competitionOverviewDTO.setPayed(isPaid);
 
-		Boolean isAdmin = activeAdmins.getUserId().equals(user.getUserId());
+		Boolean isAdmin = activeAdmins.getId().equals(user.getId());
 		competitionOverviewDTO.setUserIsAdmin(isAdmin);
 
 		CompetitionStatusType competitionStatusType = getCompetitionStatus(competition);

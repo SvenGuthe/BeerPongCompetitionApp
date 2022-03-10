@@ -4,26 +4,26 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 
 public class RoleDTO {
 
-    private Long roleId;
+    private Long id;
 
     private String name;
 
-    public RoleDTO(Long roleId, String name) {
-        this.roleId = roleId;
+    public RoleDTO(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
     
     public RoleDTO(Role role) {
-        this.roleId = role.getRoleId();
+        this.id = role.getId();
         this.name = role.getName();
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -13,7 +13,7 @@ public class UserStatus {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "userstatusid", nullable = false)
-	private Long userStatusId;
+	private Long id;
 
 	@Column(name = "userstatus", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -27,8 +27,8 @@ public class UserStatus {
 	public UserStatus() {
 	}
 
-	public Long getUserStatusId() {
-		return userStatusId;
+	public Long getId() {
+		return id;
 	}
 
 	public UserStatusType getUserStatus() {

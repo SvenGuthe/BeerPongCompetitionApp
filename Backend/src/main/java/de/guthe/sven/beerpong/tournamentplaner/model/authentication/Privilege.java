@@ -13,7 +13,7 @@ public class Privilege {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "privilegeid", nullable = false)
-	private Long privilegeId;
+	private Long id;
 
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
@@ -30,8 +30,8 @@ public class Privilege {
 		this.name = name;
 	}
 
-	public Long getPrivilegeId() {
-		return privilegeId;
+	public Long getId() {
+		return id;
 	}
 
 	public String getName() {

@@ -14,7 +14,7 @@ const UserTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
         <tbody>
             <tr>
                 <th>ID</th>
-                <td>{team.members[0].userId}</td>
+                <td>{team.members[0].id}</td>
             </tr>
             <tr>
                 <th>Vorname</th>

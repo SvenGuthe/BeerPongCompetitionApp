@@ -50,7 +50,7 @@ public class PrivilegeController {
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(privilege -> new EnumDTO(
-				privilege.getPrivilegeId(),
+				privilege.getId(),
 				privilege.getName()
 		)).collect(Collectors.toList());
 

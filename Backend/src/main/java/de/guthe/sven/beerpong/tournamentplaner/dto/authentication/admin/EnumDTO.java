@@ -26,17 +26,17 @@ public class EnumDTO {
     }
 
     public EnumDTO(UserStatus userStatus) {
-        this.id = userStatus.getUserStatusId();
+        this.id = userStatus.getId();
         this.value = userStatus.getUserStatus().name();
     }
 
     public EnumDTO(Role role) {
-        this.id = role.getRoleId();
+        this.id = role.getId();
         this.value = role.getName();
     }
 
     public EnumDTO(Privilege privilege) {
-        this.id = privilege.getPrivilegeId();
+        this.id = privilege.getId();
         this.value = privilege.getName();
     }
 

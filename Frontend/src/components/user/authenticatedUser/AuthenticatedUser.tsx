@@ -25,7 +25,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             </thead>
             <tbody>
                 {roles.map(role => {
-                    return <tr key={role.roleId}>
+                    return <tr key={role.id}>
                         <td>{role.name}</td>
                     </tr>
                 })}
@@ -42,7 +42,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             </thead>
             <tbody>
                 {privileges.map(privilege => {
-                    return <tr key={privilege.privilegeId}>
+                    return <tr key={privilege.id}>
                         <td>{privilege.name}</td>
                     </tr>
                 })}
@@ -75,7 +75,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
                 </tr>
                 <tr>
                     <td>User ID</td>
-                    <td>{authenticatedUser?.userId}</td>
+                    <td>{authenticatedUser?.id}</td>
                 </tr>
                 <tr>
                     <td>User Status</td>

@@ -32,14 +32,14 @@ const RealTeamDetails: React.FC<{ team: tTeamDetail }> = (props) => {
         <tbody>
             {
                 props.team.members.map(member => {
-                    const linkToDetails = `/user/${member.userId}`
-                    return <tr key={member.userId}>
+                    const linkToDetails = `/user/${member.id}`
+                    return <tr key={member.id}>
                         <td style={{ textAlign: 'center' }}>
                             <Link to={linkToDetails}>
                                 <Button variant="secondary" size="sm">Details</Button>
                             </Link>
                         </td>
-                        <td>{member.userId}</td>
+                        <td>{member.id}</td>
                         <td>{member.firstName}</td>
                         <td>{member.lastName}</td>
                         <td>{member.gamerTag}</td>

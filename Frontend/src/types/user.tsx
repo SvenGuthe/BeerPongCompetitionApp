@@ -1,20 +1,19 @@
+import { tID } from "./defaults/generics";
 import { tTimestamp } from "./defaults/timestamp";
 import { Privilege } from "./enums/privilege";
 import { Role } from "./enums/role";
 import { UserStatus } from "./enums/userStatus";
 
-export type tPrivilege = {
-    privilegeId: number,
+export type tPrivilege = tID & {
     name: Privilege
 }
 
-export type tRole = {
-    roleId: number,
+export type tRole = tID & {
     name: Role
     privileges: tPrivilege[]
 }
 
-export type tUserDetail = {
+export type tUserDetail = tID & {
     confirmationToken: {
         confirmationToken: string,
         createdDate: tTimestamp,
@@ -27,7 +26,6 @@ export type tUserDetail = {
     gamerTag: string,
     lastName: string,
     roles: tRole[],
-    userId: number,
     userStatus: {
         userStatus: UserStatus,
         userStatusId: number

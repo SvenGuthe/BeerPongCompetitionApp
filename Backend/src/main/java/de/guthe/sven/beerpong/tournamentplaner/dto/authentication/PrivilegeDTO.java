@@ -4,26 +4,26 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 
 public class PrivilegeDTO {
 
-    private Long privilegeId;
+    private Long id;
 
     private String name;
 
-    public PrivilegeDTO(Long privilegeId, String name) {
-        this.privilegeId = privilegeId;
+    public PrivilegeDTO(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
     public PrivilegeDTO(Privilege privilege) {
-        this.privilegeId = privilege.getPrivilegeId();
+        this.id = privilege.getId();
         this.name = privilege.getName();
     }
 
-    public Long getPrivilegeId() {
-        return privilegeId;
+    public Long getId() {
+        return id;
     }
 
-    public void setPrivilegeId(Long privilegeId) {
-        this.privilegeId = privilegeId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

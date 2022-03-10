@@ -42,7 +42,7 @@ public class UserStatusController {
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(userStatus -> new EnumDTO(
-				userStatus.getUserStatusId(),
+				userStatus.getId(),
 				userStatus.getUserStatus().toString()
 		)).collect(Collectors.toList());
 

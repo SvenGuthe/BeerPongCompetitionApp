@@ -41,7 +41,7 @@ const UserOverview: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {users.map(user => <UserRow key={user.userId} user={user} />)}
+                {users.map(user => <UserRow key={user.id} user={user} />)}
             </tbody>
         </Table>
     }

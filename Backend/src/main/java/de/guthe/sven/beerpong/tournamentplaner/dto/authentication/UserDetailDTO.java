@@ -13,24 +13,24 @@ public class UserDetailDTO {
 
     static class ConfirmationToken {
 
-        private Long tokenid;
+        private Long id;
 
         private String confirmationToken;
 
         private Timestamp createdDate;
 
-        public ConfirmationToken(Long tokenid, String confirmationToken, Timestamp createdDate) {
-            this.tokenid = tokenid;
+        public ConfirmationToken(Long id, String confirmationToken, Timestamp createdDate) {
+            this.id = id;
             this.confirmationToken = confirmationToken;
             this.createdDate = createdDate;
         }
 
-        public Long getTokenid() {
-            return tokenid;
+        public Long getId() {
+            return id;
         }
 
-        public void setTokenid(Long tokenid) {
-            this.tokenid = tokenid;
+        public void setId(Long id) {
+            this.id = id;
         }
 
         public String getConfirmationToken() {
@@ -52,24 +52,24 @@ public class UserDetailDTO {
 
     static class Role {
 
-        private Long roleId;
+        private Long id;
 
         private String name;
 
         Collection<Privilege> privileges;
 
-        public Role(Long roleId, String name, Collection<Privilege> privileges) {
-            this.roleId = roleId;
+        public Role(Long id, String name, Collection<Privilege> privileges) {
+            this.id = id;
             this.name = name;
             this.privileges = privileges;
         }
 
-        public Long getRoleId() {
-            return roleId;
+        public Long getId() {
+            return id;
         }
 
-        public void setRoleId(Long roleId) {
-            this.roleId = roleId;
+        public void setId(Long id) {
+            this.id = id;
         }
 
         public String getName() {
@@ -150,7 +150,7 @@ public class UserDetailDTO {
         }
     }
 
-    private Long userId;
+    private Long id;
 
     private String firstName;
 
@@ -179,7 +179,7 @@ public class UserDetailDTO {
     public UserDetailDTO(User user) {
         List<Role> roles = user.getRoles().stream().map(role -> {
             Collection<Privilege> privileges = role.getPrivileges();
-            Long roleId = role.getRoleId();
+            Long roleId = role.getId();
             String name = role.getName();
 
             return new Role (
@@ -205,7 +205,7 @@ public class UserDetailDTO {
         }).collect(Collectors.toList());
 
         List<ConfirmationToken> confirmationTokens = user.getConfirmationToken().stream().map(confirmationToken -> {
-            Long id = confirmationToken.getTokenid();
+            Long id = confirmationToken.getId();
             String confirmationTokenString = confirmationToken.getConfirmationToken();
             Timestamp createdDate = confirmationToken.getCreatedDate();
             return new ConfirmationToken(
@@ -215,7 +215,7 @@ public class UserDetailDTO {
             );
         }).collect(Collectors.toList());
 
-        this.userId = user.getUserId();
+        this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this. gamerTag = user.getGamerTag();
@@ -228,12 +228,12 @@ public class UserDetailDTO {
         this.confirmationToken = confirmationTokens;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

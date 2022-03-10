@@ -44,7 +44,7 @@ public class RoleController {
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(role -> new EnumDTO(
-				role.getRoleId(),
+				role.getId(),
 				role.getName()
 		)).collect(Collectors.toList());
 

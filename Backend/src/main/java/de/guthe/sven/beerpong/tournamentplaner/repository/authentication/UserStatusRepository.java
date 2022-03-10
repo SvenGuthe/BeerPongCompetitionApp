@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserStatusRepository extends JpaRepository<UserStatus, Long> {
 
-    @Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.userstatusid LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.userstatusid LIKE CONCAT(?1, '%')",
+    @Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.id LIKE CONCAT(?1, '%')",
+            countQuery = "SELECT count(*) FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.id LIKE CONCAT(?1, '%')",
             nativeQuery = true)
     Page<UserStatus> findAll(String search, PageRequest pageRequest);
 

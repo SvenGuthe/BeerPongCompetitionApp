@@ -1,10 +1,5 @@
-export type tEnum = {
-    id: number,
-    value: string
-}
+import { tID } from "./defaults/generics"
 
-export type tPaginationDTO = {
-    size: number,
-    pages: number,
-    data: tEnum[]
+export type tEnum = tID & {
+    value: string
 }

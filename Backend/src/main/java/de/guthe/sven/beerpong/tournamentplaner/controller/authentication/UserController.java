@@ -51,7 +51,7 @@ public class UserController {
 	@PutMapping("/user")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public UserDetailDTO changeUserRole(@RequestBody ChangeUserRoleDTO changeUserRoleDTO) {
-		User user = userRepository.findById(changeUserRoleDTO.getUserId()).get();
+		User user = userRepository.findById(changeUserRoleDTO.getId()).get();
 		Role role = roleRepository.findByName(changeUserRoleDTO.getRole());
 
 		Collection<Role> userRoles = user.getRoles();

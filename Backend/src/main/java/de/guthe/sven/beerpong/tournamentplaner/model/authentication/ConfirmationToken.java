@@ -14,7 +14,7 @@ public class ConfirmationToken {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "tokenid")
-	private Long tokenid;
+	private Long id;
 
 	@Column(name = "confirmationtoken")
 	private String confirmationToken;
@@ -36,12 +36,12 @@ public class ConfirmationToken {
 	public ConfirmationToken() {
 	}
 
-	public void setTokenid(Long tokenid) {
-		this.tokenid = tokenid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getTokenid() {
-		return tokenid;
+	public Long getId() {
+		return id;
 	}
 
 	public String getConfirmationToken() {

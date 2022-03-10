@@ -1,3 +1,4 @@
+import { tID } from "./defaults/generics"
 import { tTimestamp } from "./defaults/timestamp"
 import { BillingStatus } from "./enums/billingStatus"
 import { CompetitionAdminStatus } from "./enums/competitionAdminStatus"
@@ -5,59 +6,51 @@ import { CompetitionPlayerStatus } from "./enums/competitionPlayerStatus"
 import { CompetitionStatus } from "./enums/competitionStatus"
 import { RegistrationStatus } from "./enums/registrationStatus"
 
-export type tCompetitionAdminStatusHistory = {
+export type tCompetitionAdminStatusHistory = tID & {
     competitionAdminStatusType: CompetitionAdminStatus,
-    id: number,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tCompetitionAdmin = {
+export type tCompetitionAdmin = tID & {
     competitionAdminStatusHistories: tCompetitionAdminStatusHistory[],
     gamerTag: string,
-    id: number,
     userId: number
 }
 
-export type tCompetitionStatusHistory = {
+export type tCompetitionStatusHistory = tID & {
     competitionStatusType: CompetitionStatus,
-    id: number,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tBillingStatusHistory = {
+export type tBillingStatusHistory = tID & {
     billingStatusType: BillingStatus,
-    id: number,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tCompetitionPlayer = {
+export type tCompetitionPlayer = tID & {
     competitionPlayerStatusType: CompetitionPlayerStatus,
     gamerTag: string,
-    id: number,
     userId: number
 }
 
-export type tRegistrationStatusHistory = {
-    id: number,
+export type tRegistrationStatusHistory = tID & {
     registrationStatusType: RegistrationStatus
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tTeam = {
-    id: number,
+export type tTeam = tID & {
     teamName: string
 }
 
-export type tCompetitionTeam = {
+export type tCompetitionTeam = tID & {
     billingStatusHistories: tBillingStatusHistory[],
     competitionPlayers: tCompetitionPlayer[],
     competitionTeamName: string,
     creationTime: tTimestamp,
-    id: number,
     registrationStatusHistories: tRegistrationStatusHistory[],
     team: tTeam
 }

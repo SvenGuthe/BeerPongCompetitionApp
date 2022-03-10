@@ -4,7 +4,7 @@ export function removePriviligeDuplicates(arr: tPrivilege[] | undefined) {
     if (arr) {
         return arr.filter((value, index, self) =>
         index === self.findIndex((t) => (
-          t.privilegeId === value.privilegeId
+          t.id === value.id
         ))
       )
     } else {

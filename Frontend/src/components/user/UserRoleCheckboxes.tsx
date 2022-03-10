@@ -20,10 +20,10 @@ const UserRoleCheckboxes: React.FC<{
 
     useEffect(() => {
         if (sendRequest) {
-            dispatch(changeUserStatus(user.userId, role, roleState));
+            dispatch(changeUserStatus(user.id, role, roleState));
             setSendRequest(false);
         }
-    }, [sendRequest, roleState, user.userId, role, dispatch])
+    }, [sendRequest, roleState, user.id, role, dispatch])
 
     const onToggleRoleHandler = (event: ChangeEvent<HTMLInputElement>) => {
        setRoleState(oldRoleState => !oldRoleState);

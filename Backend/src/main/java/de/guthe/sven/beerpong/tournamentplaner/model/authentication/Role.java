@@ -14,7 +14,7 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "roleid", nullable = false)
-	private Long roleId;
+	private Long id;
 
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
@@ -35,8 +35,8 @@ public class Role {
 		this.name = name;
 	}
 
-	public Long getRoleId() {
-		return roleId;
+	public Long getId() {
+		return id;
 	}
 
 	public String getName() {

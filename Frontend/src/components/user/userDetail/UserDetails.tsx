@@ -24,7 +24,7 @@ const UserDetails: React.FC = () => {
     useEffect(() => {
 
         if (id) {
-            const user = users?.find(user => user.userId === +id);
+            const user = users?.find(user => user.id === +id);
             if (user) {
                 setSelectedUser(user)
             } else {
@@ -40,7 +40,7 @@ const UserDetails: React.FC = () => {
             <tbody>
                 <tr>
                     <td>User ID</td>
-                    <td>{selectedUser?.userId}</td>
+                    <td>{selectedUser?.id}</td>
                 </tr>
                 <tr>
                     <td>Vorname</td>

@@ -177,7 +177,7 @@ public class CompetitionDetailDTO {
         }
 
         public CompetitionPlayerDTO(CompetitionPlayer competitionPlayer) {
-            this.userId = competitionPlayer.getUser().getUserId();
+            this.userId = competitionPlayer.getUser().getId();
             this.id = competitionPlayer.getId();
             this.gamerTag = competitionPlayer.getUser().getGamerTag();
             this.competitionPlayerStatusType = competitionPlayer.getCompetitionPlayerStatus().getCompetitionPlayerStatusDescription();
@@ -328,7 +328,7 @@ public class CompetitionDetailDTO {
 
         public CompetitionAdminDTO(CompetitionAdmin competitionAdmin) {
             this.id = competitionAdmin.getId();
-            this.userId = competitionAdmin.getUser().getUserId();
+            this.userId = competitionAdmin.getUser().getId();
             this.gamerTag = competitionAdmin.getUser().getGamerTag();
             this.competitionAdminStatusHistories = competitionAdmin.getCompetitionAdminStatusHistories().stream().map(CompetitionAdminStatusHistoryDTO::new).collect(Collectors.toList());
         }
