@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addUser } from "../../../store/user/user-store";
-import { tUserDetail } from "../../../types/user";
+import { tUser } from "../../../types/authentication";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import RolesTable from "./RolesTable";
-import TeamsTable from "./TeamsTable";
 
 const UserDetails: React.FC = () => {
 
-    const [selectedUser, setSelectedUser] = useState<tUserDetail>();
+    const [selectedUser, setSelectedUser] = useState<tUser>();
     const dispatch = useDispatch();
     const id = useParams().id;
 
@@ -73,7 +72,6 @@ const UserDetails: React.FC = () => {
             </tbody>
         </Table>
         {selectedUser && <RolesTable user={selectedUser} />}
-        {selectedUser && <TeamsTable user={selectedUser} />}
     </>;
 };
 

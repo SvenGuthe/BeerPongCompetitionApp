@@ -1,7 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLinkHistory;
 

@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authorization;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authorization.ACLClassDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLClass;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authorization.ACLClassRepository;

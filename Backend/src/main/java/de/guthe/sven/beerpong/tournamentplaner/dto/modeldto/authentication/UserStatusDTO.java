@@ -1,8 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 
 public class UserStatusDTO extends EnumDTO {

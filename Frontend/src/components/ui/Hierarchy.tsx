@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { HierarchyItem } from "../../types/hierarchy";
+import { HierarchyItem } from "../../utility/hierarchy";
 
 const Hierarchy: React.FC<{
     hierarchyItems: HierarchyItem[]

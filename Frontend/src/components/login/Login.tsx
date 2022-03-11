@@ -5,7 +5,7 @@ import classes from './Login.module.css';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
 import { sendLoginRequest } from "../../store/authentication/authentication-store-actions";
-import { tLogin } from "../../types/authenticate";
+import { tLogin } from "../../types/authentication";
 import { afterLoginCleanup } from "../../store/authentication/authentication-store";
 
 const Login: React.FC = () => {

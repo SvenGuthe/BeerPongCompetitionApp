@@ -1,4 +1,4 @@
-export enum Role {
+export enum tSecurityRole {
     ROLE_ADMINISTRATOR = "ROLE_ADMINISTRATOR",
     ROLE_MODERATOR = "ROLE_MODERATOR",
     ROLE_PLAYER = "ROLE_PLAYER"

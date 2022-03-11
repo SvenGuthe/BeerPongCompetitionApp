@@ -10,21 +10,21 @@ public class CompetitionPlayerDTO extends ID {
 
     private UserDTO user;
 
-    private CompetitionPlayerStatusDTO playerStatusDTO;
+    private CompetitionPlayerStatusDTO competitionPlayerStatus;
 
     private Timestamp creationTime;
 
-    public CompetitionPlayerDTO(Long id, UserDTO user, CompetitionPlayerStatusDTO playerStatusDTO, Timestamp creationTime) {
+    public CompetitionPlayerDTO(Long id, UserDTO user, CompetitionPlayerStatusDTO competitionPlayerStatus, Timestamp creationTime) {
         super(id);
         this.user = user;
-        this.playerStatusDTO = playerStatusDTO;
+        this.competitionPlayerStatus = competitionPlayerStatus;
         this.creationTime = creationTime;
     }
 
     public CompetitionPlayerDTO(CompetitionPlayer competitionPlayer) {
         super(competitionPlayer.getId());
         this.user = new UserDTO(competitionPlayer.getUser());
-        this.playerStatusDTO = new CompetitionPlayerStatusDTO(competitionPlayer.getCompetitionPlayerStatus());
+        this.competitionPlayerStatus = new CompetitionPlayerStatusDTO(competitionPlayer.getCompetitionPlayerStatus());
         this.creationTime = competitionPlayer.getCreationTime();
     }
 
@@ -36,12 +36,12 @@ public class CompetitionPlayerDTO extends ID {
         this.user = user;
     }
 
-    public CompetitionPlayerStatusDTO getPlayerStatusDTO() {
-        return playerStatusDTO;
+    public CompetitionPlayerStatusDTO getCompetitionPlayerStatus() {
+        return competitionPlayerStatus;
     }
 
-    public void setPlayerStatusDTO(CompetitionPlayerStatusDTO playerStatusDTO) {
-        this.playerStatusDTO = playerStatusDTO;
+    public void setCompetitionPlayerStatus(CompetitionPlayerStatusDTO competitionPlayerStatus) {
+        this.competitionPlayerStatus = competitionPlayerStatus;
     }
 
     public Timestamp getCreationTime() {

@@ -1,8 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.CompetitionPlayerStatusType;
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 
 import java.sql.Timestamp;

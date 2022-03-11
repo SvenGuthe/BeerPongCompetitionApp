@@ -4,7 +4,7 @@ import Hierarchy from "../../components/ui/Hierarchy";
 import { roleRoute } from "../../api-routes/authentication";
 import { RootState } from "../../store/combine-store";
 import { storeRoles } from "../../store/user/user-store";
-import { homeHierarchy, roleHierarchy } from "../../types/hierarchy";
+import { homeHierarchy, roleHierarchy } from "../../utility/hierarchy";
 
 const Role = () => {
 

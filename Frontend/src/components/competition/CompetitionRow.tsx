@@ -1,8 +1,8 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { tCompetitionDetail } from "../../types/competition";
+import { tCompetition } from "../../types/competition";
 
-const CompetitionRow: React.FC<{ competition: tCompetitionDetail }> = (props) => {
+const CompetitionRow: React.FC<{ competition: tCompetition }> = (props) => {
 
     const competition = props.competition;
 
@@ -21,8 +21,8 @@ const CompetitionRow: React.FC<{ competition: tCompetitionDetail }> = (props) =>
         <td>{competition.competitionTeams.length}</td>
         <td>{competition.minTeams}</td>
         <td>{competition.maxTeams}</td>
-        <td>{competition.competitionStatusHistories.find(
-            competitionStatusHistory => competitionStatusHistory.validTo === null
+        <td>{competition.competitionStatus.find(
+            singleCompetitionStatus => singleCompetitionStatus.validTo === null
         )?.competitionStatusType}</td>
     </tr>
 

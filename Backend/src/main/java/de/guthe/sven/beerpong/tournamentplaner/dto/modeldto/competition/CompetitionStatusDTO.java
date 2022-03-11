@@ -1,8 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.CompetitionStatusType;
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionStatusHistory;
 
@@ -86,5 +85,13 @@ public class CompetitionStatusDTO extends EnumDTO {
 
     public void setValidTo(Timestamp validTo) {
         this.validTo = validTo;
+    }
+
+    public Long getCompetitionStatusId() {
+        return competitionStatusId;
+    }
+
+    public void setCompetitionStatusId(Long competitionStatusId) {
+        this.competitionStatusId = competitionStatusId;
     }
 }

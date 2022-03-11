@@ -7,19 +7,19 @@ const CompetitionAdminTable: React.FC<{ competitionAdmins: tCompetitionAdmin[] }
     const competitionAdmins = props.competitionAdmins;
 
     const currentAdministrators = competitionAdmins.flatMap(competitionAdmin => {
-        const linkToDetails = `/user/${competitionAdmin.userId}`
-        return competitionAdmin.competitionAdminStatusHistories.map(competitionStatusHistory => {
-            return <tr key={competitionStatusHistory.id}>
+        const linkToDetails = `/user/${competitionAdmin.user.id}`
+        return competitionAdmin.competitionAdminStatus.map(singleCompetitionAdminStatus => {
+            return <tr key={singleCompetitionAdminStatus.id}>
                 <td style={{ textAlign: 'center', width: '100px' }}>
                     <Link to={linkToDetails}>
                         <Button variant="secondary" size="sm">Details</Button>
                     </Link>
                 </td>
-                <td>{competitionAdmin.userId}</td>
-                <td>{competitionAdmin.gamerTag}</td>
-                <td>{competitionStatusHistory.validFrom}</td>
-                <td>{competitionStatusHistory.validTo}</td>
-                <td>{competitionStatusHistory.competitionAdminStatusType}</td>
+                <td>{competitionAdmin.user.id}</td>
+                <td>{competitionAdmin.user.gamerTag}</td>
+                <td>{singleCompetitionAdminStatus.validFrom}</td>
+                <td>{singleCompetitionAdminStatus.validTo}</td>
+                <td>{singleCompetitionAdminStatus.competitionAdminStatusDescription}</td>
             </tr>;
         })
     });

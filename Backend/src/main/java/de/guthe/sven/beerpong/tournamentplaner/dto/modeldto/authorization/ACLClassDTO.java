@@ -1,7 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authorization;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLClass;
 
 public class ACLClassDTO extends EnumDTO {

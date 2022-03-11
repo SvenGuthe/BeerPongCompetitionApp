@@ -3,7 +3,7 @@ import EnumOverview from "../../components/enums/EnumOverview";
 import Hierarchy from "../../components/ui/Hierarchy";
 import { privilegeRoute } from "../../api-routes/authentication";
 import { RootState } from "../../store/combine-store";
-import { homeHierarchy, privilegeHierarchy } from "../../types/hierarchy";
+import { homeHierarchy, privilegeHierarchy } from "../../utility/hierarchy";
 import { storePrivileges } from "../../store/user/user-store";
 
 const Privilege = () => {

@@ -1,18 +1,17 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeUserStatus } from "../../store/user/user-store-actions";
-import { Role } from "../../types/enums/role";
-import { tUserDetail } from "../../types/user";
+import { tUser } from "../../types/authentication";
+import { tSecurityRole } from "../../types/enums/securityRole";
 
 const UserRoleCheckboxes: React.FC<{
-    user: tUserDetail,
-    role: Role
+    user: tUser,
+    role: tSecurityRole
 }> = (props) => {
 
     const user = props.user;
     const role = props.role;
 
-    const initialRoleState = !!user.roles.find(currentRole => currentRole.name === role);
+    const initialRoleState = !!user.roles.find(currentRole => currentRole.role === role);
     const dispatch = useDispatch();
 
     const [roleState, setRoleState] = useState<boolean>(initialRoleState);
@@ -20,14 +19,13 @@ const UserRoleCheckboxes: React.FC<{
 
     useEffect(() => {
         if (sendRequest) {
-            dispatch(changeUserStatus(user.id, role, roleState));
+            // Send Change Role Rquest
             setSendRequest(false);
         }
     }, [sendRequest, roleState, user.id, role, dispatch])
 
     const onToggleRoleHandler = (event: ChangeEvent<HTMLInputElement>) => {
        setRoleState(oldRoleState => !oldRoleState);
-    
        setSendRequest(true);
     }
 

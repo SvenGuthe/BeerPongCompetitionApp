@@ -1,4 +1,4 @@
-export enum CompetitionStatus {
+export enum tCompetitionStatusType {
     CREATION_PHASE = "CREATION_PHASE",
     REGISTRATION_PHASE = "REGISTRATION_PHASE",
     COMPETITION_PLANNING_PHASE = "COMPETITION_PLANNING_PHASE",

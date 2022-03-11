@@ -1,6 +1,6 @@
 import {default as TeamComponent} from "../../components/team/TeamOverview";
 import Hierarchy from "../../components/ui/Hierarchy";
-import { homeHierarchy, teamHierarchy } from "../../types/hierarchy";
+import { homeHierarchy, teamHierarchy } from "../../utility/hierarchy";
 
 const Team = () => {
     return <>

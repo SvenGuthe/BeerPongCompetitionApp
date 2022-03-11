@@ -32,7 +32,6 @@ const UserOverview: React.FC = () => {
                     <th></th>
                     <th>ID</th>
                     <th>Spielername</th>
-                    <th>Anzahl Teams</th>
                     <th>Freigeschalten</th>
                     <th>User Status</th>
                     <th style={{ textAlign: 'center' }}>Administrator</th>

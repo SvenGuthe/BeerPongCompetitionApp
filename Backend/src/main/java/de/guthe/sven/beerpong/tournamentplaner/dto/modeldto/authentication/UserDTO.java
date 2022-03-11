@@ -23,7 +23,7 @@ public class UserDTO extends ID {
 
     Collection<RoleDTO> roles;
 
-    UserStatusDTO userStatusDTO;
+    UserStatusDTO userStatus;
 
     Collection<ConfirmationTokenDTO> confirmationToken;
 
@@ -34,7 +34,7 @@ public class UserDTO extends ID {
     // private Collection<CompositionPlayer>  compositionPlayer;
 
 
-    public UserDTO(Long id, String firstName, String lastName, String gamerTag, String email, boolean enabled, Timestamp creationTime, Collection<RoleDTO> roles, UserStatusDTO userStatusDTO, Collection<ConfirmationTokenDTO> confirmationToken) {
+    public UserDTO(Long id, String firstName, String lastName, String gamerTag, String email, boolean enabled, Timestamp creationTime, Collection<RoleDTO> roles, UserStatusDTO userStatus, Collection<ConfirmationTokenDTO> confirmationToken) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,7 +43,7 @@ public class UserDTO extends ID {
         this.enabled = enabled;
         this.creationTime = creationTime;
         this.roles = roles;
-        this.userStatusDTO = userStatusDTO;
+        this.userStatus = userStatus;
         this.confirmationToken = confirmationToken;
     }
 
@@ -56,7 +56,7 @@ public class UserDTO extends ID {
         this.enabled = user.isEnabled();
         this.creationTime = user.getCreationTime();
         this.roles = user.getRoles().stream().map(RoleDTO::new).collect(Collectors.toList());
-        this.userStatusDTO = new UserStatusDTO(user.getUserStatus());
+        this.userStatus = new UserStatusDTO(user.getUserStatus());
         this.confirmationToken = user.getConfirmationToken().stream().map(ConfirmationTokenDTO::new).collect(Collectors.toList());
     }
 
@@ -116,12 +116,12 @@ public class UserDTO extends ID {
         this.roles = roles;
     }
 
-    public UserStatusDTO getUserStatusDTO() {
-        return userStatusDTO;
+    public UserStatusDTO getUserStatus() {
+        return userStatus;
     }
 
-    public void setUserStatusDTO(UserStatusDTO userStatusDTO) {
-        this.userStatusDTO = userStatusDTO;
+    public void setUserStatus(UserStatusDTO userStatus) {
+        this.userStatus = userStatus;
     }
 
     public Collection<ConfirmationTokenDTO> getConfirmationToken() {

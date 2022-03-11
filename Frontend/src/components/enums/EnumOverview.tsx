@@ -1,8 +1,7 @@
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { tPaginationDTO } from "../../types/defaults/generics";
-import { tEnum } from "../../types/enum";
+import { tEnum, tPaginationDTO } from "../../types/defaults/generics";
 import { getRequest } from "../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../ui/TableWithSearchAndFilter";
 

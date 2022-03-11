@@ -9,45 +9,32 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CompetitionAdminDTO extends ID {
-
-    private CompetitionDTO competitionDTO;
-
-    private UserDTO userDTO;
+    private UserDTO user;
 
     private Timestamp creationTime;
 
     private Collection<CompetitionAdminStatusDTO> competitionAdminStatus;
 
-    public CompetitionAdminDTO(Long id, CompetitionDTO competitionDTO, UserDTO userDTO, Timestamp creationTime, Collection<CompetitionAdminStatusDTO> competitionAdminStatus) {
+    public CompetitionAdminDTO(Long id, UserDTO user, Timestamp creationTime, Collection<CompetitionAdminStatusDTO> competitionAdminStatus) {
         super(id);
-        this.competitionDTO = competitionDTO;
-        this.userDTO = userDTO;
+        this.user = user;
         this.creationTime = creationTime;
         this.competitionAdminStatus = competitionAdminStatus;
     }
 
     public CompetitionAdminDTO(CompetitionAdmin competitionAdmin) {
         super(competitionAdmin.getId());
-        this.competitionDTO = new CompetitionDTO(competitionAdmin.getCompetition());
-        this.userDTO = new UserDTO(competitionAdmin.getUser());
+        this.user = new UserDTO(competitionAdmin.getUser());
         this.creationTime = competitionAdmin.getCreationTime();
         this.competitionAdminStatus = competitionAdmin.getCompetitionAdminStatusHistories().stream().map(CompetitionAdminStatusDTO::new).collect(Collectors.toList());
     }
 
-    public CompetitionDTO getCompetitionDTO() {
-        return competitionDTO;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setCompetitionDTO(CompetitionDTO competitionDTO) {
-        this.competitionDTO = competitionDTO;
-    }
-
-    public UserDTO getUserDTO() {
-        return userDTO;
-    }
-
-    public void setUserDTO(UserDTO userDTO) {
-        this.userDTO = userDTO;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public Timestamp getCreationTime() {

@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;

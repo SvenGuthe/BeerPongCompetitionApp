@@ -1,4 +1,4 @@
-export enum RegistrationStatus {
+export enum tRegistrationStatusType {
     REGISTERED = "REGISTERED",
     UNREGISTERED = "UNREGISTERED"
 }

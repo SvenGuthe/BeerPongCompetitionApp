@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionPlayerStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionPlayerStatusRepository;

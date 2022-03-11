@@ -1,6 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tPaginationDTO } from '../../types/defaults/generics'
-import { tEnum } from '../../types/enum'
+import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
     aclClasses: tPaginationDTO<tEnum> | null

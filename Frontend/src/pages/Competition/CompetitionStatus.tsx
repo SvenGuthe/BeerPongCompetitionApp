@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import EnumOverview from "../../components/enums/EnumOverview";
 import Hierarchy from "../../components/ui/Hierarchy";
 import { RootState } from "../../store/combine-store";
-import { competitionStatusHierarchy, homeHierarchy } from "../../types/hierarchy";
+import { competitionStatusHierarchy, homeHierarchy } from "../../utility/hierarchy";
 import { competitionStatusRoute } from "../../api-routes/competition";
 import { storeCompetitionStatus } from "../../store/competition/competition-store";
 

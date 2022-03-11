@@ -7,16 +7,16 @@ const CompetitionPlayerTable: React.FC<{ competitionPlayers: tCompetitionPlayer[
     const competitionPlayers = props.competitionPlayers;
 
     const rows = competitionPlayers.map(competitionPlayer => {
-        const linkToDetails = `/user/${competitionPlayer.userId}`
+        const linkToDetails = `/user/${competitionPlayer.user.id}`
         return <tr key={competitionPlayer.id}>
             <td style={{ textAlign: 'center', width: '100px' }}>
                 <Link to={linkToDetails}>
                     <Button variant="secondary" size="sm">Details</Button>
                 </Link>
             </td>
-            <td>{competitionPlayer.userId}</td>
-            <td>{competitionPlayer.gamerTag}</td>
-            <td>{competitionPlayer.competitionPlayerStatusType}</td>
+            <td>{competitionPlayer.user.id}</td>
+            <td>{competitionPlayer.user.gamerTag}</td>
+            <td>{competitionPlayer.competitionPlayerStatus.competitionPlayerStatusDescription}</td>
         </tr>
     })
 

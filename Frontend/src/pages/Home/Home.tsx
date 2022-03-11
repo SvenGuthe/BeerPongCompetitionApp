@@ -2,7 +2,7 @@ import AuthenticatedUser from "../../components/user/authenticatedUser/Authentic
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
 import Hierarchy from "../../components/ui/Hierarchy";
-import { homeHierarchy } from "../../types/hierarchy";
+import { homeHierarchy } from "../../utility/hierarchy";
 
 const Home = () => {
 

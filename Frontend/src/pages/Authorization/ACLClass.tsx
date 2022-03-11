@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import EnumOverview from "../../components/enums/EnumOverview";
 import Hierarchy from "../../components/ui/Hierarchy";
 import { RootState } from "../../store/combine-store";
-import { aclClassHierarchy, homeHierarchy } from "../../types/hierarchy";
+import { aclClassHierarchy, homeHierarchy } from "../../utility/hierarchy";
 import { aclClassRoute } from "../../api-routes/authorization";
 import { storeACLClasses } from "../../store/authorization/authorization-store";
 

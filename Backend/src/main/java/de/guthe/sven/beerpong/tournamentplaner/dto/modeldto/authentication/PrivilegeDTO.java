@@ -1,8 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityPrivilege;
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 
 public class PrivilegeDTO extends EnumDTO {

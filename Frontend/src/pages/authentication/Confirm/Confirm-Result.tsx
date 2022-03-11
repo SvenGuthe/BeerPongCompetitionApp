@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import {default as ConfirmResultComponent} from "../../../components/confirm/result/ConfirmResult";
 import Hierarchy from "../../../components/ui/Hierarchy";
-import { confirmResultHierarchy, homeHierarchy } from "../../../types/hierarchy";
+import { confirmResultHierarchy, homeHierarchy } from "../../../utility/hierarchy";
 
 const ConfirmResult = () => {
     const confirmedUser = useSelector((state: RootState) => {

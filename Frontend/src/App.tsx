@@ -13,7 +13,6 @@ import { RootState } from "./store/combine-store";
 import NotFound from "./pages/authentication/404/NotFound";
 import axios from "axios";
 import TeamDetails from "./pages/Team/TeamDetails";
-import { Privilege as PrivilegeEnum } from "./types/enums/privilege";
 import Team from "./pages/Team/Team";
 import User from "./pages/User/User";
 import UserDetails from "./pages/User/UserDetails";
@@ -30,7 +29,8 @@ import CompetitionAdminStatus from "./pages/Competition/CompetitionAdminStatus";
 import CompetitionPlayerStatus from "./pages/Competition/CompetitionPlayerStatus";
 import RegistrationStatus from "./pages/Competition/RegistrationStatus";
 import BillingStatus from "./pages/Competition/BillingStatus";
-import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, confirmResultHierarchy, confirmWaitHierarchy, homeHierarchy, loginHierarchy, notFoundHierarchy, privilegeHierarchy, registerHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from "./types/hierarchy";
+import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, confirmResultHierarchy, confirmWaitHierarchy, homeHierarchy, loginHierarchy, notFoundHierarchy, privilegeHierarchy, registerHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from "./utility/hierarchy";
+import { tSecurityPrivilege } from "./types/enums/securityPrivilege";
 
 const App: React.FC = () => {
 
@@ -80,7 +80,7 @@ const App: React.FC = () => {
                 <Route path={confirmResultHierarchy.relativeLabel} element={<ConfirmResult />} />
             </Route>
             <Route path={teamHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_TEAM_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_TEAM_PRIVILEGE) ?
                     <>
                         <Route index element={<Team />} />
                         <Route path=":id" element={<TeamDetails />} />
@@ -89,7 +89,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={teamStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_TEAM_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_TEAM_PRIVILEGE) ?
                     <>
                         <Route index element={<TeamStatus />} />
                     </>
@@ -97,7 +97,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={userHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_AUTHENTICATION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE) ?
                     <>
                         <Route index element={<User />} />
                         <Route path=":id" element={<UserDetails />} />
@@ -106,7 +106,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={userStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_AUTHENTICATION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE) ?
                     <>
                         <Route index element={<UserStatus />} />
                     </>
@@ -114,7 +114,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={roleHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_AUTHENTICATION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE) ?
                     <>
                         <Route index element={<Role />} />
                     </>
@@ -122,7 +122,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={privilegeHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_AUTHENTICATION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE) ?
                     <>
                         <Route index element={<Privilege />} />
                     </>
@@ -130,7 +130,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={aclClassHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_ACL_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_ACL_PRIVILEGE) ?
                     <>
                         <Route index element={<ACLClass />} />
                     </>
@@ -138,7 +138,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={competitionHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_COMPETITION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) ?
                     <>
                         <Route index element={<Competition />} />
                         <Route path=":id" element={<CompetitionDetails />} />
@@ -147,7 +147,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={competitionStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_COMPETITION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) ?
                     <>
                         <Route index element={<CompetitionStatus />} />
                     </>
@@ -155,7 +155,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={competitionAdminStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_COMPETITION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) ?
                     <>
                         <Route index element={<CompetitionAdminStatus />} />
                     </>
@@ -163,7 +163,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={competitionPlayerStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_COMPETITION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) ?
                     <>
                         <Route index element={<CompetitionPlayerStatus />} />
                     </>
@@ -171,7 +171,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={registrationStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_COMPETITION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) ?
                     <>
                         <Route index element={<RegistrationStatus />} />
                     </>
@@ -179,7 +179,7 @@ const App: React.FC = () => {
                     <Route index element={<NotFound />} />}
             </Route>
             <Route path={billingStatusHierarchy.relativeLabel}>
-                {privileges?.find(privilege => privilege.name === PrivilegeEnum.ADMIN_COMPETITION_PRIVILEGE) ?
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) ?
                     <>
                         <Route index element={<BillingStatus />} />
                     </>

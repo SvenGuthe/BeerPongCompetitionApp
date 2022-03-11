@@ -1,10 +1,9 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tPaginationDTO } from '../../types/defaults/generics'
-import { tEnum } from '../../types/enum'
-import { tTeamDetail } from '../../types/team'
+import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
+import { tTeam } from '../../types/team'
 
 type SliceState = {
-    teams: tTeamDetail[] | null,
+    teams: tTeam[] | null,
     teamStatus: tPaginationDTO<tEnum> | null
 }
 
@@ -17,13 +16,13 @@ export const teamSlice = createSlice({
     name: 'teams',
     initialState: initialState,
     reducers: {
-        storeTeams: (state, action: PayloadAction<tTeamDetail[]>) => {
+        storeTeams: (state, action: PayloadAction<tTeam[]>) => {
             state.teams = action.payload;
         },
         storeTeamStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.teamStatus = action.payload;
         },
-        updateTeam: (state, action: PayloadAction<tTeamDetail[]>) => {
+        updateTeam: (state, action: PayloadAction<tTeam[]>) => {
             const fetchedTeam = action.payload[0];
             if (state.teams) {
                 state.teams = state.teams.map(team => {
@@ -35,7 +34,7 @@ export const teamSlice = createSlice({
                 })
             }
         },
-        addTeam: (state, action: PayloadAction<tTeamDetail>) => {
+        addTeam: (state, action: PayloadAction<tTeam>) => {
             const newTeam = action.payload;
             if (state.teams) {
                 const existingTeam = state.teams.find(team => team.id === newTeam.id);

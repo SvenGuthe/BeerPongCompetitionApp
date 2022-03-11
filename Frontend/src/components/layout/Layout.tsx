@@ -7,10 +7,10 @@ import classes from './Layout.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/combine-store';
 import { logout } from '../../store/authentication/authentication-store';
-import { Role } from '../../types/enums/role';
-import { Privilege } from '../../types/enums/privilege';
 import { removeDuplicates } from '../../utility/arrayFunctions';
-import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, privilegeHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from '../../types/hierarchy';
+import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, privilegeHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from '../../utility/hierarchy';
+import { tSecurityRole } from '../../types/enums/securityRole';
+import { tSecurityPrivilege } from '../../types/enums/securityPrivilege';
 
 const Layout: React.FC = () => {
 
@@ -51,8 +51,8 @@ const Layout: React.FC = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto my-2 my-lg-0">
-                        {roles?.find(role => role.name === Role.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="navbarScrollingDropdown" menuVariant="dark">
-                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_TEAM_PRIVILEGE) &&
+                        {roles?.find(role => role.role === tSecurityRole.ROLE_ADMINISTRATOR) && <NavDropdown title="Admin Bereich" id="navbarScrollingDropdown" menuVariant="dark">
+                            {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_TEAM_PRIVILEGE) &&
                                 <>
                                     <NavDropdown.Item as={Link} to={teamHierarchy.relative}>
                                         <Nav.Link as="div">{teamHierarchy.label}</Nav.Link>
@@ -62,7 +62,7 @@ const Layout: React.FC = () => {
                                     </NavDropdown.Item>
                                 </>
                             }
-                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_AUTHENTICATION_PRIVILEGE) &&
+                            {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE) &&
                                 <>
                                     <NavDropdown.Item as={Link} to={userHierarchy.relative}>
                                         <Nav.Link as="div">{userHierarchy.label}</Nav.Link>
@@ -78,12 +78,12 @@ const Layout: React.FC = () => {
                                     </NavDropdown.Item>
                                 </>
                             }
-                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_ACL_PRIVILEGE) &&
+                            {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_ACL_PRIVILEGE) &&
                                 <NavDropdown.Item as={Link} to={aclClassHierarchy.relative}>
                                     <Nav.Link as="div">{aclClassHierarchy.label}</Nav.Link>
                                 </NavDropdown.Item>
                             }
-                            {privileges?.find(privilege => privilege.name === Privilege.ADMIN_COMPETITION_PRIVILEGE) &&
+                            {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE) &&
                                 <>
                                     <NavDropdown.Item as={Link} to={competitionHierarchy.relative}>
                                         <Nav.Link as="div">{competitionHierarchy.label}</Nav.Link>

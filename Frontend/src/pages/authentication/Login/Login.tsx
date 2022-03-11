@@ -1,6 +1,6 @@
 import { default as LoginComponent } from "../../../components/login/Login";
 import Hierarchy from "../../../components/ui/Hierarchy";
-import { homeHierarchy, loginHierarchy } from "../../../types/hierarchy";
+import { homeHierarchy, loginHierarchy } from "../../../utility/hierarchy";
 
 const Login: React.FC = () => {
 

@@ -1,23 +1,23 @@
 import { Table } from "react-bootstrap";
-import { Role } from "../../../types/enums/role";
-import { tUserDetail } from "../../../types/user";
+import { tUser } from "../../../types/authentication";
+import { tSecurityRole } from "../../../types/enums/securityRole";
 import UserRoleCheckboxes from "../UserRoleCheckboxes";
 
-const RolesTable: React.FC<{ user: tUserDetail }> = (props) => {
+const RolesTable: React.FC<{ user: tUser }> = (props) => {
 
     const user = props.user;
 
     const checkboxAdmin = UserRoleCheckboxes({
         user: user,
-        role: Role.ROLE_ADMINISTRATOR
+        role: tSecurityRole.ROLE_ADMINISTRATOR
     });
     const checkboxModerator = UserRoleCheckboxes({
         user: user,
-        role: Role.ROLE_MODERATOR
+        role: tSecurityRole.ROLE_MODERATOR
     });
     const checkboxPlayer = UserRoleCheckboxes({
         user: user,
-        role: Role.ROLE_PLAYER
+        role: tSecurityRole.ROLE_PLAYER
     });
 
     return <>

@@ -1,9 +1,9 @@
 import { Table } from "react-bootstrap";
-import { tUserDetail } from "../../../types/user";
+import { tUser } from "../../../types/authentication";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 
 interface tProps {
-    authenticatedUser?: tUserDetail
+    authenticatedUser?: tUser
 }
 
 const AuthenticatedUser: React.FC<tProps> = (props) => {
@@ -26,7 +26,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             <tbody>
                 {roles.map(role => {
                     return <tr key={role.id}>
-                        <td>{role.name}</td>
+                        <td>{role.role}</td>
                     </tr>
                 })}
             </tbody>
@@ -43,7 +43,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             <tbody>
                 {privileges.map(privilege => {
                     return <tr key={privilege.id}>
-                        <td>{privilege.name}</td>
+                        <td>{privilege.privilege}</td>
                     </tr>
                 })}
             </tbody>
