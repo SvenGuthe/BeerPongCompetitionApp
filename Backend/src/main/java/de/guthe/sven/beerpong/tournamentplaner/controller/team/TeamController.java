@@ -1,13 +1,9 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamMetaDataDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -34,13 +30,10 @@ public class TeamController {
 
 	private TeamRepository teamRepository;
 
-	private TeamStatusRepository teamStatusRepository;
-
 	@Autowired
-	public TeamController(ACLService aclService, TeamRepository teamRepository, TeamStatusRepository teamStatusRepository) {
+	public TeamController(ACLService aclService, TeamRepository teamRepository) {
 		this.aclService = aclService;
 		this.teamRepository = teamRepository;
-		this.teamStatusRepository = teamStatusRepository;
 	}
 
 	@GetMapping("/team")
@@ -48,53 +41,6 @@ public class TeamController {
 	public List<TeamDTO> getTeams() {
 		Collection<Team> teams = teamRepository.findAll();
 		return teams.stream().map(TeamDTO::new).collect(Collectors.toList());
-	}
-
-	@PutMapping("/team")
-	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamDTO> updateTeamMetaData(@RequestBody TeamMetaDataDTO teamMetaDataDTO) {
-		Optional<Team> effectedTeamOption = teamRepository.findById(teamMetaDataDTO.getId());
-
-		if (effectedTeamOption.isPresent()) {
-			Team effectedTeam = effectedTeamOption.get();
-			effectedTeam.setTeamName(teamMetaDataDTO.getTeamName());
-
-			List<TeamStatusHistory> teamStatusHistories = effectedTeam.getTeamStatusHistories();
-			List<TeamStatusHistory> newTeamStatusHistories = teamStatusHistories.stream().peek(teamStatusHistory -> {
-				if (teamStatusHistory.getValidTo() == null) {
-					teamStatusHistory.setValidTo(new Timestamp(new Date().getTime()));
-				}
-			}).collect(Collectors.toList());
-
-			TeamStatusHistory newStatusHistory = new TeamStatusHistory();
-			newStatusHistory.setTeam(effectedTeam);
-
-			List<TeamStatus> checkIfStatusAvailable = teamStatusRepository.findByDescription(teamMetaDataDTO.getCurrentTeamStatusType());
-
-			TeamStatus newStatus = new TeamStatus();
-
-			if (checkIfStatusAvailable.size() == 0) {
-				newStatus.setTeamStatusDescription(teamMetaDataDTO.getCurrentTeamStatusType());
-			} else {
-				newStatus = checkIfStatusAvailable.get(0);
-			}
-
-			newStatusHistory.setTeamStatus(newStatus);
-
-			newTeamStatusHistories.add(newStatusHistory);
-
-			effectedTeam.setTeamStatusHistories(newTeamStatusHistories);
-
-			teamRepository.save(effectedTeam);
-
-			List<TeamDTO> teamDTOS = new LinkedList<>();
-			teamDTOS.add(new TeamDTO(effectedTeam));
-
-			return teamDTOS;
-
-		} else {
-			throw new NotFoundException("No Team found with id " + teamMetaDataDTO.getId());
-		}
 	}
 
 	@GetMapping("/team/{teamId}")
