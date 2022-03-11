@@ -183,4 +183,11 @@ public class User {
 	public void setConfirmationToken(List<ConfirmationToken> confirmationToken) {
 		this.confirmationToken = confirmationToken;
 	}
+
+	public void addConfirmationToken(ConfirmationToken confirmationToken) {
+		if (this.confirmationToken == null) {
+			this.confirmationToken = new ArrayList<>();
+		}
+		this.confirmationToken.add(confirmationToken);
+	}
 }

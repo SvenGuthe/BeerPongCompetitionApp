@@ -4,6 +4,7 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRo
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserRegistrationDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
@@ -55,7 +56,7 @@ public class RegisterController {
 	}
 
 	@PostMapping("/register")
-	public User registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+	public UserDTO registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
 		UserStatus userStatus = new UserStatus();
 		userStatus.setUserStatus(UserStatusType.ACTIVE);
 
@@ -69,7 +70,7 @@ public class RegisterController {
 
 		User checkUser = userRepository.findByEmail(user.getEmail());
 		if (checkUser != null) {
-			return checkUser;
+			return new UserDTO(checkUser);
 		}
 		else {
 			Role playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
@@ -86,10 +87,10 @@ public class RegisterController {
 
 			user.addTeam(team);
 
-			userRepository.save(user);
-
 			ConfirmationToken confirmationToken = new ConfirmationToken(user);
-			confirmationTokenRepository.save(confirmationToken);
+			user.addConfirmationToken(confirmationToken);
+
+			userRepository.save(user);
 
 			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 			simpleMailMessage.setTo(user.getEmail());
@@ -100,12 +101,12 @@ public class RegisterController {
 
 			emailSenderService.sendEmail(simpleMailMessage);
 
-			return user;
+			return new UserDTO(user);
 		}
 	}
 
 	@GetMapping("/confirm-account")
-	public User confirmUser(@RequestParam String token) {
+	public UserDTO confirmUser(@RequestParam String token) {
 		ConfirmationToken confirmationTokenDataBase = confirmationTokenRepository.findByConfirmationToken(token);
 
 		if (token != null) {
@@ -147,9 +148,8 @@ public class RegisterController {
 			user.setTeamCompositions(teamCompositions);
 
 			userRepository.save(user);
-			return user;
-		}
-		else {
+			return new UserDTO(user);
+		} else {
 			return null;
 		}
 	}

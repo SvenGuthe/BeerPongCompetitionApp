@@ -18,7 +18,7 @@ public class UserRegistrationDTO {
 
     @Column(name = "password", nullable = false)
     private String password;
-
+    
     public UserRegistrationDTO(String firstName, String lastName, String gamerTag, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
