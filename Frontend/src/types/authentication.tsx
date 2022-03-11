@@ -1,8 +1,10 @@
+import { tCompetition } from "./competition";
 import { tEnum, tID } from "./defaults/generics";
 import { tTimestamp } from "./defaults/timestamp";
 import { tSecurityPrivilege } from "./enums/securityPrivilege";
 import { tSecurityRole } from "./enums/securityRole";
 import { tUserStatusType } from "./enums/userStatusType";
+import { tUserTeam } from "./team";
 
 export type tLogin = {
     email: string,
@@ -45,4 +47,19 @@ export type tUser = tID & {
     roles: tRole[],
     userStatus: tUserStatus,
     confirmationToken: tConfirmationToken[]
+}
+
+// --------- CUSTOM DTOs --------- //
+
+export type tUserDetail = {
+    user: tUser,
+    teams: tUserTeam[],
+    competitionsWhereAdmin: tCompetition[],
+    competitionsWherePlayer: tCompetition[]
+}
+
+export type tTeamUser = tID & {
+    user: tUser,
+    isAdmin: boolean,
+    creationTime: tTimestamp
 }

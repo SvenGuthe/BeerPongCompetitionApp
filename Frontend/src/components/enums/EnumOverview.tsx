@@ -23,7 +23,7 @@ const EnumOverview: React.FC<{
     })
 
     useEffect(() => {
-        dispatch(getRequest(`${url}?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, storeFunction));
+        dispatch(getRequest(`${url}?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeFunction]));
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch, url, storeFunction]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {

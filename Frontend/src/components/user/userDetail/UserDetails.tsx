@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
-import { addUser } from "../../../store/user/user-store";
+import { addUser, storeUserDetail } from "../../../store/user/user-store";
 import { tUser } from "../../../types/authentication";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import RolesTable from "./RolesTable";
@@ -28,10 +28,10 @@ const UserDetails: React.FC = () => {
                 if (user) {
                     setSelectedUser(user)
                 } else {
-                    dispatch(getRequestWithID(+id, "/authentication/user", addUser));
+                    dispatch(getRequestWithID(+id, "/authentication/user", [addUser, storeUserDetail]));
                 }
             } else {
-                dispatch(getRequestWithID(+id, "/authentication/user", addUser));
+                dispatch(getRequestWithID(+id, "/authentication/user", [addUser, storeUserDetail]));
             }
         }
 

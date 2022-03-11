@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store/combine-store";
-import { addTeam } from "../../store/team/team-store";
+import { addTeam, storeTeamDetail } from "../../store/team/team-store";
 import { tTeam } from "../../types/team";
 import { getRequestWithID } from "../../utility/genericHTTPFunctions";
 import RealTeamDetails from "./realteam/RealTeamDetails";
@@ -27,10 +27,10 @@ const TeamDetails: React.FC = () => {
                 if (team) {
                     setSelectedTeam(team)
                 } else {
-                    dispatch(getRequestWithID(+id, "/team/team", addTeam));
+                    dispatch(getRequestWithID(+id, "/team/team", [addTeam, storeTeamDetail]));
                 }
             } else {
-                dispatch(getRequestWithID(+id, "/team/team", addTeam));
+                dispatch(getRequestWithID(+id, "/team/team", [addTeam, storeTeamDetail]));
             }
         }
 

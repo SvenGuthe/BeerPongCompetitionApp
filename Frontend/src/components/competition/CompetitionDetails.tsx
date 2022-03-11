@@ -30,10 +30,10 @@ const CompetitionDetails: React.FC = () => {
                 if (competition) {
                     setSelectedCompetition(competition)
                 } else {
-                    dispatch(getRequestWithID(+id, "/competition/competition", addCompetition));
+                    dispatch(getRequestWithID(+id, "/competition/competition", [addCompetition]));
                 }
             } else {
-                dispatch(getRequestWithID(+id, "/competition/competition", addCompetition));
+                dispatch(getRequestWithID(+id, "/competition/competition", [addCompetition]));
             }
         }
 

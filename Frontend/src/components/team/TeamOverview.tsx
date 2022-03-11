@@ -24,7 +24,7 @@ const Team: React.FC = () => {
     })
 
     useEffect(() => {
-        dispatch(getRequest(`/team/team?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, storeTeams));
+        dispatch(getRequest(`/team/team?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeTeams]));
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {

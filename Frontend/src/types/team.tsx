@@ -1,4 +1,6 @@
-import { tEnum } from "./defaults/generics"
+import { tTeamUser } from "./authentication"
+import { tCompetition } from "./competition"
+import { tEnum, tID } from "./defaults/generics"
 import { tTimestamp } from "./defaults/timestamp"
 import { tTeamStatusType } from "./enums/teamStatusType"
 
@@ -23,4 +25,18 @@ export type tTeam = tEnum & {
     creationTime: tTimestamp,
     teamInvitationLinks: tTeamInvitationLink[],
     teamStatus: tTeamStatus[]
+}
+
+// --------- CUSTOM DTOs --------- //
+
+export type tUserTeam = tID & {
+    team: tTeam,
+    isAdmin: boolean,
+    creationTime: tTimestamp
+}
+
+export type tTeamDetail = {
+    team: tTeam,
+    users: tTeamUser[],
+    competitions: tCompetition[]
 }

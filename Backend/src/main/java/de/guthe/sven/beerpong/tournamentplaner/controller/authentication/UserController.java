@@ -1,11 +1,11 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.authentication.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +21,12 @@ public class UserController {
 
 	private UserRepository userRepository;
 
+	private UserService userService;
+
 	@Autowired
-	public UserController(UserRepository userRepository) {
+	public UserController(UserRepository userRepository, UserService userService) {
 		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	@PostMapping("/user")
@@ -55,8 +58,8 @@ public class UserController {
 
 	@GetMapping("/user/{userId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public UserDTO getUser(@PathVariable Long userId) {
-		return new UserDTO(userRepository.findById(userId).orElseThrow());
+	public UserDetailDTO getUser(@PathVariable Long userId) {
+		return userService.transformUserToUserDetailDTO(userRepository.findById(userId).orElseThrow());
 	}
 
 }

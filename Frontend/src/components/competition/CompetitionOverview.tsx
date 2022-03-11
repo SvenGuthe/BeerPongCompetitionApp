@@ -24,7 +24,7 @@ const CompetitionOverview: React.FC = () => {
     })
 
     useEffect(() => {
-        dispatch(getRequest(`/competition/competition?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, storeCompetitions));
+        dispatch(getRequest(`/competition/competition?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeCompetitions]));
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {

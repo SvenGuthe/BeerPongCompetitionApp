@@ -24,7 +24,7 @@ const UserOverview: React.FC = () => {
     })
 
     useEffect(() => {
-        dispatch(getRequest(`/authentication/user?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, storeUsers));
+        dispatch(getRequest(`/authentication/user?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeUsers]));
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {
