@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import axios from "axios";
-import { login, register, confirm, validateToken, setAuthenticatedUser, setLoading } from "./authentication-store";
+import { login, register, confirm, setAuthenticatedUser, setLoading } from "./authentication-store";
 import { tRegister } from "../../types/authentication";
 
 export const sendLoginRequest = (email: String, password: String) => {
@@ -56,23 +56,10 @@ export const sendAuthenticationRequest = () => {
         const sendRequest = async () => await axios.get('/authentication/authenticateduser').then((response) => {
             dispatch(setAuthenticatedUser(response.data))
         }).catch(function (error) {
+            dispatch(setAuthenticatedUser(null));
             console.log(error);
         }).then(() => {
             dispatch(setLoading(false));
-        });
-
-        return sendRequest();
-    }
-}
-
-export const checkToken = () => {
-    console.log("Send /authentication/authenticateduser [GET] Request");
-    return async (dispatch: Dispatch<any>) => {
-        const sendRequest = async () => await axios.get('/authentication/authenticateduser').then((response) => {
-            dispatch(validateToken(response.data));
-        }).catch(function (error) {
-            dispatch(validateToken(null));
-            console.log(error);
         });
 
         return sendRequest();

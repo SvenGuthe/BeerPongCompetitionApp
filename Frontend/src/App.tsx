@@ -7,8 +7,8 @@ import ConfirmWait from "./pages/authentication/Confirm/Confirm-Wait";
 import ConfirmResult from "./pages/authentication/Confirm/Confirm-Result";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { instantiation, setLoading } from "./store/authentication/authentication-store";
-import { checkToken, sendAuthenticationRequest } from "./store/authentication/authentication-store-actions";
+import { setLoading } from "./store/authentication/authentication-store";
+import { sendAuthenticationRequest } from "./store/authentication/authentication-store-actions";
 import { RootState } from "./store/combine-store";
 import NotFound from "./pages/authentication/404/NotFound";
 import axios from "axios";
@@ -37,34 +37,26 @@ const App: React.FC = () => {
     axios.defaults.baseURL = 'http://localhost:9999';
 
     const dispatch = useDispatch();
-    const { loggedIn, registeredUser, authenticatedUser, token } = useSelector((state: RootState) => {
+    const { registeredUser, authenticatedUser } = useSelector((state: RootState) => {
         return {
-            loggedIn: state.authentication.loggedIn,
             registeredUser: state.authentication.registeredUser,
-            authenticatedUser: state.authentication.authenticatedUser,
-            token: state.authentication.token
+            authenticatedUser: state.authentication.authenticatedUser
         };
     });
 
-    // Instantiation -> Check if token exists in local storage
     useEffect(() => {
-        dispatch(instantiation());
-    }, [dispatch]);
-
-    // If there is a token -> Try to validate, if the token will be read from api
-    useEffect(() => {
-        if (token) {
-            dispatch(checkToken());
-        }
-    }, [dispatch, token]);
-
-    // If the loggedIn state is true and the token is set (which should be always the case) -> get the user information from the database
-    useEffect(() => {
-        if (loggedIn && token) {
+        if (!authenticatedUser) {
             dispatch(setLoading(true));
-            dispatch(sendAuthenticationRequest());
+            const token = localStorage.getItem('token');
+            if (token) {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                dispatch(sendAuthenticationRequest())
+            } else {
+                axios.defaults.headers.common['Authorization'] = false;
+                dispatch(setLoading(false));
+            }
         }
-    }, [dispatch, loggedIn, token]);
+    }, [authenticatedUser, dispatch]);
 
     const privileges = removeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
 

@@ -16,9 +16,8 @@ const Layout: React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const { loggedIn, authenticatedUser, loading } = useSelector((state: RootState) => {
+    const { authenticatedUser, loading } = useSelector((state: RootState) => {
         return {
-            loggedIn: state.authentication.loggedIn,
             authenticatedUser: state.authentication.authenticatedUser,
             loading: state.authentication.loadAuthentication
         };
@@ -29,7 +28,7 @@ const Layout: React.FC = () => {
     };
 
     let logButton;
-    if (loggedIn) {
+    if (authenticatedUser) {
         logButton = <Button variant="outline-danger" onClick={logoutHandler}>Logout</Button>
     } else {
         logButton = <Nav.Link as={Link} to="/authentication/login">
