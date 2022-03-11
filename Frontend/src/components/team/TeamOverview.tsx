@@ -20,7 +20,6 @@ const Team: React.FC = () => {
     }, [dispatch]);
 
     return <>
-        <h3>Teams</h3>
         {teams && <RealTeamTable teams={teams} />}
     </>;
 }
