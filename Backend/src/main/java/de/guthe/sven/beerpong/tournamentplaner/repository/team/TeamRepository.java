@@ -8,7 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-	@Query("select t from Team t join TeamStatusHistory tsh on t.id = tsh.team.id join TeamStatus ts on ts.id = tsh.teamStatus.id where tsh.validTo is null and ts.teamStatusDescription = 'ACTIVE' and t.isPlayerTeam = false")
-	Page<Team> findAllActiveTeams(PageRequest pageRequest);
+	@Query(value = "SELECT * FROM Team t WHERE LOWER(t.teamname) LIKE CONCAT(LOWER(?1), '%') OR t.teamid LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM Team t WHERE LOWER(t.teamname) LIKE CONCAT(LOWER(?1), '%') OR t.teamid LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<Team> findAll(String search, PageRequest pageRequest);
+
+	@Query("select t from Team t")
+	Page<Team> findAll(PageRequest pageRequest);
 
 }

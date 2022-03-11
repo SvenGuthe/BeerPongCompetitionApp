@@ -1,13 +1,14 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionPermissions;
+import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.Permission;
@@ -36,13 +37,28 @@ public class CompetitionController {
 	}
 
 	@GetMapping("/competition")
-	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<CompetitionDTO> getCompetitions() {
-		return competitionRepository.findAll().stream().map(CompetitionDTO::new).collect(Collectors.toList());
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public PaginationDTO<CompetitionDTO> getCompetitions(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+
+		Page<Competition> pageRequest;
+		if (search.equals("")) {
+			pageRequest = competitionRepository.findAll(PageRequest.of(page, size));
+		} else {
+			pageRequest = competitionRepository.findAll(search, PageRequest.of(page, size));
+		}
+
+		List<CompetitionDTO> data = pageRequest.stream().map(CompetitionDTO::new).collect(Collectors.toList());
+
+		return new PaginationDTO<>(
+				pageRequest.getTotalElements(),
+				pageRequest.getTotalPages(),
+				data
+		);
+
 	}
 
 	@GetMapping("/competition/{competitionId}")
-	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionDTO getCompetition(@PathVariable Long competitionId) {
 		return new CompetitionDTO(competitionRepository.findById(competitionId).orElseThrow());
 	}

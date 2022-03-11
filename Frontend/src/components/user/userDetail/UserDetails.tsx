@@ -23,9 +23,13 @@ const UserDetails: React.FC = () => {
     useEffect(() => {
 
         if (id) {
-            const user = users?.find(user => user.id === +id);
-            if (user) {
-                setSelectedUser(user)
+            if (users) {
+                const user = users.data.find(user => user.id === +id);
+                if (user) {
+                    setSelectedUser(user)
+                } else {
+                    dispatch(getRequestWithID(+id, "/authentication/user", addUser));
+                }
             } else {
                 dispatch(getRequestWithID(+id, "/authentication/user", addUser));
             }

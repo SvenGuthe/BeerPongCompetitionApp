@@ -25,9 +25,13 @@ const CompetitionDetails: React.FC = () => {
     useEffect(() => {
 
         if (id) {
-            const competition = competitions?.find(competition => competition.id === +id);
-            if (competition) {
-                setSelectedCompetition(competition)
+            if (competitions) {
+                const competition = competitions.data.find(competition => competition.id === +id);
+                if (competition) {
+                    setSelectedCompetition(competition)
+                } else {
+                    dispatch(getRequestWithID(+id, "/competition/competition", addCompetition));
+                }
             } else {
                 dispatch(getRequestWithID(+id, "/competition/competition", addCompetition));
             }

@@ -3,7 +3,7 @@ import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 import { tTeam } from '../../types/team'
 
 type SliceState = {
-    teams: tTeam[] | null,
+    teams: tPaginationDTO<tTeam> | null,
     teamStatus: tPaginationDTO<tEnum> | null
 }
 
@@ -16,16 +16,16 @@ export const teamSlice = createSlice({
     name: 'teams',
     initialState: initialState,
     reducers: {
-        storeTeams: (state, action: PayloadAction<tTeam[]>) => {
+        storeTeams: (state, action: PayloadAction<tPaginationDTO<tTeam>>) => {
             state.teams = action.payload;
         },
         storeTeamStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.teamStatus = action.payload;
         },
-        updateTeam: (state, action: PayloadAction<tTeam[]>) => {
-            const fetchedTeam = action.payload[0];
+        updateTeam: (state, action: PayloadAction<tTeam>) => {
+            const fetchedTeam = action.payload;
             if (state.teams) {
-                state.teams = state.teams.map(team => {
+                state.teams.data = state.teams.data.map(team => {
                     if (team.id === fetchedTeam.id) {
                         return fetchedTeam;
                     } else {
@@ -37,12 +37,16 @@ export const teamSlice = createSlice({
         addTeam: (state, action: PayloadAction<tTeam>) => {
             const newTeam = action.payload;
             if (state.teams) {
-                const existingTeam = state.teams.find(team => team.id === newTeam.id);
+                const existingTeam = state.teams.data.find(team => team.id === newTeam.id);
                 if (!existingTeam) {
-                    state.teams = state.teams.concat(newTeam);
+                    state.teams.data = state.teams.data.concat(newTeam);
                 }
             } else {
-                state.teams = [newTeam];
+                state.teams = {
+                    size: 1,
+                    pages: 1,
+                    data: [newTeam]
+                };
             }
         },
     }

@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
 import { storeCompetitions } from "../../store/competition/competition-store";
 import { getRequest } from "../../utility/genericHTTPFunctions";
+import TableWithSearchAndFilter from "../ui/TableWithSearchAndFilter";
 import CompetitionRow from "./CompetitionRow";
 
 const CompetitionOverview: React.FC = () => {
@@ -16,14 +16,25 @@ const CompetitionOverview: React.FC = () => {
         }
     });
 
+    const pageSizes = [10, 20, 30];
+    const [filterValues, setFilterValues] = useState({
+        page: 0,
+        size: pageSizes[0],
+        search: ""
+    })
+
     useEffect(() => {
-        dispatch(getRequest("/competition/competition", storeCompetitions));
-    }, [dispatch])
+        dispatch(getRequest(`/competition/competition?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, storeCompetitions));
+    }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
+
+    const changeFunction = useCallback((page: number, size: number, search: string) => {
+        setFilterValues({ page, size, search });
+    }, []);
 
     let table;
 
     if (competitions) {
-        table = <Table striped bordered hover size="sm" style={{ marginBottom: '3rem' }}>
+        table = <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={competitions.size} pageSizes={pageSizes}>
             <thead>
                 <tr>
                     <th></th>
@@ -38,9 +49,9 @@ const CompetitionOverview: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {competitions.map(competition => <CompetitionRow key={competition.id} competition={competition} />)}
+                {competitions.data.map(competition => <CompetitionRow key={competition.id} competition={competition} />)}
             </tbody>
-        </Table>
+        </TableWithSearchAndFilter>
     }
 
     return <>

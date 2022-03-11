@@ -1,13 +1,15 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
+import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.*;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
-import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,10 +38,24 @@ public class TeamController {
 	}
 
 	@GetMapping("/team")
-	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamDTO> getTeams() {
-		Collection<Team> teams = teamRepository.findAll();
-		return teams.stream().map(TeamDTO::new).collect(Collectors.toList());
+	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
+	public PaginationDTO<TeamDTO> getTeams(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+
+		Page<Team> pageRequest;
+		if (search.equals("")) {
+			pageRequest = teamRepository.findAll(PageRequest.of(page, size));
+		} else {
+			pageRequest = teamRepository.findAll(search, PageRequest.of(page, size));
+		}
+
+		List<TeamDTO> data = pageRequest.stream().map(TeamDTO::new).collect(Collectors.toList());
+
+		return new PaginationDTO<>(
+				pageRequest.getTotalElements(),
+				pageRequest.getTotalPages(),
+				data
+		);
+
 	}
 
 	@GetMapping("/team/{teamId}")

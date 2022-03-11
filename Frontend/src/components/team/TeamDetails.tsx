@@ -22,9 +22,13 @@ const TeamDetails: React.FC = () => {
     useEffect(() => {
 
         if (id) {
-            const team = teams?.find(team => team.id === +id);
-            if (team) {
-                setSelectedTeam(team)
+            if (teams) {
+                const team = teams.data.find(team => team.id === +id);
+                if (team) {
+                    setSelectedTeam(team)
+                } else {
+                    dispatch(getRequestWithID(+id, "/team/team", addTeam));
+                }
             } else {
                 dispatch(getRequestWithID(+id, "/team/team", addTeam));
             }

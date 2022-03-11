@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { Table } from "react-bootstrap";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { storeUsers } from "../../../store/user/user-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
+import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import UserRow from "./UserRow";
 
 const UserOverview: React.FC = () => {
@@ -16,17 +16,25 @@ const UserOverview: React.FC = () => {
         }
     });
 
-    // the if statement have to be restructered
+    const pageSizes = [10, 20, 30];
+    const [filterValues, setFilterValues] = useState({
+        page: 0,
+        size: pageSizes[0],
+        search: ""
+    })
+
     useEffect(() => {
-        dispatch(getRequest("/authentication/user", storeUsers));
-    }, [dispatch]);
+        dispatch(getRequest(`/authentication/user?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, storeUsers));
+    }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
+
+    const changeFunction = useCallback((page: number, size: number, search: string) => {
+        setFilterValues({ page, size, search });
+    }, []);
 
     let table;
 
     if (users) {
-        table = <Table striped bordered hover size="sm" style={{
-            marginBottom: '3rem'
-        }}>
+        table = <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={users.size} pageSizes={pageSizes}>
             <thead>
                 <tr>
                     <th></th>
@@ -40,9 +48,9 @@ const UserOverview: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {users.map(user => <UserRow key={user.id} user={user} />)}
+                {users.data.map(user => <UserRow key={user.id} user={user} />)}
             </tbody>
-        </Table>
+        </TableWithSearchAndFilter>
     }
 
     return <>

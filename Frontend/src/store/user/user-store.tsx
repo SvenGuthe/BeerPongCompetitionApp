@@ -3,7 +3,7 @@ import { tUser } from '../../types/authentication'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
-    users: tUser[] | null,
+    users: tPaginationDTO<tUser> | null,
     userStatus: tPaginationDTO<tEnum> | null,
     roles: tPaginationDTO<tEnum> | null,
     privileges: tPaginationDTO<tEnum> | null
@@ -20,7 +20,7 @@ export const userSlice = createSlice({
     name: 'users',
     initialState: initialState,
     reducers: {
-        storeUsers: (state, action: PayloadAction<tUser[]>) => {
+        storeUsers: (state, action: PayloadAction<tPaginationDTO<tUser>>) => {
             state.users = action.payload;
         },
         storeUserStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
@@ -35,21 +35,16 @@ export const userSlice = createSlice({
         addUser: (state, action: PayloadAction<tUser>) => {
             const newUser = action.payload;
             if (state.users) {
-                const existingUser = state.users.find(users => users.id === newUser.id);
+                const existingUser = state.users.data.find(users => users.id === newUser.id);
                 if (!existingUser) {
-                    state.users = state.users.concat(newUser);
+                    state.users.data = state.users.data.concat(newUser);
                 }
             } else {
-                state.users = [newUser];
-            }
-        },
-        changeRole: (state, action: PayloadAction<tUser>) => {
-            const existingUser = state.users?.findIndex(user => user.id === action.payload.id);
-
-            if (existingUser && existingUser > -1) {
-                const newUsers = state.users;
-                newUsers![existingUser] = action.payload;
-                state.users = newUsers;
+                state.users = {
+                    size: 1,
+                    pages: 1,
+                    data: [newUser]
+                };
             }
         }
     }
@@ -58,7 +53,6 @@ export const userSlice = createSlice({
 export const {
     storeUsers,
     addUser,
-    changeRole,
     storeUserStatus,
     storeRoles,
     storePrivileges
