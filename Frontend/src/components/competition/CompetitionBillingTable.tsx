@@ -1,16 +1,16 @@
 import { Table } from "react-bootstrap";
-import { tBillingStatusHistory } from "../../types/competition";
+import { tBillingStatus } from "../../types/competition";
 
-const CompetitionBillingTable: React.FC<{ competitionBillingHistories: tBillingStatusHistory[] }> = (props) => {
+const CompetitionBillingTable: React.FC<{ competitionBillingStatus: tBillingStatus[] }> = (props) => {
 
-    const competitionBillingHistories = props.competitionBillingHistories;
+    const competitionBillingStatus = props.competitionBillingStatus;
 
-    const rows = competitionBillingHistories.map(competitionBillingHistory => {
-        return <tr key={competitionBillingHistory.id}>
-            <td>{competitionBillingHistory.id}</td>
-            <td>{competitionBillingHistory.validFrom}</td>
-            <td>{competitionBillingHistory.validTo}</td>
-            <td>{competitionBillingHistory.billingStatusType}</td>
+    const rows = competitionBillingStatus.map(singleCompetitionBillingStatus => {
+        return <tr key={singleCompetitionBillingStatus.id}>
+            <td>{singleCompetitionBillingStatus.id}</td>
+            <td>{singleCompetitionBillingStatus.validFrom}</td>
+            <td>{singleCompetitionBillingStatus.validTo}</td>
+            <td>{singleCompetitionBillingStatus.billingStatusDescription}</td>
         </tr>
     })
 

@@ -1,80 +1,81 @@
-import { tTimestamp } from "./defaults/timestamp"
-import { BillingStatus } from "./enums/billingStatus"
-import { CompetitionAdminStatus } from "./enums/competitionAdminStatus"
-import { CompetitionPlayerStatus } from "./enums/competitionPlayerStatus"
-import { CompetitionStatus } from "./enums/competitionStatus"
-import { RegistrationStatus } from "./enums/registrationStatus"
+import { tUser } from "./authentication";
+import { tEnum, tID } from "./defaults/generics";
+import { tTimestamp } from "./defaults/timestamp";
+import { tBillingStatusType } from "./enums/billingStatusType";
+import { tCompetitionAdminStatusType } from "./enums/competitionAdminStatusType";
+import { tCompetitionPlayerStatusType } from "./enums/competitionPlayerStatusType";
+import { tRegistrationStatusType } from "./enums/registrationStatusType";
+import { tTeam } from "./team";
 
-export type tCompetitionAdminStatusHistory = {
-    competitionAdminStatusType: CompetitionAdminStatus,
-    id: number,
+export type tBillingStatus = tEnum & {
+    billingStatusId: number,
+    billingStatusDescription: tBillingStatusType,
+    creationTime: tTimestamp,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tCompetitionAdmin = {
-    competitionAdminStatusHistories: tCompetitionAdminStatusHistory[],
-    gamerTag: string,
-    id: number,
-    userId: number
-}
-
-export type tCompetitionStatusHistory = {
-    competitionStatusType: CompetitionStatus,
-    id: number,
+export type tCompetitionAdminStatus = tEnum & {
+    competitionAdminStatusId: number,
+    competitionAdminStatusDescription: tCompetitionAdminStatusType,
+    creationTime: tTimestamp,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tBillingStatusHistory = {
-    billingStatusType: BillingStatus,
-    id: number,
+export type tCompetitionPlayerStatus = tEnum & {
+    competitionPlayerStatusDescription: tCompetitionPlayerStatusType,
+    creationTime: tTimestamp
+}
+
+export type tCompetitionStatus = tEnum & {
+    competitionStatusId: number,
+    competitionStatusType: tCompetitionAdminStatusType,
+    creationTime: tTimestamp,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tCompetitionPlayer = {
-    competitionPlayerStatusType: CompetitionPlayerStatus,
-    gamerTag: string,
-    id: number,
-    userId: number
-}
-
-export type tRegistrationStatusHistory = {
-    id: number,
-    registrationStatusType: RegistrationStatus
+export type tRegistrationStatus = tEnum & {
+    registrationStatusId: number,
+    registrationStatusDescription: tRegistrationStatusType,
+    creationTime: tTimestamp,
     validFrom: tTimestamp,
     validTo: tTimestamp
 }
 
-export type tTeam = {
-    id: number,
-    teamName: string
+export type tCompetitionAdmin = tID & {
+    user: tUser,
+    creationTime: tTimestamp,
+    competitionAdminStatus: tCompetitionAdminStatus[]
 }
 
-export type tCompetitionTeam = {
-    billingStatusHistories: tBillingStatusHistory[],
-    competitionPlayers: tCompetitionPlayer[],
+export type tCompetitionPlayer = tID & {
+    user: tUser,
+    competitionPlayerStatus: tCompetitionPlayerStatus,
+    creationTime: tTimestamp
+}
+
+export type tCompetitionTeam = tID & {
     competitionTeamName: string,
     creationTime: tTimestamp,
-    id: number,
-    registrationStatusHistories: tRegistrationStatusHistory[],
-    team: tTeam
+    team: tTeam,
+    competitionPlayer: tCompetitionPlayer[],
+    billingStatus: tBillingStatus[],
+    registrationStatus: tRegistrationStatus[]
 }
 
-
-export type tCompetitionDetail = {
-    competitionAdmins: tCompetitionAdmin[],
+export type tCompetition = tID & {
     competitionName: string,
     competitionStartTimestamp: tTimestamp,
-    competitionStatusHistories: tCompetitionStatusHistory[],
-    competitionTeams: tCompetitionTeam[],
-    creationTime: tTimestamp,
-    fee: number,
-    id: number,
-    maxTeams: number,
     minTeams: number,
-    registrationEnd: tTimestamp,
+    maxTeams: number,
+    fee: number,
     registrationStart: tTimestamp,
-    setOfRules: string
+    registrationEnd: tTimestamp,
+    setOfRules: string,
+    creationTime: tTimestamp,
+    competitionStatus: tCompetitionStatus[],
+    competitionTeams: tCompetitionTeam[],
+    competitionAdmins: tCompetitionAdmin[]
 }

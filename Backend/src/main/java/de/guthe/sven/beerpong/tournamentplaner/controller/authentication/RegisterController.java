@@ -3,7 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.UserRegistrationDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserRegistrationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
@@ -15,7 +15,6 @@ import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.ConfirmationTokenRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,8 +36,6 @@ public class RegisterController {
 
 	private RoleRepository roleRepository;
 
-	private TeamRepository teamRepository;
-
 	private TeamStatusRepository teamStatusRepository;
 
 	private ConfirmationTokenRepository confirmationTokenRepository;
@@ -47,10 +43,9 @@ public class RegisterController {
 	private EmailSenderService emailSenderService;
 
 	@Autowired
-	public RegisterController(TeamRepository teamRepository, UserRepository userRepository,
+	public RegisterController(UserRepository userRepository,
 			RoleRepository roleRepository, ConfirmationTokenRepository confirmationTokenRepository,
 			EmailSenderService emailSenderService, PasswordEncoder passwordEncoder, TeamStatusRepository teamStatusRepository) {
-		this.teamRepository = teamRepository;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;

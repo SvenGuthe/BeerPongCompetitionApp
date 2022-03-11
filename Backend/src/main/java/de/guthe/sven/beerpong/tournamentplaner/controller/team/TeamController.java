@@ -1,16 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
-import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamMetaDataDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamOverviewDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.team.TeamDetailDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
-import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -36,83 +30,24 @@ public class TeamController {
 
 	private TeamRepository teamRepository;
 
-	private TeamStatusRepository teamStatusRepository;
-
-	private TeamService teamService;
-
 	@Autowired
-	public TeamController(ACLService aclService, TeamRepository teamRepository, TeamService teamService, TeamStatusRepository teamStatusRepository) {
+	public TeamController(ACLService aclService, TeamRepository teamRepository) {
 		this.aclService = aclService;
 		this.teamRepository = teamRepository;
-		this.teamService = teamService;
-		this.teamStatusRepository = teamStatusRepository;
 	}
 
 	@GetMapping("/team")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamDetailDTO> getTeams() {
+	public List<TeamDTO> getTeams() {
 		Collection<Team> teams = teamRepository.findAll();
-		return teams.stream().map(TeamDetailDTO::new).collect(Collectors.toList());
+		return teams.stream().map(TeamDTO::new).collect(Collectors.toList());
 	}
-
-	@PutMapping("/team")
-	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamDetailDTO> updateTeamMetaData(@RequestBody TeamMetaDataDTO teamMetaDataDTO) {
-		Optional<Team> effectedTeamOption = teamRepository.findById(teamMetaDataDTO.getId());
-
-		if (effectedTeamOption.isPresent()) {
-			Team effectedTeam = effectedTeamOption.get();
-			effectedTeam.setTeamName(teamMetaDataDTO.getTeamName());
-
-			List<TeamStatusHistory> teamStatusHistories = effectedTeam.getTeamStatusHistories();
-			List<TeamStatusHistory> newTeamStatusHistories = teamStatusHistories.stream().peek(teamStatusHistory -> {
-				if (teamStatusHistory.getValidTo() == null) {
-					teamStatusHistory.setValidTo(new Timestamp(new Date().getTime()));
-				}
-			}).collect(Collectors.toList());
-
-			TeamStatusHistory newStatusHistory = new TeamStatusHistory();
-			newStatusHistory.setTeam(effectedTeam);
-
-			List<TeamStatus> checkIfStatusAvailable = teamStatusRepository.findByDescription(teamMetaDataDTO.getCurrentTeamStatusType());
-
-			TeamStatus newStatus = new TeamStatus();
-
-			if (checkIfStatusAvailable.size() == 0) {
-				newStatus.setTeamStatusDescription(teamMetaDataDTO.getCurrentTeamStatusType());
-			} else {
-				newStatus = checkIfStatusAvailable.get(0);
-			}
-
-			newStatusHistory.setTeamStatus(newStatus);
-
-			newTeamStatusHistories.add(newStatusHistory);
-
-			effectedTeam.setTeamStatusHistories(newTeamStatusHistories);
-
-			teamRepository.save(effectedTeam);
-
-			List<TeamDetailDTO> teamDetailDTOS = new LinkedList<>();
-			teamDetailDTOS.add(new TeamDetailDTO(effectedTeam));
-
-			return teamDetailDTOS;
-
-		} else {
-			throw new NotFoundException("No Team found with id " + teamMetaDataDTO.getId());
-		}
-	}
-
-	/*
-	public List<Team> getTeams() {
-		return teamRepository.findAll();
-	}
-	 */
 
 	@GetMapping("/team/{teamId}")
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamDetailDTO getTeam(@PathVariable Long teamId) {
+	public TeamDTO getTeam(@PathVariable Long teamId) {
 		Team team = teamRepository.findById(teamId).orElseThrow();
-		return new TeamDetailDTO(team);
+		return new TeamDTO(team);
 	}
 
 	@PostMapping("/team")
@@ -139,21 +74,5 @@ public class TeamController {
 	// public Team updateTeam(@RequestBody Team team) {
 	// 	return teamRepository.save(team);
 	// }
-
-	// TODO: Remove hasPermission later -> currently just a placeholder, the modifications
-	// on raw-database
-	// TODO: entries are just allowed with ADMIN Privileges
-	@DeleteMapping("/team")
-	@Transactional
-	@PreAuthorize("hasPermission(#team, 'DELETE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public void deleteTeam(@RequestBody Team team) {
-		teamRepository.delete(team);
-	}
-
-	@GetMapping("/team/overview")
-	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public List<TeamOverviewDTO> getActiveTeamsOverview() {
-		return teamService.getActiveTeams(0, 10);
-	}
 
 }

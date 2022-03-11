@@ -1,7 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authorization;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authorization.ACLClassDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLClass;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authorization.ACLClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,7 @@ public class ACLClassController {
 			pageRequest = aclClassRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		List<EnumDTO> data = pageRequest.stream().map(aclClass -> new EnumDTO(
-				aclClass.getId(),
-				aclClass.getAclClass()
-		)).collect(Collectors.toList());
+		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
 		return new PaginationDTO<>(
 				pageRequest.getTotalElements(),
@@ -58,14 +56,8 @@ public class ACLClassController {
 
 	@GetMapping("/aclclass/{aclClassId}")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-	public ACLClass getACLClass(@PathVariable Long aclClassId) {
-		return aclClassRepository.findById(aclClassId).orElseThrow();
-	}
-
-	@PutMapping("/aclclass")
-	@PreAuthorize("hasAuthority('WRITE_ACL_PRIVILEGE')")
-	public ACLClass updateACLClass(@RequestBody ACLClass aclClass) {
-		return aclClassRepository.save(aclClass);
+	public ACLClassDTO getACLClass(@PathVariable Long aclClassId) {
+		return new ACLClassDTO(aclClassRepository.findById(aclClassId).orElseThrow());
 	}
 
 }

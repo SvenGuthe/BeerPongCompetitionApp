@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "teamcomposition")
 @NamedQuery(name = "TeamComposition.findByTeamIdAndUserId",
-		query = "SELECT tc FROM TeamComposition tc WHERE tc.team.id = ?1 AND tc.user.userId = ?2")
+		query = "SELECT tc FROM TeamComposition tc WHERE tc.team.id = ?1 AND tc.user.id = ?2")
 public class TeamComposition implements ACLObjectInterface {
 
 	@Id

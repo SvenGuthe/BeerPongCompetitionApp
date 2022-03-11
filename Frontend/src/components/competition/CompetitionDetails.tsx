@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store/combine-store";
 import { addCompetition } from "../../store/competition/competition-store";
-import { tCompetitionDetail } from "../../types/competition";
+import { tCompetition } from "../../types/competition";
 import { getRequestWithID } from "../../utility/genericHTTPFunctions";
 import CompetitionAdminTable from "./CompetitionAdminTable";
 import CompetitionStatusTable from "./CompetitionStatusTable";
@@ -12,7 +12,7 @@ import CompetitionTeam from "./CompetitionTeam";
 
 const CompetitionDetails: React.FC = () => {
 
-    const [selectedCompetition, setSelectedCompetition] = useState<tCompetitionDetail>();
+    const [selectedCompetition, setSelectedCompetition] = useState<tCompetition>();
     const dispatch = useDispatch();
     const id = useParams().id;
 
@@ -82,7 +82,7 @@ const CompetitionDetails: React.FC = () => {
             </tbody>
         </Table>
         {selectedCompetition && <CompetitionAdminTable competitionAdmins={selectedCompetition.competitionAdmins} />}
-        {selectedCompetition && <CompetitionStatusTable competitionStatusHistories={selectedCompetition.competitionStatusHistories} />}
+        {selectedCompetition && <CompetitionStatusTable competitionStatus={selectedCompetition.competitionStatus} />}
         {selectedCompetition && <>
             <h4>Teams</h4>
             {selectedCompetition.competitionTeams.map(competitionTeam => <CompetitionTeam key={competitionTeam.id} competitionTeam={competitionTeam} />)}

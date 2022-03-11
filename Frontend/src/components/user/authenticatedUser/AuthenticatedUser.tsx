@@ -1,9 +1,9 @@
 import { Table } from "react-bootstrap";
-import { tUserDetail } from "../../../types/user";
-import { removePriviligeDuplicates } from "../../../utility/arrayFunctions";
+import { tUser } from "../../../types/authentication";
+import { removeDuplicates } from "../../../utility/arrayFunctions";
 
 interface tProps {
-    authenticatedUser?: tUserDetail
+    authenticatedUser?: tUser
 }
 
 const AuthenticatedUser: React.FC<tProps> = (props) => {
@@ -11,7 +11,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
     const authenticatedUser = props.authenticatedUser;
     const roles = authenticatedUser?.roles;
     
-    const privileges = removePriviligeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
+    const privileges = removeDuplicates(authenticatedUser?.roles.flatMap(role => role.privileges));
 
     let roleTable;
     let privilegesTable;
@@ -25,8 +25,8 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             </thead>
             <tbody>
                 {roles.map(role => {
-                    return <tr key={role.roleId}>
-                        <td>{role.name}</td>
+                    return <tr key={role.id}>
+                        <td>{role.role}</td>
                     </tr>
                 })}
             </tbody>
@@ -42,8 +42,8 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             </thead>
             <tbody>
                 {privileges.map(privilege => {
-                    return <tr key={privilege.privilegeId}>
-                        <td>{privilege.name}</td>
+                    return <tr key={privilege.id}>
+                        <td>{privilege.privilege}</td>
                     </tr>
                 })}
             </tbody>
@@ -75,7 +75,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
                 </tr>
                 <tr>
                     <td>User ID</td>
-                    <td>{authenticatedUser?.userId}</td>
+                    <td>{authenticatedUser?.id}</td>
                 </tr>
                 <tr>
                     <td>User Status</td>
@@ -83,7 +83,7 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
                 </tr>
                 <tr>
                     <td>User Status ID</td>
-                    <td>{authenticatedUser?.userStatus?.userStatusId}</td>
+                    <td>{authenticatedUser?.userStatus?.id}</td>
                 </tr>
                 <tr>
                     <td>Datum</td>

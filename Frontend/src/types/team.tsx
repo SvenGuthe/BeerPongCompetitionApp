@@ -1,45 +1,26 @@
+import { tEnum } from "./defaults/generics"
 import { tTimestamp } from "./defaults/timestamp"
-import { TeamStatus } from "./enums/teamStatus"
-import { UserStatus } from "./enums/userStatus"
+import { tTeamStatusType } from "./enums/teamStatusType"
 
-export type tTeamDetail = {
+export type tTeamStatus = tEnum & {
+    teamStatusId: number,
+    teamStatusDescription: tTeamStatusType,
     creationTime: tTimestamp,
-    id: number,
-    password: string,
-    playerTeam: boolean,
-    members: tTeamMemers[],
-    teamInvitationLinkHistories: tTeamInvitationLink[],
-    teamName: string,
-    teamStatusHistories: tTeamStatusHistory[]
+    validFrom: tTimestamp,
+    validTo: tTimestamp
 }
 
-export type tTeamStatusHistory = {
-    id: number,
-    teamStatusDescription: TeamStatus,
-    validFrom: tTimestamp,
-    validTo: tTimestamp
-};
-
-export type tTeamInvitationLink = {
-    id: number,
+export type tTeamInvitationLink = tEnum & {
     teamInvitationLink: string,
+    creationTime: tTimestamp,
     validFrom: tTimestamp,
     validTo: tTimestamp
-};
+}
 
-export type tTeamMemers = {
-    admin: boolean,
-    creationTime: tTimestamp,
-    enabled: boolean,
-    firstName: string,
-    gamerTag: string,
-    lastName: string,
-    userId: number,
-    userStatus: UserStatus
-};
-
-export type tTeamMetaData = {
-    id: number,
+export type tTeam = tEnum & {
     teamName: string,
-    currentTeamStatusType: TeamStatus
+    isPlayerTeam: boolean,
+    creationTime: tTimestamp,
+    teamInvitationLinks: tTeamInvitationLink[],
+    teamStatus: tTeamStatus[]
 }

@@ -1,14 +1,14 @@
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { tPaginationDTO } from "../../types/enum";
+import { tEnum, tPaginationDTO } from "../../types/defaults/generics";
 import { getRequest } from "../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../ui/TableWithSearchAndFilter";
 
 const EnumOverview: React.FC<{
     url: string,
-    storeFunction: ActionCreatorWithPayload<tPaginationDTO, string>,
-    paginationData: tPaginationDTO | null
+    storeFunction: ActionCreatorWithPayload<tPaginationDTO<tEnum>, string>,
+    paginationData: tPaginationDTO<tEnum> | null
 }> = (props) => {
 
     const dispatch = useDispatch();

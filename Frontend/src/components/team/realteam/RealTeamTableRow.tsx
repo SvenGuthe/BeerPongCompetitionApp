@@ -1,15 +1,15 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { tTeamDetail } from "../../../types/team";
+import { tTeam } from "../../../types/team";
 import TeamStateButton from "../TeamStateButton";
 
-const RealTeamTableRow: React.FC<{ team: tTeamDetail }> = (props) => {
+const RealTeamTableRow: React.FC<{ team: tTeam }> = (props) => {
 
     const team = props.team;
     
     const buttons = TeamStateButton({team});
 
-    const status = team.teamStatusHistories.filter(status => status.validTo === null)[0].teamStatusDescription;
+    const status = team.teamStatus.filter(status => status.validTo === null)[0].teamStatusDescription;
     const linkToDetails = `${team.id}`
 
     return <tr>
@@ -20,8 +20,6 @@ const RealTeamTableRow: React.FC<{ team: tTeamDetail }> = (props) => {
         </td>
         <td>{team.id}</td>
         <td>{team.teamName}</td>
-        <td>{team.members.length}</td>
-        <td>{team.members.filter(member => member.admin).length}</td>
         <td>{status}</td>
         <td style={{textAlign: 'right'}}>{buttons}</td>
     </tr>

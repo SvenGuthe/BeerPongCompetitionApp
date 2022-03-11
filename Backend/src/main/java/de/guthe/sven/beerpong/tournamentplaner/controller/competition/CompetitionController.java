@@ -1,12 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionPermissions;
-import de.guthe.sven.beerpong.tournamentplaner.dto.competition.CompetitionDetailDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.competition.CompetitionListDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
-import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -31,34 +29,22 @@ public class CompetitionController {
 
 	private CompetitionRepository competitionRepository;
 
-	private CompetitionService competitionService;
-
 	@Autowired
-	public CompetitionController(ACLService aclService, CompetitionRepository competitionRepository,
-			CompetitionService competitionService) {
+	public CompetitionController(ACLService aclService, CompetitionRepository competitionRepository) {
 		this.aclService = aclService;
 		this.competitionRepository = competitionRepository;
-		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competition")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<CompetitionDetailDTO> getCompetitions() {
-		return competitionRepository.findAll().stream().map(CompetitionDetailDTO::new).collect(Collectors.toList());
+	public List<CompetitionDTO> getCompetitions() {
+		return competitionRepository.findAll().stream().map(CompetitionDTO::new).collect(Collectors.toList());
 	}
-
-	/*
-	@GetMapping("/competition")
-	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<Competition> getCompetitions() {
-		return competitionRepository.findAll();
-	}
-	 */
 
 	@GetMapping("/competition/{competitionId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionDetailDTO getCompetition(@PathVariable Long competitionId) {
-		return new CompetitionDetailDTO(competitionRepository.findById(competitionId).orElseThrow());
+	public CompetitionDTO getCompetition(@PathVariable Long competitionId) {
+		return new CompetitionDTO(competitionRepository.findById(competitionId).orElseThrow());
 	}
 
 	@PostMapping("/competition")
@@ -74,24 +60,6 @@ public class CompetitionController {
 		competitionRepository.save(competition);
 		aclService.setPrivileges(competition, initialCompetitionPermissions);
 		return competition;
-	}
-
-	@PutMapping("/competition")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Competition updateCompetition(@RequestBody Competition competition) {
-		return competitionRepository.save(competition);
-	}
-
-	@DeleteMapping("/competition")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetition(@RequestBody Competition competition) {
-		competitionRepository.delete(competition);
-	}
-
-	@GetMapping("/competitionoverview")
-	public CompetitionListDTO getActiveClosedOwnCompetitions() {
-		return competitionService.getActiveClosedOwnCompetitions(0, 10);
 	}
 
 }

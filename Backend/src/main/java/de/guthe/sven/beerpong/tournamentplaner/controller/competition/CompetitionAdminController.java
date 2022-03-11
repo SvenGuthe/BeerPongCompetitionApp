@@ -1,15 +1,14 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdmin;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionAdminDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionAdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/competition")
@@ -24,34 +23,14 @@ public class CompetitionAdminController {
 
 	@GetMapping("/competitionadmin")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<CompetitionAdmin> getCompetitionAdmins() {
-		return competitionAdminRepository.findAll();
+	public List<CompetitionAdminDTO> getCompetitionAdmins() {
+		return competitionAdminRepository.findAll().stream().map(CompetitionAdminDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/competitionadmin/{competitionAdminId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionAdmin getCompetitionAdmin(@PathVariable Long competitionAdminId) {
-		return competitionAdminRepository.findById(competitionAdminId).orElseThrow();
-	}
-
-	@PostMapping("/competitionadmin")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionAdmin addCompetitionAdmin(@RequestBody CompetitionAdmin competitionAdmin) {
-		return competitionAdminRepository.save(competitionAdmin);
-	}
-
-	@PutMapping("/competitionadmin")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionAdmin updateCompetitionAdmin(@RequestBody CompetitionAdmin competitionAdmin) {
-		return competitionAdminRepository.save(competitionAdmin);
-	}
-
-	@DeleteMapping("/competitionadmin")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetitionAdmin(@RequestBody CompetitionAdmin competitionAdmin) {
-		competitionAdminRepository.delete(competitionAdmin);
+	public CompetitionAdminDTO getCompetitionAdmin(@PathVariable Long competitionAdminId) {
+		return new CompetitionAdminDTO(competitionAdminRepository.findById(competitionAdminId).orElseThrow());
 	}
 
 }

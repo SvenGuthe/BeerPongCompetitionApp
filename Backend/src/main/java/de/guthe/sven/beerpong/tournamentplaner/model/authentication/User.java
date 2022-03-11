@@ -20,7 +20,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "userid", nullable = false)
-	private Long userId;
+	private Long id;
 
 	@Column(name = "firstname", nullable = false)
 	private String firstName;
@@ -66,8 +66,8 @@ public class User {
 	public User() {
 	}
 
-	public Long getUserId() {
-		return userId;
+	public Long getId() {
+		return id;
 	}
 
 	public String getFirstName() {

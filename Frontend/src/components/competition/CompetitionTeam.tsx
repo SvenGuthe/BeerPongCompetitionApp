@@ -8,7 +8,7 @@ import CompetitionRegistrationTable from "./CompetitionRegistrationTable";
 import classes from './CompetitionTeam.module.css';
 
 const CompetitionTeam: React.FC<{ competitionTeam: tCompetitionTeam }> = (props) => {
-
+    
     const competitionTeam = props.competitionTeam;
     const linkToDetails = `/team/${competitionTeam.team.id}`
 
@@ -33,9 +33,9 @@ const CompetitionTeam: React.FC<{ competitionTeam: tCompetitionTeam }> = (props)
         <Link to={linkToDetails}>
             <Button variant="secondary" size="sm">Details</Button>
         </Link>
-        <CompetitionBillingTable competitionBillingHistories={competitionTeam.billingStatusHistories} />
-        <CompetitionPlayerTable competitionPlayers={competitionTeam.competitionPlayers} />
-        <CompetitionRegistrationTable competitionRegistrationHistories={competitionTeam.registrationStatusHistories} />
+        <CompetitionBillingTable competitionBillingStatus={competitionTeam.billingStatus} />
+        <CompetitionPlayerTable competitionPlayers={competitionTeam.competitionPlayer} />
+        <CompetitionRegistrationTable competitionRegistrationStatus={competitionTeam.registrationStatus} />
     </div>
 
 }

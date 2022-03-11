@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionTeamPermission;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionTeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionTeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/competition")
@@ -35,14 +37,14 @@ public class CompetitionTeamController {
 
 	@GetMapping("/competitionteam")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public List<CompetitionTeam> getCompetitionTeams() {
-		return competitionTeamRepository.findAll();
+	public List<CompetitionTeamDTO> getCompetitionTeams() {
+		return competitionTeamRepository.findAll().stream().map(CompetitionTeamDTO::new).collect(Collectors.toList());
 	}
 
 	@GetMapping("/competitionteam/{competitionTeamId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionTeam getCompetitionTeam(@PathVariable Long competitionTeamId) {
-		return competitionTeamRepository.findById(competitionTeamId).orElseThrow();
+	public CompetitionTeamDTO getCompetitionTeam(@PathVariable Long competitionTeamId) {
+		return new CompetitionTeamDTO(competitionTeamRepository.findById(competitionTeamId).orElseThrow());
 	}
 
 	@PostMapping("/competitionteam")
@@ -58,19 +60,6 @@ public class CompetitionTeamController {
 		competitionTeamRepository.save(competitionTeam);
 		aclService.setPrivileges(competitionTeam, initialCompetitionTeamPermissions);
 		return competitionTeam;
-	}
-
-	@PutMapping("/competitionteam")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionTeam updateCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) {
-		return competitionTeamRepository.save(competitionTeam);
-	}
-
-	@DeleteMapping("/competitionteam")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public void deleteCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) {
-		competitionTeamRepository.delete(competitionTeam);
 	}
 
 }

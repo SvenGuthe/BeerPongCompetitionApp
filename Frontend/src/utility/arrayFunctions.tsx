@@ -1,10 +1,10 @@
-import { tPrivilege } from "../types/user";
+import { tID } from "../types/defaults/generics";
 
-export function removePriviligeDuplicates(arr: tPrivilege[] | undefined) {
+export const removeDuplicates = <T extends tID>(arr: T[] | undefined): T[] | null => {
     if (arr) {
         return arr.filter((value, index, self) =>
         index === self.findIndex((t) => (
-          t.privilegeId === value.privilegeId
+          t.id === value.id
         ))
       )
     } else {

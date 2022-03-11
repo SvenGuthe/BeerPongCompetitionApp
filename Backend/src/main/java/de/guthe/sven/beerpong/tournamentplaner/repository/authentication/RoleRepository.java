@@ -10,8 +10,8 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
 	Role findByName(String name);
 
-	@Query(value = "SELECT * FROM Role r WHERE LOWER(r.name) LIKE CONCAT(LOWER(?1), '%') OR r.roleid LIKE CONCAT(?1, '%')",
-			countQuery = "SELECT count(*) FROM Role r WHERE LOWER(r.name) LIKE CONCAT(LOWER(?1), '%') OR r.roleid LIKE CONCAT(?1, '%')",
+	@Query(value = "SELECT * FROM Role r WHERE LOWER(r.name) LIKE CONCAT(LOWER(?1), '%') OR r.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM Role r WHERE LOWER(r.name) LIKE CONCAT(LOWER(?1), '%') OR r.id LIKE CONCAT(?1, '%')",
 			nativeQuery = true)
 	Page<Role> findAll(String search, PageRequest pageRequest);
 

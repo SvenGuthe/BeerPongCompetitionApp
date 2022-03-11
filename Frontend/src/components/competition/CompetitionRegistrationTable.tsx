@@ -1,15 +1,16 @@
 import { Table } from "react-bootstrap";
-import { tRegistrationStatusHistory } from "../../types/competition";
-const CompetitionRegistrationTable: React.FC<{ competitionRegistrationHistories: tRegistrationStatusHistory[] }> = (props) => {
+import { tRegistrationStatus } from "../../types/competition";
 
-    const competitionRegistrationHistories = props.competitionRegistrationHistories;
+const CompetitionRegistrationTable: React.FC<{ competitionRegistrationStatus: tRegistrationStatus[] }> = (props) => {
 
-    const rows = competitionRegistrationHistories.map(competitionRegistrationHistory => {
-        return <tr key={competitionRegistrationHistory.id}>
-            <td>{competitionRegistrationHistory.id}</td>
-            <td>{competitionRegistrationHistory.validFrom}</td>
-            <td>{competitionRegistrationHistory.validTo}</td>
-            <td>{competitionRegistrationHistory.registrationStatusType}</td>
+    const competitionRegistrationStatus = props.competitionRegistrationStatus;
+
+    const rows = competitionRegistrationStatus.map(singleCompetitionRegistrationStatus => {
+        return <tr key={singleCompetitionRegistrationStatus.id}>
+            <td>{singleCompetitionRegistrationStatus.id}</td>
+            <td>{singleCompetitionRegistrationStatus.validFrom}</td>
+            <td>{singleCompetitionRegistrationStatus.validTo}</td>
+            <td>{singleCompetitionRegistrationStatus.registrationStatusDescription}</td>
         </tr>
     })
 

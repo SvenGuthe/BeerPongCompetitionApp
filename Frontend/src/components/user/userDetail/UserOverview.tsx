@@ -32,7 +32,6 @@ const UserOverview: React.FC = () => {
                     <th></th>
                     <th>ID</th>
                     <th>Spielername</th>
-                    <th>Anzahl Teams</th>
                     <th>Freigeschalten</th>
                     <th>User Status</th>
                     <th style={{ textAlign: 'center' }}>Administrator</th>
@@ -41,7 +40,7 @@ const UserOverview: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {users.map(user => <UserRow key={user.userId} user={user} />)}
+                {users.map(user => <UserRow key={user.id} user={user} />)}
             </tbody>
         </Table>
     }

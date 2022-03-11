@@ -1,7 +1,7 @@
 import { Dispatch } from "react";
 import axios from "axios";
 import { login, register, confirm, validateToken, setAuthenticatedUser, setLoading } from "./authentication-store";
-import { tRegister } from "../../types/authenticate";
+import { tRegister } from "../../types/authentication";
 
 export const sendLoginRequest = (email: String, password: String) => {
     return async (dispatch: Dispatch<any>) => {

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, ButtonGroup } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { changeTeamStatus } from "../../store/team/team-store-actions";
-import { TeamStatus } from "../../types/enums/teamStatus";
-import { tTeamDetail } from "../../types/team";
+import { tTeamStatusType } from "../../types/enums/teamStatusType";
+import { tTeam } from "../../types/team";
 
 const TeamStateButton: React.FC<{
-    team: tTeamDetail
+    team: tTeam
 }> = (props) => {
 
     const team = props.team;
@@ -14,47 +13,47 @@ const TeamStateButton: React.FC<{
     const dispatch = useDispatch();
 
     const [newStatus, setNewStatus] = useState<{
-        team: tTeamDetail,
-        status: TeamStatus
+        team: tTeam,
+        status: tTeamStatusType
     } | null>(null);
 
     useEffect(() => {
         if (newStatus) {
-            dispatch(changeTeamStatus(newStatus.team, newStatus.status));
+            // Change Team Status Action
             setNewStatus(null);
         }
     }, [dispatch, newStatus]);
 
-    const changeStatusHandler = (team: tTeamDetail, status: TeamStatus) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    const changeStatusHandler = (team: tTeam, status: tTeamStatusType) => (event: React.MouseEvent<HTMLButtonElement>) => {
         setNewStatus({
             team: team,
             status: status
         });
     };
 
-    const createButtons = (team: tTeamDetail, status: TeamStatus) => {
-        if (status === TeamStatus.ACTIVE) {
+    const createButtons = (team: tTeam, status: tTeamStatusType) => {
+        if (status === tTeamStatusType.ACTIVE) {
             return <ButtonGroup aria-label="status">
-                <Button variant="warning" size="sm" onClick={changeStatusHandler(team, TeamStatus.INACTIVE)}>Deaktivieren</Button> { }
-                <Button variant="danger" size="sm" onClick={changeStatusHandler(team, TeamStatus.BANNED)}>Bannen</Button>
+                <Button variant="warning" size="sm" onClick={changeStatusHandler(team, tTeamStatusType.INACTIVE)}>Deaktivieren</Button> { }
+                <Button variant="danger" size="sm" onClick={changeStatusHandler(team, tTeamStatusType.BANNED)}>Bannen</Button>
             </ButtonGroup>
-        } else if (status === TeamStatus.INACTIVE) {
+        } else if (status === tTeamStatusType.INACTIVE) {
             return <ButtonGroup aria-label="status">
-                <Button variant="success" size="sm" onClick={changeStatusHandler(team, TeamStatus.ACTIVE)}>Aktivieren</Button> { }
-                <Button variant="danger" size="sm" onClick={changeStatusHandler(team, TeamStatus.BANNED)}>Bannen</Button>
+                <Button variant="success" size="sm" onClick={changeStatusHandler(team, tTeamStatusType.ACTIVE)}>Aktivieren</Button> { }
+                <Button variant="danger" size="sm" onClick={changeStatusHandler(team, tTeamStatusType.BANNED)}>Bannen</Button>
             </ButtonGroup>
 
-        } else if (status === TeamStatus.BANNED) {
-            return <Button variant="info" size="sm" onClick={changeStatusHandler(team, TeamStatus.INACTIVE)}>Entbannen</Button>
+        } else if (status === tTeamStatusType.BANNED) {
+            return <Button variant="info" size="sm" onClick={changeStatusHandler(team, tTeamStatusType.INACTIVE)}>Entbannen</Button>
         } else {
             return <></>
         }
     }
 
-    return createButtons(team, team.teamStatusHistories
-        .filter(teamStatusHistory => teamStatusHistory.validTo === null)
-        .map(teamStatusHistory => teamStatusHistory.teamStatusDescription)[0]
-    )
+    return createButtons(team, team.teamStatus
+        .filter(singelTeamStatus => singelTeamStatus.validTo === null)
+        .map(singelTeamStatus => singelTeamStatus.teamStatusDescription)[0]
+    );
 
 }
 

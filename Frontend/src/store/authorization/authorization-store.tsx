@@ -1,8 +1,8 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tPaginationDTO } from '../../types/enum'
+import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
-    aclClasses: tPaginationDTO | null
+    aclClasses: tPaginationDTO<tEnum> | null
 }
 
 const initialState: SliceState = {
@@ -13,7 +13,7 @@ export const authorizationSlice = createSlice({
     name: 'authorization',
     initialState: initialState,
     reducers: {
-        storeACLClasses: (state, action: PayloadAction<tPaginationDTO>) => {
+        storeACLClasses: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.aclClasses = action.payload;
         }
     }

@@ -45,7 +45,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
 		List<String> privilegesAndRoles = getPrivileges(roles);
 		for (Role role : roles) {
-			privilegesAndRoles.add(role.getName());
+			privilegesAndRoles.add(role.getRole().name());
 		}
 		return getGrantedAuthorities(privilegesAndRoles);
 	}
@@ -58,7 +58,7 @@ public class MyUserDetailsService implements UserDetailsService {
 			collection.addAll(role.getPrivileges());
 		}
 		for (Privilege item : collection) {
-			privileges.add(item.getName());
+			privileges.add(item.getPrivilege().name());
 		}
 		return privileges;
 	}

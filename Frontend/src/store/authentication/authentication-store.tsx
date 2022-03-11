@@ -1,15 +1,15 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { tUserDetail } from '../../types/user';
+import { tUser } from '../../types/authentication';
 
 type SliceState = {
     loggedIn: boolean | null,
     redirectToHome: boolean,
     redirectToConfirmWait: boolean,
-    authenticatedUser: tUserDetail | null,
+    authenticatedUser: tUser | null,
     loadAuthentication: boolean,
-    registeredUser: tUserDetail | null,
-    confirmedUser: tUserDetail | null,
+    registeredUser: tUser | null,
+    confirmedUser: tUser | null,
     token: string | null
 }
 
@@ -38,7 +38,7 @@ export const authenticationSlice = createSlice({
                 axios.defaults.headers.common['Authorization'] =  `Bearer ${token}`;
             }
         },
-        validateToken: (state, action: PayloadAction<tUserDetail | null>) => {
+        validateToken: (state, action: PayloadAction<tUser | null>) => {
             if (action.payload) {
                 state.loggedIn = true;
             } else {
@@ -50,7 +50,7 @@ export const authenticationSlice = createSlice({
             }
         },
         login: (state, action: PayloadAction<{
-            userDetail: tUserDetail | null,
+            userDetail: tUser | null,
             token: string
         }>) => {
             localStorage.setItem('token', action.payload.token);
@@ -70,17 +70,17 @@ export const authenticationSlice = createSlice({
             state.authenticatedUser = null;
             axios.defaults.headers.common['Authorization'] =  false;
         },
-        setAuthenticatedUser: (state, action: PayloadAction<tUserDetail>) => {
+        setAuthenticatedUser: (state, action: PayloadAction<tUser>) => {
             state.authenticatedUser = action.payload
         },
-        register: (state, action: PayloadAction<tUserDetail>) => {
+        register: (state, action: PayloadAction<tUser>) => {
             state.redirectToConfirmWait = true;
             state.registeredUser = action.payload;
         },
         afterRegisterCleanup: state => {
             state.redirectToConfirmWait = false;
         },
-        confirm: (state, action: PayloadAction<tUserDetail>) => {
+        confirm: (state, action: PayloadAction<tUser>) => {
             state.confirmedUser = action.payload
         }
     }

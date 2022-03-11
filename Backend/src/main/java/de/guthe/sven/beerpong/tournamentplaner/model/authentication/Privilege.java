@@ -1,22 +1,24 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityPrivilege;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@NamedQuery(name = "Privilege.findByName", query = "SELECT p FROM Privilege p WHERE LOWER(p.name) = LOWER(?1)")
+@NamedQuery(name = "Privilege.findByName", query = "SELECT p FROM Privilege p WHERE LOWER(p.privilege) = LOWER(?1)")
 @Table(name = "privilege")
 public class Privilege {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "privilegeid", nullable = false)
-	private Long privilegeId;
+	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true)
-	private String name;
+	@Column(name = "privilege", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private SecurityPrivilege privilege;
 
 	@ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
@@ -26,20 +28,20 @@ public class Privilege {
 	public Privilege() {
 	}
 
-	public Privilege(String name) {
-		this.name = name;
+	public Privilege(SecurityPrivilege privilege) {
+		this.privilege = privilege;
 	}
 
-	public Long getPrivilegeId() {
-		return privilegeId;
+	public Long getId() {
+		return id;
 	}
 
-	public String getName() {
-		return name;
+	public SecurityPrivilege getPrivilege() {
+		return privilege;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPrivilege(SecurityPrivilege privilege) {
+		this.privilege = privilege;
 	}
 
 	public Collection<Role> getRoles() {

@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../store/combine-store";
 import { addTeam } from "../../store/team/team-store";
-import { tTeamDetail } from "../../types/team";
+import { tTeam } from "../../types/team";
 import { getRequestWithID } from "../../utility/genericHTTPFunctions";
 import RealTeamDetails from "./realteam/RealTeamDetails";
-import UserTeamDetails from "./userteam/UserTeamDetails";
 
 const TeamDetails: React.FC = () => {
 
-    const [selectedTeam, setSelectedTeam] = useState<tTeamDetail>();
+    const [selectedTeam, setSelectedTeam] = useState<tTeam>();
     const dispatch = useDispatch();
     const id = useParams().id;
 
@@ -34,11 +33,7 @@ const TeamDetails: React.FC = () => {
     }, [teams, id, dispatch]);
 
     const detailComponent = useMemo(() => {
-        if (selectedTeam?.playerTeam) {
-            return <UserTeamDetails team={selectedTeam} />
-        } else if (selectedTeam?.playerTeam === false) {
-            return <RealTeamDetails team={selectedTeam} />
-        }
+        return selectedTeam ? <RealTeamDetails team={selectedTeam} /> : <></>
     }, [selectedTeam]);
 
     return <>

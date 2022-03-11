@@ -1,15 +1,14 @@
 import { Table } from "react-bootstrap";
 import { tTeamInvitationLink } from "../../../types/team";
+const TeamInvitationLinkHistoryTable: React.FC<{ teamInvitationLinks: tTeamInvitationLink[] }> = (props) => {
+    const teamInvitationLinks = props.teamInvitationLinks;
 
-const TeamInvitationLinkHistoryTable: React.FC<{ teamInvitationLinkHistories: tTeamInvitationLink[] }> = (props) => {
-    const teamInvitationLinkHistories = props.teamInvitationLinkHistories;
-
-    const tableRows = teamInvitationLinkHistories.map(teamInvitationLinkHistory => {
-        return <tr key={teamInvitationLinkHistory.id}>
-            <td>{teamInvitationLinkHistory.id}</td>
-            <td>{teamInvitationLinkHistory.teamInvitationLink}</td>
-            <td>{teamInvitationLinkHistory.validFrom}</td>
-            <td>{teamInvitationLinkHistory.validTo}</td>
+    const tableRows = teamInvitationLinks.map(teamInvitationLink => {
+        return <tr key={teamInvitationLink.id}>
+            <td>{teamInvitationLink.id}</td>
+            <td>{teamInvitationLink.teamInvitationLink}</td>
+            <td>{teamInvitationLink.validFrom}</td>
+            <td>{teamInvitationLink.validTo}</td>
         </tr>
     })
 

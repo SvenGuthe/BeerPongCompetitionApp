@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BillingStatusRepository extends JpaRepository<BillingStatus, Long> {
 
-    @Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.billingstatusid LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.billingstatusid LIKE CONCAT(?1, '%')",
+    @Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.id LIKE CONCAT(?1, '%')",
+            countQuery = "SELECT count(*) FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.id LIKE CONCAT(?1, '%')",
             nativeQuery = true)
     Page<BillingStatus> findAll(String search, PageRequest pageRequest);
 

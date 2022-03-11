@@ -13,8 +13,8 @@ public interface TeamStatusRepository extends JpaRepository<TeamStatus, Long> {
 
     List<TeamStatus> findByDescription(TeamStatusType teamstatustype);
 
-    @Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.teamstatusid LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.teamstatusid LIKE CONCAT(?1, '%')",
+    @Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.id LIKE CONCAT(?1, '%')",
+            countQuery = "SELECT count(*) FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.id LIKE CONCAT(?1, '%')",
             nativeQuery = true)
     Page<TeamStatus> findAll(String search, PageRequest pageRequest);
 

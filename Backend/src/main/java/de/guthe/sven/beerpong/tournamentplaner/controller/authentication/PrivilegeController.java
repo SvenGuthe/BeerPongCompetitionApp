@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,28 +49,13 @@ public class PrivilegeController {
 			pageRequest = privilegeRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		List<EnumDTO> data = pageRequest.stream().map(privilege -> new EnumDTO(
-				privilege.getPrivilegeId(),
-				privilege.getName()
-		)).collect(Collectors.toList());
+		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
 		return new PaginationDTO<>(
 				pageRequest.getTotalElements(),
 				pageRequest.getTotalPages(),
 				data
 		);
-	}
-
-	@PutMapping("/privilege")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public Privilege updatePrivilege(@RequestBody Privilege privilege) {
-		return privilegeRepository.save(privilege);
-	}
-
-	@DeleteMapping("/privilege")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public void deletePrivilege(@RequestBody Privilege privilege) {
-		privilegeRepository.delete(privilege);
 	}
 
 }

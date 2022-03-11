@@ -1,6 +1,6 @@
 import { Alert } from "react-bootstrap";
 import Hierarchy from "../../../components/ui/Hierarchy";
-import { homeHierarchy, notFoundHierarchy } from "../../../types/hierarchy";
+import { homeHierarchy, notFoundHierarchy } from "../../../utility/hierarchy";
 
 const NotFound = () => {
     return <>

@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.authentication.admin.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,34 +43,13 @@ public class RoleController {
 			pageRequest = roleRepository.findAll(search, PageRequest.of(page, size));
 		}
 
-		List<EnumDTO> data = pageRequest.stream().map(role -> new EnumDTO(
-				role.getRoleId(),
-				role.getName()
-		)).collect(Collectors.toList());
+		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
 		return new PaginationDTO<>(
 				pageRequest.getTotalElements(),
 				pageRequest.getTotalPages(),
 				data
 		);
-	}
-
-	@GetMapping("/role/{roleId}")
-	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public Role getRole(@PathVariable Long roleId) {
-		return roleRepository.findById(roleId).orElseThrow();
-	}
-
-	@PutMapping("/role")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public Role updateRole(@RequestBody Role role) {
-		return roleRepository.save(role);
-	}
-
-	@DeleteMapping("/role")
-	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
-	public void deleteRole(@RequestBody Role role) {
-		roleRepository.delete(role);
 	}
 
 }

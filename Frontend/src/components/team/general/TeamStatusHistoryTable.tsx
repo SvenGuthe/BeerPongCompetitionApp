@@ -1,15 +1,15 @@
 import { Table } from "react-bootstrap";
-import { tTeamStatusHistory } from "../../../types/team";
+import { tTeamStatus } from "../../../types/team";
 
-const TeamStatusHistoryTable: React.FC<{ teamStatusHistories: tTeamStatusHistory[] }> = (props) => {
-    const teamStatusHistories = props.teamStatusHistories;
+const TeamStatusHistoryTable: React.FC<{ teamStatus: tTeamStatus[] }> = (props) => {
+    const teamStatus = props.teamStatus;
 
-    const tableRows = teamStatusHistories.map(teamStatusHistory => {
-        return <tr key={teamStatusHistory.id}>
-            <td>{teamStatusHistory.id}</td>
-            <td>{teamStatusHistory.teamStatusDescription}</td>
-            <td>{teamStatusHistory.validFrom}</td>
-            <td>{teamStatusHistory.validTo}</td>
+    const tableRows = teamStatus.map(singleTeamStatus => {
+        return <tr key={singleTeamStatus.id}>
+            <td>{singleTeamStatus.id}</td>
+            <td>{singleTeamStatus.teamStatusDescription}</td>
+            <td>{singleTeamStatus.validFrom}</td>
+            <td>{singleTeamStatus.validTo}</td>
         </tr>
     })
 

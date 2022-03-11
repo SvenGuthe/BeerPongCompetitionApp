@@ -1,5 +1,5 @@
 import Hierarchy from "../../components/ui/Hierarchy";
-import { competitionHierarchy, homeHierarchy } from "../../types/hierarchy";
+import { competitionHierarchy, homeHierarchy } from "../../utility/hierarchy";
 import { default as CompetitionDetailsComponent } from "../../components/competition/CompetitionDetails"
 
 const CompetitionDetails = () => {

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { default as ConfirmWaitComponent } from "../../../components/confirm/wait/ConfirmWait";
 import Hierarchy from "../../../components/ui/Hierarchy";
-import { confirmWaitHierarchy, homeHierarchy } from "../../../types/hierarchy";
+import { confirmWaitHierarchy, homeHierarchy } from "../../../utility/hierarchy";
 
 const ConfirmWait = () => {
 

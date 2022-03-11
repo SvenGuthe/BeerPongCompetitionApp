@@ -4,14 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addUser } from "../../../store/user/user-store";
-import { tUserDetail } from "../../../types/user";
+import { tUser } from "../../../types/authentication";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import RolesTable from "./RolesTable";
-import TeamsTable from "./TeamsTable";
 
 const UserDetails: React.FC = () => {
 
-    const [selectedUser, setSelectedUser] = useState<tUserDetail>();
+    const [selectedUser, setSelectedUser] = useState<tUser>();
     const dispatch = useDispatch();
     const id = useParams().id;
 
@@ -24,7 +23,7 @@ const UserDetails: React.FC = () => {
     useEffect(() => {
 
         if (id) {
-            const user = users?.find(user => user.userId === +id);
+            const user = users?.find(user => user.id === +id);
             if (user) {
                 setSelectedUser(user)
             } else {
@@ -40,7 +39,7 @@ const UserDetails: React.FC = () => {
             <tbody>
                 <tr>
                     <td>User ID</td>
-                    <td>{selectedUser?.userId}</td>
+                    <td>{selectedUser?.id}</td>
                 </tr>
                 <tr>
                     <td>Vorname</td>
@@ -73,7 +72,6 @@ const UserDetails: React.FC = () => {
             </tbody>
         </Table>
         {selectedUser && <RolesTable user={selectedUser} />}
-        {selectedUser && <TeamsTable user={selectedUser} />}
     </>;
 };
 
