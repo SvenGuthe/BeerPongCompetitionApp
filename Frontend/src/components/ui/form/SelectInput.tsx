@@ -1,22 +1,21 @@
 import { Form } from "react-bootstrap";
-import { tEnum } from "../../../types/defaults/generics";
 
 const SelectInput: React.FC<{
-    value: tEnum,
+    value: string,
     disabled: boolean,
-    possibleValues: tEnum[],
+    possibleValues: string[],
     onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }> = (props) => {
 
     const value = props.value;
 
-    let defaultValue;
+    let defaultValue;    
 
     const options = props.possibleValues.map(possibleValue => {
-        if (possibleValue.id === value.id) {
-            defaultValue = value.id;
+        if (possibleValue === value) {
+            defaultValue = value;
         }
-        return <option key={possibleValue.id}>{possibleValue.value}</option>
+        return <option key={possibleValue}>{possibleValue}</option>
     })
 
     return <Form.Select

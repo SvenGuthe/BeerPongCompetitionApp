@@ -1,10 +1,9 @@
 import { Form } from "react-bootstrap";
-import { tEnum } from "../../../types/defaults/generics";
 
 const MultiSelectInput: React.FC<{
-    value: tEnum[],
+    value: string[],
     disabled: boolean,
-    possibleValues: tEnum[],
+    possibleValues: string[],
     onChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }> = (props) => {
 
@@ -13,11 +12,11 @@ const MultiSelectInput: React.FC<{
     let defaultValues: string[] = [];
 
     const options = props.possibleValues.map(possibleValue => {
-        const defaultValue = value.find(val => val.id === possibleValue.id);
+        const defaultValue = value.find(val => val === possibleValue);
         if (defaultValue) {
-            defaultValues.push(defaultValue.value);
+            defaultValues.push(defaultValue);
         }
-        return <option key={possibleValue.id}>{possibleValue.value}</option>
+        return <option key={possibleValue}>{possibleValue}</option>
     });
 
     return <Form.Select

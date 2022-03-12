@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { Button } from "react-bootstrap";
-import { tEnum } from "../../../types/defaults/generics";
 import CheckboxInput from "./CheckboxInput";
 
 import classes from './FormItem.module.css';
@@ -9,10 +8,10 @@ import SelectInput from "./SelectInput";
 import TextInput from "./TextInput";
 
 interface Props {
-    defaultValue: string | number | boolean | tEnum[] | tEnum,
-    possibleValues?: tEnum[],
+    defaultValue: string | number | boolean | string[] | number[],
+    possibleValues?: string[] | number[],
     multiSelect?: boolean,
-    saveValue: (newValue: string | number | boolean | tEnum[] | tEnum, changed: boolean) => void
+    saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void
 }
 
 const FormItem = (props: Props) => {
@@ -46,7 +45,7 @@ const FormItem = (props: Props) => {
     }
 
     const onChangeSelectHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(possibleValues!.filter(value => value.value === event.target.value))
+        setValue((possibleValues! as string[]).filter(value => value === event.target.value))
     }
 
     const onClickSelectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,9 +57,9 @@ const FormItem = (props: Props) => {
         const selectedOptions = event.currentTarget.selectedOptions;
         const newState = [];
         for (let i = 0; i < selectedOptions.length; i++) {
-            const foundEnum = possibleValues.find(possibleValue => possibleValue.value === selectedOptions[i].value);
-            if (foundEnum) {
-                newState.push(foundEnum);
+            const foundString = (possibleValues as string[]).find(possibleValue => possibleValue === selectedOptions[i].value);
+            if (foundString) {
+                newState.push(foundString);
             }
         }
         setValue(newState);
@@ -73,20 +72,22 @@ const FormItem = (props: Props) => {
         let rightInputType;
         let handler;
 
-        if (typeof props.defaultValue === "number" || typeof props.defaultValue === "string") {
-            rightInputType = <TextInput value={value as string} disabled={disabled} reference={inputRef} />
-            handler = onClickSaveTextHandler;
-        } else if (typeof props.defaultValue === "boolean") {
+        if (typeof props.defaultValue === "number" || typeof props.defaultValue === "string" || typeof props.defaultValue === "object") {
+            if (props.possibleValues) {
+                if (multiSelect) {
+                    rightInputType = <MultiSelectInput value={value as string[]} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeMultiSelectHandler} />
+                    handler = onClickSelectHandler;
+                } else {
+                    rightInputType = <SelectInput value={value as string} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeSelectHandler} />
+                    handler = onClickSelectHandler;
+                }
+            } else {                
+                rightInputType = <TextInput value={value as string} disabled={disabled} reference={inputRef} />
+                handler = onClickSaveTextHandler;
+            }
+        } else {
             rightInputType = <CheckboxInput value={value as boolean} disabled={disabled} reference={inputRef} />
             handler = onClickSaveCheckboxHandler;
-        } else if (typeof props.defaultValue === "object") {
-            if (multiSelect) {
-                rightInputType = <MultiSelectInput value={value as tEnum[]} disabled={disabled} possibleValues={props.possibleValues as tEnum[]} onChangeHandler={onChangeMultiSelectHandler} />
-                handler = onClickSelectHandler;
-            } else {
-                rightInputType = <SelectInput value={value as tEnum} disabled={disabled} possibleValues={props.possibleValues as tEnum[]} onChangeHandler={onChangeSelectHandler} />
-                handler = onClickSelectHandler;
-            }
         }
 
         return <section className={classes.container}>
