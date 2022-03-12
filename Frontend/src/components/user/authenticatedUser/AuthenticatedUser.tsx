@@ -1,6 +1,8 @@
 import { Table } from "react-bootstrap";
-import { tUser } from "../../../types/authentication";
+import { tPrivilege, tUser } from "../../../types/authentication";
+import { tSecurityPrivilege } from "../../../types/enums/securityPrivilege";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
+import FormItem from "../../ui/form/FormItem";
 
 interface tProps {
     authenticatedUser?: tUser
@@ -50,6 +52,24 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
         </Table>);
     }
 
+    const allPrivileges: tPrivilege[] = [
+        {
+            id: 1,
+            privilege: tSecurityPrivilege.ADMIN_ACL_PRIVILEGE,
+            value: tSecurityPrivilege.ADMIN_ACL_PRIVILEGE
+        },
+        {
+            id: 2,
+            privilege: tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE,
+            value: tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE
+        },
+        {
+            id: 3,
+            privilege: tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE,
+            value: tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE
+        }
+    ]
+
     return <>
         <Table striped bordered hover size="sm">
             <tbody>
@@ -75,7 +95,13 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
                 </tr>
                 <tr>
                     <td>User ID</td>
-                    <td>{authenticatedUser?.id}</td>
+                    <td>
+                        {authenticatedUser?.id}
+                        <FormItem defaultValue="ABC" saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                        <FormItem defaultValue={true} saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                        <FormItem defaultValue={allPrivileges[0]} possibleValues={allPrivileges} saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                        <FormItem defaultValue={[allPrivileges[0], allPrivileges[1]]} possibleValues={allPrivileges} multiSelect saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                        </td>
                 </tr>
                 <tr>
                     <td>User Status</td>
