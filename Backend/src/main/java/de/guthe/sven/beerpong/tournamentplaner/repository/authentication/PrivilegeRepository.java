@@ -10,8 +10,8 @@ public interface PrivilegeRepository extends JpaRepository<Privilege, Long> {
 
 	Privilege findByName(String name);
 
-	@Query(value = "SELECT * FROM Privilege p WHERE LOWER(p.name) LIKE CONCAT(LOWER(?1), '%') OR p.id LIKE CONCAT(?1, '%')",
-			countQuery = "SELECT count(*) FROM Privilege p WHERE LOWER(p.name) LIKE CONCAT(LOWER(?1), '%') OR p.id LIKE CONCAT(?1, '%')",
+	@Query(value = "SELECT * FROM Privilege p WHERE LOWER(p.privilege) LIKE CONCAT(LOWER(?1), '%') OR p.privilegeid LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM Privilege p WHERE LOWER(p.privilege) LIKE CONCAT(LOWER(?1), '%') OR p.privilegeid LIKE CONCAT(?1, '%')",
 			nativeQuery = true)
 	Page<Privilege> findAll(String search, PageRequest pageRequest);
 

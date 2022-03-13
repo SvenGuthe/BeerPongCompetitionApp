@@ -121,6 +121,23 @@ export const SecurityRoleInput: React.FC<{
 
 }
 
+export const MultiSecurityRoleInput: React.FC<{
+    defaultValue?: tSecurityRole[],
+    saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void
+}> = (props) => {
+
+    const allPossibleValues = Object.keys(tSecurityRole);
+    const defaultValue = props.defaultValue ? props.defaultValue : [];
+
+    return <FormItem
+        defaultValue={defaultValue}
+        possibleValues={allPossibleValues}
+        multiSelect
+        saveValue={props.saveValue}
+    />;
+
+}
+
 export const TeamStatusTypeInput: React.FC<{
     defaultValue?: tTeamStatusType,
     saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void

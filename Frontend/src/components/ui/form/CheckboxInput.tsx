@@ -8,8 +8,8 @@ const CheckboxInput: React.FC<{
 
     return <Form.Check
         ref={props.reference}
-        isValid={props.value}
         disabled={props.disabled}
+        defaultChecked={props.value}
     />
 
 }

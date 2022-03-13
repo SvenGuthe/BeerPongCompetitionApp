@@ -1,5 +1,6 @@
 import { tCompetition } from "./competition";
 import { tEnum, tID } from "./defaults/generics";
+import { tAdditionalAttribute } from "./defaults/tables";
 import { tTimestamp } from "./defaults/timestamp";
 import { tSecurityPrivilege } from "./enums/securityPrivilege";
 import { tSecurityRole } from "./enums/securityRole";
@@ -21,7 +22,8 @@ export type tRegister = {
 
 export type tConfirmationToken = tID & {
     confirmationToken: string,
-    createdDate: tTimestamp
+    createdDate: tTimestamp,
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 export type tPrivilege = tEnum & {
@@ -46,7 +48,8 @@ export type tUser = tID & {
     creationTime: tTimestamp,
     roles: tRole[],
     userStatus: tUserStatus,
-    confirmationToken: tConfirmationToken[]
+    confirmationToken: tConfirmationToken[],
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 // --------- CUSTOM DTOs --------- //

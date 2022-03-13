@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store/combine-store";
-import RealTeamTable from "./realteam/RealTeamTable";
-import { storeTeams } from "../../store/team/team-store";
-import { getRequest } from "../../utility/genericHTTPFunctions";
-import TableWithSearchAndFilter from "../ui/TableWithSearchAndFilter";
+import { RootState } from "../../../store/combine-store";
+import { storeTeams } from "../../../store/team/team-store";
+import { getRequest } from "../../../utility/genericHTTPFunctions";
+import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
+import TeamTable from "./TeamTable";
 
-const Team: React.FC = () => {
+const TeamOverview: React.FC = (props) => {
 
     const dispatch = useDispatch();
 
@@ -32,8 +32,9 @@ const Team: React.FC = () => {
     }, []);
 
     return teams ? <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={teams.size} pageSizes={pageSizes}>
-        <RealTeamTable teams={teams.data} />
+        <TeamTable teams={teams.data} />
     </TableWithSearchAndFilter> : <></>;
-}
 
-export default Team;
+};
+
+export default TeamOverview;

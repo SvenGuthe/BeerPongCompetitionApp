@@ -1,12 +1,12 @@
 import Hierarchy from "../../components/ui/Hierarchy";
-import {default as UserComponent} from "../../components/user/userDetail/UserOverview";
+import UserOverview from "../../components/user/userOverview/UserOverview";
 import { homeHierarchy, userHierarchy } from "../../utility/hierarchy";
 
 const User = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, userHierarchy]} />
-        <h2>Users</h2>
-        <UserComponent/>
+        <h2>Nutzer</h2>
+        <UserOverview/>
     </>;
 };
 

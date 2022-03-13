@@ -4,7 +4,7 @@ import { RootState } from "../../../store/combine-store";
 import { storeUsers } from "../../../store/user/user-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
-import UserRow from "./UserRow";
+import UserTable from "./UserTable";
 
 const UserOverview: React.FC = () => {
 
@@ -31,31 +31,9 @@ const UserOverview: React.FC = () => {
         setFilterValues({ page, size, search });
     }, []);
 
-    let table;
-
-    if (users) {
-        table = <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={users.size} pageSizes={pageSizes}>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>ID</th>
-                    <th>Spielername</th>
-                    <th>Freigeschalten</th>
-                    <th>User Status</th>
-                    <th style={{ textAlign: 'center' }}>Administrator</th>
-                    <th style={{ textAlign: 'center' }}>Moderator</th>
-                    <th style={{ textAlign: 'center' }}>Player</th>
-                </tr>
-            </thead>
-            <tbody>
-                {users.data.map(user => <UserRow key={user.id} user={user} />)}
-            </tbody>
-        </TableWithSearchAndFilter>
-    }
-
-    return <>
-        {table}
-    </>;
+    return <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={users ? users.size : 0} pageSizes={pageSizes}>
+        {users && <UserTable users={users.data} />}
+    </TableWithSearchAndFilter>;
 
 };
 
