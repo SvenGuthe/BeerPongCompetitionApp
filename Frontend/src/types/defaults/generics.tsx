@@ -1,9 +1,12 @@
+import { tAdditionalAttribute } from "./tables"
+
 export interface tID {
     id: number
 }
 
 export interface tEnum extends tID {
-    value: string
+    value: string,
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 export type tPaginationDTO<LIST_TYPE extends tID> = {

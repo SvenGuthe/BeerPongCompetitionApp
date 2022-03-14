@@ -2,10 +2,12 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.team.TeamPermissions;
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
+import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,10 +33,13 @@ public class TeamController {
 
 	private TeamRepository teamRepository;
 
+	private TeamService teamService;
+
 	@Autowired
-	public TeamController(ACLService aclService, TeamRepository teamRepository) {
+	public TeamController(ACLService aclService, TeamRepository teamRepository, TeamService teamService) {
 		this.aclService = aclService;
 		this.teamRepository = teamRepository;
+		this.teamService = teamService;
 	}
 
 	@GetMapping("/team")
@@ -60,9 +65,8 @@ public class TeamController {
 
 	@GetMapping("/team/{teamId}")
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public TeamDTO getTeam(@PathVariable Long teamId) {
-		Team team = teamRepository.findById(teamId).orElseThrow();
-		return new TeamDTO(team);
+	public TeamDetailDTO getTeam(@PathVariable Long teamId) {
+		return teamService.transformTeamToTeamDetailDTO(teamRepository.findById(teamId).orElseThrow());
 	}
 
 	@PostMapping("/team")

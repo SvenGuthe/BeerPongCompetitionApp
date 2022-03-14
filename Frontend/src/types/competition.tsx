@@ -1,5 +1,6 @@
 import { tUser } from "./authentication";
 import { tEnum, tID } from "./defaults/generics";
+import { tAdditionalAttribute } from "./defaults/tables";
 import { tTimestamp } from "./defaults/timestamp";
 import { tBillingStatusType } from "./enums/billingStatusType";
 import { tCompetitionAdminStatusType } from "./enums/competitionAdminStatusType";
@@ -33,7 +34,8 @@ export type tCompetitionStatus = tEnum & {
     competitionStatusType: tCompetitionAdminStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo: tTimestamp,
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 export type tRegistrationStatus = tEnum & {
@@ -77,5 +79,6 @@ export type tCompetition = tID & {
     creationTime: tTimestamp,
     competitionStatus: tCompetitionStatus[],
     competitionTeams: tCompetitionTeam[],
-    competitionAdmins: tCompetitionAdmin[]
+    competitionAdmins: tCompetitionAdmin[],
+    additionalAttributes?: tAdditionalAttribute[]
 }

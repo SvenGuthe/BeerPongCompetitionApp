@@ -1,19 +1,21 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tUser } from '../../types/authentication'
+import { tUser, tUserDetail } from '../../types/authentication'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
     users: tPaginationDTO<tUser> | null,
     userStatus: tPaginationDTO<tEnum> | null,
     roles: tPaginationDTO<tEnum> | null,
-    privileges: tPaginationDTO<tEnum> | null
+    privileges: tPaginationDTO<tEnum> | null,
+    userDetail: tUserDetail | null
 }
 
 const initialState: SliceState = {
     users: null,
     userStatus: null,
     roles: null,
-    privileges: null
+    privileges: null,
+    userDetail: null
 }
 
 export const userSlice = createSlice({
@@ -32,8 +34,15 @@ export const userSlice = createSlice({
         storePrivileges: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.privileges = action.payload;
         },
-        addUser: (state, action: PayloadAction<tUser>) => {
-            const newUser = action.payload;
+        storeUserDetail: (state, action: PayloadAction<tUserDetail>) => {
+            state.userDetail = action.payload;
+        },
+        removeUserDetail: (state) => {
+            state.userDetail = null;
+        },
+        addUser: (state, action: PayloadAction<tUserDetail>) => {
+            const newUser = action.payload.user;
+            
             if (state.users) {
                 const existingUser = state.users.data.find(users => users.id === newUser.id);
                 if (!existingUser) {
@@ -55,7 +64,9 @@ export const {
     addUser,
     storeUserStatus,
     storeRoles,
-    storePrivileges
+    storePrivileges,
+    storeUserDetail,
+    removeUserDetail
 } = userSlice.actions
 
 export const teamStore = configureStore({

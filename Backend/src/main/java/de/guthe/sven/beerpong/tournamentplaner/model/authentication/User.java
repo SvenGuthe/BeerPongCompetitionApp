@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdmin;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
@@ -62,6 +63,11 @@ public class User {
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private Collection<ConfirmationToken> confirmationToken;
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JsonIgnore
+	private Collection<CompetitionAdmin> competitionAdmins;
 
 	public User() {
 	}
@@ -189,5 +195,21 @@ public class User {
 			this.confirmationToken = new ArrayList<>();
 		}
 		this.confirmationToken.add(confirmationToken);
+	}
+
+	public void setCompetitionPlayers(Collection<CompetitionPlayer> competitionPlayers) {
+		this.competitionPlayers = competitionPlayers;
+	}
+
+	public void setConfirmationToken(Collection<ConfirmationToken> confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
+
+	public Collection<CompetitionAdmin> getCompetitionAdmins() {
+		return competitionAdmins;
+	}
+
+	public void setCompetitionAdmins(Collection<CompetitionAdmin> competitionAdmins) {
+		this.competitionAdmins = competitionAdmins;
 	}
 }

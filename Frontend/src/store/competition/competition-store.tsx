@@ -8,7 +8,8 @@ type SliceState = {
     competitionStatus: tPaginationDTO<tEnum> | null,
     registrationStatus: tPaginationDTO<tEnum> | null,
     competitionPlayerStatus: tPaginationDTO<tEnum> | null,
-    billingStatus: tPaginationDTO<tEnum> | null
+    billingStatus: tPaginationDTO<tEnum> | null,
+    competitionDetail: tCompetition | null
 }
 
 const initialState: SliceState = {
@@ -17,7 +18,8 @@ const initialState: SliceState = {
     competitionStatus: null,
     registrationStatus: null,
     competitionPlayerStatus: null,
-    billingStatus: null
+    billingStatus: null,
+    competitionDetail: null
 }
 
 export const competitionSlice = createSlice({
@@ -56,6 +58,12 @@ export const competitionSlice = createSlice({
                     data: [newCompetition]
                 };
             }
+        },
+        storeCompetitionDetail: (state, action: PayloadAction<tCompetition>) => {
+            state.competitionDetail = action.payload;
+        },
+        removeCompetitionDetail: (state) => {
+            state.competitionDetail = null;
         }
     }
 })
@@ -67,7 +75,9 @@ export const {
     storeRegistrationStatus,
     storeCompetitionPlayerStatus,
     storeBillingStatus,
-    addCompetition
+    addCompetition,
+    storeCompetitionDetail,
+    removeCompetitionDetail
 } = competitionSlice.actions
 
 export const competitionStore = configureStore({

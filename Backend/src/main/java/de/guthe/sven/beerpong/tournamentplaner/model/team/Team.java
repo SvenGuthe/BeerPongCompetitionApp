@@ -1,7 +1,9 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -40,6 +42,11 @@ public class Team implements ACLObjectInterface {
 	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<TeamStatusHistory> teamStatusHistories;
+
+	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JsonIgnore
+	private List<CompetitionTeam> competitionTeams;
 
 	public Team() {
 	}
@@ -139,4 +146,11 @@ public class Team implements ACLObjectInterface {
 		this.teamStatusHistories.add(teamStatusHistory);
 	}
 
+	public List<CompetitionTeam> getCompetitionTeams() {
+		return competitionTeams;
+	}
+
+	public void setCompetitionTeams(List<CompetitionTeam> competitionTeams) {
+		this.competitionTeams = competitionTeams;
+	}
 }

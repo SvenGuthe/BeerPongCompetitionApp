@@ -176,9 +176,16 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		competitionTeam.setTeam(teamModAdmin);
 		competitionTeam.setPassword("password");
 		competitionTeam.addCompetitionPlayer(competitionPlayerMod);
-		competitionTeam.addCompetitionPlayer(competitionPlayerAdmin);
 		competitionTeam.addBillingStatus(billingStatus);
 		competitionTeam.addRegistrationStatus(registrationStatus);
+
+		CompetitionTeam competitionTeam2 = new CompetitionTeam();
+		competitionTeam2.setCompetitionTeamName("CompetitionTeamName2");
+		competitionTeam2.setTeam(teamModAdmin);
+		competitionTeam2.setPassword("password");
+		competitionTeam2.addCompetitionPlayer(competitionPlayerAdmin);
+		competitionTeam2.addBillingStatus(billingStatus);
+		competitionTeam2.addRegistrationStatus(registrationStatus);
 
 		CompetitionAdminStatus competitionAdminStatus = new CompetitionAdminStatus();
 		competitionAdminStatus.setCompetitionAdminStatusDescription(CompetitionAdminStatusType.PROMISED);
@@ -200,6 +207,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		competition.setRegistrationEnd(new Timestamp(System.currentTimeMillis()));
 		competition.setSetOfRules("abc.de");
 		competition.addCompetitionTeam(competitionTeam);
+		competition.addCompetitionTeam(competitionTeam2);
 		competition.addCompetitionAdmin(competitionAdmin);
 		competition.addCompetitionStatus(competitionStatus);
 
