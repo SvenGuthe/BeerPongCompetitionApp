@@ -37,6 +37,9 @@ export const userSlice = createSlice({
         storeUserDetail: (state, action: PayloadAction<tUserDetail>) => {
             state.userDetail = action.payload;
         },
+        removeUserDetail: (state) => {
+            state.userDetail = null;
+        },
         addUser: (state, action: PayloadAction<tUserDetail>) => {
             const newUser = action.payload.user;
             
@@ -62,7 +65,8 @@ export const {
     storeUserStatus,
     storeRoles,
     storePrivileges,
-    storeUserDetail
+    storeUserDetail,
+    removeUserDetail
 } = userSlice.actions
 
 export const teamStore = configureStore({

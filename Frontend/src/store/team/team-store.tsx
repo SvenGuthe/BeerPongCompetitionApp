@@ -27,6 +27,9 @@ export const teamSlice = createSlice({
         storeTeamDetail: (state, action: PayloadAction<tTeamDetail>) => {
             state.teamDetail = action.payload;
         },
+        removeTeamDetail: (state) => {
+            state.teamDetail = null;
+        },
         updateTeam: (state, action: PayloadAction<tTeam>) => {
             const fetchedTeam = action.payload;
             if (state.teams) {
@@ -62,7 +65,8 @@ export const {
     updateTeam,
     addTeam,
     storeTeamStatus,
-    storeTeamDetail
+    storeTeamDetail,
+    removeTeamDetail
 } = teamSlice.actions
 
 export const teamStore = configureStore({

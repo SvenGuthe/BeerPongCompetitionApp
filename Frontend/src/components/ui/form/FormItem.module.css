@@ -1,0 +1,14 @@
+.container {
+    width: 100%;
+}
+
+.value {
+    width: calc(100% - 100px - 1%);
+    float: left;
+    margin-right: 1%;
+}
+
+.button {
+    margin-left: calc(100% - 100px);
+    text-align: right;
+}
