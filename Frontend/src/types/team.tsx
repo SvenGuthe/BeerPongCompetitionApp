@@ -10,14 +10,16 @@ export type tTeamStatus = tEnum & {
     teamStatusDescription: tTeamStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo: tTimestamp,
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 export type tTeamInvitationLink = tEnum & {
     teamInvitationLink: string,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo: tTimestamp,
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 export type tTeam = tEnum & {

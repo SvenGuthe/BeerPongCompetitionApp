@@ -1,12 +1,12 @@
+import CompetitionOverview from "../../components/competition/competitionOverview/CompetitionOverview";
 import Hierarchy from "../../components/ui/Hierarchy";
-import {default as CompetitionComponent} from "../../components/competition/CompetitionOverview";
 import { competitionHierarchy, homeHierarchy } from "../../utility/hierarchy";
 
 const Competition = () => {
     return <>
         <Hierarchy hierarchyItems={[homeHierarchy, competitionHierarchy]} />
         <h2>Turniere</h2>
-        <CompetitionComponent/>
+        <CompetitionOverview/>
     </>;
 };
 

@@ -34,7 +34,8 @@ export type tCompetitionStatus = tEnum & {
     competitionStatusType: tCompetitionAdminStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo: tTimestamp,
+    additionalAttributes?: tAdditionalAttribute[]
 }
 
 export type tRegistrationStatus = tEnum & {

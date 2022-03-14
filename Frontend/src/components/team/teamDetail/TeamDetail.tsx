@@ -2,15 +2,16 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
-import { addTeam, storeTeamDetail } from "../../../store/team/team-store";
+import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
+import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
 import FormItem from "../../ui/form/FormItem";
 import UserTable from "../../user/userOverview/UserTable";
 import TeamDetailTable from "./TeamDetailTable";
 import TeamInvitationLinkTable from "./teamInvitationLink/TeamInvitationLinkTable";
-import TeamStatusTable from "./teamStatus/TeamStatusTable";
+import TeamStatusAddRow from "./teamStatus/TeamStatusAddRow";
 
 const TeamDetail: React.FC = () => {
 
@@ -45,6 +46,10 @@ const TeamDetail: React.FC = () => {
             dispatch(getRequestWithID(+id, "/team/team", [addTeam, storeTeamDetail]));
         }
 
+        return () => {
+            dispatch(removeTeamDetail());
+        }
+
     }, [id, dispatch]);
 
     return <>
@@ -52,7 +57,27 @@ const TeamDetail: React.FC = () => {
             <TeamDetailTable team={teamDetail.team} />
             {teamStatus && <TableSection>
                 <h3>Team Status</h3>
-                <TeamStatusTable teamStatus={teamStatus} wrapped />
+                <EnumTable enumData={teamStatus.map(singleTeamStatus => {
+
+                    const additionalAttributes = [
+                        {
+                            id: singleTeamStatus.id + "_validFrom",
+                            value: singleTeamStatus.validFrom
+                        },
+                        {
+                            id: singleTeamStatus.id + "_validTo",
+                            value: singleTeamStatus.validTo
+                        }
+                    ]
+
+                    const newTeamStatus = {
+                        ...singleTeamStatus,
+                        additionalAttributes
+                    }
+
+                    return newTeamStatus;
+
+                })} wrapped addRow={<TeamStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {teamInvitationLinks && <TableSection>
                 <h3>Team Einladungslinks</h3>

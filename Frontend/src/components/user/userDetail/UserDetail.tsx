@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
-import { addUser, storeUserDetail } from "../../../store/user/user-store";
+import { addUser, removeUserDetail, storeUserDetail } from "../../../store/user/user-store";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
@@ -48,6 +48,10 @@ const UserDetails: React.FC = () => {
 
         if (id) {
             dispatch(getRequestWithID(+id, "/authentication/user", [addUser, storeUserDetail]));
+        }
+
+        return () => {
+            dispatch(removeUserDetail());
         }
 
     }, [id, dispatch]);
