@@ -66,3 +66,7 @@ export type tTeamUser = tID & {
     isAdmin: boolean,
     creationTime: tTimestamp
 }
+
+export type tUserIDAndGamerTag = tID & {
+    gamerTag: string
+}

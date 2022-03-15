@@ -11,12 +11,15 @@ interface Props {
     defaultValue: string | number | boolean | string[] | number[],
     possibleValues?: string[] | number[],
     multiSelect?: boolean,
-    saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void
+    saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void,
+    add?: boolean
 }
 
 const FormItem = (props: Props) => {
 
-    const [editMode, setEditMode] = useState(false);
+    const add = props.add ? props.add : false;
+
+    const [editMode, setEditMode] = useState(add ? true : false);
     const [value, setValue] = useState(props.defaultValue);
 
     const multiSelect = props.multiSelect ? props.multiSelect : false;
@@ -33,7 +36,7 @@ const FormItem = (props: Props) => {
             props.saveValue(inputRef.current.value, inputRef.current.value !== value);
             setValue(inputRef.current.value);
         }
-        setEditMode((currentEditMode) => !currentEditMode);
+        !add && setEditMode((currentEditMode) => !currentEditMode);
     }
 
     const onClickSaveCheckboxHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,7 +44,7 @@ const FormItem = (props: Props) => {
             props.saveValue(inputRef.current.checked, inputRef.current.checked !== value);
             setValue(inputRef.current.checked);
         }
-        setEditMode((currentEditMode) => !currentEditMode);
+        !add && setEditMode((currentEditMode) => !currentEditMode);
     }
 
     const onChangeSelectHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +53,7 @@ const FormItem = (props: Props) => {
 
     const onClickSelectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         props.saveValue(value, true);
-        setEditMode(false);
+        !add && setEditMode(false);
     }
 
     const onChangeMultiSelectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -66,7 +69,8 @@ const FormItem = (props: Props) => {
     }
 
     const getDiv = (
-        disabled: boolean
+        disabled: boolean,
+        add: boolean
     ) => {
 
         let rightInputType;
@@ -81,7 +85,7 @@ const FormItem = (props: Props) => {
                     rightInputType = <SelectInput value={value as string} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeSelectHandler} />
                     handler = onClickSelectHandler;
                 }
-            } else {                
+            } else {
                 rightInputType = <TextInput value={value as string} disabled={disabled} reference={inputRef} />
                 handler = onClickSaveTextHandler;
             }
@@ -90,16 +94,41 @@ const FormItem = (props: Props) => {
             handler = onClickSaveCheckboxHandler;
         }
 
+        let clickAndLabel: {
+            click: (event: React.MouseEvent<HTMLButtonElement>) => void,
+            label: string
+        }
+
+        if (add) {
+            clickAndLabel = {
+                click: handler,
+                label: "Add"
+            }
+        } else if (disabled) {
+            clickAndLabel = {
+                click: onClickEditHandler,
+                label: "Edit"
+            }
+        } else {
+            clickAndLabel = {
+                click: handler,
+                label: "Save"
+            }
+        }
+
         return <section className={classes.container}>
             <div className={classes.value}>
                 {rightInputType}
             </div>
-            <div className={classes.button}><Button variant="secondary" size="sm" onClick={disabled ? onClickEditHandler : handler} style={{ width: '100px' }}>{disabled ? "Edit" : "Save"}</Button></div>
+            <div className={classes.button}>
+                <Button variant="secondary" size="sm" onClick={clickAndLabel.click} style={{ width: '100px' }}>
+                    {clickAndLabel.label}
+                </Button></div>
         </section>
     }
 
-    const viewerModeInput = getDiv(true);
-    const editModeInput = getDiv(false);
+    const viewerModeInput = getDiv(true, add);
+    const editModeInput = getDiv(false, add);
 
     return editMode ? editModeInput : viewerModeInput;
 

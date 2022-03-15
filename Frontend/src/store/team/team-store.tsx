@@ -21,6 +21,9 @@ export const teamSlice = createSlice({
         storeTeams: (state, action: PayloadAction<tPaginationDTO<tTeam>>) => {
             state.teams = action.payload;
         },
+        removeTeams: (state) => {
+            state.teams = null;
+        },
         storeTeamStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.teamStatus = action.payload;
         },
@@ -66,7 +69,8 @@ export const {
     addTeam,
     storeTeamStatus,
     storeTeamDetail,
-    removeTeamDetail
+    removeTeamDetail,
+    removeTeams
 } = teamSlice.actions
 
 export const teamStore = configureStore({

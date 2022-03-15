@@ -1,17 +1,23 @@
 import { Form } from "react-bootstrap";
 
 const SelectInput: React.FC<{
-    value: string,
+    value?: string,
     disabled: boolean,
     possibleValues: string[],
     onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }> = (props) => {
 
-    const value = props.value;
+    const value = props.value ? props.value : "";
 
-    let defaultValue;    
+    let possibleValues = props.possibleValues;
 
-    const options = props.possibleValues.map(possibleValue => {
+    if (value === "") {
+        possibleValues = [""].concat(possibleValues);
+    }
+
+    let defaultValue;
+
+    const options = possibleValues.map(possibleValue => {
         if (possibleValue === value) {
             defaultValue = value;
         }

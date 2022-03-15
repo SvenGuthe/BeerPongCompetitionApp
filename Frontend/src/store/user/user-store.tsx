@@ -25,6 +25,9 @@ export const userSlice = createSlice({
         storeUsers: (state, action: PayloadAction<tPaginationDTO<tUser>>) => {
             state.users = action.payload;
         },
+        removeUsers: (state) => {
+            state.users = null;
+        },
         storeUserStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.userStatus = action.payload;
         },
@@ -66,7 +69,8 @@ export const {
     storeRoles,
     storePrivileges,
     storeUserDetail,
-    removeUserDetail
+    removeUserDetail,
+    removeUsers
 } = userSlice.actions
 
 export const teamStore = configureStore({

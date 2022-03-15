@@ -1,4 +1,4 @@
-import { tTeamUser } from "./authentication"
+import { tTeamUser, tUserIDAndGamerTag } from "./authentication"
 import { tCompetition } from "./competition"
 import { tEnum, tID } from "./defaults/generics"
 import { tAdditionalAttribute } from "./defaults/tables"
@@ -43,4 +43,13 @@ export type tTeamDetail = {
     team: tTeam,
     users: tTeamUser[],
     competitions: tCompetition[]
+}
+
+export type tTeamIDAndName = tID & {
+    teamName: string
+}
+
+export type tTeamAndUser = {
+    team: tTeamIDAndName,
+    users: tUserIDAndGamerTag[]
 }

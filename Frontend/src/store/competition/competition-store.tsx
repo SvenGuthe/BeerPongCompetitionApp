@@ -1,5 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tCompetition } from '../../types/competition'
+import { tCompetition, tCompetitionDetail } from '../../types/competition'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
@@ -9,7 +9,7 @@ type SliceState = {
     registrationStatus: tPaginationDTO<tEnum> | null,
     competitionPlayerStatus: tPaginationDTO<tEnum> | null,
     billingStatus: tPaginationDTO<tEnum> | null,
-    competitionDetail: tCompetition | null
+    competitionDetail: tCompetitionDetail | null
 }
 
 const initialState: SliceState = {
@@ -29,6 +29,9 @@ export const competitionSlice = createSlice({
         storeCompetitions: (state, action: PayloadAction<tPaginationDTO<tCompetition>>) => {
             state.competitions = action.payload;
         },
+        removeCompetitions: (state) => {
+            state.competitions = null;
+        },
         storeCompetitionAdminStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.competitionAdminStatus = action.payload;
         },
@@ -44,22 +47,22 @@ export const competitionSlice = createSlice({
         storeBillingStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.billingStatus = action.payload;
         },
-        addCompetition: (state, action: PayloadAction<tCompetition>) => {
+        addCompetition: (state, action: PayloadAction<tCompetitionDetail>) => {
             const newCompetition = action.payload;
             if (state.competitions) {
-                const existingCompetition = state.competitions.data.find(competition => competition.id === newCompetition.id);
+                const existingCompetition = state.competitions.data.find(competition => competition.id === newCompetition.competition.id);
                 if (!existingCompetition) {
-                    state.competitions.data = state.competitions.data.concat(newCompetition);
+                    state.competitions.data = state.competitions.data.concat(newCompetition.competition);
                 }
             } else {
                 state.competitions = {
                     size: 1,
                     pages: 1,
-                    data: [newCompetition]
+                    data: [newCompetition.competition]
                 };
             }
         },
-        storeCompetitionDetail: (state, action: PayloadAction<tCompetition>) => {
+        storeCompetitionDetail: (state, action: PayloadAction<tCompetitionDetail>) => {
             state.competitionDetail = action.payload;
         },
         removeCompetitionDetail: (state) => {
@@ -77,7 +80,8 @@ export const {
     storeBillingStatus,
     addCompetition,
     storeCompetitionDetail,
-    removeCompetitionDetail
+    removeCompetitionDetail,
+    removeCompetitions
 } = competitionSlice.actions
 
 export const competitionStore = configureStore({
