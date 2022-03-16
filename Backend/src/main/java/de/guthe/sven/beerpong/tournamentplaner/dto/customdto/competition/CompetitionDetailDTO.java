@@ -10,13 +10,16 @@ public class CompetitionDetailDTO {
 
     CompetitionDTO competition;
 
-    Collection<UserIDAndGamerTagDTO> users;
+    Collection<UserIDAndGamerTagDTO> possibleAdminUsers;
+
+    Collection<UserIDAndGamerTagDTO> possiblePlayers;
 
     Collection<TeamAndUserDTO> teams;
 
-    public CompetitionDetailDTO(CompetitionDTO competition, Collection<UserIDAndGamerTagDTO> users, Collection<TeamAndUserDTO> teams) {
+    public CompetitionDetailDTO(CompetitionDTO competition, Collection<UserIDAndGamerTagDTO> possibleAdminUsers, Collection<UserIDAndGamerTagDTO> possiblePlayers, Collection<TeamAndUserDTO> teams) {
         this.competition = competition;
-        this.users = users;
+        this.possibleAdminUsers = possibleAdminUsers;
+        this.possiblePlayers = possiblePlayers;
         this.teams = teams;
     }
 
@@ -28,12 +31,20 @@ public class CompetitionDetailDTO {
         this.competition = competition;
     }
 
-    public Collection<UserIDAndGamerTagDTO> getUsers() {
-        return users;
+    public Collection<UserIDAndGamerTagDTO> getPossibleAdminUsers() {
+        return possibleAdminUsers;
     }
 
-    public void setUsers(Collection<UserIDAndGamerTagDTO> users) {
-        this.users = users;
+    public void setPossibleAdminUsers(Collection<UserIDAndGamerTagDTO> possibleAdminUsers) {
+        this.possibleAdminUsers = possibleAdminUsers;
+    }
+
+    public Collection<UserIDAndGamerTagDTO> getPossiblePlayers() {
+        return possiblePlayers;
+    }
+
+    public void setPossiblePlayers(Collection<UserIDAndGamerTagDTO> possiblePlayers) {
+        this.possiblePlayers = possiblePlayers;
     }
 
     public Collection<TeamAndUserDTO> getTeams() {

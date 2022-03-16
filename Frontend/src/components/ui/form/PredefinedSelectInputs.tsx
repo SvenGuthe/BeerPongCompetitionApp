@@ -70,7 +70,7 @@ export const CompetitionStatusTypeInput: React.FC<{
 }> = (props) => {
 
     const allPossibleValues = Object.keys(tCompetitionStatusType);
-    const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
+    const defaultValue = props.defaultValue ? props.defaultValue : [allPossibleValues[0]];
 
     return <FormItem
         defaultValue={defaultValue}

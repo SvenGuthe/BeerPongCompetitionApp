@@ -1,5 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tCompetition, tCompetitionDetail } from '../../types/competition'
+import { tCompetition, tCompetitionDetail, tCompetitionStatus } from '../../types/competition'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
@@ -67,6 +67,20 @@ export const competitionSlice = createSlice({
         },
         removeCompetitionDetail: (state) => {
             state.competitionDetail = null;
+        },
+        updateCompetitionStatus: (state, action: PayloadAction<tCompetitionStatus[]>) => {
+
+            const newCompetitionState = state.competitionDetail!.competition.competitionStatus.map(singleCompetitionStatus => {
+                if (singleCompetitionStatus.id === action.payload[0].id) {
+                    return action.payload[0];
+                } else {
+                    return singleCompetitionStatus
+                }
+            })
+            newCompetitionState.push(action.payload[1])
+
+            state.competitionDetail!.competition.competitionStatus = newCompetitionState
+
         }
     }
 })
@@ -81,7 +95,8 @@ export const {
     addCompetition,
     storeCompetitionDetail,
     removeCompetitionDetail,
-    removeCompetitions
+    removeCompetitions,
+    updateCompetitionStatus
 } = competitionSlice.actions
 
 export const competitionStore = configureStore({

@@ -5,7 +5,8 @@ import { tTeamAndUser } from "../../../../types/team";
 import { removeDuplicates } from "../../../../utility/arrayFunctions";
 
 const CompetitionTeamAdd: React.FC<{
-    teams: tTeamAndUser[]
+    teams: tTeamAndUser[],
+    users: tUserIDAndGamerTag[]
 }> = (props) => {
 
     const [selectedTeam, setSelectedTeam] = useState<tTeamAndUser | null>(null);
@@ -53,10 +54,9 @@ const CompetitionTeamAdd: React.FC<{
     let possibleTeams: string[] = [];
 
     if (selectedTeam) {
-        possibleTeams = selectedTeam.users.map(singleUser => singleUser.gamerTag);
+        possibleTeams = selectedTeam.users.filter(user => props.users.find(singleUser => singleUser.id === user.id)).map(singleUser => singleUser.gamerTag);
     } else {
-        const possibleTeamsOption = removeDuplicates(teams.flatMap(team => team.users))?.map(team => team.gamerTag);
-        possibleTeams = possibleTeamsOption ? possibleTeamsOption : [];
+        possibleTeams = props.users.map(singleUser => singleUser.gamerTag);
     }
 
     const defaultValue = {

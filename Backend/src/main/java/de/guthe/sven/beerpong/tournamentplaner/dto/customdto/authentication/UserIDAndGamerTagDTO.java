@@ -12,6 +12,11 @@ public class UserIDAndGamerTagDTO extends ID {
         this.gamerTag = gamerTag;
     }
 
+    public UserIDAndGamerTagDTO(IUserIDAndGamerTagDTO iUserIDAndGamerTagDTO) {
+        super(iUserIDAndGamerTagDTO.getUserId());
+        this.gamerTag = iUserIDAndGamerTagDTO.getGamerTag();
+    }
+
     public UserIDAndGamerTagDTO(User user) {
         super(user.getId());
         this.gamerTag = user.getGamerTag();

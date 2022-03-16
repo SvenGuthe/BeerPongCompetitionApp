@@ -73,7 +73,7 @@ const CompetitionDetail: React.FC = (props) => {
 
                     return newCompetitionStatus;
 
-                })} wrapped addRow={<CompetitionStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })} wrapped addRow={<CompetitionStatusAddRow id={competitionDetail.competition.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionAdminStatus && <TableSection>
                 <h3>Turnier Admins</h3>
@@ -83,17 +83,17 @@ const CompetitionDetail: React.FC = (props) => {
                     </TableSection>
                 })}
                 <p><b>User als Administrator hinzufügen:</b></p>
-                <CompetitionAdminAdd users={competitionDetail.users} competitionId={competitionDetail.competition.id} />
+                <CompetitionAdminAdd users={competitionDetail.possibleAdminUsers} competitionId={competitionDetail.competition.id} />
             </TableSection>}
             {competitionTeamDetails && <TableSection>
                 <h3>Turnier Teams</h3>
                 {competitionTeamDetails.map(competitionTeamDetail => {
                     return <TableSection key={competitionTeamDetail.id}>
-                        <CompetitionTeamDetail competitionTeamDetail={competitionTeamDetail} />
+                        <CompetitionTeamDetail competitionTeamDetail={competitionTeamDetail} teams={competitionDetail.teams} users={competitionDetail.possiblePlayers} />
                     </TableSection>
                 })}
                 <p><b>Turnier Team Hinzufügen:</b></p>
-                <CompetitionTeamAdd teams={competitionDetail.teams} />
+                <CompetitionTeamAdd teams={competitionDetail.teams} users={competitionDetail.possiblePlayers} />
             </TableSection>}
         </>}
     </>;

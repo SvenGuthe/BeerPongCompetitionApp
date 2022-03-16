@@ -87,6 +87,7 @@ export type tCompetition = tID & {
 
 export type tCompetitionDetail = {
     competition: tCompetition,
-    users: tUserIDAndGamerTag[],
+    possibleAdminUsers: tUserIDAndGamerTag[],
+    possiblePlayers: tUserIDAndGamerTag[],
     teams: tTeamAndUser[]
 }
