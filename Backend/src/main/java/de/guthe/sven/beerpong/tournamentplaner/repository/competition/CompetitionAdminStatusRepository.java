@@ -1,10 +1,13 @@
 package de.guthe.sven.beerpong.tournamentplaner.repository.competition;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.CompetitionAdminStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdminStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface CompetitionAdminStatusRepository extends JpaRepository<CompetitionAdminStatus, Long> {
 
@@ -15,5 +18,9 @@ public interface CompetitionAdminStatusRepository extends JpaRepository<Competit
 
     @Query("select cas from CompetitionAdminStatus cas")
     Page<CompetitionAdminStatus> findAll(PageRequest pageRequest);
+
+    @Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) = LOWER(?1)",
+            nativeQuery = true)
+    List<CompetitionAdminStatus> findByStatus(CompetitionAdminStatusType competitionAdminStatusType);
 
 }

@@ -2,9 +2,11 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionAdminStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionAdminStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdminStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionAdminStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +24,12 @@ public class CompetitionAdminStatusController {
 
 	private CompetitionAdminStatusRepository competitionAdminStatusRepository;
 
+	private CompetitionService competitionService;
+
 	@Autowired
-	public CompetitionAdminStatusController(CompetitionAdminStatusRepository competitionAdminStatusRepository) {
+	public CompetitionAdminStatusController(CompetitionAdminStatusRepository competitionAdminStatusRepository, CompetitionService competitionService) {
 		this.competitionAdminStatusRepository = competitionAdminStatusRepository;
+		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionadminstatus")
@@ -51,6 +57,12 @@ public class CompetitionAdminStatusController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionAdminStatusDTO getCompetitionAdminStatus(@PathVariable Long competitionAdminStatusId) {
 		return new CompetitionAdminStatusDTO(competitionAdminStatusRepository.findById(competitionAdminStatusId).orElseThrow());
+	}
+
+	@PutMapping("/competitionadminstatus")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public Collection<CompetitionAdminStatusDTO> updateCompetitionAdminStatus(@RequestBody CompetitionAdminStatusUpdateDTO competitionAdminStatusUpdateDTO) {
+		return competitionService.updateCompetitionAdminStatus(competitionAdminStatusUpdateDTO);
 	}
 
 }

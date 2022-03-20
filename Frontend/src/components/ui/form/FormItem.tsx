@@ -12,7 +12,8 @@ interface Props {
     possibleValues?: string[] | number[],
     multiSelect?: boolean,
     saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void,
-    add?: boolean
+    add?: boolean,
+    ref?: React.RefObject<HTMLElement>
 }
 
 const FormItem = (props: Props) => {

@@ -93,7 +93,7 @@ const CompetitionDetail: React.FC = (props) => {
                     </TableSection>
                 })}
                 <p><b>Turnier Team Hinzufügen:</b></p>
-                <CompetitionTeamAdd teams={competitionDetail.teams} users={competitionDetail.possiblePlayers} />
+                <CompetitionTeamAdd teams={competitionDetail.teams} users={competitionDetail.possiblePlayers} competitionId={competitionDetail.competition.id} />
             </TableSection>}
         </>}
     </>;

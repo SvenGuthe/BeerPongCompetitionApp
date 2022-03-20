@@ -1,24 +1,17 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
-import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionTeamPermission;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionTeamDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionTeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
+import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.acls.domain.PrincipalSid;
-import org.springframework.security.acls.model.Permission;
-import org.springframework.security.acls.model.Sid;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,10 +22,15 @@ public class CompetitionTeamController {
 
 	private CompetitionTeamRepository competitionTeamRepository;
 
+	private CompetitionService competitionService;
+
 	@Autowired
-	public CompetitionTeamController(ACLService aclService, CompetitionTeamRepository competitionTeamRepository) {
+	public CompetitionTeamController(ACLService aclService,
+									 CompetitionTeamRepository competitionTeamRepository,
+									 CompetitionService competitionService) {
 		this.aclService = aclService;
 		this.competitionTeamRepository = competitionTeamRepository;
+		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionteam")
@@ -48,6 +46,13 @@ public class CompetitionTeamController {
 	}
 
 	@PostMapping("/competitionteam")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public CompetitionTeamDTO addCompetitionTeam(@RequestBody CompetitionTeamAddDTO competitionTeamAddDTO) {
+		return competitionService.addCompetitionTeam(competitionTeamAddDTO);
+	}
+
+	/*
+	@PostMapping("/competitionteam")
 	@Transactional
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionTeam addCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) {
@@ -61,5 +66,6 @@ public class CompetitionTeamController {
 		aclService.setPrivileges(competitionTeam, initialCompetitionTeamPermissions);
 		return competitionTeam;
 	}
+	 */
 
 }

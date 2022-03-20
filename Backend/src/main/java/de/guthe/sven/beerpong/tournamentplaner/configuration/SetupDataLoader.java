@@ -120,6 +120,17 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		playerUser.setUserStatus(userStatus);
 		userRepository.save(playerUser);
 
+		User testUser = new User();
+		testUser.setFirstName("test");
+		testUser.setLastName("test");
+		testUser.setPassword(passwordEncoder.encode("test"));
+		testUser.setEmail("test@test.com");
+		testUser.setRoles(Arrays.asList(playerRole));
+		testUser.setEnabled(true);
+		testUser.setGamerTag("test");
+		testUser.setUserStatus(userStatus);
+		userRepository.save(testUser);
+
 		TeamStatus teamStatus = new TeamStatus();
 		teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
 
@@ -148,6 +159,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		teamModAdmin.setTeamName("teamModAdmin");
 		teamModAdmin.addUser(moderatorUser);
 		teamModAdmin.addUser(adminUser);
+		teamModAdmin.addUser(testUser);
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink1);
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink2);
 		teamModAdmin.addTeamStatus(teamStatus);

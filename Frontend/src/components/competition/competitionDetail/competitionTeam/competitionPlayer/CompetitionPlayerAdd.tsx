@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { Container, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addCompetitionPlayer } from "../../../../../store/competition/competition-store-actions";
 import { tUserIDAndGamerTag } from "../../../../../types/authentication";
 import { tTeamAndUser } from "../../../../../types/team";
 
@@ -14,10 +16,11 @@ const CompetitionPlayerAdd: React.FC<{
     const user = props.user;
 
     const selectRef = useRef<HTMLSelectElement>(null);
+    const dispatch = useDispatch();
 
     const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        console.log(selectRef.current?.value);
+        dispatch(addCompetitionPlayer(props.id, +selectRef.current!.value));
     }
 
     let possibleUsers = user;
@@ -32,7 +35,7 @@ const CompetitionPlayerAdd: React.FC<{
                 <Form.Group as={Col} sm={4}>
                     <Form.Label htmlFor={`teamuser_${props.id}`}>Teamspieler</Form.Label>
                     <Form.Select id={`teamuser_${props.id}`} ref={selectRef}>
-                        {possibleUsers.map(user => <option key={user.id}>{user.gamerTag}</option>)}
+                        {possibleUsers.map(user => <option key={user.id} value={user.id}>{user.gamerTag}</option>)}
                     </Form.Select>
                 </Form.Group>
                 <Col sm={2} style={{ textAlign: "right" }}>

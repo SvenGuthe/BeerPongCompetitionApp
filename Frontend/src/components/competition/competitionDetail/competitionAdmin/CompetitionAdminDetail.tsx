@@ -41,7 +41,7 @@ const CompetitionAdminDetail: React.FC<{
 
                     return newCompetitionAdminStatus;
 
-                })} wrapped addRow={<AdminStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })} wrapped addRow={<AdminStatusAddRow id={competitionAdminDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
         </>}
     </>;

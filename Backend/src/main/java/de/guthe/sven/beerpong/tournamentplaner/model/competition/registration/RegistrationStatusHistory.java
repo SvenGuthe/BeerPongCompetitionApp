@@ -35,6 +35,12 @@ public class RegistrationStatusHistory implements ACLObjectInterface {
 	public RegistrationStatusHistory() {
 	}
 
+	public RegistrationStatusHistory(Timestamp validFrom, CompetitionTeam competitionTeam, RegistrationStatus registrationStatus) {
+		this.validFrom = validFrom;
+		this.competitionTeam = competitionTeam;
+		this.registrationStatus = registrationStatus;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

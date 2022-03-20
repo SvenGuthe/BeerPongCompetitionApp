@@ -1,26 +1,31 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addCompetitionTeam } from "../../../../store/competition/competition-store-actions";
 import { tUserIDAndGamerTag } from "../../../../types/authentication";
 import { tTeamAndUser } from "../../../../types/team";
 import { removeDuplicates } from "../../../../utility/arrayFunctions";
 
 const CompetitionTeamAdd: React.FC<{
     teams: tTeamAndUser[],
-    users: tUserIDAndGamerTag[]
+    users: tUserIDAndGamerTag[],
+    competitionId: number
 }> = (props) => {
 
     const [selectedTeam, setSelectedTeam] = useState<tTeamAndUser | null>(null);
     const [selectedUsers, setSelectedUsers] = useState<tUserIDAndGamerTag[]>([]);
 
-    const [competitionTeamName, setCompetitionTeamName] = useState<string>("");
-    const [competitionTeamPassword, setCompetitionTeamPassword] = useState<string>("");
+    const competitionTeamNameRef = useRef<HTMLInputElement>(null);
+    const competitionTeamPasswordRef = useRef<HTMLInputElement>(null);
+
+    const dispatch = useDispatch();
 
     const teams = props.teams;
 
     const onSelectChangeHandler = (event: React.FormEvent<HTMLSelectElement>) => {
         const value = event.currentTarget.value;
 
-        const chosenTeam = teams.find(team => team.team.teamName === value);
+        const chosenTeam = teams.find(team => team.team.id === +value);
 
         if (chosenTeam) {
             setSelectedTeam(chosenTeam);
@@ -35,7 +40,7 @@ const CompetitionTeamAdd: React.FC<{
 
         let selectedValues: tUserIDAndGamerTag[] = [];
         for (let i = 0; i < value.length; i++) {
-            possibleUsersOption?.filter(user => user.gamerTag === value.item(i)?.value).forEach(user => {
+            possibleUsersOption?.filter(user => user.id === +value.item(i)!.value).forEach(user => {
                 selectedValues.push(user);
             });
         }
@@ -45,18 +50,24 @@ const CompetitionTeamAdd: React.FC<{
     const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
 
+        dispatch(addCompetitionTeam(
+            props.competitionId,
+            selectedUsers.map(user => user.id),
+            competitionTeamNameRef.current!.value,
+            competitionTeamPasswordRef.current!.value,
+            selectedTeam?.team.id
+        ));
+
         setSelectedTeam(null);
         setSelectedUsers([]);
-        setCompetitionTeamName("");
-        setCompetitionTeamPassword("");
     }
 
-    let possibleTeams: string[] = [];
+    let possibleTeams: tUserIDAndGamerTag[] = [];
 
     if (selectedTeam) {
-        possibleTeams = selectedTeam.users.filter(user => props.users.find(singleUser => singleUser.id === user.id)).map(singleUser => singleUser.gamerTag);
+        possibleTeams = selectedTeam.users.filter(user => props.users.find(singleUser => singleUser.id === user.id));
     } else {
-        possibleTeams = props.users.map(singleUser => singleUser.gamerTag);
+        possibleTeams = props.users;
     }
 
     const defaultValue = {
@@ -70,22 +81,22 @@ const CompetitionTeamAdd: React.FC<{
             <Row>
                 <Form.Group as={Col} sm={2}>
                     <Form.Label htmlFor="competitionTeamName">Turnier Team Name</Form.Label>
-                    <Form.Control id="competitionTeamName" type="text" placeholder="Enter Team Name" value={competitionTeamName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompetitionTeamName(e.currentTarget.value)} />
+                    <Form.Control id="competitionTeamName" type="text" placeholder="Enter Team Name" ref={competitionTeamNameRef} />
                 </Form.Group>
                 <Form.Group as={Col} sm={2}>
                     <Form.Label htmlFor="competitionTeamPassword">Passwort</Form.Label>
-                    <Form.Control id="competitionTeamPassword" type="password" placeholder="Enter Password" value={competitionTeamPassword} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompetitionTeamPassword(e.currentTarget.value)} />
+                    <Form.Control id="competitionTeamPassword" type="password" placeholder="Enter Password" ref={competitionTeamPasswordRef} />
                 </Form.Group>
                 <Form.Group as={Col} sm={4}>
                     <Form.Label htmlFor="competitionMainTeam">Turnier Team Name</Form.Label>
-                    <Form.Select id="competitionMainTeam" onChange={onSelectChangeHandler} value={selectedTeam?.team.teamName ? selectedTeam?.team.teamName : defaultValue.teamName}>
-                        {selectTeamDefaults.map(selectTeamDefault => <option key={selectTeamDefault.id}>{selectTeamDefault.teamName}</option>)}
+                    <Form.Select id="competitionMainTeam" onChange={onSelectChangeHandler}>
+                        {selectTeamDefaults.map(selectTeamDefault => <option key={selectTeamDefault.id} value={selectTeamDefault.id}>{selectTeamDefault.teamName}</option>)}
                     </Form.Select>
                 </Form.Group>
                 <Form.Group as={Col} sm={2}>
                     <Form.Label htmlFor="competitionTeamUser">Nutzer</Form.Label>
-                    <Form.Select id="competitionTeamUser" onChange={onMultiSelectChangeHandler} multiple value={selectedUsers.map(user => user.gamerTag)}>
-                        {possibleTeams.map(possibleTeam => <option key={possibleTeam}>{possibleTeam}</option>)}
+                    <Form.Select id="competitionTeamUser" onChange={onMultiSelectChangeHandler} multiple>
+                        {possibleTeams.map(possibleTeam => <option key={possibleTeam.id} value={possibleTeam.id}>{possibleTeam.gamerTag}</option>)}
                     </Form.Select>
                 </Form.Group>
                 <Col sm={2} style={{ textAlign: "right" }}>

@@ -3,9 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.competition.CompetitionPermissions;
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionDetailDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
@@ -69,12 +67,6 @@ public class CompetitionController {
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionDetailDTO getCompetition(@PathVariable Long competitionId) {
 		return competitionService.getCompetitionDetail(competitionId);
-	}
-
-	@PutMapping("/competitionstatus")
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Collection<CompetitionStatusDTO> updateCompetitionStatus(@RequestBody CompetitionStatusUpdateDTO competitionStatusUpdateDTO) {
-		return competitionService.updateCompetitionStatus(competitionStatusUpdateDTO);
 	}
 
 	@PostMapping("/competition")

@@ -34,6 +34,12 @@ public class CompetitionAdminStatusHistory implements ACLObjectInterface {
 	public CompetitionAdminStatusHistory() {
 	}
 
+	public CompetitionAdminStatusHistory(Timestamp validFrom, CompetitionAdmin competitionAdmin, CompetitionAdminStatus competitionAdminStatus) {
+		this.validFrom = validFrom;
+		this.competitionAdmin = competitionAdmin;
+		this.competitionAdminStatus = competitionAdminStatus;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

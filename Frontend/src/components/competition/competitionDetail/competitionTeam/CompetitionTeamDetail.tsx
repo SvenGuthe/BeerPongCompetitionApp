@@ -58,7 +58,7 @@ const CompetitionTeamDetail: React.FC<{
 
                     return newCompetitionTeamRegistrationStatus;
 
-                })} wrapped addRow={<RegistrationStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })} wrapped addRow={<RegistrationStatusAddRow id={competitionTeamDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionTeamBillingStatus && <TableSection>
                 <h5>Turnier Team Zahlungs Status</h5>
@@ -82,18 +82,16 @@ const CompetitionTeamDetail: React.FC<{
 
                     return newCompetitionTeamBillingStatus;
 
-                })} wrapped addRow={<BillingStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })} wrapped addRow={<BillingStatusAddRow id={competitionTeamDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionPlayer && <TableSection>
                 <h5>Turnier Spieler</h5>
                 {competitionPlayer.map(singleCompetitionPlayer => {
-                    return <div key={singleCompetitionPlayer.id}>
-                        <TableSection>
-                            <CompetitionPlayerDetail competitionPlayerDetail={singleCompetitionPlayer} />
-                        </TableSection>
-                        <CompetitionPlayerAdd team={team} user={props.users} id={singleCompetitionPlayer.id} />
-                    </div>
+                    return <TableSection key={singleCompetitionPlayer.id}>
+                        <CompetitionPlayerDetail competitionPlayerDetail={singleCompetitionPlayer} />
+                    </TableSection>
                 })}
+                <CompetitionPlayerAdd team={team} user={props.users} id={competitionTeamDetail.id} />
             </TableSection>}
         </>}
     </>;
