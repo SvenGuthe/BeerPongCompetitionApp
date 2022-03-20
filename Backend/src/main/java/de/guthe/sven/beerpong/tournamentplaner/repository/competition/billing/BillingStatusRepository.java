@@ -21,6 +21,6 @@ public interface BillingStatusRepository extends JpaRepository<BillingStatus, Lo
 
     @Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) = LOWER(?1)",
             nativeQuery = true)
-    List<BillingStatus> findByStatus(BillingStatusType billingStatusType);
+    List<BillingStatus> findByStatus(String billingStatusType);
 
 }

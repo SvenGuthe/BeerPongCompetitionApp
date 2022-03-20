@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { MutableRefObject, useState } from "react";
 import { Button } from "react-bootstrap";
 import CheckboxInput from "./CheckboxInput";
 
@@ -12,11 +12,10 @@ interface Props {
     possibleValues?: string[] | number[],
     multiSelect?: boolean,
     saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void,
-    add?: boolean,
-    ref?: React.RefObject<HTMLElement>
+    add?: boolean
 }
 
-const FormItem = (props: Props) => {
+const FormItem = React.forwardRef<HTMLElement, Props>((props, ref) => {
 
     const add = props.add ? props.add : false;
 
@@ -26,7 +25,7 @@ const FormItem = (props: Props) => {
     const multiSelect = props.multiSelect ? props.multiSelect : false;
     const possibleValues = props.possibleValues ? props.possibleValues : [];
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = ref as MutableRefObject<HTMLInputElement>;
 
     const onClickEditHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         setEditMode((currentEditMode) => !currentEditMode);
@@ -48,7 +47,7 @@ const FormItem = (props: Props) => {
         !add && setEditMode((currentEditMode) => !currentEditMode);
     }
 
-    const onChangeSelectHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeSelectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setValue((possibleValues! as string[]).filter(value => value === event.target.value))
     }
 
@@ -80,18 +79,18 @@ const FormItem = (props: Props) => {
         if (typeof props.defaultValue === "number" || typeof props.defaultValue === "string" || typeof props.defaultValue === "object") {
             if (props.possibleValues) {
                 if (multiSelect) {
-                    rightInputType = <MultiSelectInput value={value as string[]} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeMultiSelectHandler} />
+                    rightInputType = <MultiSelectInput value={value as string[]} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeMultiSelectHandler} ref={inputRef} />
                     handler = onClickSelectHandler;
                 } else {
-                    rightInputType = <SelectInput value={value as string} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeSelectHandler} />
+                    rightInputType = <SelectInput value={value as string[]} disabled={disabled} possibleValues={props.possibleValues as string[]} onChangeHandler={onChangeSelectHandler} ref={inputRef} />
                     handler = onClickSelectHandler;
                 }
             } else {
-                rightInputType = <TextInput value={value as string} disabled={disabled} reference={inputRef} />
+                rightInputType = <TextInput value={value as string} disabled={disabled} ref={inputRef} />
                 handler = onClickSaveTextHandler;
             }
         } else {
-            rightInputType = <CheckboxInput value={value as boolean} disabled={disabled} reference={inputRef} />
+            rightInputType = <CheckboxInput value={value as boolean} disabled={disabled} ref={inputRef} />
             handler = onClickSaveCheckboxHandler;
         }
 
@@ -133,6 +132,6 @@ const FormItem = (props: Props) => {
 
     return editMode ? editModeInput : viewerModeInput;
 
-}
+});
 
 export default FormItem;

@@ -93,7 +93,7 @@ public class CompetitionService {
 
     public List<CompetitionStatusDTO> updateCompetitionStatus(CompetitionStatusUpdateDTO competitionStatusUpdateDTO) {
         Competition competition = competitionRepository.findById(competitionStatusUpdateDTO.getId()).get();
-        List<CompetitionStatus> allCompetitionStatus = competitionStatusRepository.findByStatus(competitionStatusUpdateDTO.getCompetitionStatusType());
+        List<CompetitionStatus> allCompetitionStatus = competitionStatusRepository.findByStatus(competitionStatusUpdateDTO.getCompetitionStatusType().name());
         CompetitionStatus competitionStatus;
 
         if (allCompetitionStatus.size() == 0) {
@@ -126,7 +126,7 @@ public class CompetitionService {
 
     public List<CompetitionAdminStatusDTO> updateCompetitionAdminStatus(CompetitionAdminStatusUpdateDTO competitionAdminStatusUpdateDTO) {
         CompetitionAdmin competitionAdmin = competitionAdminRepository.findById(competitionAdminStatusUpdateDTO.getId()).get();
-        List<CompetitionAdminStatus> allCompetitionAdminStatus = competitionAdminStatusRepository.findByStatus(competitionAdminStatusUpdateDTO.getCompetitionAdminStatusType());
+        List<CompetitionAdminStatus> allCompetitionAdminStatus = competitionAdminStatusRepository.findByStatus(competitionAdminStatusUpdateDTO.getCompetitionAdminStatusType().name());
 
         CompetitionAdminStatus competitionAdminStatus;
 
@@ -161,7 +161,7 @@ public class CompetitionService {
 
     public List<RegistrationStatusDTO> updateRegistrationStatus(RegistrationStatusUpdateDTO registrationStatusUpdateDTO) {
         CompetitionTeam competitionTeam = competitionTeamRepository.findById(registrationStatusUpdateDTO.getId()).get();
-        List<RegistrationStatus> allRegistrationStatus = registrationStatusRepository.findByStatus(registrationStatusUpdateDTO.getRegistrationStatusType());
+        List<RegistrationStatus> allRegistrationStatus = registrationStatusRepository.findByStatus(registrationStatusUpdateDTO.getRegistrationStatusType().name());
 
         RegistrationStatus registrationStatus;
 
@@ -196,7 +196,7 @@ public class CompetitionService {
 
     public List<BillingStatusDTO> updateBillingStatus(BillingStatusUpdateDTO billingStatusUpdateDTO) {
         CompetitionTeam competitionTeam = competitionTeamRepository.findById(billingStatusUpdateDTO.getId()).get();
-        List<BillingStatus> allBillingStatus = billingStatusRepository.findByStatus(billingStatusUpdateDTO.getBillingStatusType());
+        List<BillingStatus> allBillingStatus = billingStatusRepository.findByStatus(billingStatusUpdateDTO.getBillingStatusType().name());
 
         BillingStatus billingStatus;
 
@@ -232,7 +232,7 @@ public class CompetitionService {
         Competition competition = competitionRepository.findById(competitionAdminAddDTO.id).get();
         User user = userRepository.findById(competitionAdminAddDTO.getUserId()).get();
 
-        List<CompetitionAdminStatus> competitionAdminStatusList = competitionAdminStatusRepository.findByStatus(CompetitionAdminStatusType.PROMISED);
+        List<CompetitionAdminStatus> competitionAdminStatusList = competitionAdminStatusRepository.findByStatus(CompetitionAdminStatusType.PROMISED.name());
         CompetitionAdminStatus competitionAdminStatus;
 
         if (competitionAdminStatusList.size() == 0) {
@@ -257,7 +257,7 @@ public class CompetitionService {
         CompetitionTeam competitionTeam = competitionTeamRepository.findById(competitionPlayerAddDTO.getId()).get();
         User user = userRepository.findById(competitionPlayerAddDTO.getUserId()).get();
 
-        List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository.findByStatus(CompetitionPlayerStatusType.PROMISED);
+        List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository.findByStatus(CompetitionPlayerStatusType.PROMISED.name());
         CompetitionPlayerStatus competitionPlayerStatus;
 
         if (competitionPlayerStatusList.size() == 0) {
@@ -286,7 +286,7 @@ public class CompetitionService {
             team = teamRepository.findById(competitionTeamAddDTO.getTeamId()).get();
         }
 
-        List<BillingStatus> billingStatusList = billingStatusRepository.findByStatus(BillingStatusType.NOT_PAYED);
+        List<BillingStatus> billingStatusList = billingStatusRepository.findByStatus(BillingStatusType.NOT_PAYED.name());
         BillingStatus billingStatus;
 
         if (billingStatusList.size() == 0) {
@@ -297,7 +297,7 @@ public class CompetitionService {
             billingStatus = billingStatusList.get(0);
         }
 
-        List<RegistrationStatus> registrationStatusList = registrationStatusRepository.findByStatus(RegistrationStatusType.REGISTERED);
+        List<RegistrationStatus> registrationStatusList = registrationStatusRepository.findByStatus(RegistrationStatusType.REGISTERED.name());
         RegistrationStatus registrationStatus;
 
         if (registrationStatusList.size() == 0) {
@@ -319,7 +319,7 @@ public class CompetitionService {
         List<CompetitionPlayer> competitionPlayers = Arrays.stream(competitionTeamAddDTO.getPlayerIds()).map(playerId -> {
             User user = userRepository.findById(playerId).get();
 
-            List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository.findByStatus(CompetitionPlayerStatusType.PROMISED);
+            List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository.findByStatus(CompetitionPlayerStatusType.PROMISED.name());
             CompetitionPlayerStatus competitionPlayerStatus;
 
             if (competitionPlayerStatusList.size() == 0) {
@@ -339,6 +339,58 @@ public class CompetitionService {
         }).collect(Collectors.toList());
 
         competitionTeam.setCompetitionPlayers(competitionPlayers);
+
+        competitionTeamRepository.save(competitionTeam);
+
+        return new CompetitionTeamDTO(competitionTeam);
+    }
+
+    public CompetitionDTO updateCompetition(CompetitionUpdateDTO competitionUpdateDTO) {
+        Competition competition = competitionRepository.findById(competitionUpdateDTO.getId()).get();
+        competition.setCompetitionName(competitionUpdateDTO.getCompetitionName());
+        competition.setCompetitionStartTimestamp(competitionUpdateDTO.getCompetitionStartTimestamp());
+        competition.setMinTeams(competitionUpdateDTO.getMinTeams());
+        competition.setMaxTeams(competitionUpdateDTO.getMaxTeams());
+        competition.setFee(competitionUpdateDTO.getFee());
+        competition.setRegistrationStart(competitionUpdateDTO.getRegistrationStart());
+        competition.setRegistrationEnd(competitionUpdateDTO.getRegistrationEnd());
+        competition.setSetOfRules(competitionUpdateDTO.getSetOfRules());
+
+        competitionRepository.save(competition);
+
+        return new CompetitionDTO(competition);
+    }
+
+    public CompetitionPlayerStatusDTO updateCompetitionPlayerStatus(CompetitionPlayerStatusUpdateDTO competitionPlayerStatusUpdateDTO) {
+        CompetitionPlayer competitionPlayer = competitionPlayerRepository.findById(competitionPlayerStatusUpdateDTO.getId()).get();
+
+        List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository.findByStatus(competitionPlayerStatusUpdateDTO.getCompetitionPlayerStatusType().name());
+        CompetitionPlayerStatus competitionPlayerStatus;
+
+        if (competitionPlayerStatusList.size() == 0) {
+            competitionPlayerStatus = new CompetitionPlayerStatus(
+                    competitionPlayerStatusUpdateDTO.getCompetitionPlayerStatusType()
+            );
+        } else {
+            competitionPlayerStatus = competitionPlayerStatusList.get(0);
+        }
+
+        competitionPlayer.setCompetitionPlayerStatus(competitionPlayerStatus);
+
+        competitionPlayerRepository.save(competitionPlayer);
+
+        return new CompetitionPlayerStatusDTO(competitionPlayerStatus);
+    }
+
+    public CompetitionTeamDTO updateCompetitionTeam(CompetitionTeamUpdateDTO competitionTeamUpdateDTO) {
+        CompetitionTeam competitionTeam = competitionTeamRepository.findById(competitionTeamUpdateDTO.getId()).get();
+        if (competitionTeamUpdateDTO.getTeamId() != null) {
+            Team team = teamRepository.findById(competitionTeamUpdateDTO.getTeamId()).get();
+            competitionTeam.setTeam(team);
+        } else {
+            competitionTeam.setTeam(null);
+        }
+        competitionTeam.setCompetitionTeamName(competitionTeamUpdateDTO.getTeamname());
 
         competitionTeamRepository.save(competitionTeam);
 

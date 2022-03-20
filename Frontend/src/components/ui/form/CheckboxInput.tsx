@@ -1,17 +1,19 @@
+import React from "react";
 import { Form } from "react-bootstrap";
 
-const CheckboxInput: React.FC<{
-    reference: React.RefObject<HTMLInputElement>,
+interface Props {
     value: boolean,
     disabled: boolean
-}> = (props) => {
+}
+
+const CheckboxInput = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
 
     return <Form.Check
-        ref={props.reference}
+        ref={ref}
         disabled={props.disabled}
         defaultChecked={props.value}
     />
 
-}
+});
 
 export default CheckboxInput;

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -21,6 +22,6 @@ public interface CompetitionPlayerStatusRepository extends JpaRepository<Competi
 
     @Query(value = "SELECT * FROM CompetitionPlayerStatus cps WHERE LOWER(cps.competitionPlayerStatusDescription) = LOWER(?1)",
             nativeQuery = true)
-    List<CompetitionPlayerStatus> findByStatus(CompetitionPlayerStatusType competitionPlayerStatusType);
+    List<CompetitionPlayerStatus> findByStatus(String competitionPlayerStatusType);
 
 }

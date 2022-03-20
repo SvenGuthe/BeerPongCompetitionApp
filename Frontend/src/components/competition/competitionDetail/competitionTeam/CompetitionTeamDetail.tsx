@@ -35,7 +35,7 @@ const CompetitionTeamDetail: React.FC<{
     return <>
         {competitionTeamDetail && <>
             <h4>{competitionTeamDetail.competitionTeamName}</h4>
-            <CompetitionTeamDetailTable competitionTeamDetail={competitionTeamDetail} />
+            <CompetitionTeamDetailTable teams={props.teams} competitionTeamDetail={competitionTeamDetail} />
             {competitionTeamRegistrationStatus && <TableSection>
                 <h5>Turnier Team Registrations Status</h5>
                 <EnumTable enumData={competitionTeamRegistrationStatus.map(singleCompetitionTeamRegistrationStatus => {

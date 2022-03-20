@@ -21,6 +21,6 @@ public interface CompetitionAdminStatusRepository extends JpaRepository<Competit
 
     @Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) = LOWER(?1)",
             nativeQuery = true)
-    List<CompetitionAdminStatus> findByStatus(CompetitionAdminStatusType competitionAdminStatusType);
+    List<CompetitionAdminStatus> findByStatus(String competitionAdminStatusType);
 
 }

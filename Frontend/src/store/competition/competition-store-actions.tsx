@@ -2,9 +2,10 @@ import axios from "axios";
 import { Dispatch } from "react";
 import { tBillingStatusType } from "../../types/enums/billingStatusType";
 import { tCompetitionAdminStatusType } from "../../types/enums/competitionAdminStatusType";
+import { tCompetitionPlayerStatusType } from "../../types/enums/competitionPlayerStatusType";
 import { tCompetitionStatusType } from "../../types/enums/competitionStatusType";
 import { tRegistrationStatusType } from "../../types/enums/registrationStatusType";
-import { updateBillingStatus, updateCompetitionAdminStatus, updateCompetitionStatus, updateRegistrationStatus, addCompetitionAdmin as addCompetitionAdminState, addCompetitionPlayer as addCompetitionPlayerState, addCompetitionTeam as addCompetitionTeamState } from "./competition-store";
+import { updateBillingStatus, updateCompetitionAdminStatus, updateCompetitionStatus, updateRegistrationStatus, addCompetitionAdmin as addCompetitionAdminState, addCompetitionPlayer as addCompetitionPlayerState, addCompetitionTeam as addCompetitionTeamState, updateCompetition as updateCompetitionState, updateCompetitionPlayerStatus as updateCompetitionPlayerStatusState, updateCompetitionTeam as updateCompetitionTeamState } from "./competition-store";
 
 export const changeCompetitionStatus = (id: number, newState: tCompetitionStatusType) => {
     return async (dispatch: Dispatch<any>) => {
@@ -123,6 +124,61 @@ export const addCompetitionTeam = (competitionId: number, userIds: number[], tea
             playerIds: userIds
         }).then((response) => {
             dispatch(addCompetitionTeamState(response.data));
+        }).catch(function (error) {
+            console.log(error);
+        });
+        return sendRequest();
+    }
+}
+
+export const updateCompetition = (metaData: {
+    id: number,
+    competitionName: string,
+    competitionStartTimestamp: string,
+    fee: number,
+    minTeams: number,
+    maxTeams: number,
+    registrationStart: string,
+    registrationEnd: string,
+    setOfRules: string
+}) => {
+
+    return async (dispatch: Dispatch<any>) => {
+        console.log("Send /competition/competition [PUT] Request");
+        const sendRequest = async () => await axios.put('/competition/competition', metaData).then((response) => {
+            dispatch(updateCompetitionState(response.data));
+        }).catch(function (error) {
+            console.log(error);
+        });
+        return sendRequest();
+    }
+
+}
+
+export const updateCompetitionPlayerStatus = (id: number, competitionPlayerStatusType: tCompetitionPlayerStatusType) => {
+    return async (dispatch: Dispatch<any>) => {
+        console.log("Send /competition/competitionplayerstatus [PUT] Request");
+        const sendRequest = async () => await axios.put('/competition/competitionplayerstatus', {
+            id: id,
+            competitionPlayerStatusType: competitionPlayerStatusType
+        }).then((response) => {
+            dispatch(updateCompetitionPlayerStatusState(response.data));
+        }).catch(function (error) {
+            console.log(error);
+        });
+        return sendRequest();
+    }
+}
+
+export const updateCompetitionTeam = (metaData: {
+    id: number,
+    teamname: string,
+    teamId: number | undefined
+}) => {
+    return async (dispatch: Dispatch<any>) => {
+        console.log("Send /competition/competitionteam [PUT] Request");
+        const sendRequest = async () => await axios.put('/competition/competitionteam', metaData).then((response) => {
+            dispatch(updateCompetitionTeamState(response.data));
         }).catch(function (error) {
             console.log(error);
         });

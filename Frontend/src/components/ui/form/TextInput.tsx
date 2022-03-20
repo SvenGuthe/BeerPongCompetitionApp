@@ -1,22 +1,24 @@
+import React from "react";
 import { Form } from "react-bootstrap";
 
-const TextInput: React.FC<{
-    reference: React.RefObject<HTMLInputElement>,
+interface Props {
     value: string | number,
     disabled: boolean,
     type?: string
-}> = (props) => {
+}
+
+const TextInput = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
 
     const type = props.type ? props.type : "text"
 
     return <Form.Control
-        ref={props.reference}
+        ref={ref}
         type={type}
         size="sm"
         defaultValue={props.value}
         disabled={props.disabled}
     />
 
-}
+});
 
 export default TextInput;

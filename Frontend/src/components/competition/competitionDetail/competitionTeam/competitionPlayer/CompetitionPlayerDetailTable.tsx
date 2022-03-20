@@ -1,33 +1,46 @@
 import { Table } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { updateCompetitionPlayerStatus } from "../../../../../store/competition/competition-store-actions";
 import { tCompetitionPlayer } from "../../../../../types/competition";
+import { tCompetitionPlayerStatusType } from "../../../../../types/enums/competitionPlayerStatusType";
 import { CompetitionPlayerStatusTypeInput } from "../../../../ui/form/PredefinedSelectInputs";
 
 const CompetitionPlayerDetailTable: React.FC<{
     competitionPlayerDetail: tCompetitionPlayer
 }> = (props) => {
 
+    const dispatch = useDispatch();
+
     const competitionPlayerDetail = props.competitionPlayerDetail;
 
-    return <Table striped bordered hover size="sm">
-        <tbody>
-            <tr>
-                <th>Competition Player ID</th>
-                <td>{competitionPlayerDetail.id}</td>
-            </tr>
-            <tr>
-                <th>User Name</th>
-                <td>{competitionPlayerDetail.user.gamerTag}</td>
-            </tr>
-            <tr>
-                <th>Hinzugefügt am</th>
-                <td>{competitionPlayerDetail.creationTime}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td><CompetitionPlayerStatusTypeInput defaultValue={competitionPlayerDetail.competitionPlayerStatus.competitionPlayerStatusDescription} saveValue={(newValue, changed) => console.log(newValue, changed)} /></td>
-            </tr>
-        </tbody>
-    </Table>;
+    const onSaveHandler = (newValue: tCompetitionPlayerStatusType) => {
+        dispatch(updateCompetitionPlayerStatus(competitionPlayerDetail.id, newValue));
+    }    
+
+    return <>
+        <Table striped bordered hover size="sm">
+            <tbody>
+                <tr>
+                    <th>Competition Player ID</th>
+                    <td>{competitionPlayerDetail.id}</td>
+                </tr>
+                <tr>
+                    <th>User Name</th>
+                    <td>{competitionPlayerDetail.user.gamerTag}</td>
+                </tr>
+                <tr>
+                    <th>Hinzugefügt am</th>
+                    <td>{competitionPlayerDetail.creationTime}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td><CompetitionPlayerStatusTypeInput defaultValue={competitionPlayerDetail.competitionPlayerStatus.competitionPlayerStatusDescription} saveValue={(newValue, changed) => {
+                        onSaveHandler((newValue as string[])[0] as tCompetitionPlayerStatusType)
+                    }} /></td>
+                </tr>
+            </tbody>
+        </Table>
+    </>;
 
 };
 

@@ -19,7 +19,7 @@ export const BillingStatusTypeSelectInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -37,7 +37,7 @@ export const CompetitionAdminStatusTypeInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -55,7 +55,7 @@ export const CompetitionPlayerStatusTypeInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -70,10 +70,10 @@ export const CompetitionStatusTypeInput: React.FC<{
 }> = (props) => {
 
     const allPossibleValues = Object.keys(tCompetitionStatusType);
-    const defaultValue = props.defaultValue ? props.defaultValue : [allPossibleValues[0]];
+    const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -91,7 +91,7 @@ export const RegistrationStatusTypeInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -109,7 +109,7 @@ export const SecurityPrivilegeInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -127,7 +127,7 @@ export const SecurityRoleInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -164,7 +164,7 @@ export const TeamStatusTypeInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
@@ -182,7 +182,7 @@ export const UserStatusTypeInput: React.FC<{
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
-        defaultValue={defaultValue}
+        defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}

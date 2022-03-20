@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamAddDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionTeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionTeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
@@ -49,6 +50,12 @@ public class CompetitionTeamController {
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionTeamDTO addCompetitionTeam(@RequestBody CompetitionTeamAddDTO competitionTeamAddDTO) {
 		return competitionService.addCompetitionTeam(competitionTeamAddDTO);
+	}
+
+	@PutMapping("/competitionteam")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public CompetitionTeamDTO updateCompetitionTeam(@RequestBody CompetitionTeamUpdateDTO competitionTeamUpdateDTO) {
+		return competitionService.updateCompetitionTeam(competitionTeamUpdateDTO);
 	}
 
 	/*

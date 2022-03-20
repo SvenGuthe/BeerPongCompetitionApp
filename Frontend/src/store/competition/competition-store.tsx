@@ -1,5 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tBillingStatus, tCompetition, tCompetitionAdmin, tCompetitionAdminStatus, tCompetitionDetail, tCompetitionPlayer, tCompetitionStatus, tCompetitionTeam, tRegistrationStatus } from '../../types/competition'
+import { tBillingStatus, tCompetition, tCompetitionAdmin, tCompetitionAdminStatus, tCompetitionDetail, tCompetitionPlayer, tCompetitionPlayerStatus, tCompetitionStatus, tCompetitionTeam, tRegistrationStatus } from '../../types/competition'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
@@ -199,6 +199,31 @@ export const competitionSlice = createSlice({
             state.competitionDetail!.possiblePlayers = state.competitionDetail!.possiblePlayers.filter(possiblePlayer => {
                 return !action.payload.competitionPlayer.find(competitionPlayer => competitionPlayer.user.id === possiblePlayer.id);
             })
+        },
+        updateCompetition: (state, action: PayloadAction<tCompetition>) => {
+            state.competitionDetail!.competition = action.payload;
+        },
+        updateCompetitionPlayerStatus: (state, action: PayloadAction<{
+            competitionPlayerId: number,
+            competitionPlayerStatus: tCompetitionPlayerStatus
+        }>) => {
+            state.competitionDetail?.competition.competitionTeams.map(competitionTeam => {
+                return competitionTeam.competitionPlayer.map(singleCompetitionPlayer => {
+                    if (singleCompetitionPlayer.id === action.payload.competitionPlayerId) {
+                        singleCompetitionPlayer.competitionPlayerStatus = action.payload.competitionPlayerStatus
+                    }
+                    return singleCompetitionPlayer;
+                })
+            })
+        },
+        updateCompetitionTeam: (state, action:PayloadAction<tCompetitionTeam>) => {
+            state.competitionDetail?.competition.competitionTeams.map(competitionTeam => {
+                if (competitionTeam.id === action.payload.id) {
+                    return action.payload;
+                } else {
+                    return competitionTeam;
+                }
+            });
         }
     }
 })
@@ -220,7 +245,10 @@ export const {
     updateBillingStatus,
     addCompetitionAdmin,
     addCompetitionPlayer,
-    addCompetitionTeam
+    addCompetitionTeam,
+    updateCompetition,
+    updateCompetitionPlayerStatus,
+    updateCompetitionTeam
 } = competitionSlice.actions
 
 export const competitionStore = configureStore({

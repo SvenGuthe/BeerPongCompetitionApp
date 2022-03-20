@@ -1,11 +1,14 @@
+import React, { RefObject } from "react";
 import { Form } from "react-bootstrap";
 
-const MultiSelectInput: React.FC<{
+interface Props {
     value: string[],
     disabled: boolean,
     possibleValues: string[],
     onChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-}> = (props) => {
+}
+
+const MultiSelectInput = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
 
     const value = props.value;
 
@@ -20,6 +23,7 @@ const MultiSelectInput: React.FC<{
     });
 
     return <Form.Select
+        ref={ref as RefObject<HTMLSelectElement>}
         size="sm"
         disabled={props.disabled}
         multiple
@@ -29,6 +33,6 @@ const MultiSelectInput: React.FC<{
         {options}
     </Form.Select>
 
-}
+});
 
 export default MultiSelectInput;

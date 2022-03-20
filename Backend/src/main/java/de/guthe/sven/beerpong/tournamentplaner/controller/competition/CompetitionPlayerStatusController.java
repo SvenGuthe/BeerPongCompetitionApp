@@ -2,9 +2,11 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionPlayerStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionPlayerStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionPlayerStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +23,13 @@ public class CompetitionPlayerStatusController {
 
 	private CompetitionPlayerStatusRepository competitionPlayerStatusRepository;
 
+	private CompetitionService competitionService;
+
 	@Autowired
-	public CompetitionPlayerStatusController(CompetitionPlayerStatusRepository competitionPlayerStatusRepository) {
+	public CompetitionPlayerStatusController(CompetitionPlayerStatusRepository competitionPlayerStatusRepository,
+											 CompetitionService competitionService) {
 		this.competitionPlayerStatusRepository = competitionPlayerStatusRepository;
+		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionplayerstatus")
@@ -45,6 +51,12 @@ public class CompetitionPlayerStatusController {
 				data
 		);
 
+	}
+
+	@PutMapping("/competitionplayerstatus")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public CompetitionPlayerStatusDTO updateCompetitionPlayerStatus(@RequestBody CompetitionPlayerStatusUpdateDTO competitionPlayerStatusUpdateDTO) {
+		return competitionService.updateCompetitionPlayerStatus(competitionPlayerStatusUpdateDTO);
 	}
 
 	@GetMapping("/competitionplayerstatus/{competitionPlayerStatusId}")

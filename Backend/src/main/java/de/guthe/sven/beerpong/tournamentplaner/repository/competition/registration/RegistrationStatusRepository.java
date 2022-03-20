@@ -21,6 +21,6 @@ public interface RegistrationStatusRepository extends JpaRepository<Registration
 
     @Query(value = "SELECT * FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) = LOWER(?1)",
             nativeQuery = true)
-    List<RegistrationStatus> findByStatus(RegistrationStatusType registrationStatusType);
+    List<RegistrationStatus> findByStatus(String registrationStatusType);
 
 }
