@@ -1,6 +1,6 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
-import { tTeam, tTeamDetail } from '../../types/team'
+import { tTeam, tTeamDetail, tTeamInvitationLink, tTeamStatus } from '../../types/team'
 
 type SliceState = {
     teams: tPaginationDTO<tTeam> | null,
@@ -33,7 +33,7 @@ export const teamSlice = createSlice({
         removeTeamDetail: (state) => {
             state.teamDetail = null;
         },
-        updateTeam: (state, action: PayloadAction<tTeam>) => {
+        updateTeams: (state, action: PayloadAction<tTeam>) => {
             const fetchedTeam = action.payload;
             if (state.teams) {
                 state.teams.data = state.teams.data.map(team => {
@@ -60,17 +60,40 @@ export const teamSlice = createSlice({
                 };
             }
         },
+        updateTeam: (state, action: PayloadAction<tTeam>) => {
+            state.teamDetail!.team = action.payload;
+        },
+        updateTeamStatus: (state, action: PayloadAction<tTeamStatus[]>) => {
+
+            const newTeamStatus = state.teamDetail!.team.teamStatus.map(singleTeamStatus => {
+                if (singleTeamStatus.id === action.payload[0].id) {
+                    return action.payload[0];
+                } else {
+                    return singleTeamStatus
+                }
+            });
+            newTeamStatus.push(action.payload[1]);
+
+            state.teamDetail!.team.teamStatus = newTeamStatus
+
+        },
+        addTeamInvitationLink: (state, action: PayloadAction<tTeamInvitationLink>) => {
+            state.teamDetail?.team.teamInvitationLinks.push(action.payload);
+        }
     }
 })
 
 export const {
     storeTeams,
-    updateTeam,
+    updateTeams,
     addTeam,
     storeTeamStatus,
     storeTeamDetail,
     removeTeamDetail,
-    removeTeams
+    removeTeams,
+    updateTeam,
+    updateTeamStatus,
+    addTeamInvitationLink
 } = teamSlice.actions
 
 export const teamStore = configureStore({

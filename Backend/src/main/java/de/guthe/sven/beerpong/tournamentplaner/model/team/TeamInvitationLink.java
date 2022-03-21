@@ -28,6 +28,10 @@ public class TeamInvitationLink implements ACLObjectInterface {
 	public TeamInvitationLink() {
 	}
 
+	public TeamInvitationLink(String teamInvitationLink) {
+		this.teamInvitationLink = teamInvitationLink;
+	}
+
 	public Class<TeamInvitationLink> getACLClass() {
 		return TeamInvitationLink.class;
 	}

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
+import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
 import EnumTable from "../../enums/EnumTable";
@@ -37,7 +38,7 @@ const TeamDetail: React.FC = () => {
     }, [teamDetail]);
 
     const competitions = useMemo(() => {
-        return teamDetail?.competitions;
+        return removeDuplicates(teamDetail?.competitions);
     }, [teamDetail])
 
     useEffect(() => {
@@ -77,21 +78,21 @@ const TeamDetail: React.FC = () => {
 
                     return newTeamStatus;
 
-                })} wrapped addRow={<TeamStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })} wrapped addRow={<TeamStatusAddRow id={teamDetail.team.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {teamInvitationLinks && <TableSection>
                 <h3>Team Einladungslinks</h3>
-                <TeamInvitationLinkTable teamInvitationLinks={teamInvitationLinks} wrapped />
+                <TeamInvitationLinkTable id={teamDetail.team.id} teamInvitationLinks={teamInvitationLinks} wrapped />
             </TableSection>}
             {users && <TableSection>
                 <h3>Nutzer</h3>
                 <UserTable users={users.map(user => {
-
+                    
                     const additionalAttributes = [
                         {
                             id: user.id + "_isAdmin",
-                            value: String(user.isAdmin),
-                            reactElement: <FormItem defaultValue={user.isAdmin} saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                            value: String(user.admin),
+                            reactElement: <FormItem defaultValue={user.admin} saveValue={(newValue, changed) => console.log(newValue, changed)} />
                         }
                     ]
 

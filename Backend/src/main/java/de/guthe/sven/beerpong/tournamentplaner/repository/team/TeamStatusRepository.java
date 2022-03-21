@@ -21,4 +21,8 @@ public interface TeamStatusRepository extends JpaRepository<TeamStatus, Long> {
     @Query("select p from TeamStatus p")
     Page<TeamStatus> findAll(PageRequest pageRequest);
 
+    @Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) = LOWER(?1)",
+            nativeQuery = true)
+    List<TeamStatus> findByStatus(String teamStatusType);
+
 }

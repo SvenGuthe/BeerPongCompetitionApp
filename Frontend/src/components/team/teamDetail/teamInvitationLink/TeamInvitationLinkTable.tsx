@@ -5,6 +5,7 @@ import TeamInvitationLinkRow from "./TeamInvitationLinkRow";
 
 const TeamInvitationLinkTable: React.FC<{
     teamInvitationLinks: tTeamInvitationLink[],
+    id: number,
     wrapped?: boolean,
     additionalAttributesHeader?: string[]
 }> = (props) => {
@@ -28,7 +29,7 @@ const TeamInvitationLinkTable: React.FC<{
         </thead>
         <tbody>
             {teamInvitationLinks.map(teamInvitationLink => <TeamInvitationLinkRow key={teamInvitationLink.id} teamInvitationLink={teamInvitationLink} />)}
-            <TeamInvitationLinkAddRow />
+            <TeamInvitationLinkAddRow id={props.id} />
         </tbody>
     </>;
 

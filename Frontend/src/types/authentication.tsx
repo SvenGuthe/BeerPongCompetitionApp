@@ -63,7 +63,7 @@ export type tUserDetail = {
 
 export type tTeamUser = tID & {
     user: tUser,
-    isAdmin: boolean,
+    admin: boolean,
     creationTime: tTimestamp
 }
 
