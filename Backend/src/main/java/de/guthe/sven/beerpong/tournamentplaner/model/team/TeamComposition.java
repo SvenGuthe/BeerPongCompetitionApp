@@ -37,6 +37,12 @@ public class TeamComposition implements ACLObjectInterface {
 	public TeamComposition() {
 	}
 
+	public TeamComposition(Team team, User user, Boolean isAdmin) {
+		this.team = team;
+		this.user = user;
+		this.isAdmin = isAdmin;
+	}
+
 	public Class<TeamComposition> getACLClass() {
 		return TeamComposition.class;
 	}

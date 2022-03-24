@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.TeamUserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 
@@ -14,10 +15,13 @@ public class TeamDetailDTO {
 
     Collection<CompetitionDTO> competitions;
 
-    public TeamDetailDTO(TeamDTO team, Collection<TeamUserDTO> users, Collection<CompetitionDTO> competitions) {
+    Collection<UserDTO> possibleUsers;
+
+    public TeamDetailDTO(TeamDTO team, Collection<TeamUserDTO> users, Collection<CompetitionDTO> competitions, Collection<UserDTO> possibleUsers) {
         this.team = team;
         this.users = users;
         this.competitions = competitions;
+        this.possibleUsers = possibleUsers;
     }
 
     public TeamDTO getTeam() {
@@ -44,4 +48,11 @@ public class TeamDetailDTO {
         this.competitions = competitions;
     }
 
+    public Collection<UserDTO> getPossibleUsers() {
+        return possibleUsers;
+    }
+
+    public void setPossibleUsers(Collection<UserDTO> possibleUsers) {
+        this.possibleUsers = possibleUsers;
+    }
 }

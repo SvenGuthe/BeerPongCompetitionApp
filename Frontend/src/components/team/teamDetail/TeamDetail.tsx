@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
+import { updateTeamComposition } from "../../../store/team/team-store-actions";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
@@ -10,6 +11,7 @@ import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
 import FormItem from "../../ui/form/FormItem";
 import UserTable from "../../user/userOverview/UserTable";
+import TeamCompositionAdd from "./teamComposition/TeamCompositionAdd";
 import TeamDetailTable from "./TeamDetailTable";
 import TeamInvitationLinkTable from "./teamInvitationLink/TeamInvitationLinkTable";
 import TeamStatusAddRow from "./teamStatus/TeamStatusAddRow";
@@ -41,6 +43,10 @@ const TeamDetail: React.FC = () => {
         return removeDuplicates(teamDetail?.competitions);
     }, [teamDetail])
 
+    const onSaveHandler = (teamCompositionId: number, newValue: boolean) => {
+        dispatch(updateTeamComposition(teamCompositionId, newValue));
+    }
+
     useEffect(() => {
 
         if (id) {
@@ -52,6 +58,10 @@ const TeamDetail: React.FC = () => {
         }
 
     }, [id, dispatch]);
+
+    const refs = useMemo(() => {
+        return Array.from({ length: users ? users!.length : 0 }).map(() => React.createRef<HTMLInputElement>())
+    }, [users]);
 
     return <>
         {teamDetail && <>
@@ -86,13 +96,12 @@ const TeamDetail: React.FC = () => {
             </TableSection>}
             {users && <TableSection>
                 <h3>Nutzer</h3>
-                <UserTable users={users.map(user => {
-                    
+                <UserTable users={users.map((user, i) => {
                     const additionalAttributes = [
                         {
                             id: user.id + "_isAdmin",
                             value: String(user.admin),
-                            reactElement: <FormItem defaultValue={user.admin} saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                            reactElement: <FormItem ref={refs[i]} defaultValue={user.admin} saveValue={(newValue, changed) => onSaveHandler(user.id, newValue as boolean)} />
                         }
                     ]
 
@@ -102,8 +111,8 @@ const TeamDetail: React.FC = () => {
                     }
 
                     return newUser;
-
                 })} wrapped additionalAttributesHeader={["Admin"]} />
+                <TeamCompositionAdd id={teamDetail.team.id} users={teamDetail.possibleUsers} />
             </TableSection>}
             {competitions && <TableSection>
                 <h3>Turniere</h3>

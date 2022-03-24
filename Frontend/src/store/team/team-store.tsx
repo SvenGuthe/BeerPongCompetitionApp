@@ -1,6 +1,6 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
-import { tTeam, tTeamDetail, tTeamInvitationLink, tTeamStatus } from '../../types/team'
+import { tTeam, tTeamComposition, tTeamDetail, tTeamInvitationLink, tTeamStatus } from '../../types/team'
 
 type SliceState = {
     teams: tPaginationDTO<tTeam> | null,
@@ -79,6 +79,32 @@ export const teamSlice = createSlice({
         },
         addTeamInvitationLink: (state, action: PayloadAction<tTeamInvitationLink>) => {
             state.teamDetail?.team.teamInvitationLinks.push(action.payload);
+        },
+        updateTeamComposition: (state, action: PayloadAction<tTeamComposition>) => {
+            const userId = action.payload.user.id;
+
+            const newUsers = state.teamDetail!.users.map(user => {
+                if (user.id === userId) {
+                    user.admin = action.payload.admin
+                }
+                return user;
+            });
+
+            state.teamDetail!.users = newUsers;
+        },
+        addTeamComposition: (state, action: PayloadAction<tTeamComposition>) => {
+            const teamComposition = action.payload;
+
+            state.teamDetail!.users.push({
+                id: teamComposition.id,
+                user: teamComposition.user,
+                admin: teamComposition.admin,
+                creationTime: teamComposition.creationTime
+            }) ;
+
+            state.teamDetail!.possibleUsers = state.teamDetail!.possibleUsers.filter(possibleUser => {
+                return possibleUser.id !== teamComposition.user.id;
+            })
         }
     }
 })
@@ -93,7 +119,9 @@ export const {
     removeTeams,
     updateTeam,
     updateTeamStatus,
-    addTeamInvitationLink
+    addTeamInvitationLink,
+    updateTeamComposition,
+    addTeamComposition
 } = teamSlice.actions
 
 export const teamStore = configureStore({

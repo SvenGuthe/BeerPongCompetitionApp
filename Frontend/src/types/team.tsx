@@ -1,4 +1,4 @@
-import { tTeamUser, tUserIDAndGamerTag } from "./authentication"
+import { tTeamUser, tUser, tUserIDAndGamerTag } from "./authentication"
 import { tCompetition } from "./competition"
 import { tEnum, tID } from "./defaults/generics"
 import { tAdditionalAttribute } from "./defaults/tables"
@@ -31,6 +31,13 @@ export type tTeam = tEnum & {
     additionalAttributes?: tAdditionalAttribute[]
 }
 
+export type tTeamComposition = tEnum & {
+    team: tTeam,
+    user: tUser,
+    admin: boolean,
+    creationTime: tTimestamp
+}
+
 // --------- CUSTOM DTOs --------- //
 
 export type tUserTeam = tID & {
@@ -42,7 +49,8 @@ export type tUserTeam = tID & {
 export type tTeamDetail = {
     team: tTeam,
     users: tTeamUser[],
-    competitions: tCompetition[]
+    competitions: tCompetition[],
+    possibleUsers: tUser[]
 }
 
 export type tTeamIDAndName = tID & {

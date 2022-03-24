@@ -1,15 +1,17 @@
 package de.guthe.sven.beerpong.tournamentplaner.service.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.TeamUserDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamDetailDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamInvitationLinkAddDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamStatusUpdateDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamUpdateDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.*;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamCompositionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamInvitationLinkDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.*;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamCompositionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,19 @@ public class TeamService {
 
     TeamStatusRepository teamStatusRepository;
 
+    TeamCompositionRepository teamCompositionRepository;
+
+    UserRepository userRepository;
+
     @Autowired
     public TeamService(TeamRepository teamRepository,
-                       TeamStatusRepository teamStatusRepository) {
+                       TeamStatusRepository teamStatusRepository,
+                       TeamCompositionRepository teamCompositionRepository,
+                       UserRepository userRepository) {
         this.teamRepository = teamRepository;
         this.teamStatusRepository = teamStatusRepository;
+        this.teamCompositionRepository = teamCompositionRepository;
+        this.userRepository = userRepository;
     }
 
     public TeamDetailDTO transformTeamToTeamDetailDTO(Long id) throws Exception {
@@ -51,10 +61,13 @@ public class TeamService {
 
         Collection<CompetitionDTO> competitions = team.getCompetitionTeams().stream().map(competitionTeam -> new CompetitionDTO(competitionTeam.getCompetition())).collect(Collectors.toList());
 
+        Collection<UserDTO> possibleUsers = userRepository.findAll().stream().filter(user -> !teamUsers.stream().map(teamUserDTO -> teamUserDTO.getUser().getId()).collect(Collectors.toList()).contains(user.getId())).map(UserDTO::new).collect(Collectors.toList());
+
         return new TeamDetailDTO(
                 teamDTO,
                 teamUsers,
-                competitions
+                competitions,
+                possibleUsers
         );
     }
 
@@ -113,6 +126,25 @@ public class TeamService {
         return new TeamInvitationLinkDTO(team.getTeamInvitationLinkHistories().get(
                 team.getTeamInvitationLinkHistories().size() - 1
         ));
+    }
+
+    public TeamCompositionDTO updateTeamComposition(TeamCompositionUpdateDTO teamCompositionUpdateDTO) {
+        TeamComposition teamComposition = teamCompositionRepository.findById(teamCompositionUpdateDTO.getId()).get();
+        teamComposition.setAdmin(teamCompositionUpdateDTO.getAdmin());
+        teamCompositionRepository.save(teamComposition);
+
+        return new TeamCompositionDTO(teamComposition);
+    }
+
+    public TeamCompositionDTO addTeamComposition(TeamCompositionAddDTO teamCompositionAddDTO) {
+        Team team = teamRepository.findById(teamCompositionAddDTO.getId()).get();
+        User user = userRepository.findById(teamCompositionAddDTO.getUserId()).get();
+        Boolean isAdmin = teamCompositionAddDTO.getAdmin();
+
+        TeamComposition teamComposition = new TeamComposition(team, user, isAdmin);
+        teamCompositionRepository.save(teamComposition);
+
+        return new TeamCompositionDTO(teamComposition);
     }
 
 }
