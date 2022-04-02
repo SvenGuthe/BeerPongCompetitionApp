@@ -70,3 +70,17 @@ export type tTeamUser = tID & {
 export type tUserIDAndGamerTag = tID & {
     gamerTag: string
 }
+
+export type tUserUpdate = tID & {
+    firstName: string,
+    lastName: string,
+    gamerTag: string,
+    email: string,
+    enabled: boolean,
+    userStatusType: tUserStatusType,
+    roles: tSecurityRole[]
+}
+
+export type tConfirmationTokenAdd = tID & {
+    confirmationToken: string
+}

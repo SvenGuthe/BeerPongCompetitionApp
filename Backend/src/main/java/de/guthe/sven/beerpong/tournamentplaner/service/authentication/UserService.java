@@ -1,16 +1,27 @@
 package de.guthe.sven.beerpong.tournamentplaner.service.authentication;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.ConfirmationTokenAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserDetailDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.UserTeamDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.ConfirmationTokenDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdmin;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.ConfirmationTokenRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.Jsr310Converters;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,9 +30,21 @@ public class UserService {
 
     UserRepository userRepository;
 
+    RoleRepository roleRepository;
+
+    ConfirmationTokenRepository confirmationTokenRepository;
+
+    UserStatusRepository userStatusRepository;
+
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       RoleRepository roleRepository,
+                       UserStatusRepository userStatusRepository,
+                       ConfirmationTokenRepository confirmationTokenRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.userStatusRepository = userStatusRepository;
+        this.confirmationTokenRepository = confirmationTokenRepository;
     }
 
     public UserDetailDTO transformUserToUserDetailDTO(Long id) throws Exception {
@@ -48,6 +71,44 @@ public class UserService {
                 competitionsWhereAdmin,
                 competitionsWherePlayer
         );
+    }
+
+    public UserDTO updateUser (UserUpdateDTO userUpdateDTO) {
+
+        User user = userRepository.findById(userUpdateDTO.getId()).get();
+        user.setFirstName(userUpdateDTO.getFirstName());
+        user.setLastName(userUpdateDTO.getLastName());
+        user.setGamerTag(userUpdateDTO.getGamerTag());
+        user.setEmail(userUpdateDTO.getEmail());
+        user.setEnabled(userUpdateDTO.isEnabled());
+
+        Collection<Role> roles = userUpdateDTO.getRoles().stream().map(securityRole -> roleRepository.findByName(securityRole.name())).collect(Collectors.toList());
+
+        user.setRoles(roles);
+
+        List<UserStatus> userStatus = userStatusRepository.findByStatus(userUpdateDTO.getUserStatusType().name());
+        UserStatus newUserStatus;
+
+        if (userStatus.size() == 0) {
+            newUserStatus = new UserStatus(userUpdateDTO.getUserStatusType());
+        } else {
+            newUserStatus = userStatus.get(0);
+        }
+
+        user.setUserStatus(newUserStatus);
+
+        userRepository.save(user);
+
+        return new UserDTO(user);
+
+    }
+
+    public ConfirmationTokenDTO addConfirmationToken(ConfirmationTokenAddDTO confirmationTokenAddDTO) {
+        User user = userRepository.findById(confirmationTokenAddDTO.getId()).get();
+        ConfirmationToken confirmationToken = new ConfirmationToken(user, confirmationTokenAddDTO.getConfirmationToken());
+        confirmationTokenRepository.save(confirmationToken);
+
+        return new ConfirmationTokenDTO(confirmationToken);
     }
 
 }

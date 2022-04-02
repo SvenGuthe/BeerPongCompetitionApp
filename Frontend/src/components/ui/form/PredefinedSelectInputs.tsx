@@ -1,3 +1,4 @@
+import React from "react";
 import { tBillingStatusType } from "../../../types/enums/billingStatusType";
 import { tCompetitionAdminStatusType } from "../../../types/enums/competitionAdminStatusType";
 import { tCompetitionPlayerStatusType } from "../../../types/enums/competitionPlayerStatusType";
@@ -172,20 +173,23 @@ export const TeamStatusTypeInput: React.FC<{
 
 }
 
-export const UserStatusTypeInput: React.FC<{
+interface UserStatusTypeInputProps {
     defaultValue?: tUserStatusType,
     saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void,
     add?: boolean
-}> = (props) => {
+}
+
+export const UserStatusTypeInput = React.forwardRef<HTMLElement, UserStatusTypeInputProps>((props, ref) => {
 
     const allPossibleValues = Object.keys(tUserStatusType);
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
+        ref={ref}
         defaultValue={[defaultValue]}
         possibleValues={allPossibleValues}
         saveValue={props.saveValue}
         add={props.add}
     />;
 
-}
+});

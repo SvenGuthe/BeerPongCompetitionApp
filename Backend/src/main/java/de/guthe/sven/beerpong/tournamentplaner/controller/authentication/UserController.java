@@ -1,7 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.ConfirmationTokenAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserDetailDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserUpdateDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.ConfirmationTokenDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
@@ -33,6 +36,18 @@ public class UserController {
 	@PreAuthorize("hasAuthority('WRITE_AUTHENTICATION_PRIVILEGE')")
 	public User addUser(@RequestBody User user) {
 		return userRepository.save(user);
+	}
+
+	@PostMapping("/confirmationtoken")
+    @PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
+    public ConfirmationTokenDTO addConfirmToken(@RequestBody ConfirmationTokenAddDTO confirmationTokenAddDTO) {
+        return userService.addConfirmationToken(confirmationTokenAddDTO);
+    }
+
+	@PutMapping("/user")
+	@PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
+	public UserDTO updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {
+		return userService.updateUser(userUpdateDTO);
 	}
 
 	@GetMapping("/user")
