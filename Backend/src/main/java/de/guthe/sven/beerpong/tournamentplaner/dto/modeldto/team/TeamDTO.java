@@ -3,20 +3,26 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class TeamDTO extends ID {
 
+    @NotNull(message = "teamName in TeamDTO have to be set.")
     private String teamName;
 
+    @NotNull(message = "isPlayerTeam in TeamDTO have to be set.")
     private boolean isPlayerTeam;
 
+    @NotNull(message = "creationTime in TeamDTO have to be set.")
     private Timestamp creationTime;
 
+    @NotNull(message = "teamInvitationLinks in TeamDTO have to be set.")
     private Collection<TeamInvitationLinkDTO> teamInvitationLinks;
 
+    @NotNull(message = "teamStatus in TeamDTO have to be set.")
     private Collection<TeamStatusDTO> teamStatus;
 
     // Won't be connected

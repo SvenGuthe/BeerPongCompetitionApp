@@ -1,29 +1,15 @@
 import { tCompetition } from "./competition";
 import { tEnum, tID } from "./defaults/generics";
-import { tAdditionalAttribute } from "./defaults/tables";
+import { tAdditionalAttributes } from "./defaults/tables";
 import { tTimestamp } from "./defaults/timestamp";
 import { tSecurityPrivilege } from "./enums/securityPrivilege";
 import { tSecurityRole } from "./enums/securityRole";
 import { tUserStatusType } from "./enums/userStatusType";
 import { tUserTeam } from "./team";
 
-export type tLogin = {
-    email: string,
-    password: string
-};
-
-export type tRegister = {
-    email: string,
-    firstName: string,
-    gamerTag: string,
-    lastName: string,
-    password: string
-};
-
-export type tConfirmationToken = tID & {
+export type tConfirmationToken = tID & tAdditionalAttributes & {
     confirmationToken: string,
-    createdDate: tTimestamp,
-    additionalAttributes?: tAdditionalAttribute[]
+    createdDate: tTimestamp
 }
 
 export type tPrivilege = tEnum & {
@@ -39,7 +25,7 @@ export type tUserStatus = tEnum & {
     userStatus: tUserStatusType
 }
 
-export type tUser = tID & {
+export type tUser = tID & tAdditionalAttributes & {
     firstName: string,
     lastName: string,
     gamerTag: string,
@@ -48,8 +34,7 @@ export type tUser = tID & {
     creationTime: tTimestamp,
     roles: tRole[],
     userStatus: tUserStatus,
-    confirmationToken: tConfirmationToken[],
-    additionalAttributes?: tAdditionalAttribute[]
+    confirmationToken: tConfirmationToken[]
 }
 
 // --------- CUSTOM DTOs --------- //
@@ -84,3 +69,20 @@ export type tUserUpdate = tID & {
 export type tConfirmationTokenAdd = tID & {
     confirmationToken: string
 }
+
+// --------- CUSTOM Datatypes (no DTO for now) --------- //
+
+// TODO: Transform to DTOs
+
+export type tLogin = {
+    email: string,
+    password: string
+};
+
+export type tRegister = {
+    email: string,
+    firstName: string,
+    gamerTag: string,
+    lastName: string,
+    password: string
+};

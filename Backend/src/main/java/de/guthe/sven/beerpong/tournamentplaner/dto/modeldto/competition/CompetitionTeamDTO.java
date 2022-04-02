@@ -4,22 +4,28 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CompetitionTeamDTO extends ID {
 
+    @NotNull(message = "competitionTeamName in CompetitionTeamDTO have to be set.")
     private String competitionTeamName;
 
+    @NotNull(message = "creationTime in CompetitionTeamDTO have to be set.")
     private Timestamp creationTime;
 
     private TeamDTO team;
 
+    @NotNull(message = "competitionPlayer in CompetitionTeamDTO have to be set.")
     private Collection<CompetitionPlayerDTO> competitionPlayer;
 
+    @NotNull(message = "billingStatus in CompetitionTeamDTO have to be set.")
     private Collection<BillingStatusDTO> billingStatus;
 
+    @NotNull(message = "registrationStatus in CompetitionTeamDTO have to be set.")
     private Collection<RegistrationStatusDTO> registrationStatus;
 
     public CompetitionTeamDTO(Long id, String competitionTeamName, Timestamp creationTime, TeamDTO team, Collection<CompetitionPlayerDTO> competitionPlayer, Collection<BillingStatusDTO> billingStatus, Collection<RegistrationStatusDTO> registrationStatus) {

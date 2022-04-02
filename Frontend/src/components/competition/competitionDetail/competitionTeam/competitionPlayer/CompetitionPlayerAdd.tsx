@@ -4,10 +4,11 @@ import { Container, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionPlayer } from "../../../../../store/competition/competition-store-actions";
 import { tUserIDAndGamerTag } from "../../../../../types/authentication";
+import { tCompetitionPlayerAdd } from "../../../../../types/competition";
 import { tTeamAndUser } from "../../../../../types/team";
 
 const CompetitionPlayerAdd: React.FC<{
-    team: tTeamAndUser | null,
+    team?: tTeamAndUser,
     user: tUserIDAndGamerTag[],
     id: number
 }> = (props) => {
@@ -20,7 +21,11 @@ const CompetitionPlayerAdd: React.FC<{
 
     const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        dispatch(addCompetitionPlayer(props.id, +selectRef.current!.value));
+        const competitionPlayer: tCompetitionPlayerAdd = {
+            id: props.id,
+            userId: +selectRef.current!.value
+        }
+        dispatch(addCompetitionPlayer(competitionPlayer));
     }
 
     let possibleUsers = user;

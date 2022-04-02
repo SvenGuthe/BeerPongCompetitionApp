@@ -19,16 +19,16 @@ public class CompetitionAdmin implements ACLObjectInterface {
 	private Long id;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "competitionid")
+	@JoinColumn(name = "competitionid", nullable = false)
 	@JsonIgnore
 	private Competition competition;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "userid", nullable = false)
 	@JsonIgnore
 	private User user;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "competitionAdmin", fetch = FetchType.LAZY,

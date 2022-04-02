@@ -1,34 +1,31 @@
 import { tTeamUser, tUser, tUserIDAndGamerTag } from "./authentication"
 import { tCompetition } from "./competition"
 import { tEnum, tID } from "./defaults/generics"
-import { tAdditionalAttribute } from "./defaults/tables"
+import { tAdditionalAttributes } from "./defaults/tables"
 import { tTimestamp } from "./defaults/timestamp"
 import { tTeamStatusType } from "./enums/teamStatusType"
 
-export type tTeamStatus = tEnum & {
+export type tTeamStatus = tEnum & tAdditionalAttributes & {
     teamStatusId: number,
     teamStatusDescription: tTeamStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp,
-    additionalAttributes?: tAdditionalAttribute[]
+    validTo?: tTimestamp
 }
 
-export type tTeamInvitationLink = tEnum & {
+export type tTeamInvitationLink = tEnum & tAdditionalAttributes & {
     teamInvitationLink: string,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp,
-    additionalAttributes?: tAdditionalAttribute[]
+    validTo?: tTimestamp
 }
 
-export type tTeam = tEnum & {
+export type tTeam = tEnum & tAdditionalAttributes & {
     teamName: string,
     playerTeam: boolean,
     creationTime: tTimestamp,
     teamInvitationLinks: tTeamInvitationLink[],
-    teamStatus: tTeamStatus[],
-    additionalAttributes?: tAdditionalAttribute[]
+    teamStatus: tTeamStatus[]
 }
 
 export type tTeamComposition = tEnum & {
@@ -60,4 +57,25 @@ export type tTeamIDAndName = tID & {
 export type tTeamAndUser = {
     team: tTeamIDAndName,
     users: tUserIDAndGamerTag[]
+}
+
+export type tTeamUpdate = tID & {
+    teamName: string
+}
+
+export type tTeamStatusUpdate = tID & {
+    teamStatusType: tTeamStatusType
+}
+
+export type tTeamInvitationLinkAdd = tID & {
+    teamInvitationLink: string
+}
+
+export type tTeamCompositionUpdate = tID & {
+    isAdmin: boolean
+}
+
+export type tTeamCompositionAdd = tID & {
+    userId: number,
+    isAdmin: boolean
 }

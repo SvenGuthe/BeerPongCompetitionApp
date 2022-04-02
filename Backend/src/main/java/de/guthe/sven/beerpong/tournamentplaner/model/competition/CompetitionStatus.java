@@ -19,7 +19,7 @@ public class CompetitionStatus implements ACLObjectInterface {
 	@Enumerated(EnumType.STRING)
 	private CompetitionStatusType competitionStatusType;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	public CompetitionStatus() {

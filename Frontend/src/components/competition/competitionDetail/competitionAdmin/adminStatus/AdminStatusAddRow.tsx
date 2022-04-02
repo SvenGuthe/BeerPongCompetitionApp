@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeCompetitionAdminStatus } from "../../../../../store/competition/competition-store-actions";
+import { tCompetitionAdminStatusUpdate } from "../../../../../types/competition";
 import { tCompetitionAdminStatusType } from "../../../../../types/enums/competitionAdminStatusType";
 import { CompetitionAdminStatusTypeInput } from "../../../../ui/form/PredefinedSelectInputs";
 
@@ -11,8 +12,11 @@ const AdminStatusAddRow: React.FC<{
     const dispatch = useDispatch();
 
     const onSaveNewCompetitionAdminStatusType = (newValue: string[]) => {
-        const newStatus = newValue[0] as tCompetitionAdminStatusType;
-        dispatch(changeCompetitionAdminStatus(id, newStatus));
+        const competitionAdminStatus: tCompetitionAdminStatusUpdate = {
+            id: id,
+            competitionAdminStatusType: newValue[0] as tCompetitionAdminStatusType
+        }
+        dispatch(changeCompetitionAdminStatus(competitionAdminStatus));
     }
 
     return <tr style={{ borderTop: "2px dashed black" }}>

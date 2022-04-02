@@ -4,6 +4,7 @@ import { Container, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addTeamComposition } from "../../../../store/team/team-store-actions";
 import { tUser } from "../../../../types/authentication";
+import { tTeamCompositionAdd } from "../../../../types/team";
 
 const TeamCompositionAdd: React.FC<{
     id: number,
@@ -19,11 +20,12 @@ const TeamCompositionAdd: React.FC<{
 
     const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        dispatch(addTeamComposition(
-            props.id,
-            +userRef.current!.value,
-            activatedRef.current!.checked
-        ))
+        const teamComposition: tTeamCompositionAdd = {
+            id: props.id,
+            userId: +userRef.current!.value,
+            isAdmin: activatedRef.current!.checked
+        };
+        dispatch(addTeamComposition(teamComposition));
         activatedRef.current!.checked = false;
     }
 

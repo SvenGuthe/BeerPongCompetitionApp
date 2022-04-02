@@ -16,19 +16,19 @@ public class RegistrationStatusHistory implements ACLObjectInterface {
 	@Column(name = "registrationstatushistoryid")
 	private Long id;
 
-	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp validFrom = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "validto")
 	private Timestamp validTo;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "competitionteamid")
+	@JoinColumn(name = "competitionteamid", nullable = false)
 	@JsonIgnore
 	private CompetitionTeam competitionTeam;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "registrationstatusid")
+	@JoinColumn(name = "registrationstatusid", nullable = false)
 	@JsonIgnore
 	private RegistrationStatus registrationStatus;
 

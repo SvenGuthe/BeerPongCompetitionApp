@@ -4,13 +4,16 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRo
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class RoleDTO extends EnumDTO {
 
+    @NotNull(message = "role in RoleDTO have to be set.")
     private SecurityRole role;
 
+    @NotNull(message = "privileges in RoleDTO have to be set.")
     private Collection<PrivilegeDTO> privileges;
 
     public RoleDTO(Long id, SecurityRole role, Collection<PrivilegeDTO> privileges) {

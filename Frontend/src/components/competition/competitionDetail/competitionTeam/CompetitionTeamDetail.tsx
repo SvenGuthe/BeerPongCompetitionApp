@@ -30,7 +30,11 @@ const CompetitionTeamDetail: React.FC<{
         return competitionTeamDetail.competitionPlayer;
     }, [competitionTeamDetail])
 
-    const team = props.teams.filter(team => team.team.id === competitionTeamDetail.team.id)[0];
+    let team;
+
+    if (competitionTeamDetail.team) {
+        team = props.teams.filter(team => team.team.id === competitionTeamDetail.team!.id)[0];
+    }
 
     return <>
         {competitionTeamDetail && <>

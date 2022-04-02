@@ -17,21 +17,21 @@ public class CompetitionPlayer implements ACLObjectInterface {
 	private Long id;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "competitionteamid")
+	@JoinColumn(name = "competitionteamid", nullable = false)
 	@JsonIgnore
 	private CompetitionTeam competitionTeam;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "userid", nullable = false)
 	@JsonIgnore
 	private User user;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "competitionplayerstatusid")
+	@JoinColumn(name = "competitionplayerstatusid", nullable = false)
 	@JsonIgnore
 	private CompetitionPlayerStatus competitionPlayerStatus;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	public CompetitionPlayer() {

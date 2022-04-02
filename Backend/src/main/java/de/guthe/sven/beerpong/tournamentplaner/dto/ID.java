@@ -1,7 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto;
 
+import javax.validation.constraints.NotNull;
+
 public abstract class ID {
 
+    @NotNull(message = "The id of the DTO have to be set.")
     public Long id;
 
     public ID(Long id) {

@@ -3,12 +3,14 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class CompetitionDTO extends ID {
 
+    @NotNull(message = "competitionName in CompetitionDTO have to be set.")
     private String competitionName;
 
     private Timestamp competitionStartTimestamp;
@@ -25,12 +27,16 @@ public class CompetitionDTO extends ID {
 
     private String setOfRules;
 
+    @NotNull(message = "creationTime in CompetitionDTO have to be set.")
     private Timestamp creationTime;
 
+    @NotNull(message = "competitionStatus in CompetitionDTO have to be set.")
     private Collection<CompetitionStatusDTO> competitionStatus;
 
+    @NotNull(message = "competitionTeams in CompetitionDTO have to be set.")
     private Collection<CompetitionTeamDTO> competitionTeams;
 
+    @NotNull(message = "competitionAdmins in CompetitionDTO have to be set.")
     private Collection<CompetitionAdminDTO> competitionAdmins;
 
     public CompetitionDTO(Long id, String competitionName, Timestamp competitionStartTimestamp, Integer minTeams, Integer maxTeams, Double fee, Timestamp registrationStart, Timestamp registrationEnd, String setOfRules, Timestamp creationTime, Collection<CompetitionStatusDTO> competitionStatus, Collection<CompetitionTeamDTO> competitionTeams, Collection<CompetitionAdminDTO> competitionAdmins) {

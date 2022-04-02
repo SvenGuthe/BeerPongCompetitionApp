@@ -8,7 +8,7 @@ import SelectInput from "./SelectInput";
 import TextInput from "./TextInput";
 
 interface Props {
-    defaultValue: string | number | boolean | string[] | number[],
+    defaultValue?: string | number | boolean | string[] | number[],
     possibleValues?: string[] | number[],
     multiSelect?: boolean,
     saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void,
@@ -52,7 +52,7 @@ const FormItem = React.forwardRef<HTMLElement, Props>((props, ref) => {
     }
 
     const onClickSelectHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-        props.saveValue(value, true);
+        props.saveValue(value ? value : "", true);
         !add && setEditMode(false);
     }
 

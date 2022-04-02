@@ -22,7 +22,7 @@ const TeamDetailTable: React.FC<{
         if (isChanged) {
             const newMetaData = {
                 id: team.id,
-                teamName: teamNameRef.current?.value
+                teamName: teamNameRef.current!.value
             }
 
             dispatch(updateTeam(newMetaData));

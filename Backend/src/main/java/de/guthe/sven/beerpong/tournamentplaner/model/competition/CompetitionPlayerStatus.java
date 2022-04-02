@@ -22,7 +22,7 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 	@Enumerated(EnumType.STRING)
 	private CompetitionPlayerStatusType competitionPlayerStatusDescription;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "competitionPlayerStatus", fetch = FetchType.LAZY,

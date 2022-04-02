@@ -18,7 +18,7 @@ public class TeamInvitationLink implements ACLObjectInterface {
 	@Column(name = "teaminvitationlink", nullable = false)
 	private String teamInvitationLink;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "teamInvitationLink", fetch = FetchType.LAZY,

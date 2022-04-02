@@ -3,8 +3,11 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.billin
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.BillingStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 
+import javax.validation.constraints.NotNull;
+
 public class BillingStatusUpdateDTO extends ID {
 
+    @NotNull(message = "billingStatusType in BillingStatusUpdateDTO have to be set.")
     BillingStatusType billingStatusType;
 
     public BillingStatusUpdateDTO(Long id, BillingStatusType billingStatusType) {

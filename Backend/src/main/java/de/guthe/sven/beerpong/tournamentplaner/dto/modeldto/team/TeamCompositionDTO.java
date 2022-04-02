@@ -4,16 +4,21 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class TeamCompositionDTO extends ID {
 
+    @NotNull(message = "team in TeamCompositionDTO have to be set.")
     private TeamDTO team;
 
+    @NotNull(message = "user in TeamCompositionDTO have to be set.")
     private UserDTO user;
 
+    @NotNull(message = "isAdmin in TeamCompositionDTO have to be set.")
     private Boolean isAdmin;
 
+    @NotNull(message = "creationTime in TeamCompositionDTO have to be set.")
     private Timestamp creationTime;
 
     public TeamCompositionDTO(Long id, TeamDTO team, UserDTO user, Boolean isAdmin, Timestamp creationTime) {

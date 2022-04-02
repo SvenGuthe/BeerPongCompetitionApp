@@ -3,13 +3,16 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserIDAndGamerTagDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class TeamAndUserDTO {
 
+    @NotNull(message = "team in TeamAndUserDTO have to be set.")
     TeamIDAndNameDTO team;
 
+    @NotNull(message = "users in TeamAndUserDTO have to be set.")
     Collection<UserIDAndGamerTagDTO> users;
 
     public TeamAndUserDTO(TeamIDAndNameDTO team, Collection<UserIDAndGamerTagDTO> users) {

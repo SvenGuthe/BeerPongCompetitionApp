@@ -3,8 +3,11 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.regist
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.RegistrationStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 
+import javax.validation.constraints.NotNull;
+
 public class RegistrationStatusUpdateDTO extends ID {
 
+    @NotNull(message = "registrationStatusType in RegistrationStatusUpdateDTO have to be set.")
     private RegistrationStatusType registrationStatusType;
 
     public RegistrationStatusUpdateDTO(Long id, RegistrationStatusType registrationStatusType) {

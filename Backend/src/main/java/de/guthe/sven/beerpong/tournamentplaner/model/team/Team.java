@@ -28,7 +28,7 @@ public class Team implements ACLObjectInterface {
 	@Column(name = "isplayerteam", nullable = false)
 	private boolean isPlayerTeam;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "team", fetch = FetchType.LAZY,

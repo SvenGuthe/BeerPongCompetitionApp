@@ -3,12 +3,15 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class ConfirmationTokenDTO extends ID {
 
+    @NotNull(message = "confirmationToken in ConfirmationTokenDTO have to be set.")
     private String confirmationToken;
 
+    @NotNull(message = "createdDate in ConfirmationTokenDTO have to be set.")
     private Timestamp createdDate;
 
     public ConfirmationTokenDTO(Long id, String confirmationToken, Timestamp createdDate) {

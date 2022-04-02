@@ -127,7 +127,7 @@ const UserDetails: React.FC = () => {
                     const additionalAttributes = [
                         {
                             id: competition.id + "_mainTeam",
-                            value: competitionTeam.team.teamName
+                            value: competitionTeam.team && competitionTeam.team.teamName
                         },
                         {
                             id: competition.id + "_competitionTeamName",

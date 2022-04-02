@@ -2,9 +2,12 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 
+import javax.validation.constraints.NotNull;
+
 // ID = CompetitionTeamID
 public class CompetitionTeamUpdateDTO extends ID {
 
+    @NotNull(message = "teamname in CompetitionTeamUpdateDTO have to be set.")
     private String teamname;
 
     private Long teamId;

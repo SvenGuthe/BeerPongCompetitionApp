@@ -1,7 +1,7 @@
 import { Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateCompetitionPlayerStatus } from "../../../../../store/competition/competition-store-actions";
-import { tCompetitionPlayer } from "../../../../../types/competition";
+import { tCompetitionPlayer, tCompetitionPlayerStatusUpdate } from "../../../../../types/competition";
 import { tCompetitionPlayerStatusType } from "../../../../../types/enums/competitionPlayerStatusType";
 import { CompetitionPlayerStatusTypeInput } from "../../../../ui/form/PredefinedSelectInputs";
 
@@ -14,8 +14,12 @@ const CompetitionPlayerDetailTable: React.FC<{
     const competitionPlayerDetail = props.competitionPlayerDetail;
 
     const onSaveHandler = (newValue: tCompetitionPlayerStatusType) => {
-        dispatch(updateCompetitionPlayerStatus(competitionPlayerDetail.id, newValue));
-    }    
+        const competitionPlayerStatus: tCompetitionPlayerStatusUpdate = {
+            id: competitionPlayerDetail.id,
+            competitionPlayerStatusType: newValue
+        }
+        dispatch(updateCompetitionPlayerStatus(competitionPlayerStatus));
+    }
 
     return <>
         <Table striped bordered hover size="sm">

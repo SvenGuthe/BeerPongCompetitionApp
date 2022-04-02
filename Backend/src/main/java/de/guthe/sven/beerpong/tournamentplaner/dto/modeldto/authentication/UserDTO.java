@@ -3,28 +3,38 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class UserDTO extends ID {
 
+    @NotNull(message = "firstName in UserDTO have to be set.")
     private String firstName;
 
+    @NotNull(message = "lastName in UserDTO have to be set.")
     private String lastName;
 
+    @NotNull(message = "gamerTag in UserDTO have to be set.")
     private String gamerTag;
 
+    @NotNull(message = "email in UserDTO have to be set.")
     private String email;
 
+    @NotNull(message = "enabled in UserDTO have to be set.")
     private boolean enabled;
 
+    @NotNull(message = "creationTime in UserDTO have to be set.")
     private Timestamp creationTime;
 
+    @NotNull(message = "roles in UserDTO have to be set.")
     Collection<RoleDTO> roles;
 
+    @NotNull(message = "userStatus in UserDTO have to be set.")
     UserStatusDTO userStatus;
 
+    @NotNull(message = "confirmationToken in UserDTO have to be set.")
     Collection<ConfirmationTokenDTO> confirmationToken;
 
     // Won't be connected

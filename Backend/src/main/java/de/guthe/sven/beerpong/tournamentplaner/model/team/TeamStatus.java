@@ -21,7 +21,7 @@ public class TeamStatus implements ACLObjectInterface {
 	@Enumerated(EnumType.STRING)
 	private TeamStatusType teamStatusDescription;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "teamStatus", fetch = FetchType.LAZY,

@@ -1,10 +1,11 @@
 import { tUser, tUserIDAndGamerTag } from "./authentication";
 import { tEnum, tID } from "./defaults/generics";
-import { tAdditionalAttribute } from "./defaults/tables";
+import { tAdditionalAttributes } from "./defaults/tables";
 import { tTimestamp } from "./defaults/timestamp";
 import { tBillingStatusType } from "./enums/billingStatusType";
 import { tCompetitionAdminStatusType } from "./enums/competitionAdminStatusType";
 import { tCompetitionPlayerStatusType } from "./enums/competitionPlayerStatusType";
+import { tCompetitionStatusType } from "./enums/competitionStatusType";
 import { tRegistrationStatusType } from "./enums/registrationStatusType";
 import { tTeam, tTeamAndUser } from "./team";
 
@@ -13,7 +14,7 @@ export type tBillingStatus = tEnum & {
     billingStatusDescription: tBillingStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo?: tTimestamp
 }
 
 export type tCompetitionAdminStatus = tEnum & {
@@ -21,7 +22,7 @@ export type tCompetitionAdminStatus = tEnum & {
     competitionAdminStatusDescription: tCompetitionAdminStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo?: tTimestamp
 }
 
 export type tCompetitionPlayerStatus = tEnum & {
@@ -29,13 +30,12 @@ export type tCompetitionPlayerStatus = tEnum & {
     creationTime: tTimestamp
 }
 
-export type tCompetitionStatus = tEnum & {
+export type tCompetitionStatus = tEnum & tAdditionalAttributes & {
     competitionStatusId: number,
     competitionStatusType: tCompetitionAdminStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp,
-    additionalAttributes?: tAdditionalAttribute[]
+    validTo?: tTimestamp
 }
 
 export type tRegistrationStatus = tEnum & {
@@ -43,7 +43,7 @@ export type tRegistrationStatus = tEnum & {
     registrationStatusDescription: tRegistrationStatusType,
     creationTime: tTimestamp,
     validFrom: tTimestamp,
-    validTo: tTimestamp
+    validTo?: tTimestamp
 }
 
 export type tCompetitionAdmin = tID & {
@@ -61,26 +61,25 @@ export type tCompetitionPlayer = tID & {
 export type tCompetitionTeam = tID & {
     competitionTeamName: string,
     creationTime: tTimestamp,
-    team: tTeam,
+    team?: tTeam,
     competitionPlayer: tCompetitionPlayer[],
     billingStatus: tBillingStatus[],
     registrationStatus: tRegistrationStatus[]
 }
 
-export type tCompetition = tID & {
+export type tCompetition = tID & tAdditionalAttributes & {
     competitionName: string,
-    competitionStartTimestamp: tTimestamp,
-    minTeams: number,
-    maxTeams: number,
-    fee: number,
-    registrationStart: tTimestamp,
-    registrationEnd: tTimestamp,
-    setOfRules: string,
+    competitionStartTimestamp?: tTimestamp,
+    minTeams?: number,
+    maxTeams?: number,
+    fee?: number,
+    registrationStart?: tTimestamp,
+    registrationEnd?: tTimestamp,
+    setOfRules?: string,
     creationTime: tTimestamp,
     competitionStatus: tCompetitionStatus[],
     competitionTeams: tCompetitionTeam[],
-    competitionAdmins: tCompetitionAdmin[],
-    additionalAttributes?: tAdditionalAttribute[]
+    competitionAdmins: tCompetitionAdmin[]
 }
 
 // --------- CUSTOM DTOs --------- //
@@ -90,4 +89,55 @@ export type tCompetitionDetail = {
     possibleAdminUsers: tUserIDAndGamerTag[],
     possiblePlayers: tUserIDAndGamerTag[],
     teams: tTeamAndUser[]
+}
+
+export type tCompetitionStatusUpdate = tID & {
+    competitionStatusType: tCompetitionStatusType
+};
+
+export type tCompetitionAdminStatusUpdate = tID & {
+    competitionAdminStatusType: tCompetitionAdminStatusType
+}
+
+export type tRegistrationStatusUpdate = tID & {
+    registrationStatusType: tRegistrationStatusType
+}
+
+export type tBillingStatusUpdate = tID & {
+    billingStatusType: tBillingStatusType
+}
+
+export type tCompetitionAdminAdd = tID & {
+    userId: number
+}
+
+export type tCompetitionPlayerAdd = tID & {
+    userId: number
+}
+
+export type tCompetitionTeamAdd = tID & {
+    teamname: string,
+    password: string,
+    teamId?: number,
+    playerIds: number[]
+}
+
+export type tCompetitionUpdate = tID & {
+    competitionName: string,
+    competitionStartTimestamp: string, // TODO: Convert to tTimestamp
+    minTeams: number,
+    maxTeams: number,
+    fee: number,
+    registrationStart: string, // TODO: Convert to tTimestamp
+    registrationEnd: string, // TODO: Convert to tTimestamp
+    setOfRules: string
+}
+
+export type tCompetitionPlayerStatusUpdate = tID & {
+    competitionPlayerStatusType: tCompetitionPlayerStatusType
+}
+
+export type tCompetitionTeamUpdate = tID & {
+    teamname: string,
+    teamId?: number
 }

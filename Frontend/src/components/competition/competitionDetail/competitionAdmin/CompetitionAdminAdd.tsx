@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionAdmin } from "../../../../store/competition/competition-store-actions";
 import { tUserIDAndGamerTag } from "../../../../types/authentication";
+import { tCompetitionAdminAdd } from "../../../../types/competition";
 
 const CompetitionAdminAdd: React.FC<{
     users: tUserIDAndGamerTag[],
@@ -16,7 +17,11 @@ const CompetitionAdminAdd: React.FC<{
 
     const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        dispatch(addCompetitionAdmin(props.competitionId, +selectRef.current!.value))
+        const competitionAdmin: tCompetitionAdminAdd = {
+            id: props.competitionId,
+            userId: +selectRef.current!.value
+        }
+        dispatch(addCompetitionAdmin(competitionAdmin))
     }
 
     return <Container style={{ padding: "0px", margin: "0px" }}>

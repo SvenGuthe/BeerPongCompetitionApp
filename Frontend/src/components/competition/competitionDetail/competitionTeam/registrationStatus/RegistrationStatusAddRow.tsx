@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeRegistrationStatus } from "../../../../../store/competition/competition-store-actions";
+import { tRegistrationStatusUpdate } from "../../../../../types/competition";
 import { tRegistrationStatusType } from "../../../../../types/enums/registrationStatusType";
 import { RegistrationStatusTypeInput } from "../../../../ui/form/PredefinedSelectInputs";
 
@@ -11,8 +12,11 @@ const RegistrationStatusAddRow: React.FC<{
     const dispatch = useDispatch();
 
     const onSaveNewRegistrationStatusType = (newValue: string[]) => {
-        const newStatus = newValue[0] as tRegistrationStatusType;
-        dispatch(changeRegistrationStatus(id, newStatus));
+        const registrationStatus: tRegistrationStatusUpdate = {
+            id: id,
+            registrationStatusType: newValue[0] as tRegistrationStatusType
+        }
+        dispatch(changeRegistrationStatus(registrationStatus));
     }
 
     return <tr style={{ borderTop: "2px dashed black" }}>

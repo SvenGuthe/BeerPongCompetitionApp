@@ -1,11 +1,14 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class JwtRequestDTO implements Serializable {
 
+	@NotNull(message = "username in JwtRequestDTO have to be set.")
 	private String username;
 
+	@NotNull(message = "password in JwtRequestDTO have to be set.")
 	private String password;
 
 	public JwtRequestDTO() {

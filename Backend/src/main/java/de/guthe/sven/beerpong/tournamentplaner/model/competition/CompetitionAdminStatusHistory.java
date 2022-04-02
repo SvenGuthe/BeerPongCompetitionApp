@@ -16,16 +16,16 @@ public class CompetitionAdminStatusHistory implements ACLObjectInterface {
 	private Long id;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "competitionadminid")
+	@JoinColumn(name = "competitionadminid", nullable = false)
 	@JsonIgnore
 	private CompetitionAdmin competitionAdmin;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "competitionadminstatusid")
+	@JoinColumn(name = "competitionadminstatusid", nullable = false)
 	@JsonIgnore
 	private CompetitionAdminStatus competitionAdminStatus;
 
-	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp validFrom = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "validto")
