@@ -17,7 +17,7 @@ public class Role {
 	@Column(name = "roleid", nullable = false)
 	private Long id;
 
-	@Column(name = "role", nullable = false)
+	@Column(name = "role", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private SecurityRole role;
 

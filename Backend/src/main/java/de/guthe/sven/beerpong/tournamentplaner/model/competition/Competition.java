@@ -16,7 +16,7 @@ public class Competition implements ACLObjectInterface {
 	@Column(name = "competitionid")
 	private Long id;
 
-	@Column(name = "competitionname", nullable = false)
+	@Column(name = "competitionname", nullable = false, unique = true)
 	private String competitionName;
 
 	@Column(name = "competitionstarttimestamp")

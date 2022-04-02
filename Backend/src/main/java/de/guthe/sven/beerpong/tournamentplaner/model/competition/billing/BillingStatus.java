@@ -16,7 +16,7 @@ public class BillingStatus implements ACLObjectInterface {
 	@Column(name = "billingstatusid")
 	private Long id;
 
-	@Column(name = "billingstatusdescription", nullable = false)
+	@Column(name = "billingstatusdescription", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private BillingStatusType billingStatusDescription;
 

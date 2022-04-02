@@ -16,7 +16,7 @@ public class CompetitionAdminStatus implements ACLObjectInterface {
 	@Column(name = "competitionadminstatusid")
 	private Long id;
 
-	@Column(name = "competitionadminstatusdescription", nullable = false)
+	@Column(name = "competitionadminstatusdescription", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private CompetitionAdminStatusType competitionAdminStatusDescription;
 

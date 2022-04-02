@@ -16,7 +16,7 @@ public class Privilege {
 	@Column(name = "privilegeid", nullable = false)
 	private Long id;
 
-	@Column(name = "privilege", nullable = false)
+	@Column(name = "privilege", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private SecurityPrivilege privilege;
 

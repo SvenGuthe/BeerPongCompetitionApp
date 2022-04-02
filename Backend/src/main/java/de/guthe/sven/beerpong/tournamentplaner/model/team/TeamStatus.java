@@ -17,7 +17,7 @@ public class TeamStatus implements ACLObjectInterface {
 	@Column(name = "teamstatusid")
 	private Long id;
 
-	@Column(name = "teamstatusdescription", nullable = false)
+	@Column(name = "teamstatusdescription", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private TeamStatusType teamStatusDescription;
 

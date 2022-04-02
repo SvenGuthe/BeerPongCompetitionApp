@@ -15,7 +15,7 @@ public class UserStatus {
 	@Column(name = "userstatusid", nullable = false)
 	private Long id;
 
-	@Column(name = "userstatus", nullable = false)
+	@Column(name = "userstatus", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private UserStatusType userStatus;
 

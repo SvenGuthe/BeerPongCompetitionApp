@@ -19,7 +19,7 @@ public class Team implements ACLObjectInterface {
 	@Column(name = "teamid")
 	private Long id;
 
-	@Column(name = "teamname", nullable = false)
+	@Column(name = "teamname", nullable = false, unique = true)
 	private String teamName;
 
 	@Column(name = "password", nullable = false)
