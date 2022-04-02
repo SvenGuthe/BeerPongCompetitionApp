@@ -5,6 +5,7 @@ import { tTimestamp } from "./defaults/timestamp";
 import { tBillingStatusType } from "./enums/billingStatusType";
 import { tCompetitionAdminStatusType } from "./enums/competitionAdminStatusType";
 import { tCompetitionPlayerStatusType } from "./enums/competitionPlayerStatusType";
+import { tCompetitionStatusType } from "./enums/competitionStatusType";
 import { tRegistrationStatusType } from "./enums/registrationStatusType";
 import { tTeam, tTeamAndUser } from "./team";
 
@@ -90,4 +91,55 @@ export type tCompetitionDetail = {
     possibleAdminUsers: tUserIDAndGamerTag[],
     possiblePlayers: tUserIDAndGamerTag[],
     teams: tTeamAndUser[]
+}
+
+export type tCompetitionStatusUpdate = tID & {
+    competitionStatusType: tCompetitionStatusType
+};
+
+export type tCompetitionAdminStatusUpdate = tID & {
+    competitionAdminStatusType: tCompetitionAdminStatusType
+}
+
+export type tRegistrationStatusUpdate = tID & {
+    registrationStatusType: tRegistrationStatusType
+}
+
+export type tBillingStatusUpdate = tID & {
+    billingStatusType: tBillingStatusType
+}
+
+export type tCompetitionAdminAdd = tID & {
+    userId: number
+}
+
+export type tCompetitionPlayerAdd = tID & {
+    userId: number
+}
+
+export type tCompetitionTeamAdd = tID & {
+    teamname: string,
+    password: string,
+    teamId?: number,
+    playerIds: number[]
+}
+
+export type tCompetitionUpdate = tID & {
+    competitionName: string,
+    competitionStartTimestamp: string, // TODO: Convert to tTimestamp
+    minTeams: number,
+    maxTeams: number,
+    fee: number,
+    registrationStart: string, // TODO: Convert to tTimestamp
+    registrationEnd: string, // TODO: Convert to tTimestamp
+    setOfRules: string
+}
+
+export type tCompetitionPlayerStatusUpdate = tID & {
+    competitionPlayerStatusType: tCompetitionPlayerStatusType
+}
+
+export type tCompetitionTeamUpdate = tID & {
+    teamname: string,
+    teamId?: number
 }

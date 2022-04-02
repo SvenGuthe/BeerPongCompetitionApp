@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateTeamStatus } from "../../../../store/team/team-store-actions";
 import { tTeamStatusType } from "../../../../types/enums/teamStatusType";
+import { tTeamStatusUpdate } from "../../../../types/team";
 import { TeamStatusTypeInput } from "../../../ui/form/PredefinedSelectInputs";
 
 const TeamStatusAddRow: React.FC<{
@@ -12,7 +13,11 @@ const TeamStatusAddRow: React.FC<{
 
     const onSaveNewTeamStatusType = (newValue: string[]) => {
         const newStatus = newValue[0] as tTeamStatusType;
-        dispatch(updateTeamStatus(id, newStatus));
+        const teamStatus: tTeamStatusUpdate = {
+            id: id,
+            teamStatusType: newStatus
+        }
+        dispatch(updateTeamStatus(teamStatus));
     }
 
     return <tr style={{ borderTop: "2px dashed black" }}>

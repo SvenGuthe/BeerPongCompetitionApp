@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addTeamInvitationLink } from "../../../../store/team/team-store-actions";
+import { tTeamInvitationLinkAdd } from "../../../../types/team";
 import FormItem from "../../../ui/form/FormItem";
 
 const TeamInvitationLinkAddRow: React.FC<{
@@ -13,7 +14,11 @@ const TeamInvitationLinkAddRow: React.FC<{
     const teamInvitationLinkRef = useRef<HTMLInputElement>(null);
 
     const onSaveNewInvitationLink = (newValue: string) => {
-        dispatch(addTeamInvitationLink(id, newValue));
+        const teamInvitationLink: tTeamInvitationLinkAdd = {
+            id: id,
+            teamInvitationLink: newValue
+        }
+        dispatch(addTeamInvitationLink(teamInvitationLink));
         teamInvitationLinkRef.current!.value = "";
     }
 

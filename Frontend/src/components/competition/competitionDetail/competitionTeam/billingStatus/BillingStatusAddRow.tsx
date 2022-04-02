@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeBillingStatus } from "../../../../../store/competition/competition-store-actions";
+import { tBillingStatusUpdate } from "../../../../../types/competition";
 import { tBillingStatusType } from "../../../../../types/enums/billingStatusType";
 import { BillingStatusTypeSelectInput } from "../../../../ui/form/PredefinedSelectInputs";
 
@@ -11,8 +12,11 @@ const BillingStatusAddRow: React.FC<{
     const dispatch = useDispatch();
 
     const onSaveNewBillingStatusType = (newValue: string[]) => {
-        const newStatus = newValue[0] as tBillingStatusType;
-        dispatch(changeBillingStatus(id, newStatus));
+        const billingStatus: tBillingStatusUpdate = {
+            id: id,
+            billingStatusType: newValue[0] as tBillingStatusType
+        }
+        dispatch(changeBillingStatus(billingStatus));
     }
 
     return <tr style={{ borderTop: "2px dashed black" }}>

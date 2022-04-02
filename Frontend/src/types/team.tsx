@@ -61,3 +61,24 @@ export type tTeamAndUser = {
     team: tTeamIDAndName,
     users: tUserIDAndGamerTag[]
 }
+
+export type tTeamUpdate = tID & {
+    teamName: string
+}
+
+export type tTeamStatusUpdate = tID & {
+    teamStatusType: tTeamStatusType
+}
+
+export type tTeamInvitationLinkAdd = tID & {
+    teamInvitationLink: string
+}
+
+export type tTeamCompositionUpdate = tID & {
+    isAdmin: boolean
+}
+
+export type tTeamCompositionAdd = tID & {
+    userId: number,
+    isAdmin: boolean
+}

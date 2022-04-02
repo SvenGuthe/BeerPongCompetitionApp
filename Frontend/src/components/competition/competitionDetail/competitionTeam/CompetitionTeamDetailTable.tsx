@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateCompetitionTeam } from "../../../../store/competition/competition-store-actions";
-import { tCompetitionTeam } from "../../../../types/competition";
+import { tCompetitionTeam, tCompetitionTeamUpdate } from "../../../../types/competition";
 import { tTeamAndUser } from "../../../../types/team";
 import FormItem from "../../../ui/form/FormItem";
 
@@ -29,20 +29,20 @@ const CompetitionTeamDetailTable: React.FC<{
     const competitionTeamMainTeamRef = useRef<HTMLSelectElement>(null);
 
     const onSaveHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-        
+
         event.preventDefault();
 
         if (isChanged) {
 
             const teamId = props.teams.find(team => team.team.teamName === competitionTeamMainTeamRef.current!.value)?.team.id
 
-            const newMetaData = {
+            const competitionTeam: tCompetitionTeamUpdate = {
                 id: competitionTeamDetail.id,
                 teamname: competitionTeamNameRef.current!.value,
                 teamId: teamId
             };
 
-            dispatch(updateCompetitionTeam(newMetaData));
+            dispatch(updateCompetitionTeam(competitionTeam));
             setIsChanged(false);
         }
 

@@ -3,6 +3,7 @@ import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionTeam } from "../../../../store/competition/competition-store-actions";
 import { tUserIDAndGamerTag } from "../../../../types/authentication";
+import { tCompetitionTeamAdd } from "../../../../types/competition";
 import { tTeamAndUser } from "../../../../types/team";
 import { removeDuplicates } from "../../../../utility/arrayFunctions";
 
@@ -49,14 +50,14 @@ const CompetitionTeamAdd: React.FC<{
 
     const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-
-        dispatch(addCompetitionTeam(
-            props.competitionId,
-            selectedUsers.map(user => user.id),
-            competitionTeamNameRef.current!.value,
-            competitionTeamPasswordRef.current!.value,
-            selectedTeam?.team.id
-        ));
+        const competitionTeam: tCompetitionTeamAdd = {
+            id: props.competitionId,
+            teamname: competitionTeamNameRef.current!.value,
+            password: competitionTeamPasswordRef.current!.value,
+            teamId: selectedTeam?.team.id,
+            playerIds: selectedUsers.map(user => user.id)
+        }
+        dispatch(addCompetitionTeam(competitionTeam));
 
         setSelectedTeam(null);
         setSelectedUsers([]);

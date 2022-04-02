@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateCompetition } from "../../../store/competition/competition-store-actions";
-import { tCompetition } from "../../../types/competition";
+import { tCompetition, tCompetitionUpdate } from "../../../types/competition";
 import FormItem from "../../ui/form/FormItem";
 
 const CompetitionDetailTable: React.FC<{
@@ -29,7 +29,7 @@ const CompetitionDetailTable: React.FC<{
         event.preventDefault();
 
         if (isChanged) {
-            const newMetaData = {
+            const competitionUpdate: tCompetitionUpdate = {
                 id: competition.id,
                 competitionName: competitionNameRef.current!.value,
                 competitionStartTimestamp: competitionStartRef.current!.value,
@@ -41,7 +41,7 @@ const CompetitionDetailTable: React.FC<{
                 setOfRules: setOfRulesRef.current!.value
             }
 
-            dispatch(updateCompetition(newMetaData));
+            dispatch(updateCompetition(competitionUpdate));
             setIsChanged(false);
         }
 

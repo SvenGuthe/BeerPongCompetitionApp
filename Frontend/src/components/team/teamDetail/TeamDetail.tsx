@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
 import { updateTeamComposition } from "../../../store/team/team-store-actions";
+import { tTeamCompositionUpdate } from "../../../types/team";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
@@ -44,7 +45,11 @@ const TeamDetail: React.FC = () => {
     }, [teamDetail])
 
     const onSaveHandler = (teamCompositionId: number, newValue: boolean) => {
-        dispatch(updateTeamComposition(teamCompositionId, newValue));
+        const teamComposition: tTeamCompositionUpdate = {
+            id: teamCompositionId,
+            isAdmin: newValue
+        }
+        dispatch(updateTeamComposition(teamComposition));
     }
 
     useEffect(() => {
