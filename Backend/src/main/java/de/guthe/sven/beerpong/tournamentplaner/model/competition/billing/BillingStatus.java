@@ -30,6 +30,10 @@ public class BillingStatus implements ACLObjectInterface {
 	public BillingStatus() {
 	}
 
+	public BillingStatus(BillingStatusType billingStatusDescription) {
+		this.billingStatusDescription = billingStatusDescription;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

@@ -6,9 +6,11 @@ import { addCompetition, removeCompetitionDetail, storeCompetitionDetail } from 
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
+import CompetitionAdminAdd from "./competitionAdmin/CompetitionAdminAdd";
 import CompetitionAdminDetail from "./competitionAdmin/CompetitionAdminDetail";
 import CompetitionDetailTable from "./CompetitionDetailTable";
 import CompetitionStatusAddRow from "./competitionStatus/CompetitionStatusAddRow";
+import CompetitionTeamAdd from "./competitionTeam/CompetitionTeamAdd";
 import CompetitionTeamDetail from "./competitionTeam/CompetitionTeamDetail";
 
 const CompetitionDetail: React.FC = (props) => {
@@ -23,15 +25,15 @@ const CompetitionDetail: React.FC = (props) => {
     });
 
     const competitionStatus = useMemo(() => {
-        return competitionDetail?.competitionStatus;
+        return competitionDetail?.competition.competitionStatus;
     }, [competitionDetail]);
 
     const competitionAdminStatus = useMemo(() => {
-        return competitionDetail?.competitionAdmins;
+        return competitionDetail?.competition.competitionAdmins;
     }, [competitionDetail])
 
     const competitionTeamDetails = useMemo(() => {
-        return competitionDetail?.competitionTeams;
+        return competitionDetail?.competition.competitionTeams;
     }, [competitionDetail])
 
     useEffect(() => {
@@ -48,7 +50,7 @@ const CompetitionDetail: React.FC = (props) => {
 
     return <>
         {competitionDetail && <>
-            <CompetitionDetailTable competition={competitionDetail} />
+            <CompetitionDetailTable competition={competitionDetail.competition} />
             {competitionStatus && <TableSection>
                 <h3>Turnier Status</h3>
                 <EnumTable enumData={competitionStatus.map(singleCompetitionStatus => {
@@ -71,7 +73,7 @@ const CompetitionDetail: React.FC = (props) => {
 
                     return newCompetitionStatus;
 
-                })} wrapped addRow={<CompetitionStatusAddRow />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })} wrapped addRow={<CompetitionStatusAddRow id={competitionDetail.competition.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionAdminStatus && <TableSection>
                 <h3>Turnier Admins</h3>
@@ -80,14 +82,18 @@ const CompetitionDetail: React.FC = (props) => {
                         <CompetitionAdminDetail competitionAdminDetail={singleCompetitionAdminStatus} />
                     </TableSection>
                 })}
+                <p><b>User als Administrator hinzufügen:</b></p>
+                <CompetitionAdminAdd users={competitionDetail.possibleAdminUsers} competitionId={competitionDetail.competition.id} />
             </TableSection>}
             {competitionTeamDetails && <TableSection>
                 <h3>Turnier Teams</h3>
                 {competitionTeamDetails.map(competitionTeamDetail => {
                     return <TableSection key={competitionTeamDetail.id}>
-                        <CompetitionTeamDetail competitionTeamDetail={competitionTeamDetail} />
+                        <CompetitionTeamDetail competitionTeamDetail={competitionTeamDetail} teams={competitionDetail.teams} users={competitionDetail.possiblePlayers} />
                     </TableSection>
                 })}
+                <p><b>Turnier Team Hinzufügen:</b></p>
+                <CompetitionTeamAdd teams={competitionDetail.teams} users={competitionDetail.possiblePlayers} competitionId={competitionDetail.competition.id} />
             </TableSection>}
         </>}
     </>;

@@ -25,6 +25,10 @@ public class CompetitionStatus implements ACLObjectInterface {
 	public CompetitionStatus() {
 	}
 
+	public CompetitionStatus(CompetitionStatusType competitionStatusType) {
+		this.competitionStatusType = competitionStatusType;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

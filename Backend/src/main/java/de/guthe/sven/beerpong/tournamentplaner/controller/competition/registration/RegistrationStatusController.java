@@ -2,9 +2,11 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition.registrat
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.registration.RegistrationStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.RegistrationStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.registration.RegistrationStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +14,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +24,12 @@ public class RegistrationStatusController {
 
 	private RegistrationStatusRepository registrationStatusRepository;
 
+	private CompetitionService competitionService;
+
 	@Autowired
-	public RegistrationStatusController(RegistrationStatusRepository registrationStatusRepository) {
+	public RegistrationStatusController(RegistrationStatusRepository registrationStatusRepository, CompetitionService competitionService) {
 		this.registrationStatusRepository = registrationStatusRepository;
+		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/registrationstatus")
@@ -51,6 +57,12 @@ public class RegistrationStatusController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public RegistrationStatusDTO getRegistrationStatus(@PathVariable Long registrationStatusId) {
 		return new RegistrationStatusDTO(registrationStatusRepository.findById(registrationStatusId).orElseThrow());
+	}
+
+	@PutMapping("/registrationstatus")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public Collection<RegistrationStatusDTO> updateRegistrationStatus(@RequestBody RegistrationStatusUpdateDTO registrationStatusUpdateDTO) {
+		return competitionService.updateRegistrationStatus(registrationStatusUpdateDTO);
 	}
 
 }

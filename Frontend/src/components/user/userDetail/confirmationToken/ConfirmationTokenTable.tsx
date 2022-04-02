@@ -4,6 +4,7 @@ import ConfirmationTokenAddRow from "./ConfirmationTokenAddRow";
 import ConfirmationTokenRow from "./ConfirmationTokenRow";
 
 const ConfirmationTokenTable: React.FC<{
+    id: number,
     confirmationToken: tConfirmationToken[],
     wrapped?: boolean,
     additionalAttributesHeader?: string[]
@@ -26,7 +27,7 @@ const ConfirmationTokenTable: React.FC<{
         </thead>
         <tbody>
             {confirmationToken.map(confirmationToken => <ConfirmationTokenRow key={confirmationToken.id} confirmationToken={confirmationToken} />)}
-            <ConfirmationTokenAddRow />
+            <ConfirmationTokenAddRow id={props.id} />
         </tbody>
     </>;
 

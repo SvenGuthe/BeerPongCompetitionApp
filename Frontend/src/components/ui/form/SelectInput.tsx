@@ -1,17 +1,26 @@
+import React, { RefObject } from "react";
 import { Form } from "react-bootstrap";
 
-const SelectInput: React.FC<{
-    value: string,
+interface Props {
+    value?: string[],
     disabled: boolean,
     possibleValues: string[],
-    onChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}> = (props) => {
+    onChangeHandler: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+}
 
-    const value = props.value;
+const SelectInput = React.forwardRef<HTMLInputElement, Props>((props, ref) => {
 
-    let defaultValue;    
+    const value = props.value ? props.value[0] : "";
 
-    const options = props.possibleValues.map(possibleValue => {
+    let possibleValues = props.possibleValues;
+
+    if (value === "") {
+        possibleValues = [""].concat(possibleValues);
+    }
+
+    let defaultValue;
+
+    const options = possibleValues.map(possibleValue => {
         if (possibleValue === value) {
             defaultValue = value;
         }
@@ -19,6 +28,7 @@ const SelectInput: React.FC<{
     })
 
     return <Form.Select
+        ref={ref as RefObject<HTMLSelectElement>}
         size="sm"
         disabled={props.disabled}
         defaultValue={defaultValue}
@@ -27,6 +37,6 @@ const SelectInput: React.FC<{
         {options}
     </Form.Select>
 
-}
+});
 
 export default SelectInput;

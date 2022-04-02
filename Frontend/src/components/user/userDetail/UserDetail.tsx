@@ -9,7 +9,6 @@ import CompetitionTable from "../../competition/competitionOverview/CompetitionT
 import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
 import TeamTable from "../../team/teamOverview/TeamTable";
-import { CompetitionAdminStatusTypeInput } from "../../ui/form/PredefinedSelectInputs";
 import ConfirmationTokenTable from "./confirmationToken/ConfirmationTokenTable";
 import UserDetailsTable from "./UserDetailTable";
 
@@ -65,7 +64,7 @@ const UserDetails: React.FC = () => {
             </TableSection>}
             {confirmationToken && <TableSection>
                 <h3>Confirmation Token</h3>
-                <ConfirmationTokenTable confirmationToken={confirmationToken} wrapped />
+                <ConfirmationTokenTable id={userDetail.user.id} confirmationToken={confirmationToken} wrapped />
             </TableSection>}
             {teams && <TableSection>
                 <h3>Teams</h3>
@@ -102,8 +101,7 @@ const UserDetails: React.FC = () => {
                     const additionalAttributes = [
                         {
                             id: competition.id + "_administratorStatus",
-                            value: competitionStatus.competitionAdminStatusDescription,
-                            reactElement: <CompetitionAdminStatusTypeInput defaultValue={competitionStatus.competitionAdminStatusDescription} saveValue={(newValue, changed) => console.log(newValue, changed)} />
+                            value: competitionStatus.competitionAdminStatusDescription
                         }
                     ];
 

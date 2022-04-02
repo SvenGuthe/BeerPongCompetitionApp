@@ -1,4 +1,4 @@
-import { tUser } from "./authentication";
+import { tUser, tUserIDAndGamerTag } from "./authentication";
 import { tEnum, tID } from "./defaults/generics";
 import { tAdditionalAttribute } from "./defaults/tables";
 import { tTimestamp } from "./defaults/timestamp";
@@ -6,7 +6,7 @@ import { tBillingStatusType } from "./enums/billingStatusType";
 import { tCompetitionAdminStatusType } from "./enums/competitionAdminStatusType";
 import { tCompetitionPlayerStatusType } from "./enums/competitionPlayerStatusType";
 import { tRegistrationStatusType } from "./enums/registrationStatusType";
-import { tTeam } from "./team";
+import { tTeam, tTeamAndUser } from "./team";
 
 export type tBillingStatus = tEnum & {
     billingStatusId: number,
@@ -81,4 +81,13 @@ export type tCompetition = tID & {
     competitionTeams: tCompetitionTeam[],
     competitionAdmins: tCompetitionAdmin[],
     additionalAttributes?: tAdditionalAttribute[]
+}
+
+// --------- CUSTOM DTOs --------- //
+
+export type tCompetitionDetail = {
+    competition: tCompetition,
+    possibleAdminUsers: tUserIDAndGamerTag[],
+    possiblePlayers: tUserIDAndGamerTag[],
+    teams: tTeamAndUser[]
 }

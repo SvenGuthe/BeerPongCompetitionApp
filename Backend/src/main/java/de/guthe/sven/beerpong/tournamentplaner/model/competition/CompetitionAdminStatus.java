@@ -30,6 +30,10 @@ public class CompetitionAdminStatus implements ACLObjectInterface {
 	public CompetitionAdminStatus() {
 	}
 
+	public CompetitionAdminStatus(CompetitionAdminStatusType competitionAdminStatusDescription) {
+		this.competitionAdminStatusDescription = competitionAdminStatusDescription;
+	}
+
 	public Long getId() {
 		return id;
 	}

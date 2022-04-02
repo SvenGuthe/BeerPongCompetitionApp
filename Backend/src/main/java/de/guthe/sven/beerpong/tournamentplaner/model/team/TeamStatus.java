@@ -31,6 +31,10 @@ public class TeamStatus implements ACLObjectInterface {
 	public TeamStatus() {
 	}
 
+	public TeamStatus(TeamStatusType teamStatusDescription) {
+		this.teamStatusDescription = teamStatusDescription;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -32,6 +32,12 @@ public class BillingStatusHistory implements ACLObjectInterface {
 	@JsonIgnore
 	private BillingStatus billingStatus;
 
+	public BillingStatusHistory(Timestamp validFrom, CompetitionTeam competitionTeam, BillingStatus billingStatus) {
+		this.validFrom = validFrom;
+		this.competitionTeam = competitionTeam;
+		this.billingStatus = billingStatus;
+	}
+
 	public BillingStatusHistory() {
 	}
 

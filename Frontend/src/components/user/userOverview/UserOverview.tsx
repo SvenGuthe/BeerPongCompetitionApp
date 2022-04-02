@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
-import { storeUsers } from "../../../store/user/user-store";
+import { removeUsers, storeUsers } from "../../../store/user/user-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import UserTable from "./UserTable";
@@ -25,6 +25,10 @@ const UserOverview: React.FC = () => {
 
     useEffect(() => {
         dispatch(getRequest(`/authentication/user?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeUsers]));
+        
+        return () => {
+            dispatch(removeUsers())
+        };
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {

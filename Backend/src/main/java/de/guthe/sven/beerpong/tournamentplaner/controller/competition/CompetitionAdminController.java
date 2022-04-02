@@ -1,10 +1,13 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionAdminAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionAdminDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionAdminRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +19,13 @@ public class CompetitionAdminController {
 
 	private CompetitionAdminRepository competitionAdminRepository;
 
+	private CompetitionService competitionService;
+
 	@Autowired
-	public CompetitionAdminController(CompetitionAdminRepository competitionAdminRepository) {
+	public CompetitionAdminController(CompetitionAdminRepository competitionAdminRepository,
+									  CompetitionService competitionService) {
 		this.competitionAdminRepository = competitionAdminRepository;
+		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionadmin")
@@ -31,6 +38,12 @@ public class CompetitionAdminController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionAdminDTO getCompetitionAdmin(@PathVariable Long competitionAdminId) {
 		return new CompetitionAdminDTO(competitionAdminRepository.findById(competitionAdminId).orElseThrow());
+	}
+
+	@PostMapping("/competitionadmin")
+	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
+	public CompetitionAdminDTO addCompetitionAdmin(@RequestBody CompetitionAdminAddDTO competitionAdminAddDTO) {
+		return competitionService.addCompetitionAdmin(competitionAdminAddDTO);
 	}
 
 }

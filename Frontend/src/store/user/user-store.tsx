@@ -1,5 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tUser, tUserDetail } from '../../types/authentication'
+import { tConfirmationToken, tUser, tUserDetail } from '../../types/authentication'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {
@@ -25,6 +25,9 @@ export const userSlice = createSlice({
         storeUsers: (state, action: PayloadAction<tPaginationDTO<tUser>>) => {
             state.users = action.payload;
         },
+        removeUsers: (state) => {
+            state.users = null;
+        },
         storeUserStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.userStatus = action.payload;
         },
@@ -42,7 +45,7 @@ export const userSlice = createSlice({
         },
         addUser: (state, action: PayloadAction<tUserDetail>) => {
             const newUser = action.payload.user;
-            
+
             if (state.users) {
                 const existingUser = state.users.data.find(users => users.id === newUser.id);
                 if (!existingUser) {
@@ -55,6 +58,12 @@ export const userSlice = createSlice({
                     data: [newUser]
                 };
             }
+        },
+        updateUser: (state, action: PayloadAction<tUser>) => {
+            state.userDetail!.user = action.payload;
+        },
+        addConfirmationToken: (state, action: PayloadAction<tConfirmationToken>) => {
+            state.userDetail?.user.confirmationToken.push(action.payload);
         }
     }
 })
@@ -66,7 +75,10 @@ export const {
     storeRoles,
     storePrivileges,
     storeUserDetail,
-    removeUserDetail
+    removeUserDetail,
+    removeUsers,
+    updateUser,
+    addConfirmationToken
 } = userSlice.actions
 
 export const teamStore = configureStore({

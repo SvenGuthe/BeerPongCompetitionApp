@@ -27,6 +27,10 @@ public class UserStatus {
 	public UserStatus() {
 	}
 
+	public UserStatus(UserStatusType userStatus) {
+		this.userStatus = userStatus;
+	}
+
 	public Long getId() {
 		return id;
 	}

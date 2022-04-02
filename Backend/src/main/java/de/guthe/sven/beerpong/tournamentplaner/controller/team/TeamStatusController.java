@@ -2,9 +2,11 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +23,13 @@ public class TeamStatusController {
 
 	private TeamStatusRepository teamStatusRepository;
 
+	private TeamService teamService;
+
 	@Autowired
-	public TeamStatusController(TeamStatusRepository teamStatusRepository) {
+	public TeamStatusController(TeamStatusRepository teamStatusRepository,
+								TeamService teamService) {
 		this.teamStatusRepository = teamStatusRepository;
+		this.teamService = teamService;
 	}
 
 	@GetMapping("/teamstatus")
@@ -45,6 +51,12 @@ public class TeamStatusController {
 				data
 		);
 
+	}
+
+	@PostMapping("/teamstatus")
+	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
+	public List<TeamStatusDTO> updateTeamStatus(@RequestBody TeamStatusUpdateDTO teamStatusUpdateDTO) {
+		return teamService.updateTeamStatus(teamStatusUpdateDTO);
 	}
 
 	@GetMapping("/teamstatus/{teamStatusId}")

@@ -29,8 +29,14 @@ public class ConfirmationToken {
 
 	public ConfirmationToken(User user) {
 		this.user = user;
-		createdDate = new Timestamp(System.currentTimeMillis());
-		confirmationToken = UUID.randomUUID().toString();
+		this.createdDate = new Timestamp(System.currentTimeMillis());
+		this.confirmationToken = UUID.randomUUID().toString();
+	}
+
+	public ConfirmationToken(User user, String confirmationToken) {
+		this.user = user;
+		this.createdDate = new Timestamp(System.currentTimeMillis());
+		this.confirmationToken = confirmationToken;
 	}
 
 	public ConfirmationToken() {

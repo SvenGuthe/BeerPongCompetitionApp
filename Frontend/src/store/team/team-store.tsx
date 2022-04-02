@@ -1,6 +1,6 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
-import { tTeam, tTeamDetail } from '../../types/team'
+import { tTeam, tTeamComposition, tTeamDetail, tTeamInvitationLink, tTeamStatus } from '../../types/team'
 
 type SliceState = {
     teams: tPaginationDTO<tTeam> | null,
@@ -21,6 +21,9 @@ export const teamSlice = createSlice({
         storeTeams: (state, action: PayloadAction<tPaginationDTO<tTeam>>) => {
             state.teams = action.payload;
         },
+        removeTeams: (state) => {
+            state.teams = null;
+        },
         storeTeamStatus: (state, action: PayloadAction<tPaginationDTO<tEnum>>) => {
             state.teamStatus = action.payload;
         },
@@ -30,7 +33,7 @@ export const teamSlice = createSlice({
         removeTeamDetail: (state) => {
             state.teamDetail = null;
         },
-        updateTeam: (state, action: PayloadAction<tTeam>) => {
+        updateTeams: (state, action: PayloadAction<tTeam>) => {
             const fetchedTeam = action.payload;
             if (state.teams) {
                 state.teams.data = state.teams.data.map(team => {
@@ -57,16 +60,68 @@ export const teamSlice = createSlice({
                 };
             }
         },
+        updateTeam: (state, action: PayloadAction<tTeam>) => {
+            state.teamDetail!.team = action.payload;
+        },
+        updateTeamStatus: (state, action: PayloadAction<tTeamStatus[]>) => {
+
+            const newTeamStatus = state.teamDetail!.team.teamStatus.map(singleTeamStatus => {
+                if (singleTeamStatus.id === action.payload[0].id) {
+                    return action.payload[0];
+                } else {
+                    return singleTeamStatus
+                }
+            });
+            newTeamStatus.push(action.payload[1]);
+
+            state.teamDetail!.team.teamStatus = newTeamStatus
+
+        },
+        addTeamInvitationLink: (state, action: PayloadAction<tTeamInvitationLink>) => {
+            state.teamDetail?.team.teamInvitationLinks.push(action.payload);
+        },
+        updateTeamComposition: (state, action: PayloadAction<tTeamComposition>) => {
+            const userId = action.payload.user.id;
+
+            const newUsers = state.teamDetail!.users.map(user => {
+                if (user.id === userId) {
+                    user.admin = action.payload.admin
+                }
+                return user;
+            });
+
+            state.teamDetail!.users = newUsers;
+        },
+        addTeamComposition: (state, action: PayloadAction<tTeamComposition>) => {
+            const teamComposition = action.payload;
+
+            state.teamDetail!.users.push({
+                id: teamComposition.id,
+                user: teamComposition.user,
+                admin: teamComposition.admin,
+                creationTime: teamComposition.creationTime
+            }) ;
+
+            state.teamDetail!.possibleUsers = state.teamDetail!.possibleUsers.filter(possibleUser => {
+                return possibleUser.id !== teamComposition.user.id;
+            })
+        }
     }
 })
 
 export const {
     storeTeams,
-    updateTeam,
+    updateTeams,
     addTeam,
     storeTeamStatus,
     storeTeamDetail,
-    removeTeamDetail
+    removeTeamDetail,
+    removeTeams,
+    updateTeam,
+    updateTeamStatus,
+    addTeamInvitationLink,
+    updateTeamComposition,
+    addTeamComposition
 } = teamSlice.actions
 
 export const teamStore = configureStore({

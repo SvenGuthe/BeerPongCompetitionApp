@@ -22,7 +22,7 @@ public class TeamUserDTO extends ID {
     }
 
     public TeamUserDTO(TeamComposition teamComposition) {
-        super(teamComposition.getUser().getId());
+        super(teamComposition.getId());
         this.user = new UserDTO(teamComposition.getUser());
         this.isAdmin = teamComposition.getAdmin();
         this.creationTime = teamComposition.getCreationTime();

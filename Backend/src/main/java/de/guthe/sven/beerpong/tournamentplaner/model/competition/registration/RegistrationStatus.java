@@ -30,6 +30,10 @@ public class RegistrationStatus implements ACLObjectInterface {
 	public RegistrationStatus() {
 	}
 
+	public RegistrationStatus(RegistrationStatusType registrationStatusDescription) {
+		this.registrationStatusDescription = registrationStatusDescription;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

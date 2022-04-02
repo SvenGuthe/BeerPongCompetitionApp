@@ -29,7 +29,12 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<CompetitionPlayer> competitionPlayers;
 
+	public CompetitionPlayerStatus(CompetitionPlayerStatusType competitionPlayerStatusDescription) {
+		this.competitionPlayerStatusDescription = competitionPlayerStatusDescription;
+	}
+
 	public CompetitionPlayerStatus() {
+
 	}
 
 	@Override

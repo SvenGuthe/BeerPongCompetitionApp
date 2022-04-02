@@ -34,6 +34,14 @@ public class TeamStatusHistory implements ACLObjectInterface {
 	public TeamStatusHistory() {
 	}
 
+	public TeamStatusHistory(Timestamp validFrom,
+							 Team team,
+							 TeamStatus teamStatus) {
+		this.validFrom = validFrom;
+		this.team = team;
+		this.teamStatus = teamStatus;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

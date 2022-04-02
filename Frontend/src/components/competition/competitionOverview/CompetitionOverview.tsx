@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
-import { storeCompetitions } from "../../../store/competition/competition-store";
+import { removeCompetitions, storeCompetitions } from "../../../store/competition/competition-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import CompetitionTable from "./CompetitionTable";
@@ -25,6 +25,10 @@ const CompetitionOverview: React.FC = (props) => {
 
     useEffect(() => {
         dispatch(getRequest(`/competition/competition?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeCompetitions]));
+    
+        return () => {
+            dispatch(removeCompetitions());
+        }
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {

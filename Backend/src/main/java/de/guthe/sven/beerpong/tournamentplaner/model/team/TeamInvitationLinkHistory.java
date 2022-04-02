@@ -34,6 +34,11 @@ public class TeamInvitationLinkHistory implements ACLObjectInterface {
 	public TeamInvitationLinkHistory() {
 	}
 
+	public TeamInvitationLinkHistory(Team team, TeamInvitationLink teamInvitationLink) {
+		this.team = team;
+		this.teamInvitationLink = teamInvitationLink;
+	}
+
 	@Override
 	public Long getId() {
 		return id;

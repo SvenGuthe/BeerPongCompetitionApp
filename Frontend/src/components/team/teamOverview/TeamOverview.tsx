@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
-import { storeTeams } from "../../../store/team/team-store";
+import { removeTeams, storeTeams } from "../../../store/team/team-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import TeamTable from "./TeamTable";
@@ -25,6 +25,10 @@ const TeamOverview: React.FC = (props) => {
 
     useEffect(() => {
         dispatch(getRequest(`/team/team?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeTeams]));
+    
+        return () => {
+            dispatch(removeTeams());
+        }
     }, [filterValues.page, filterValues.size, filterValues.search, dispatch]);
 
     const changeFunction = useCallback((page: number, size: number, search: string) => {
