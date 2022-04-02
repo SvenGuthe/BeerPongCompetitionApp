@@ -5,3 +5,7 @@ export type tAdditionalAttribute = {
     value: any,
     reactElement?: ReactElement
 }
+
+export type tAdditionalAttributes = {
+    additionalAttributes?: tAdditionalAttribute[]
+}

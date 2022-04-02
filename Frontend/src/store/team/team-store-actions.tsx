@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Dispatch } from "react";
+import { teamCompositionRoute, teamInvitationLinkRoute, teamRoute, teamStatusRoute } from "../../api-routes/team";
 import { tTeamCompositionAdd, tTeamCompositionUpdate, tTeamInvitationLinkAdd, tTeamStatusUpdate, tTeamUpdate } from "../../types/team";
 import { updateTeam as updateTeamState, updateTeamStatus as updateTeamStatusState, addTeamInvitationLink as addTeamInvitationLinkState, updateTeamComposition as updateTeamCompositionState, addTeamComposition as addTeamCompositionState } from "./team-store";
 
 export const updateTeam = (team: tTeamUpdate) => {
     return async (dispatch: Dispatch<any>) => {
-        console.log("Send /team/team [PUT] Request");
-        const sendRequest = async () => await axios.put('/team/team', team).then((response) => {
+        console.log(`Send ${teamRoute} [PUT] Request`);
+        const sendRequest = async () => await axios.put(teamRoute, team).then((response) => {
             dispatch(updateTeamState(response.data));
         }).catch(function (error) {
             console.log(error);
@@ -17,8 +18,8 @@ export const updateTeam = (team: tTeamUpdate) => {
 
 export const updateTeamStatus = (teamStatus: tTeamStatusUpdate) => {
     return async (dispatch: Dispatch<any>) => {
-        console.log("Send /team/teamstatus [POST] Request");
-        const sendRequest = async () => await axios.post('/team/teamstatus', teamStatus).then((response) => {
+        console.log(`Send ${teamStatusRoute} [POST] Request`);
+        const sendRequest = async () => await axios.post(teamStatusRoute, teamStatus).then((response) => {
             dispatch(updateTeamStatusState(response.data));
         }).catch(function (error) {
             console.log(error);
@@ -30,8 +31,8 @@ export const updateTeamStatus = (teamStatus: tTeamStatusUpdate) => {
 
 export const addTeamInvitationLink = (teamInvitationLink: tTeamInvitationLinkAdd) => {
     return async (dispatch: Dispatch<any>) => {
-        console.log("Send /team/teaminvitationlink [POST] Request");
-        const sendRequest = async () => await axios.post('/team/teaminvitationlink', teamInvitationLink).then((response) => {
+        console.log(`Send ${teamInvitationLinkRoute} [POST] Request`);
+        const sendRequest = async () => await axios.post(teamInvitationLinkRoute, teamInvitationLink).then((response) => {
             dispatch(addTeamInvitationLinkState(response.data));
         }).catch(function (error) {
             console.log(error);
@@ -43,8 +44,8 @@ export const addTeamInvitationLink = (teamInvitationLink: tTeamInvitationLinkAdd
 
 export const updateTeamComposition = (teamComposition: tTeamCompositionUpdate) => {
     return async (dispatch: Dispatch<any>) => {
-        console.log("Send /team/teamcomposition [PUT] Request");
-        const sendRequest = async () => await axios.put('/team/teamcomposition', teamComposition).then((response) => {
+        console.log(`Send ${teamCompositionRoute} [PUT] Request`);
+        const sendRequest = async () => await axios.put(teamCompositionRoute, teamComposition).then((response) => {
             dispatch(updateTeamCompositionState(response.data));
         }).catch(function (error) {
             console.log(error);
@@ -55,8 +56,8 @@ export const updateTeamComposition = (teamComposition: tTeamCompositionUpdate) =
 
 export const addTeamComposition = (teamComposition: tTeamCompositionAdd) => {
     return async (dispatch: Dispatch<any>) => {
-        console.log("Send /team/teamcomposition [POST] Request");
-        const sendRequest = async () => await axios.post('/team/teamcomposition', teamComposition).then((response) => {
+        console.log(`Send ${teamCompositionRoute} [POST] Request`);
+        const sendRequest = async () => await axios.post(teamCompositionRoute, teamComposition).then((response) => {
             dispatch(addTeamCompositionState(response.data));
         }).catch(function (error) {
             console.log(error);

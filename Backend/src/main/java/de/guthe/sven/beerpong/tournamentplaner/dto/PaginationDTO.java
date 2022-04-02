@@ -1,13 +1,17 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class PaginationDTO<T> {
 
+    @NotNull(message = "The size of the PaginationDTO have to be set.")
     public long size;
 
+    @NotNull(message = "The pages of the PaginationDTO have to be set.")
     public int pages;
 
+    @NotNull(message = "The data of the PaginationDTO have to be set.")
     public List<T> data;
 
     public PaginationDTO(long size, int pages, List<T> data) {

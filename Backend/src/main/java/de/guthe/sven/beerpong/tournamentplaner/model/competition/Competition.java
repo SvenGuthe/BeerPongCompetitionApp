@@ -40,7 +40,7 @@ public class Competition implements ACLObjectInterface {
 	@Column(name = "setofrules")
 	private String setOfRules;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "competition", fetch = FetchType.LAZY,

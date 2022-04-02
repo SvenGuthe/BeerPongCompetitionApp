@@ -4,14 +4,18 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLinkHistory;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class TeamInvitationLinkDTO extends EnumDTO {
 
+    @NotNull(message = "teamInvitationLink in TeamInvitationLinkDTO have to be set.")
     private String teamInvitationLink;
 
+    @NotNull(message = "creationTime in TeamInvitationLinkDTO have to be set.")
     private Timestamp creationTime;
 
+    @NotNull(message = "validFrom in TeamInvitationLinkDTO have to be set.")
     private Timestamp validFrom;
 
     private Timestamp validTo;

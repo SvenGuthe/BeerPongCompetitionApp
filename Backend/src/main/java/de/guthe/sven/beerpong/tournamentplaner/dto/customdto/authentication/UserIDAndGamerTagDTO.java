@@ -3,8 +3,11 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 
+import javax.validation.constraints.NotNull;
+
 public class UserIDAndGamerTagDTO extends ID {
 
+    @NotNull(message = "gamerTag in UserIDAndGamerTagDTO have to be set.")
     public String gamerTag;
 
     public UserIDAndGamerTagDTO(Long id, String gamerTag) {

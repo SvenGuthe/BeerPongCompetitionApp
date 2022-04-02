@@ -8,7 +8,7 @@ import { tCompetitionPlayerAdd } from "../../../../../types/competition";
 import { tTeamAndUser } from "../../../../../types/team";
 
 const CompetitionPlayerAdd: React.FC<{
-    team: tTeamAndUser | null,
+    team?: tTeamAndUser,
     user: tUserIDAndGamerTag[],
     id: number
 }> = (props) => {

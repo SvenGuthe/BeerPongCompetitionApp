@@ -4,22 +4,30 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRo
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 public class UserUpdateDTO extends ID {
 
+    @NotNull(message = "firstName in UserUpdateDTO have to be set.")
     private String firstName;
 
+    @NotNull(message = "lastName in UserUpdateDTO have to be set.")
     private String lastName;
 
+    @NotNull(message = "gamerTag in UserUpdateDTO have to be set.")
     private String gamerTag;
 
+    @NotNull(message = "email in UserUpdateDTO have to be set.")
     private String email;
 
+    @NotNull(message = "enabled in UserUpdateDTO have to be set.")
     private boolean enabled;
 
+    @NotNull(message = "userStatusType in UserUpdateDTO have to be set.")
     UserStatusType userStatusType;
 
+    @NotNull(message = "roles in UserUpdateDTO have to be set.")
     Collection<SecurityRole> roles;
 
     public UserUpdateDTO(Long id, String firstName, String lastName, String gamerTag, String email, boolean enabled, UserStatusType userStatusType, Collection<SecurityRole> roles) {

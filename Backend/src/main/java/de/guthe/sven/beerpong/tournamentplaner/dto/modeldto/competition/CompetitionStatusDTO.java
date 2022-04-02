@@ -9,8 +9,6 @@ import java.sql.Timestamp;
 
 public class CompetitionStatusDTO extends EnumDTO {
 
-    private Long competitionStatusId;
-
     private CompetitionStatusType competitionStatusType;
 
     private Timestamp creationTime;
@@ -21,7 +19,6 @@ public class CompetitionStatusDTO extends EnumDTO {
 
     public CompetitionStatusDTO(Long id, CompetitionStatusType competitionStatusType, Timestamp creationTime, Timestamp validFrom, Timestamp validTo) {
         super(id, competitionStatusType.name());
-        this.competitionStatusId = id;
         this.competitionStatusType = competitionStatusType;
         this.creationTime = creationTime;
         this.validFrom = validFrom;
@@ -30,7 +27,6 @@ public class CompetitionStatusDTO extends EnumDTO {
 
     public CompetitionStatusDTO(CompetitionStatus competitionStatus, Timestamp validFrom, Timestamp validTo) {
         super(competitionStatus.getId(), competitionStatus.getCompetitionStatusType().name());
-        this.competitionStatusId = competitionStatus.getId();
         this.competitionStatusType = competitionStatus.getCompetitionStatusType();
         this.creationTime = competitionStatus.getCreationTime();
         this.validFrom = validFrom;
@@ -39,7 +35,6 @@ public class CompetitionStatusDTO extends EnumDTO {
 
     public CompetitionStatusDTO(CompetitionStatus competitionStatus) {
         super(competitionStatus.getId(), competitionStatus.getCompetitionStatusType().name());
-        this.competitionStatusId = competitionStatus.getId();
         this.competitionStatusType = competitionStatus.getCompetitionStatusType();
         this.creationTime = competitionStatus.getCreationTime();
         this.validFrom = null;
@@ -48,7 +43,6 @@ public class CompetitionStatusDTO extends EnumDTO {
 
     public CompetitionStatusDTO(CompetitionStatusHistory competitionStatusHistory) {
         super(competitionStatusHistory.getId(), competitionStatusHistory.getCompetitionStatus().getCompetitionStatusType().name());
-        this.competitionStatusId = competitionStatusHistory.getCompetitionStatus().getId();
         this.competitionStatusType = competitionStatusHistory.getCompetitionStatus().getCompetitionStatusType();
         this.creationTime = competitionStatusHistory.getCompetitionStatus().getCreationTime();
         this.validFrom = competitionStatusHistory.getValidFrom();
@@ -87,11 +81,4 @@ public class CompetitionStatusDTO extends EnumDTO {
         this.validTo = validTo;
     }
 
-    public Long getCompetitionStatusId() {
-        return competitionStatusId;
-    }
-
-    public void setCompetitionStatusId(Long competitionStatusId) {
-        this.competitionStatusId = competitionStatusId;
-    }
 }

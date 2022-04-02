@@ -19,19 +19,19 @@ public class TeamComposition implements ACLObjectInterface {
 	private Long id;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "teamid")
+	@JoinColumn(name = "teamid", nullable = false)
 	@JsonIgnore
 	private Team team;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "userid")
+	@JoinColumn(name = "userid", nullable = false)
 	@JsonIgnore
 	private User user;
 
 	@Column(name = "isadmin", nullable = false)
 	private Boolean isAdmin;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	public TeamComposition() {

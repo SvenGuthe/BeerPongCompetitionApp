@@ -5,16 +5,21 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserD
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 public class TeamDetailDTO {
 
+    @NotNull(message = "team in TeamDetailDTO have to be set.")
     TeamDTO team;
 
+    @NotNull(message = "users in TeamDetailDTO have to be set.")
     Collection<TeamUserDTO> users;
 
+    @NotNull(message = "competitions in TeamDetailDTO have to be set.")
     Collection<CompetitionDTO> competitions;
 
+    @NotNull(message = "possibleUsers in TeamDetailDTO have to be set.")
     Collection<UserDTO> possibleUsers;
 
     public TeamDetailDTO(TeamDTO team, Collection<TeamUserDTO> users, Collection<CompetitionDTO> competitions, Collection<UserDTO> possibleUsers) {

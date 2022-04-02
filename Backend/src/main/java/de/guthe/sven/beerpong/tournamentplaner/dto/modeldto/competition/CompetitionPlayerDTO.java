@@ -4,14 +4,18 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class CompetitionPlayerDTO extends ID {
 
+    @NotNull(message = "user in CompetitionPlayerDTO have to be set.")
     private UserDTO user;
 
+    @NotNull(message = "competitionPlayerStatus in CompetitionPlayerDTO have to be set.")
     private CompetitionPlayerStatusDTO competitionPlayerStatus;
 
+    @NotNull(message = "creationTime in CompetitionPlayerDTO have to be set.")
     private Timestamp creationTime;
 
     public CompetitionPlayerDTO(Long id, UserDTO user, CompetitionPlayerStatusDTO competitionPlayerStatus, Timestamp creationTime) {

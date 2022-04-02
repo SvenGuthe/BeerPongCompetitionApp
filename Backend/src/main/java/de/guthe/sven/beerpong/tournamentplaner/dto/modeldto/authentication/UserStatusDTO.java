@@ -4,8 +4,11 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
 
+import javax.validation.constraints.NotNull;
+
 public class UserStatusDTO extends EnumDTO {
 
+    @NotNull(message = "userStatus in UserStatusDTO have to be set.")
     private UserStatusType userStatus;
 
     public UserStatusDTO(Long id, UserStatusType userStatus) {

@@ -15,19 +15,19 @@ public class CompetitionStatusHistory implements ACLObjectInterface {
 	@Column(name = "competitionstatushistoryid")
 	private Long id;
 
-	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp validFrom = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "validto")
 	private Timestamp validTo;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "competitionid")
+	@JoinColumn(name = "competitionid", nullable = false)
 	@JsonIgnore
 	private Competition competition;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "competitionstatusid")
+	@JoinColumn(name = "competitionstatusid", nullable = false)
 	@JsonIgnore
 	private CompetitionStatus competitionStatus;
 

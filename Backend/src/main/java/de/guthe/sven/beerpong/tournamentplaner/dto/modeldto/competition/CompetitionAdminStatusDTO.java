@@ -5,23 +5,24 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdminStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdminStatusHistory;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class CompetitionAdminStatusDTO extends EnumDTO {
 
-    private Long competitionAdminStatusId;
-
+    @NotNull(message = "competitionAdminStatusDescription in CompetitionAdminStatusDTO have to be set.")
     private CompetitionAdminStatusType competitionAdminStatusDescription;
 
+    @NotNull(message = "creationTime in CompetitionAdminStatusDTO have to be set.")
     private Timestamp creationTime;
 
+    @NotNull(message = "validFrom in CompetitionAdminStatusDTO have to be set.")
     private Timestamp validFrom;
 
     private Timestamp validTo;
 
     public CompetitionAdminStatusDTO(Long id, CompetitionAdminStatusType competitionAdminStatusDescription, Timestamp creationTime, Timestamp validFrom, Timestamp validTo) {
         super(id, competitionAdminStatusDescription.name());
-        this.competitionAdminStatusId = id;
         this.competitionAdminStatusDescription = competitionAdminStatusDescription;
         this.creationTime = creationTime;
         this.validFrom = validFrom;
@@ -30,7 +31,6 @@ public class CompetitionAdminStatusDTO extends EnumDTO {
 
     public CompetitionAdminStatusDTO(CompetitionAdminStatus competitionAdminStatus, Timestamp validFrom, Timestamp validTo) {
         super(competitionAdminStatus.getId(), competitionAdminStatus.getCompetitionAdminStatusDescription().name());
-        this.competitionAdminStatusId = competitionAdminStatus.getId();
         this.competitionAdminStatusDescription = competitionAdminStatus.getCompetitionAdminStatusDescription();
         this.creationTime = competitionAdminStatus.getCreationTime();
         this.validFrom = validFrom;
@@ -39,7 +39,6 @@ public class CompetitionAdminStatusDTO extends EnumDTO {
 
     public CompetitionAdminStatusDTO(CompetitionAdminStatus competitionAdminStatus) {
         super(competitionAdminStatus.getId(), competitionAdminStatus.getCompetitionAdminStatusDescription().name());
-        this.competitionAdminStatusId = competitionAdminStatus.getId();
         this.competitionAdminStatusDescription = competitionAdminStatus.getCompetitionAdminStatusDescription();
         this.creationTime = competitionAdminStatus.getCreationTime();
         this.validFrom = null;
@@ -48,7 +47,6 @@ public class CompetitionAdminStatusDTO extends EnumDTO {
 
     public CompetitionAdminStatusDTO(CompetitionAdminStatusHistory competitionAdminStatusHistory) {
         super(competitionAdminStatusHistory.getId(), competitionAdminStatusHistory.getCompetitionAdminStatus().getCompetitionAdminStatusDescription().name());
-        this.competitionAdminStatusId = competitionAdminStatusHistory.getCompetitionAdminStatus().getId();
         this.competitionAdminStatusDescription = competitionAdminStatusHistory.getCompetitionAdminStatus().getCompetitionAdminStatusDescription();
         this.creationTime = competitionAdminStatusHistory.getCompetitionAdminStatus().getCreationTime();
         this.validFrom = competitionAdminStatusHistory.getValidFrom();
@@ -87,11 +85,4 @@ public class CompetitionAdminStatusDTO extends EnumDTO {
         this.validTo = validTo;
     }
 
-    public Long getCompetitionAdminStatusId() {
-        return competitionAdminStatusId;
-    }
-
-    public void setCompetitionAdminStatusId(Long competitionAdminStatusId) {
-        this.competitionAdminStatusId = competitionAdminStatusId;
-    }
 }

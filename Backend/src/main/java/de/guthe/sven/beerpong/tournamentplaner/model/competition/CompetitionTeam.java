@@ -38,7 +38,7 @@ public class CompetitionTeam implements ACLObjectInterface {
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "competitionTeam", fetch = FetchType.LAZY,

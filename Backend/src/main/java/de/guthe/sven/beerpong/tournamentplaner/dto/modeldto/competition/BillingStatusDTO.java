@@ -5,16 +5,21 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatusHistory;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class BillingStatusDTO extends EnumDTO {
 
+    @NotNull(message = "billingStatusId in BillingStatusDTO have to be set.")
     private Long billingStatusId;
 
+    @NotNull(message = "billingStatusDescription in BillingStatusDTO have to be set.")
     private BillingStatusType billingStatusDescription;
 
+    @NotNull(message = "creationTime in BillingStatusDTO have to be set.")
     private Timestamp creationTime;
 
+    @NotNull(message = "validFrom in BillingStatusDTO have to be set.")
     private Timestamp validFrom;
 
     private Timestamp validTo;

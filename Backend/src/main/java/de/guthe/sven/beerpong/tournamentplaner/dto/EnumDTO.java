@@ -1,6 +1,5 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
@@ -12,8 +11,11 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.Billing
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 
+import javax.validation.constraints.NotNull;
+
 public class EnumDTO extends ID {
 
+    @NotNull(message = "value in EnumDTO have to be set.")
     private String value;
 
     public EnumDTO(Long id, String value) {

@@ -15,19 +15,19 @@ public class TeamInvitationLinkHistory implements ACLObjectInterface {
 	@Column(name = "teaminvitationlinkhistoryid")
 	private Long id;
 
-	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "validfrom", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp validFrom = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "validto")
 	private Timestamp validTo;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "teamid")
+	@JoinColumn(name = "teamid", nullable = false)
 	@JsonIgnore
 	private Team team;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.LAZY)
-	@JoinColumn(name = "teaminvitationlinkid")
+	@JoinColumn(name = "teaminvitationlinkid", nullable = false)
 	@JsonIgnore
 	private TeamInvitationLink teamInvitationLink;
 

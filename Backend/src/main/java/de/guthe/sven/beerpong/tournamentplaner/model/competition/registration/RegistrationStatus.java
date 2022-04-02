@@ -20,7 +20,7 @@ public class RegistrationStatus implements ACLObjectInterface {
 	@Enumerated(EnumType.STRING)
 	private RegistrationStatusType registrationStatusDescription;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "registrationStatus", fetch = FetchType.LAZY,

@@ -1,22 +1,22 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 
-import javax.persistence.Column;
+import javax.validation.constraints.NotNull;
 
 public class UserRegistrationDTO {
 
-    @Column(name = "firstname", nullable = false)
+    @NotNull(message = "firstName in UserRegistrationDTO have to be set.")
     private String firstName;
 
-    @Column(name = "lastname", nullable = false)
+    @NotNull(message = "lastName in UserRegistrationDTO have to be set.")
     private String lastName;
 
-    @Column(name = "gamertag", nullable = false)
+    @NotNull(message = "gamerTag in UserRegistrationDTO have to be set.")
     private String gamerTag;
 
-    @Column(name = "email", nullable = false)
+    @NotNull(message = "email in UserRegistrationDTO have to be set.")
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @NotNull(message = "password in UserRegistrationDTO have to be set.")
     private String password;
     
     public UserRegistrationDTO(String firstName, String lastName, String gamerTag, String email, String password) {
