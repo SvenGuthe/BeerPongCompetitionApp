@@ -86,7 +86,7 @@ const UserDetailsTable: React.FC<{
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td><UserStatusTypeInput ref={userStatusTypeRef} defaultValue={user.userStatus.userStatus} saveValue={(newValue, changed) => changed && setIsChanged(changed)} /></td>
+                    <td><UserStatusTypeInput ref={userStatusTypeRef} defaultValue={user.userStatus.filter(status => status.validTo === null)[0].userStatus} saveValue={(newValue, changed) => changed && setIsChanged(changed)} /></td>
                 </tr>
                 <tr>
                     <th>User Roles</th>

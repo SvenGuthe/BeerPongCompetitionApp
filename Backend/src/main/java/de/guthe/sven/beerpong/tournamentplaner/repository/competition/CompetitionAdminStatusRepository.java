@@ -11,16 +11,16 @@ import java.util.List;
 
 public interface CompetitionAdminStatusRepository extends JpaRepository<CompetitionAdminStatus, Long> {
 
-    @Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cas.id LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cas.id LIKE CONCAT(?1, '%')",
-            nativeQuery = true)
-    Page<CompetitionAdminStatus> findAll(String search, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cas.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cas.id LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<CompetitionAdminStatus> findAll(String search, PageRequest pageRequest);
 
-    @Query("select cas from CompetitionAdminStatus cas")
-    Page<CompetitionAdminStatus> findAll(PageRequest pageRequest);
+	@Query("select cas from CompetitionAdminStatus cas")
+	Page<CompetitionAdminStatus> findAll(PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) = LOWER(?1)",
-            nativeQuery = true)
-    List<CompetitionAdminStatus> findByStatus(String competitionAdminStatusType);
+	@Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) = LOWER(?1)",
+			nativeQuery = true)
+	List<CompetitionAdminStatus> findByStatus(String competitionAdminStatusType);
 
 }

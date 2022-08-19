@@ -21,49 +21,48 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionPlayerStatusController {
 
-	private CompetitionPlayerStatusRepository competitionPlayerStatusRepository;
+	private final CompetitionPlayerStatusRepository competitionPlayerStatusRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
 	public CompetitionPlayerStatusController(CompetitionPlayerStatusRepository competitionPlayerStatusRepository,
-											 CompetitionService competitionService) {
+			CompetitionService competitionService) {
 		this.competitionPlayerStatusRepository = competitionPlayerStatusRepository;
 		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionplayerstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getCompetitionPlayerStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getCompetitionPlayerStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<CompetitionPlayerStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = competitionPlayerStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = competitionPlayerStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 
 	@PutMapping("/competitionplayerstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionPlayerStatusDTO updateCompetitionPlayerStatus(@RequestBody CompetitionPlayerStatusUpdateDTO competitionPlayerStatusUpdateDTO) {
+	public CompetitionPlayerStatusDTO updateCompetitionPlayerStatus(
+			@RequestBody CompetitionPlayerStatusUpdateDTO competitionPlayerStatusUpdateDTO) {
 		return competitionService.updateCompetitionPlayerStatus(competitionPlayerStatusUpdateDTO);
 	}
 
 	@GetMapping("/competitionplayerstatus/{competitionPlayerStatusId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionPlayerStatusDTO getCompetitionPlayerStatus(@PathVariable Long competitionPlayerStatusId) {
-		return new CompetitionPlayerStatusDTO(competitionPlayerStatusRepository.findById(competitionPlayerStatusId).orElseThrow());
+		return new CompetitionPlayerStatusDTO(
+				competitionPlayerStatusRepository.findById(competitionPlayerStatusId).orElseThrow());
 	}
-
 
 }

@@ -22,46 +22,47 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionAdminStatusController {
 
-	private CompetitionAdminStatusRepository competitionAdminStatusRepository;
+	private final CompetitionAdminStatusRepository competitionAdminStatusRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public CompetitionAdminStatusController(CompetitionAdminStatusRepository competitionAdminStatusRepository, CompetitionService competitionService) {
+	public CompetitionAdminStatusController(CompetitionAdminStatusRepository competitionAdminStatusRepository,
+			CompetitionService competitionService) {
 		this.competitionAdminStatusRepository = competitionAdminStatusRepository;
 		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionadminstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getCompetitionAdminStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getCompetitionAdminStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<CompetitionAdminStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = competitionAdminStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = competitionAdminStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 
 	@GetMapping("/competitionadminstatus/{competitionAdminStatusId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionAdminStatusDTO getCompetitionAdminStatus(@PathVariable Long competitionAdminStatusId) {
-		return new CompetitionAdminStatusDTO(competitionAdminStatusRepository.findById(competitionAdminStatusId).orElseThrow());
+		return new CompetitionAdminStatusDTO(
+				competitionAdminStatusRepository.findById(competitionAdminStatusId).orElseThrow());
 	}
 
 	@PutMapping("/competitionadminstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Collection<CompetitionAdminStatusDTO> updateCompetitionAdminStatus(@RequestBody CompetitionAdminStatusUpdateDTO competitionAdminStatusUpdateDTO) {
+	public Collection<CompetitionAdminStatusDTO> updateCompetitionAdminStatus(
+			@RequestBody CompetitionAdminStatusUpdateDTO competitionAdminStatusUpdateDTO) {
 		return competitionService.updateCompetitionAdminStatus(competitionAdminStatusUpdateDTO);
 	}
 

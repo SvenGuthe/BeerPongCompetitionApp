@@ -2,30 +2,57 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityPrivilege;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.RolePrivilege;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 
 public class PrivilegeDTO extends EnumDTO {
 
-    @NotNull(message = "privilege in PrivilegeDTO have to be set.")
-    private SecurityPrivilege privilege;
+	@NotNull(message = "privilege in PrivilegeDTO have to be set.")
+	private SecurityPrivilege privilege;
 
-    public PrivilegeDTO(Long id, SecurityPrivilege privilege) {
-        super(id, privilege.name());
-        this.privilege = privilege;
-    }
+	@NotNull(message = "validFrom in TeamStatusDTO have to be set.")
+	private Timestamp validFrom;
 
-    public PrivilegeDTO(Privilege privilege) {
-        super(privilege.getId(), privilege.getPrivilege().name());
-        this.privilege = privilege.getPrivilege();
-    }
+	private Timestamp validTo;
 
-    public SecurityPrivilege getPrivilege() {
-        return privilege;
-    }
+	public PrivilegeDTO(Long id, SecurityPrivilege privilege, Timestamp validFrom, Timestamp validTo) {
+		super(id, privilege.name());
+		this.privilege = privilege;
+		this.validFrom = validFrom;
+		this.validTo = validTo;
+	}
 
-    public void setPrivilege(SecurityPrivilege privilege) {
-        this.privilege = privilege;
-    }
+	public PrivilegeDTO(RolePrivilege rolePrivilege) {
+		super(rolePrivilege.getId(), rolePrivilege.getPrivilege().getPrivilege().name());
+		this.privilege = rolePrivilege.getPrivilege().getPrivilege();
+		this.validFrom = rolePrivilege.getValidFrom();
+		this.validTo = rolePrivilege.getValidTo();
+	}
+
+	public SecurityPrivilege getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(SecurityPrivilege privilege) {
+		this.privilege = privilege;
+	}
+
+	public Timestamp getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Timestamp validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public Timestamp getValidTo() {
+		return validTo;
+	}
+
+	public void setValidTo(Timestamp validTo) {
+		this.validTo = validTo;
+	}
+
 }

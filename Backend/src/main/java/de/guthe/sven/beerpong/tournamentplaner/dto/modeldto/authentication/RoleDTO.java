@@ -2,45 +2,72 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserRole;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class RoleDTO extends EnumDTO {
 
-    @NotNull(message = "role in RoleDTO have to be set.")
-    private SecurityRole role;
+	@NotNull(message = "role in RoleDTO have to be set.")
+	private SecurityRole role;
 
-    @NotNull(message = "privileges in RoleDTO have to be set.")
-    private Collection<PrivilegeDTO> privileges;
+	@NotNull(message = "validFrom in TeamStatusDTO have to be set.")
+	private Timestamp validFrom;
 
-    public RoleDTO(Long id, SecurityRole role, Collection<PrivilegeDTO> privileges) {
-        super(id, role.name());
-        this.role = role;
-        this.privileges = privileges;
-    }
+	private Timestamp validTo;
 
-    public RoleDTO(Role role) {
-        super(role.getId(), role.getRole().name());
-        this.role = role.getRole();
-        this.privileges = role.getPrivileges().stream().map(PrivilegeDTO::new).collect(Collectors.toList());
-    }
+	@NotNull(message = "privileges in RoleDTO have to be set.")
+	private Collection<PrivilegeDTO> privileges;
 
-    public SecurityRole getRole() {
-        return role;
-    }
+	public RoleDTO(Long id, SecurityRole role, Collection<PrivilegeDTO> privileges, Timestamp validFrom,
+			Timestamp validTo) {
+		super(id, role.name());
+		this.role = role;
+		this.privileges = privileges;
+		this.validFrom = validFrom;
+		this.validTo = validTo;
+	}
 
-    public void setRole(SecurityRole role) {
-        this.role = role;
-    }
+	public RoleDTO(UserRole userRole) {
+		super(userRole.getId(), userRole.getRole().getRole().name());
+		this.role = userRole.getRole().getRole();
+		this.privileges = userRole.getRole().getRolePrivileges().stream().map(PrivilegeDTO::new)
+				.collect(Collectors.toList());
+	}
 
-    public Collection<PrivilegeDTO> getPrivileges() {
-        return privileges;
-    }
+	public SecurityRole getRole() {
+		return role;
+	}
 
-    public void setPrivileges(Collection<PrivilegeDTO> privileges) {
-        this.privileges = privileges;
-    }
+	public void setRole(SecurityRole role) {
+		this.role = role;
+	}
+
+	public Collection<PrivilegeDTO> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(Collection<PrivilegeDTO> privileges) {
+		this.privileges = privileges;
+	}
+
+	public Timestamp getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Timestamp validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public Timestamp getValidTo() {
+		return validTo;
+	}
+
+	public void setValidTo(Timestamp validTo) {
+		this.validTo = validTo;
+	}
+
 }

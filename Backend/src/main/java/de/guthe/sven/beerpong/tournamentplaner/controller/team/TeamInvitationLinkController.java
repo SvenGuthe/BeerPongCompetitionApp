@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/team")
 public class TeamInvitationLinkController {
 
-	private TeamInvitationLinkRepository teamInvitationLinkRepository;
+	private final TeamInvitationLinkRepository teamInvitationLinkRepository;
 
-	private TeamService teamService;
+	private final TeamService teamService;
 
 	@Autowired
 	public TeamInvitationLinkController(TeamInvitationLinkRepository teamInvitationLinkRepository,
-										TeamService teamService) {
+			TeamService teamService) {
 		this.teamInvitationLinkRepository = teamInvitationLinkRepository;
 		this.teamService = teamService;
 	}
@@ -31,7 +31,8 @@ public class TeamInvitationLinkController {
 	@GetMapping("/teaminvitationlink")
 	@PostFilter("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public List<TeamInvitationLinkDTO> getTeamInvitationLinks() {
-		return teamInvitationLinkRepository.findAll().stream().map(TeamInvitationLinkDTO::new).collect(Collectors.toList());
+		return teamInvitationLinkRepository.findAll().stream().map(TeamInvitationLinkDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping("/teaminvitationlink/{teamInvitationLinkId}")

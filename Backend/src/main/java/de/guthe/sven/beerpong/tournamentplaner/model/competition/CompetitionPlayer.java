@@ -37,7 +37,8 @@ public class CompetitionPlayer implements ACLObjectInterface {
 	public CompetitionPlayer() {
 	}
 
-	public CompetitionPlayer(CompetitionTeam competitionTeam, User user, CompetitionPlayerStatus competitionPlayerStatus) {
+	public CompetitionPlayer(CompetitionTeam competitionTeam, User user,
+			CompetitionPlayerStatus competitionPlayerStatus) {
 		this.competitionTeam = competitionTeam;
 		this.user = user;
 		this.competitionPlayerStatus = competitionPlayerStatus;

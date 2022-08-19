@@ -24,4 +24,5 @@ public class JwtResponseDTO {
 	public UserDTO getUserDTO() {
 		return userDTO;
 	}
+
 }

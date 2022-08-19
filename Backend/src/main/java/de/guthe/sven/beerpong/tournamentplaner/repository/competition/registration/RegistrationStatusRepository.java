@@ -11,16 +11,16 @@ import java.util.List;
 
 public interface RegistrationStatusRepository extends JpaRepository<RegistrationStatus, Long> {
 
-    @Query(value = "SELECT * FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR rs.id LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR rs.id LIKE CONCAT(?1, '%')",
-            nativeQuery = true)
-    Page<RegistrationStatus> findAll(String search, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR rs.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR rs.id LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<RegistrationStatus> findAll(String search, PageRequest pageRequest);
 
-    @Query("select rs from RegistrationStatus rs")
-    Page<RegistrationStatus> findAll(PageRequest pageRequest);
+	@Query("select rs from RegistrationStatus rs")
+	Page<RegistrationStatus> findAll(PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) = LOWER(?1)",
-            nativeQuery = true)
-    List<RegistrationStatus> findByStatus(String registrationStatusType);
+	@Query(value = "SELECT * FROM RegistrationStatus rs WHERE LOWER(rs.registrationstatusdescription) = LOWER(?1)",
+			nativeQuery = true)
+	List<RegistrationStatus> findByStatus(String registrationStatusType);
 
 }

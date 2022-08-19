@@ -6,6 +6,8 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInte
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "teamcomposition")
@@ -33,6 +35,10 @@ public class TeamComposition implements ACLObjectInterface {
 
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
+
+	@OneToMany(mappedBy = "teamComposition", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<TeamCompositionStatusHistory> teamCompositionStatusHistories;
 
 	public TeamComposition() {
 	}
@@ -81,6 +87,24 @@ public class TeamComposition implements ACLObjectInterface {
 
 	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
+	}
+
+	public void addTeamCompositionStatus(TeamCompositionStatus teamCompositionStatus) {
+		TeamCompositionStatusHistory teamCompositionStatusHistory = new TeamCompositionStatusHistory();
+		teamCompositionStatusHistory.setTeamComposition(this);
+		teamCompositionStatusHistory.setTeamCompositionStatus(teamCompositionStatus);
+		if (this.teamCompositionStatusHistories == null) {
+			this.teamCompositionStatusHistories = new ArrayList<>();
+		}
+		this.teamCompositionStatusHistories.add(teamCompositionStatusHistory);
+	}
+
+	public List<TeamCompositionStatusHistory> getTeamCompositionStatusHistories() {
+		return teamCompositionStatusHistories;
+	}
+
+	public void setTeamCompositionStatusHistories(List<TeamCompositionStatusHistory> teamCompositionStatusHistories) {
+		this.teamCompositionStatusHistories = teamCompositionStatusHistories;
 	}
 
 }

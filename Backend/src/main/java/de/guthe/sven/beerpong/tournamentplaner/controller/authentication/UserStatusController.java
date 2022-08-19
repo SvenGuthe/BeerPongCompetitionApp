@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/authentication")
 public class UserStatusController {
 
-	private UserStatusRepository userStatusRepository;
+	private final UserStatusRepository userStatusRepository;
 
 	@Autowired
 	public UserStatusController(UserStatusRepository userStatusRepository) {
@@ -33,29 +33,28 @@ public class UserStatusController {
 
 	@GetMapping("/userstatus")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getUserStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getUserStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<UserStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = userStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = userStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 
 	@GetMapping("/userstatus/{userStatusId}")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public UserStatusDTO getUserStatus(@PathVariable Long userStatusId) {
-		return new UserStatusDTO(userStatusRepository.findById(userStatusId).orElseThrow());
+	public List<UserStatusDTO> getUserStatus(@PathVariable Long userStatusId) {
+		return userStatusRepository.findById(userStatusId).orElseThrow().getUserStatusHistories().stream()
+				.map(UserStatusDTO::new).collect(Collectors.toList());
 	}
 
 }

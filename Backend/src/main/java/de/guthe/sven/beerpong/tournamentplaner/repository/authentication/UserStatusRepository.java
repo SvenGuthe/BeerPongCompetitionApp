@@ -11,16 +11,15 @@ import java.util.List;
 
 public interface UserStatusRepository extends JpaRepository<UserStatus, Long> {
 
-    @Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.id LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.id LIKE CONCAT(?1, '%')",
-            nativeQuery = true)
-    Page<UserStatus> findAll(String search, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM UserStatus us WHERE LOWER(us.userstatus) LIKE CONCAT(LOWER(?1), '%') OR us.id LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<UserStatus> findAll(String search, PageRequest pageRequest);
 
-    @Query("select us from UserStatus us")
-    Page<UserStatus> findAll(PageRequest pageRequest);
+	@Query("select us from UserStatus us")
+	Page<UserStatus> findAll(PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) = LOWER(?1)",
-            nativeQuery = true)
-    List<UserStatus> findByStatus(String userStatusType);
+	@Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) = LOWER(?1)", nativeQuery = true)
+	List<UserStatus> findByStatus(String userStatusType);
 
 }

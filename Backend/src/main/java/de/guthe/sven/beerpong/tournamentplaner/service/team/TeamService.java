@@ -1,5 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.service.team;
 
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamCompositionStatusType;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.TeamUserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.*;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
@@ -12,11 +14,13 @@ import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.*;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamCompositionRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamCompositionStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -26,125 +30,146 @@ import java.util.stream.Collectors;
 @Service
 public class TeamService {
 
-    TeamRepository teamRepository;
+	TeamRepository teamRepository;
 
-    TeamStatusRepository teamStatusRepository;
+	TeamStatusRepository teamStatusRepository;
 
-    TeamCompositionRepository teamCompositionRepository;
+	TeamCompositionRepository teamCompositionRepository;
 
-    UserRepository userRepository;
+	TeamCompositionStatusRepository teamCompositionStatusRepository;
 
-    @Autowired
-    public TeamService(TeamRepository teamRepository,
-                       TeamStatusRepository teamStatusRepository,
-                       TeamCompositionRepository teamCompositionRepository,
-                       UserRepository userRepository) {
-        this.teamRepository = teamRepository;
-        this.teamStatusRepository = teamStatusRepository;
-        this.teamCompositionRepository = teamCompositionRepository;
-        this.userRepository = userRepository;
-    }
+	UserRepository userRepository;
 
-    public TeamDetailDTO transformTeamToTeamDetailDTO(Long id) throws Exception {
-        Optional<Team> team = teamRepository.findById(id);
-        if (team.isPresent()) {
-            return transformTeamToTeamDetailDTO(team.get());
-        } else {
-            throw new Exception("Team not found with id " + id);
-        }
-    }
+	@Autowired
+	public TeamService(TeamRepository teamRepository, TeamStatusRepository teamStatusRepository,
+			TeamCompositionRepository teamCompositionRepository, UserRepository userRepository,
+			TeamCompositionStatusRepository teamCompositionStatusRepository) {
+		this.teamRepository = teamRepository;
+		this.teamStatusRepository = teamStatusRepository;
+		this.teamCompositionRepository = teamCompositionRepository;
+		this.userRepository = userRepository;
+		this.teamCompositionStatusRepository = teamCompositionStatusRepository;
+	}
 
-    public TeamDetailDTO transformTeamToTeamDetailDTO(Team team) {
-        TeamDTO teamDTO = new TeamDTO(team);
+	public TeamCompositionStatus getOrCreateTeamCompositionStatus(TeamCompositionStatusType teamCompositionStatusType) {
+		Optional<TeamCompositionStatus> teamCompositionStatus = teamCompositionStatusRepository
+				.findByStatus(teamCompositionStatusType.name());
+		if (teamCompositionStatus.isPresent()) {
+			return teamCompositionStatus.get();
+		}
+		else {
+			TeamCompositionStatus newTeamCompositionStatus = new TeamCompositionStatus();
+			newTeamCompositionStatus.setTeamCompositionStatusType(teamCompositionStatusType);
+			teamCompositionStatusRepository.save(newTeamCompositionStatus);
 
-        Collection<TeamUserDTO> teamUsers = team.getTeamCompositions().stream().map(TeamUserDTO::new).collect(Collectors.toList());
+			return newTeamCompositionStatus;
+		}
+	}
 
-        Collection<CompetitionDTO> competitions = team.getCompetitionTeams().stream().map(competitionTeam -> new CompetitionDTO(competitionTeam.getCompetition())).collect(Collectors.toList());
+	public TeamDetailDTO transformTeamToTeamDetailDTO(Long id) throws Exception {
+		Optional<Team> team = teamRepository.findById(id);
+		if (team.isPresent()) {
+			return transformTeamToTeamDetailDTO(team.get());
+		}
+		else {
+			throw new Exception("Team not found with id " + id);
+		}
+	}
 
-        Collection<UserDTO> possibleUsers = userRepository.findAll().stream().filter(user -> !teamUsers.stream().map(teamUserDTO -> teamUserDTO.getUser().getId()).collect(Collectors.toList()).contains(user.getId())).map(UserDTO::new).collect(Collectors.toList());
+	public TeamDetailDTO transformTeamToTeamDetailDTO(Team team) {
+		TeamDTO teamDTO = new TeamDTO(team);
 
-        return new TeamDetailDTO(
-                teamDTO,
-                teamUsers,
-                competitions,
-                possibleUsers
-        );
-    }
+		Collection<TeamUserDTO> teamUsers = team.getTeamCompositions().stream().map(TeamUserDTO::new)
+				.collect(Collectors.toList());
 
-    public TeamDTO updateTeam(TeamUpdateDTO teamUpdateDTO) {
-        Team team = teamRepository.findById(teamUpdateDTO.getId()).get();
-        team.setTeamName(teamUpdateDTO.getTeamName());
+		Collection<CompetitionDTO> competitions = team.getCompetitionTeams().stream()
+				.map(competitionTeam -> new CompetitionDTO(competitionTeam.getCompetition()))
+				.collect(Collectors.toList());
 
-        teamRepository.save(team);
+		Collection<UserDTO> possibleUsers = userRepository.findAll().stream()
+				.filter(user -> !teamUsers.stream().map(teamUserDTO -> teamUserDTO.getUser().getId())
+						.collect(Collectors.toList()).contains(user.getId()))
+				.map(UserDTO::new).collect(Collectors.toList());
 
-        return new TeamDTO(team);
-    }
+		return new TeamDetailDTO(teamDTO, teamUsers, competitions, possibleUsers);
+	}
 
-    public List<TeamStatusDTO> updateTeamStatus(TeamStatusUpdateDTO teamStatusUpdateDTO) {
-        Team team = teamRepository.findById(teamStatusUpdateDTO.getId()).get();
+	public TeamDTO updateTeam(TeamUpdateDTO teamUpdateDTO) {
+		Team team = teamRepository.findById(teamUpdateDTO.getId()).get();
+		team.setTeamName(teamUpdateDTO.getTeamName());
 
-        List<TeamStatus> teamStatusList = teamStatusRepository.findByStatus(teamStatusUpdateDTO.getTeamStatusType().name());
-        TeamStatus teamStatus;
+		teamRepository.save(team);
 
-        if (teamStatusList.size() == 0) {
-            teamStatus = new TeamStatus(
-                teamStatusUpdateDTO.getTeamStatusType()
-            );
-        } else {
-            teamStatus = teamStatusList.get(0);
-        }
+		return new TeamDTO(team);
+	}
 
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+	public List<TeamStatusDTO> updateTeamStatus(TeamStatusUpdateDTO teamStatusUpdateDTO) {
+		Team team = teamRepository.findById(teamStatusUpdateDTO.getId()).get();
 
-        List<TeamStatusHistory> currentTeamStatusHistory = team.getTeamStatusHistories().stream()
-                .peek(teamStatusHistory -> {
-                    if (teamStatusHistory.getValidTo() == null) {
-                        teamStatusHistory.setValidTo(now);
-                    }
-                }).collect(Collectors.toList());
+		List<TeamStatus> teamStatusList = teamStatusRepository
+				.findByStatus(teamStatusUpdateDTO.getTeamStatusType().name());
+		TeamStatus teamStatus;
 
-        currentTeamStatusHistory.add(new TeamStatusHistory(
-                now,
-                team,
-                teamStatus
-        ));
+		if (teamStatusList.size() == 0) {
+			teamStatus = new TeamStatus(teamStatusUpdateDTO.getTeamStatusType());
+		}
+		else {
+			teamStatus = teamStatusList.get(0);
+		}
 
-        teamStatus.setTeamStatusHistories(currentTeamStatusHistory);
-        teamStatusRepository.save(teamStatus);
+		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        return currentTeamStatusHistory.subList(currentTeamStatusHistory.size()-2, currentTeamStatusHistory.size())
-                .stream().map(TeamStatusDTO::new).collect(Collectors.toList());
+		List<TeamStatusHistory> currentTeamStatusHistory = team.getTeamStatusHistories().stream()
+				.peek(teamStatusHistory -> {
+					if (teamStatusHistory.getValidTo() == null) {
+						teamStatusHistory.setValidTo(now);
+					}
+				}).collect(Collectors.toList());
 
-    }
+		currentTeamStatusHistory.add(new TeamStatusHistory(now, team, teamStatus));
 
-    public TeamInvitationLinkDTO addTeamInvitationLink(TeamInvitationLinkAddDTO teamInvitationLinkAddDTO) {
-        Team team = teamRepository.findById(teamInvitationLinkAddDTO.getId()).get();
-        TeamInvitationLink teamInvitationLink = new TeamInvitationLink(teamInvitationLinkAddDTO.getTeamInvitationLink());
-        team.addTeamInvitationLink(teamInvitationLink);
-        teamRepository.save(team);
+		teamStatus.setTeamStatusHistories(currentTeamStatusHistory);
+		teamStatusRepository.save(teamStatus);
 
-        return new TeamInvitationLinkDTO(team.getTeamInvitationLinkHistories().get(
-                team.getTeamInvitationLinkHistories().size() - 1
-        ));
-    }
+		return currentTeamStatusHistory.subList(currentTeamStatusHistory.size() - 2, currentTeamStatusHistory.size())
+				.stream().map(TeamStatusDTO::new).collect(Collectors.toList());
 
-    public TeamCompositionDTO updateTeamComposition(TeamCompositionUpdateDTO teamCompositionUpdateDTO) {
-        TeamComposition teamComposition = teamCompositionRepository.findById(teamCompositionUpdateDTO.getId()).get();
-        teamComposition.setAdmin(teamCompositionUpdateDTO.getAdmin());
-        teamCompositionRepository.save(teamComposition);
+	}
 
-        return new TeamCompositionDTO(teamComposition);
-    }
+	public TeamInvitationLinkDTO addTeamInvitationLink(TeamInvitationLinkAddDTO teamInvitationLinkAddDTO) {
+		Team team = teamRepository.findById(teamInvitationLinkAddDTO.getId()).get();
+		TeamInvitationLink teamInvitationLink = new TeamInvitationLink(
+				teamInvitationLinkAddDTO.getTeamInvitationLink());
+		team.addTeamInvitationLink(teamInvitationLink);
+		teamRepository.save(team);
 
-    public TeamCompositionDTO addTeamComposition(TeamCompositionAddDTO teamCompositionAddDTO) {
-        Team team = teamRepository.findById(teamCompositionAddDTO.getId()).get();
-        User user = userRepository.findById(teamCompositionAddDTO.getUserId()).get();
-        Boolean isAdmin = teamCompositionAddDTO.getAdmin();
+		return new TeamInvitationLinkDTO(
+				team.getTeamInvitationLinkHistories().get(team.getTeamInvitationLinkHistories().size() - 1));
+	}
 
-        TeamComposition teamComposition = new TeamComposition(team, user, isAdmin);
-        teamCompositionRepository.save(teamComposition);
+	public TeamCompositionDTO updateTeamComposition(TeamCompositionUpdateDTO teamCompositionUpdateDTO) {
+		TeamComposition teamComposition = teamCompositionRepository.findById(teamCompositionUpdateDTO.getId()).get();
+		teamComposition.setAdmin(teamCompositionUpdateDTO.getAdmin());
+		teamCompositionRepository.save(teamComposition);
 
-        return new TeamCompositionDTO(teamComposition);
-    }
+		return new TeamCompositionDTO(teamComposition);
+	}
+
+	public TeamCompositionDTO addTeamComposition(TeamCompositionAddDTO teamCompositionAddDTO) {
+		Team team = teamRepository.findById(teamCompositionAddDTO.getId()).get();
+		User user = userRepository.findById(teamCompositionAddDTO.getUserId()).get();
+		Boolean isAdmin = teamCompositionAddDTO.getAdmin();
+
+		TeamComposition teamComposition = new TeamComposition(team, user, isAdmin);
+
+		TeamCompositionStatus teamCompositionStatus = getOrCreateTeamCompositionStatus(
+				TeamCompositionStatusType.PROMISED);
+
+		teamComposition.addTeamCompositionStatus(teamCompositionStatus);
+
+		teamCompositionRepository.save(teamComposition);
+
+		return new TeamCompositionDTO(teamComposition);
+	}
 
 }

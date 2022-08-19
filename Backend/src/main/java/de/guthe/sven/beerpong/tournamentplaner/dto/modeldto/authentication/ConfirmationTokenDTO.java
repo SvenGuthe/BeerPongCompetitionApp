@@ -1,45 +1,57 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationToken;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationTokenHistory;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class ConfirmationTokenDTO extends ID {
 
-    @NotNull(message = "confirmationToken in ConfirmationTokenDTO have to be set.")
-    private String confirmationToken;
+	@NotNull(message = "confirmationToken in ConfirmationTokenDTO have to be set.")
+	private String confirmationToken;
 
-    @NotNull(message = "createdDate in ConfirmationTokenDTO have to be set.")
-    private Timestamp createdDate;
+	@NotNull(message = "validFrom in UserStatusDTO have to be set.")
+	private Timestamp validFrom;
 
-    public ConfirmationTokenDTO(Long id, String confirmationToken, Timestamp createdDate) {
-        super(id);
-        this.confirmationToken = confirmationToken;
-        this.createdDate = createdDate;
-    }
+	private Timestamp validTo;
 
-    public ConfirmationTokenDTO(ConfirmationToken confirmationToken) {
-        super(confirmationToken.getId());
-        this.confirmationToken = confirmationToken.getConfirmationToken();
-        this.createdDate = confirmationToken.getCreatedDate();
-    }
+	public ConfirmationTokenDTO(Long id, String confirmationToken, Timestamp validFrom, Timestamp validTo) {
+		super(id);
+		this.confirmationToken = confirmationToken;
+		this.validFrom = validFrom;
+		this.validTo = validTo;
+	}
 
-    public String getConfirmationToken() {
-        return confirmationToken;
-    }
+	public ConfirmationTokenDTO(ConfirmationTokenHistory confirmationTokenHistory) {
+		super(confirmationTokenHistory.getId());
+		this.confirmationToken = confirmationTokenHistory.getConfirmationToken().getConfirmationToken();
+		this.validFrom = confirmationTokenHistory.getValidFrom();
+		this.validTo = confirmationTokenHistory.getValidTo();
+	}
 
-    public void setConfirmationToken(String confirmationToken) {
-        this.confirmationToken = confirmationToken;
-    }
+	public String getConfirmationToken() {
+		return confirmationToken;
+	}
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
+	public Timestamp getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Timestamp validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public Timestamp getValidTo() {
+		return validTo;
+	}
+
+	public void setValidTo(Timestamp validTo) {
+		this.validTo = validTo;
+	}
 
 }

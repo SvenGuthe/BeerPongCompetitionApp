@@ -10,54 +10,56 @@ import java.util.Collection;
 
 public class TeamDetailDTO {
 
-    @NotNull(message = "team in TeamDetailDTO have to be set.")
-    TeamDTO team;
+	@NotNull(message = "team in TeamDetailDTO have to be set.")
+	TeamDTO team;
 
-    @NotNull(message = "users in TeamDetailDTO have to be set.")
-    Collection<TeamUserDTO> users;
+	@NotNull(message = "users in TeamDetailDTO have to be set.")
+	Collection<TeamUserDTO> users;
 
-    @NotNull(message = "competitions in TeamDetailDTO have to be set.")
-    Collection<CompetitionDTO> competitions;
+	@NotNull(message = "competitions in TeamDetailDTO have to be set.")
+	Collection<CompetitionDTO> competitions;
 
-    @NotNull(message = "possibleUsers in TeamDetailDTO have to be set.")
-    Collection<UserDTO> possibleUsers;
+	@NotNull(message = "possibleUsers in TeamDetailDTO have to be set.")
+	Collection<UserDTO> possibleUsers;
 
-    public TeamDetailDTO(TeamDTO team, Collection<TeamUserDTO> users, Collection<CompetitionDTO> competitions, Collection<UserDTO> possibleUsers) {
-        this.team = team;
-        this.users = users;
-        this.competitions = competitions;
-        this.possibleUsers = possibleUsers;
-    }
+	public TeamDetailDTO(TeamDTO team, Collection<TeamUserDTO> users, Collection<CompetitionDTO> competitions,
+			Collection<UserDTO> possibleUsers) {
+		this.team = team;
+		this.users = users;
+		this.competitions = competitions;
+		this.possibleUsers = possibleUsers;
+	}
 
-    public TeamDTO getTeam() {
-        return team;
-    }
+	public TeamDTO getTeam() {
+		return team;
+	}
 
-    public void setTeam(TeamDTO team) {
-        this.team = team;
-    }
+	public void setTeam(TeamDTO team) {
+		this.team = team;
+	}
 
-    public Collection<TeamUserDTO> getUsers() {
-        return users;
-    }
+	public Collection<TeamUserDTO> getUsers() {
+		return users;
+	}
 
-    public void setUsers(Collection<TeamUserDTO> users) {
-        this.users = users;
-    }
+	public void setUsers(Collection<TeamUserDTO> users) {
+		this.users = users;
+	}
 
-    public Collection<CompetitionDTO> getCompetitions() {
-        return competitions;
-    }
+	public Collection<CompetitionDTO> getCompetitions() {
+		return competitions;
+	}
 
-    public void setCompetitions(Collection<CompetitionDTO> competitions) {
-        this.competitions = competitions;
-    }
+	public void setCompetitions(Collection<CompetitionDTO> competitions) {
+		this.competitions = competitions;
+	}
 
-    public Collection<UserDTO> getPossibleUsers() {
-        return possibleUsers;
-    }
+	public Collection<UserDTO> getPossibleUsers() {
+		return possibleUsers;
+	}
 
-    public void setPossibleUsers(Collection<UserDTO> possibleUsers) {
-        this.possibleUsers = possibleUsers;
-    }
+	public void setPossibleUsers(Collection<UserDTO> possibleUsers) {
+		this.possibleUsers = possibleUsers;
+	}
+
 }

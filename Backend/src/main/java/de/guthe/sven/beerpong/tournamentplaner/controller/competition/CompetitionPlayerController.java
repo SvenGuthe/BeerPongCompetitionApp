@@ -18,16 +18,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionPlayerController {
 
-	private ACLService aclService;
+	private final ACLService aclService;
 
-	private CompetitionPlayerRepository competitionPlayerRepository;
+	private final CompetitionPlayerRepository competitionPlayerRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public CompetitionPlayerController(ACLService aclService,
-									   CompetitionPlayerRepository competitionPlayerRepository,
-									   CompetitionService competitionService) {
+	public CompetitionPlayerController(ACLService aclService, CompetitionPlayerRepository competitionPlayerRepository,
+			CompetitionService competitionService) {
 		this.aclService = aclService;
 		this.competitionPlayerRepository = competitionPlayerRepository;
 		this.competitionService = competitionService;
@@ -36,7 +35,8 @@ public class CompetitionPlayerController {
 	@GetMapping("/competitionplayer")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public List<CompetitionPlayerDTO> getCompetitionPlayers() {
-		return competitionPlayerRepository.findAll().stream().map(CompetitionPlayerDTO::new).collect(Collectors.toList());
+		return competitionPlayerRepository.findAll().stream().map(CompetitionPlayerDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping("/competitionplayer/{competitionPlayerId}")
@@ -52,20 +52,24 @@ public class CompetitionPlayerController {
 	}
 
 	/*
-	@PostMapping("/competitionplayer")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionPlayer addCompetitionPlayer(@RequestBody CompetitionPlayer competitionPlayer) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Sid sidCreator = new PrincipalSid(authentication);
-
-		Map<Sid, List<Permission>> initialCompetitionPlayerPermissions = CompetitionPlayerPermissions.initialCompetitionPlayerPermissions;
-		initialCompetitionPlayerPermissions.put(sidCreator, CompetitionPlayerPermissions.ownerPermissions);
-
-		competitionPlayerRepository.save(competitionPlayer);
-		aclService.setPrivileges(competitionPlayer, initialCompetitionPlayerPermissions);
-		return competitionPlayer;
-	}
+	 * @PostMapping("/competitionplayer")
+	 *
+	 * @Transactional
+	 *
+	 * @PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')") public
+	 * CompetitionPlayer addCompetitionPlayer(@RequestBody CompetitionPlayer
+	 * competitionPlayer) { Authentication authentication =
+	 * SecurityContextHolder.getContext().getAuthentication(); Sid sidCreator = new
+	 * PrincipalSid(authentication);
+	 *
+	 * Map<Sid, List<Permission>> initialCompetitionPlayerPermissions =
+	 * CompetitionPlayerPermissions.initialCompetitionPlayerPermissions;
+	 * initialCompetitionPlayerPermissions.put(sidCreator,
+	 * CompetitionPlayerPermissions.ownerPermissions);
+	 *
+	 * competitionPlayerRepository.save(competitionPlayer);
+	 * aclService.setPrivileges(competitionPlayer, initialCompetitionPlayerPermissions);
+	 * return competitionPlayer; }
 	 */
 
 }

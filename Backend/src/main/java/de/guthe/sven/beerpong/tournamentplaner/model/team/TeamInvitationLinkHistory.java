@@ -80,4 +80,5 @@ public class TeamInvitationLinkHistory implements ACLObjectInterface {
 	public void setTeamInvitationLink(TeamInvitationLink teamInvitationLink) {
 		this.teamInvitationLink = teamInvitationLink;
 	}
+
 }

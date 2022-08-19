@@ -11,16 +11,16 @@ import java.util.List;
 
 public interface CompetitionStatusRepository extends JpaRepository<CompetitionStatus, Long> {
 
-    @Query(value = "SELECT * FROM CompetitionStatus cs WHERE LOWER(cs.competitionstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cs.id LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM CompetitionStatus cs WHERE LOWER(cs.competitionstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cs.id LIKE CONCAT(?1, '%')",
-            nativeQuery = true)
-    Page<CompetitionStatus> findAll(String search, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM CompetitionStatus cs WHERE LOWER(cs.competitionstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cs.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM CompetitionStatus cs WHERE LOWER(cs.competitionstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR cs.id LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<CompetitionStatus> findAll(String search, PageRequest pageRequest);
 
-    @Query("select cs from CompetitionStatus cs")
-    Page<CompetitionStatus> findAll(PageRequest pageRequest);
+	@Query("select cs from CompetitionStatus cs")
+	Page<CompetitionStatus> findAll(PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM CompetitionStatus cs WHERE LOWER(cs.competitionstatusdescription) = LOWER(?1)",
-            nativeQuery = true)
-    List<CompetitionStatus> findByStatus(String competitionStatusType);
+	@Query(value = "SELECT * FROM CompetitionStatus cs WHERE LOWER(cs.competitionstatusdescription) = LOWER(?1)",
+			nativeQuery = true)
+	List<CompetitionStatus> findByStatus(String competitionStatusType);
 
 }

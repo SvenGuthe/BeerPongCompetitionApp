@@ -115,11 +115,12 @@ public class Team implements ACLObjectInterface {
 		this.teamStatusHistories = teamStatusHistories;
 	}
 
-	public void addUser(User user) {
+	public void addUser(User user, Boolean admin, TeamCompositionStatus teamCompositionStatus) {
 		TeamComposition teamComposition = new TeamComposition();
 		teamComposition.setTeam(this);
 		teamComposition.setUser(user);
-		teamComposition.setAdmin(true);
+		teamComposition.setAdmin(admin);
+		teamComposition.addTeamCompositionStatus(teamCompositionStatus);
 		if (this.teamCompositions == null) {
 			this.teamCompositions = new ArrayList<>();
 		}
@@ -153,4 +154,5 @@ public class Team implements ACLObjectInterface {
 	public void setCompetitionTeams(List<CompetitionTeam> competitionTeams) {
 		this.competitionTeams = competitionTeams;
 	}
+
 }

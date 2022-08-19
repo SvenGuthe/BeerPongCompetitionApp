@@ -7,19 +7,20 @@ import javax.validation.constraints.NotNull;
 
 public class CompetitionAdminStatusUpdateDTO extends ID {
 
-    @NotNull(message = "competitionAdminStatusType in CompetitionAdminStatusUpdateDTO have to be set.")
-    private CompetitionAdminStatusType competitionAdminStatusType;
+	@NotNull(message = "competitionAdminStatusType in CompetitionAdminStatusUpdateDTO have to be set.")
+	private CompetitionAdminStatusType competitionAdminStatusType;
 
-    public CompetitionAdminStatusUpdateDTO(Long id, CompetitionAdminStatusType competitionAdminStatusType) {
-        super(id);
-        this.competitionAdminStatusType = competitionAdminStatusType;
-    }
+	public CompetitionAdminStatusUpdateDTO(Long id, CompetitionAdminStatusType competitionAdminStatusType) {
+		super(id);
+		this.competitionAdminStatusType = competitionAdminStatusType;
+	}
 
-    public CompetitionAdminStatusType getCompetitionAdminStatusType() {
-        return competitionAdminStatusType;
-    }
+	public CompetitionAdminStatusType getCompetitionAdminStatusType() {
+		return competitionAdminStatusType;
+	}
 
-    public void setCompetitionAdminStatusType(CompetitionAdminStatusType competitionAdminStatusType) {
-        this.competitionAdminStatusType = competitionAdminStatusType;
-    }
+	public void setCompetitionAdminStatusType(CompetitionAdminStatusType competitionAdminStatusType) {
+		this.competitionAdminStatusType = competitionAdminStatusType;
+	}
+
 }

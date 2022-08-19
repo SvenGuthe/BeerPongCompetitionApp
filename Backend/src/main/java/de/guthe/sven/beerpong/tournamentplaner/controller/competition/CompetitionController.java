@@ -29,14 +29,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionController {
 
-	private ACLService aclService;
+	private final ACLService aclService;
 
-	private CompetitionRepository competitionRepository;
+	private final CompetitionRepository competitionRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public CompetitionController(ACLService aclService, CompetitionRepository competitionRepository, CompetitionService competitionService) {
+	public CompetitionController(ACLService aclService, CompetitionRepository competitionRepository,
+			CompetitionService competitionService) {
 		this.aclService = aclService;
 		this.competitionRepository = competitionRepository;
 		this.competitionService = competitionService;
@@ -44,22 +45,20 @@ public class CompetitionController {
 
 	@GetMapping("/competition")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public PaginationDTO<CompetitionDTO> getCompetitions(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<CompetitionDTO> getCompetitions(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<Competition> pageRequest;
 		if (search.equals("")) {
 			pageRequest = competitionRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = competitionRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<CompetitionDTO> data = pageRequest.stream().map(CompetitionDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 

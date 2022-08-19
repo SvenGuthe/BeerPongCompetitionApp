@@ -3,7 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,34 +16,20 @@ public class ConfirmationToken {
 	@Column(name = "tokenid")
 	private Long id;
 
-	@Column(name = "confirmationtoken")
+	@Column(name = "confirmationtoken", nullable = false)
 	private String confirmationToken;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
-	private Timestamp createdDate = new Timestamp(System.currentTimeMillis());
-
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "userId", nullable=false)
+	@OneToMany(mappedBy = "confirmationToken", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
-	private User user;
+	private List<ConfirmationTokenHistory> confirmationTokenHistory;
 
-	public ConfirmationToken(User user) {
-		this.user = user;
-		this.createdDate = new Timestamp(System.currentTimeMillis());
+	public ConfirmationToken() {
 		this.confirmationToken = UUID.randomUUID().toString();
 	}
 
-	public ConfirmationToken(User user, String confirmationToken) {
-		this.user = user;
-		this.createdDate = new Timestamp(System.currentTimeMillis());
+	public ConfirmationToken(String confirmationToken) {
 		this.confirmationToken = confirmationToken;
-	}
-
-	public ConfirmationToken() {
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Long getId() {
@@ -58,20 +44,12 @@ public class ConfirmationToken {
 		this.confirmationToken = confirmationToken;
 	}
 
-	public Timestamp getCreatedDate() {
-		return createdDate;
+	public List<ConfirmationTokenHistory> getConfirmationTokenHistory() {
+		return confirmationTokenHistory;
 	}
 
-	public void setCreatedDate(Timestamp createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
+	public void setConfirmationTokenHistory(List<ConfirmationTokenHistory> confirmationTokenHistory) {
+		this.confirmationTokenHistory = confirmationTokenHistory;
 	}
 
 }

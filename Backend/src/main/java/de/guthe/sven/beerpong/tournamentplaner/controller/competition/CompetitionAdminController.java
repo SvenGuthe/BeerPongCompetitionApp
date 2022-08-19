@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionAdminController {
 
-	private CompetitionAdminRepository competitionAdminRepository;
+	private final CompetitionAdminRepository competitionAdminRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
 	public CompetitionAdminController(CompetitionAdminRepository competitionAdminRepository,
-									  CompetitionService competitionService) {
+			CompetitionService competitionService) {
 		this.competitionAdminRepository = competitionAdminRepository;
 		this.competitionService = competitionService;
 	}

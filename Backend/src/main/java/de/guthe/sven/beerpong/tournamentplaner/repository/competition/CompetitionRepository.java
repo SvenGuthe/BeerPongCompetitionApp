@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CompetitionRepository extends JpaRepository<Competition, Long> {
 
-
 	@Query(value = "SELECT * FROM Competition c WHERE LOWER(c.competitionname) LIKE CONCAT(LOWER(?1), '%') OR c.competitionid LIKE CONCAT(?1, '%')",
 			countQuery = "SELECT count(*) FROM Competition c WHERE LOWER(c.competitionname) LIKE CONCAT(LOWER(?1), '%') OR c.competitionid LIKE CONCAT(?1, '%')",
 			nativeQuery = true)

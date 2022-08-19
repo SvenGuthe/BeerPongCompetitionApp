@@ -48,23 +48,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/v2/api-docs",
-				"/configuration/ui",
-				"/swagger-resources/**",
-				"/configuration/security",
-				"/swagger-ui.html",
-				"/webjars/**");
+		web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**",
+				"/configuration/security", "/swagger-ui.html", "/webjars/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).csrf().disable().authorizeRequests()
-				.antMatchers("/authentication/register").permitAll()
-				.antMatchers("/authentication/confirm-account").permitAll()
-				.antMatchers("/authentication/login").permitAll()
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.and().authorizeRequests().anyRequest().authenticated().and()
-				.userDetailsService(userDetailsService).exceptionHandling()
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class).csrf().disable()
+				.authorizeRequests().antMatchers("/authentication/register").permitAll()
+				.antMatchers("/authentication/confirm-account").permitAll().antMatchers("/authentication/login")
+				.permitAll().antMatchers(HttpMethod.OPTIONS, "/**").permitAll().and().authorizeRequests().anyRequest()
+				.authenticated().and().userDetailsService(userDetailsService).exceptionHandling()
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/authentication")
 public class UserController {
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
-	private UserService userService;
+	private final UserService userService;
 
 	@Autowired
 	public UserController(UserRepository userRepository, UserService userService) {
@@ -39,10 +39,10 @@ public class UserController {
 	}
 
 	@PostMapping("/confirmationtoken")
-    @PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
-    public ConfirmationTokenDTO addConfirmToken(@RequestBody ConfirmationTokenAddDTO confirmationTokenAddDTO) {
-        return userService.addConfirmationToken(confirmationTokenAddDTO);
-    }
+	@PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
+	public ConfirmationTokenDTO addConfirmToken(@RequestBody ConfirmationTokenAddDTO confirmationTokenAddDTO) {
+		return userService.addConfirmationToken(confirmationTokenAddDTO);
+	}
 
 	@PutMapping("/user")
 	@PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
@@ -52,22 +52,20 @@ public class UserController {
 
 	@GetMapping("/user")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public PaginationDTO<UserDTO> getUsers(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<UserDTO> getUsers(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<User> pageRequest;
 		if (search.equals("")) {
 			pageRequest = userRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = userRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<UserDTO> data = pageRequest.stream().map(UserDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 

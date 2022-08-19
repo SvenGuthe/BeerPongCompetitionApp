@@ -7,20 +7,20 @@ import javax.validation.constraints.NotNull;
 // ID = Team ID
 public class TeamInvitationLinkAddDTO extends ID {
 
-    @NotNull(message = "teamInvitationLink in TeamInvitationLinkAddDTO have to be set.")
-    String teamInvitationLink;
+	@NotNull(message = "teamInvitationLink in TeamInvitationLinkAddDTO have to be set.")
+	String teamInvitationLink;
 
-    public TeamInvitationLinkAddDTO(Long id, String teamInvitationLink) {
-        super(id);
-        this.teamInvitationLink = teamInvitationLink;
-    }
+	public TeamInvitationLinkAddDTO(Long id, String teamInvitationLink) {
+		super(id);
+		this.teamInvitationLink = teamInvitationLink;
+	}
 
-    public String getTeamInvitationLink() {
-        return teamInvitationLink;
-    }
+	public String getTeamInvitationLink() {
+		return teamInvitationLink;
+	}
 
-    public void setTeamInvitationLink(String teamInvitationLink) {
-        this.teamInvitationLink = teamInvitationLink;
-    }
+	public void setTeamInvitationLink(String teamInvitationLink) {
+		this.teamInvitationLink = teamInvitationLink;
+	}
 
 }

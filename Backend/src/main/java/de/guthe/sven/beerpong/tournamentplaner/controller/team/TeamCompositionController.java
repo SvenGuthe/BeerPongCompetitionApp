@@ -18,13 +18,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/team")
 public class TeamCompositionController {
 
-	private TeamCompositionRepository teamCompositionRepository;
+	private final TeamCompositionRepository teamCompositionRepository;
 
-	private TeamService teamService;
+	private final TeamService teamService;
 
 	@Autowired
-	public TeamCompositionController(TeamCompositionRepository teamCompositionRepository,
-									 TeamService teamService) {
+	public TeamCompositionController(TeamCompositionRepository teamCompositionRepository, TeamService teamService) {
 		this.teamCompositionRepository = teamCompositionRepository;
 		this.teamService = teamService;
 	}

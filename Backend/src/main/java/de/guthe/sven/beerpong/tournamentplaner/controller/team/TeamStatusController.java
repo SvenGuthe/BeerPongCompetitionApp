@@ -21,35 +21,32 @@ import java.util.stream.Collectors;
 @RequestMapping("/team")
 public class TeamStatusController {
 
-	private TeamStatusRepository teamStatusRepository;
+	private final TeamStatusRepository teamStatusRepository;
 
-	private TeamService teamService;
+	private final TeamService teamService;
 
 	@Autowired
-	public TeamStatusController(TeamStatusRepository teamStatusRepository,
-								TeamService teamService) {
+	public TeamStatusController(TeamStatusRepository teamStatusRepository, TeamService teamService) {
 		this.teamStatusRepository = teamStatusRepository;
 		this.teamService = teamService;
 	}
 
 	@GetMapping("/teamstatus")
 	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getTeamStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getTeamStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<TeamStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = teamStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = teamStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 

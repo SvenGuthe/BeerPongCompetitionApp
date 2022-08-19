@@ -7,20 +7,20 @@ import javax.validation.constraints.NotNull;
 // ID = UserID
 public class ConfirmationTokenAddDTO extends ID {
 
-    @NotNull(message = "ConfirmationToken have to be set!")
-    private String confirmationToken;
+	@NotNull(message = "ConfirmationToken have to be set!")
+	private String confirmationToken;
 
-    public ConfirmationTokenAddDTO(Long id, String confirmationToken) {
-        super(id);
-        this.confirmationToken = confirmationToken;
-    }
+	public ConfirmationTokenAddDTO(Long id, String confirmationToken) {
+		super(id);
+		this.confirmationToken = confirmationToken;
+	}
 
-    public String getConfirmationToken() {
-        return confirmationToken;
-    }
+	public String getConfirmationToken() {
+		return confirmationToken;
+	}
 
-    public void setConfirmationToken(String confirmationToken) {
-        this.confirmationToken = confirmationToken;
-    }
+	public void setConfirmationToken(String confirmationToken) {
+		this.confirmationToken = confirmationToken;
+	}
 
 }
