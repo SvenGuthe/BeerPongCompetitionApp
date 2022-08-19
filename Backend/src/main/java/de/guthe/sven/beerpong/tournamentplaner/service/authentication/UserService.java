@@ -8,7 +8,9 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.Confi
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.*;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdmin;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.confirmationtoken.ConfirmationToken;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.confirmationtoken.ConfirmationTokenHistory;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.ConfirmationTokenRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;

@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

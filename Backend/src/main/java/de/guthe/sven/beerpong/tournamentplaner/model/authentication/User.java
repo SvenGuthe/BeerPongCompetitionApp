@@ -1,11 +1,12 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdmin;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.confirmationtoken.ConfirmationTokenHistory;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamCompositionStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatus;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

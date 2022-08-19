@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.ConfirmationTokenHistory;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.confirmationtoken.ConfirmationTokenHistory;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;

@@ -1,6 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionadmin.CompetitionAdminDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionteam.CompetitionTeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.Competition;
 
 import javax.validation.constraints.NotNull;

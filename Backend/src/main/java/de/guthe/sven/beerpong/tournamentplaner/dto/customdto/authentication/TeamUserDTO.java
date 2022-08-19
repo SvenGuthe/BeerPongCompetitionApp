@@ -2,7 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;

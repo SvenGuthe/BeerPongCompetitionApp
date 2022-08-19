@@ -2,7 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamUpdateDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionTeamDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionteam.CompetitionTeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionTeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
