@@ -41,10 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -109,15 +106,15 @@ public class CompetitionService {
 
 	public List<CompetitionStatusDTO> updateCompetitionStatus(CompetitionStatusUpdateDTO competitionStatusUpdateDTO) {
 		Competition competition = competitionRepository.findById(competitionStatusUpdateDTO.getId()).get();
-		List<CompetitionStatus> allCompetitionStatus = competitionStatusRepository
+		Optional<CompetitionStatus> allCompetitionStatus = competitionStatusRepository
 				.findByStatus(competitionStatusUpdateDTO.getCompetitionStatusType().name());
 		CompetitionStatus competitionStatus;
 
-		if (allCompetitionStatus.size() == 0) {
+		if (allCompetitionStatus.isEmpty()) {
 			competitionStatus = new CompetitionStatus(competitionStatusUpdateDTO.getCompetitionStatusType());
 		}
 		else {
-			competitionStatus = allCompetitionStatus.get(0);
+			competitionStatus = allCompetitionStatus.get();
 		}
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -146,17 +143,17 @@ public class CompetitionService {
 			CompetitionAdminStatusUpdateDTO competitionAdminStatusUpdateDTO) {
 		CompetitionAdmin competitionAdmin = competitionAdminRepository.findById(competitionAdminStatusUpdateDTO.getId())
 				.get();
-		List<CompetitionAdminStatus> allCompetitionAdminStatus = competitionAdminStatusRepository
+		Optional<CompetitionAdminStatus> allCompetitionAdminStatus = competitionAdminStatusRepository
 				.findByStatus(competitionAdminStatusUpdateDTO.getCompetitionAdminStatusType().name());
 
 		CompetitionAdminStatus competitionAdminStatus;
 
-		if (allCompetitionAdminStatus.size() == 0) {
+		if (allCompetitionAdminStatus.isEmpty()) {
 			competitionAdminStatus = new CompetitionAdminStatus(
 					competitionAdminStatusUpdateDTO.getCompetitionAdminStatusType());
 		}
 		else {
-			competitionAdminStatus = allCompetitionAdminStatus.get(0);
+			competitionAdminStatus = allCompetitionAdminStatus.get();
 		}
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -185,16 +182,16 @@ public class CompetitionService {
 	public List<RegistrationStatusDTO> updateRegistrationStatus(
 			RegistrationStatusUpdateDTO registrationStatusUpdateDTO) {
 		CompetitionTeam competitionTeam = competitionTeamRepository.findById(registrationStatusUpdateDTO.getId()).get();
-		List<RegistrationStatus> allRegistrationStatus = registrationStatusRepository
+		Optional<RegistrationStatus> allRegistrationStatus = registrationStatusRepository
 				.findByStatus(registrationStatusUpdateDTO.getRegistrationStatusType().name());
 
 		RegistrationStatus registrationStatus;
 
-		if (allRegistrationStatus.size() == 0) {
+		if (allRegistrationStatus.isEmpty()) {
 			registrationStatus = new RegistrationStatus(registrationStatusUpdateDTO.getRegistrationStatusType());
 		}
 		else {
-			registrationStatus = allRegistrationStatus.get(0);
+			registrationStatus = allRegistrationStatus.get();
 		}
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -221,16 +218,16 @@ public class CompetitionService {
 
 	public List<BillingStatusDTO> updateBillingStatus(BillingStatusUpdateDTO billingStatusUpdateDTO) {
 		CompetitionTeam competitionTeam = competitionTeamRepository.findById(billingStatusUpdateDTO.getId()).get();
-		List<BillingStatus> allBillingStatus = billingStatusRepository
+		Optional<BillingStatus> allBillingStatus = billingStatusRepository
 				.findByStatus(billingStatusUpdateDTO.getBillingStatusType().name());
 
 		BillingStatus billingStatus;
 
-		if (allBillingStatus.size() == 0) {
+		if (allBillingStatus.isEmpty()) {
 			billingStatus = new BillingStatus(billingStatusUpdateDTO.getBillingStatusType());
 		}
 		else {
-			billingStatus = allBillingStatus.get(0);
+			billingStatus = allBillingStatus.get();
 		}
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -258,15 +255,15 @@ public class CompetitionService {
 		Competition competition = competitionRepository.findById(competitionAdminAddDTO.id).get();
 		User user = userRepository.findById(competitionAdminAddDTO.getUserId()).get();
 
-		List<CompetitionAdminStatus> competitionAdminStatusList = competitionAdminStatusRepository
+		Optional<CompetitionAdminStatus> competitionAdminStatusList = competitionAdminStatusRepository
 				.findByStatus(CompetitionAdminStatusType.PROMISED.name());
 		CompetitionAdminStatus competitionAdminStatus;
 
-		if (competitionAdminStatusList.size() == 0) {
+		if (competitionAdminStatusList.isEmpty()) {
 			competitionAdminStatus = new CompetitionAdminStatus(CompetitionAdminStatusType.PROMISED);
 		}
 		else {
-			competitionAdminStatus = competitionAdminStatusList.get(0);
+			competitionAdminStatus = competitionAdminStatusList.get();
 		}
 
 		CompetitionAdmin competitionAdmin = new CompetitionAdmin();
@@ -283,15 +280,15 @@ public class CompetitionService {
 		CompetitionTeam competitionTeam = competitionTeamRepository.findById(competitionPlayerAddDTO.getId()).get();
 		User user = userRepository.findById(competitionPlayerAddDTO.getUserId()).get();
 
-		List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository
+		Optional<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository
 				.findByStatus(CompetitionPlayerStatusType.PROMISED.name());
 		CompetitionPlayerStatus competitionPlayerStatus;
 
-		if (competitionPlayerStatusList.size() == 0) {
+		if (competitionPlayerStatusList.isEmpty()) {
 			competitionPlayerStatus = new CompetitionPlayerStatus(CompetitionPlayerStatusType.PROMISED);
 		}
 		else {
-			competitionPlayerStatus = competitionPlayerStatusList.get(0);
+			competitionPlayerStatus = competitionPlayerStatusList.get();
 		}
 
 		CompetitionPlayer competitionPlayer = new CompetitionPlayer();
@@ -312,26 +309,26 @@ public class CompetitionService {
 			team = teamRepository.findById(competitionTeamAddDTO.getTeamId()).get();
 		}
 
-		List<BillingStatus> billingStatusList = billingStatusRepository
+		Optional<BillingStatus> billingStatusList = billingStatusRepository
 				.findByStatus(BillingStatusType.NOT_PAYED.name());
 		BillingStatus billingStatus;
 
-		if (billingStatusList.size() == 0) {
+		if (billingStatusList.isEmpty()) {
 			billingStatus = new BillingStatus(BillingStatusType.NOT_PAYED);
 		}
 		else {
-			billingStatus = billingStatusList.get(0);
+			billingStatus = billingStatusList.get();
 		}
 
-		List<RegistrationStatus> registrationStatusList = registrationStatusRepository
+		Optional<RegistrationStatus> registrationStatusList = registrationStatusRepository
 				.findByStatus(RegistrationStatusType.REGISTERED.name());
 		RegistrationStatus registrationStatus;
 
-		if (registrationStatusList.size() == 0) {
+		if (registrationStatusList.isEmpty()) {
 			registrationStatus = new RegistrationStatus(RegistrationStatusType.REGISTERED);
 		}
 		else {
-			registrationStatus = registrationStatusList.get(0);
+			registrationStatus = registrationStatusList.get();
 		}
 
 		CompetitionTeam competitionTeam = new CompetitionTeam();
@@ -346,15 +343,15 @@ public class CompetitionService {
 				.map(playerId -> {
 					User user = userRepository.findById(playerId).get();
 
-					List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository
+					Optional<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository
 							.findByStatus(CompetitionPlayerStatusType.PROMISED.name());
 					CompetitionPlayerStatus competitionPlayerStatus;
 
-					if (competitionPlayerStatusList.size() == 0) {
+					if (competitionPlayerStatusList.isEmpty()) {
 						competitionPlayerStatus = new CompetitionPlayerStatus(CompetitionPlayerStatusType.PROMISED);
 					}
 					else {
-						competitionPlayerStatus = competitionPlayerStatusList.get(0);
+						competitionPlayerStatus = competitionPlayerStatusList.get();
 					}
 
 					CompetitionPlayer competitionPlayer = new CompetitionPlayer();
@@ -393,16 +390,16 @@ public class CompetitionService {
 		CompetitionPlayer competitionPlayer = competitionPlayerRepository
 				.findById(competitionPlayerStatusUpdateDTO.getId()).get();
 
-		List<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository
+		Optional<CompetitionPlayerStatus> competitionPlayerStatusList = competitionPlayerStatusRepository
 				.findByStatus(competitionPlayerStatusUpdateDTO.getCompetitionPlayerStatusType().name());
 		CompetitionPlayerStatus competitionPlayerStatus;
 
-		if (competitionPlayerStatusList.size() == 0) {
+		if (competitionPlayerStatusList.isEmpty()) {
 			competitionPlayerStatus = new CompetitionPlayerStatus(
 					competitionPlayerStatusUpdateDTO.getCompetitionPlayerStatusType());
 		}
 		else {
-			competitionPlayerStatus = competitionPlayerStatusList.get(0);
+			competitionPlayerStatus = competitionPlayerStatusList.get();
 		}
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());

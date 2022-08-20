@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface CompetitionAdminStatusRepository extends JpaRepository<CompetitionAdminStatus, Long> {
 
@@ -20,6 +20,6 @@ public interface CompetitionAdminStatusRepository extends JpaRepository<Competit
 
 	@Query(value = "SELECT * FROM CompetitionAdminStatus cas WHERE LOWER(cas.competitionadminstatusdescription) = LOWER(?1)",
 			nativeQuery = true)
-	List<CompetitionAdminStatus> findByStatus(String competitionAdminStatusType);
+	Optional<CompetitionAdminStatus> findByStatus(String competitionAdminStatusType);
 
 }

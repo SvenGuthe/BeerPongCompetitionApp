@@ -108,15 +108,15 @@ public class TeamService {
 	public List<TeamStatusDTO> updateTeamStatus(TeamStatusUpdateDTO teamStatusUpdateDTO) {
 		Team team = teamRepository.findById(teamStatusUpdateDTO.getId()).get();
 
-		List<TeamStatus> teamStatusList = teamStatusRepository
+		Optional<TeamStatus> teamStatusList = teamStatusRepository
 				.findByStatus(teamStatusUpdateDTO.getTeamStatusType().name());
 		TeamStatus teamStatus;
 
-		if (teamStatusList.size() == 0) {
+		if (teamStatusList.isEmpty()) {
 			teamStatus = new TeamStatus(teamStatusUpdateDTO.getTeamStatusType());
 		}
 		else {
-			teamStatus = teamStatusList.get(0);
+			teamStatus = teamStatusList.get();
 		}
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
