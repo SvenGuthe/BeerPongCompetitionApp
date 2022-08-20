@@ -1,5 +1,5 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
-import { tConfirmationToken, tUser, tUserDetail } from '../../types/authentication'
+import { tConfirmationToken, tUser, tUserDetail } from '../../types/user'
 import { tEnum, tPaginationDTO } from '../../types/defaults/generics'
 
 type SliceState = {

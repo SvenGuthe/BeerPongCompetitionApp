@@ -1,6 +1,6 @@
 import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios';
-import { tUser } from '../../types/authentication';
+import { tUser } from '../../types/user';
 
 type SliceState = {
     redirectToHome: boolean,
@@ -34,7 +34,7 @@ export const authenticationSlice = createSlice({
             localStorage.setItem('token', action.payload.token);
             state.authenticatedUser = action.payload.userDetail;
             state.redirectToHome = true;
-            axios.defaults.headers.common['Authorization'] =  `Bearer ${action.payload.token}`;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload.token}`;
         },
         afterLoginCleanup: state => {
             state.redirectToHome = false;
@@ -42,7 +42,7 @@ export const authenticationSlice = createSlice({
         logout: state => {
             localStorage.removeItem('token');
             state.authenticatedUser = null;
-            axios.defaults.headers.common['Authorization'] =  false;
+            axios.defaults.headers.common['Authorization'] = false;
         },
         setAuthenticatedUser: (state, action: PayloadAction<tUser | null>) => {
             state.authenticatedUser = action.payload

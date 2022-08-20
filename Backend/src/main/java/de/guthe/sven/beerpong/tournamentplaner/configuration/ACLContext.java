@@ -1,6 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
-import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.user.SecurityRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;

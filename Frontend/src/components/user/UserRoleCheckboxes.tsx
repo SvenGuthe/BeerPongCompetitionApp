@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { tUser } from "../../types/authentication";
+import { tUser } from "../../types/user";
 import { tSecurityRole } from "../../types/enums/securityRole";
 import FormItem from "../ui/form/FormItem";
 
@@ -26,10 +26,10 @@ const UserRoleCheckboxes: React.FC<{
     }, [sendRequest, roleState, user.id, role, dispatch])
 
     const onToggleRoleHandler = (newValue: string | number | boolean | string[] | number[], changed: boolean) => {
-       setRoleState(newValue as boolean);
-       console.log(role, newValue, changed);
-       
-       setSendRequest(true);
+        setRoleState(newValue as boolean);
+        console.log(role, newValue, changed);
+
+        setSendRequest(true);
     }
 
     return <FormItem defaultValue={roleState} saveValue={onToggleRoleHandler} />

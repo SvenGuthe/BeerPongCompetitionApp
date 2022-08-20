@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionTeam } from "../../../../store/competition/competition-store-actions";
-import { tUserIDAndGamerTag } from "../../../../types/authentication";
+import { tUserIDAndGamerTag } from "../../../../types/user";
 import { tCompetitionTeamAdd } from "../../../../types/competition";
 import { tTeamAndUser } from "../../../../types/team";
 import { removeDuplicates } from "../../../../utility/arrayFunctions";

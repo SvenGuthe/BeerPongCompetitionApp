@@ -1,20 +1,20 @@
 package de.guthe.sven.beerpong.tournamentplaner.service.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamCompositionStatusType;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.TeamUserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.TeamUserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.*;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition.TeamCompositionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamStatusDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLink;
-import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teamcomposition.TeamCompositionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teamcomposition.TeamCompositionStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;

@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.team;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;

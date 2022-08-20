@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/team")
+@RequestMapping("/team/teamcomposition")
 public class TeamCompositionController {
 
 	private final TeamCompositionRepository teamCompositionRepository;

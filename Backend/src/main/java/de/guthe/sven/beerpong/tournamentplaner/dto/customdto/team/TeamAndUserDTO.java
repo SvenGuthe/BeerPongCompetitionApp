@@ -1,6 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserIDAndGamerTagDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.UserIDAndGamerTagDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 
 import javax.validation.constraints.NotNull;

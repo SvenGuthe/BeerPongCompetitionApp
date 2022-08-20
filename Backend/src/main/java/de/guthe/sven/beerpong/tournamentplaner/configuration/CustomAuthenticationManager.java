@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
-import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.User;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

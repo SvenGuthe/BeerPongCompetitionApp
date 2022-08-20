@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionplayer;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
 
 import javax.validation.constraints.NotNull;

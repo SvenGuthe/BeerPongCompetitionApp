@@ -4,7 +4,7 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.BillingStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.CompetitionAdminStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.CompetitionPlayerStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.RegistrationStatusType;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication.UserIDAndGamerTagDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.UserIDAndGamerTagDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.*;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.billing.BillingStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.registration.RegistrationStatusUpdateDTO;
@@ -15,7 +15,7 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competit
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionplayer.CompetitionPlayerDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionplayer.CompetitionPlayerStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionteam.CompetitionTeamDTO;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatusHistory;
@@ -28,7 +28,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplay
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.*;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.billing.BillingStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.competitionadmin.CompetitionAdminRepository;

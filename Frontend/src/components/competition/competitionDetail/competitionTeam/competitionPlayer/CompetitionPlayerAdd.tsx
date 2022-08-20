@@ -3,7 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Container, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionPlayer } from "../../../../../store/competition/competition-store-actions";
-import { tUserIDAndGamerTag } from "../../../../../types/authentication";
+import { tUserIDAndGamerTag } from "../../../../../types/user";
 import { tCompetitionPlayerAdd } from "../../../../../types/competition";
 import { tTeamAndUser } from "../../../../../types/team";
 

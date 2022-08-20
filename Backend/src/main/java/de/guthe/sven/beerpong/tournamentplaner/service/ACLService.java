@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.service;
 
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
-import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authorization.ACLClassRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authorization.ACLEntryRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authorization.ACLObjectIdentityRepository;

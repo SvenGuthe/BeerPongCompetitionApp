@@ -1,4 +1,4 @@
-import { tTeamUser, tUser, tUserIDAndGamerTag } from "./authentication"
+import { tTeamUser, tUser, tUserIDAndGamerTag } from "./user"
 import { tCompetition } from "./competition"
 import { tEnum, tID } from "./defaults/generics"
 import { tAdditionalAttributes } from "./defaults/tables"

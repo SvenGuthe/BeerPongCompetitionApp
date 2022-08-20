@@ -3,7 +3,7 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Container, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addTeamComposition } from "../../../../store/team/team-store-actions";
-import { tUser } from "../../../../types/authentication";
+import { tUser } from "../../../../types/user";
 import { tTeamCompositionAdd } from "../../../../types/team";
 
 const TeamCompositionAdd: React.FC<{

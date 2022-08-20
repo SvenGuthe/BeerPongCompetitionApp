@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
 
