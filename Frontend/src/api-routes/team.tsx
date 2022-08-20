@@ -3,5 +3,9 @@ const base = "/team";
 export const teamStatusRoute = `${base}/teamstatus`;
 
 export const teamRoute = `${base}/team`;
-export const teamInvitationLinkRoute = `${base}/teaminvitationlink`;
-export const teamCompositionRoute = `${base}/teamcomposition`;
+
+const baseTeamInvitationLink = `${base}/teaminvitationlink`;
+export const teamInvitationLinkRoute = `${baseTeamInvitationLink}/teaminvitationlink`;
+
+const baseTeamComposition = `${base}/teamcomposition`;
+export const teamCompositionRoute = `${baseTeamComposition}/teamcomposition`;

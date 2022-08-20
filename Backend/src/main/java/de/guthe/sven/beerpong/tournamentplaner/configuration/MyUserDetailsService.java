@@ -1,8 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.*;
-import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.*;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.RoleRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -1,6 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.authentication;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.authentication.UserDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserDTO;
 
 import javax.validation.constraints.NotNull;
 

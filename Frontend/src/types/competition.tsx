@@ -1,4 +1,4 @@
-import { tUser, tUserIDAndGamerTag } from "./authentication";
+import { tUser, tUserIDAndGamerTag } from "./user";
 import { tEnum, tID } from "./defaults/generics";
 import { tAdditionalAttributes } from "./defaults/tables";
 import { tTimestamp } from "./defaults/timestamp";

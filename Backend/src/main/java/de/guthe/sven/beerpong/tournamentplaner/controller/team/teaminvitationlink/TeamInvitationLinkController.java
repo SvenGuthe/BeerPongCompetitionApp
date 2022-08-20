@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/team")
+@RequestMapping("/team/teaminvitationlink")
 public class TeamInvitationLinkController {
 
 	private final TeamInvitationLinkRepository teamInvitationLinkRepository;

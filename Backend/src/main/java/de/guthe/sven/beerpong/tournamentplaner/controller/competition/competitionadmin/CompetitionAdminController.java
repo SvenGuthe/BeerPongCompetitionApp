@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/competition")
+@RequestMapping("/competition/competitionadmin")
 public class CompetitionAdminController {
 
 	private final CompetitionAdminRepository competitionAdminRepository;

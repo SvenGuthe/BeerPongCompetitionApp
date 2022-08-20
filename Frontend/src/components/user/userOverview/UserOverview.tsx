@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { removeUsers, storeUsers } from "../../../store/user/user-store";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
+import { userRoute } from "../../../api-routes/user"
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import UserTable from "./UserTable";
 
@@ -24,8 +25,8 @@ const UserOverview: React.FC = () => {
     })
 
     useEffect(() => {
-        dispatch(getRequest(`/authentication/user?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeUsers]));
-        
+        dispatch(getRequest(`${userRoute}?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeUsers]));
+
         return () => {
             dispatch(removeUsers())
         };

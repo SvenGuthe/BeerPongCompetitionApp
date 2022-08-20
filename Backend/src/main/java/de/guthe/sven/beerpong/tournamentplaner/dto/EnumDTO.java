@@ -1,8 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.Privilege;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.Role;
+import de.guthe.sven.beerpong.tournamentplaner.model.user.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLClass;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdminStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayerStatus;

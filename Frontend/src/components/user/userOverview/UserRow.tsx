@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { tUser } from "../../../types/authentication";
+import { tUser } from "../../../types/user";
 
 const UserRow: React.FC<{ user: tUser }> = (props) => {
 

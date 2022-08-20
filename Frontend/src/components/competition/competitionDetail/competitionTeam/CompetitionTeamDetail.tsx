@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { tUserIDAndGamerTag } from "../../../../types/authentication";
+import { tUserIDAndGamerTag } from "../../../../types/user";
 import { tCompetitionTeam } from "../../../../types/competition";
 import { tEnum } from "../../../../types/defaults/generics";
 import { tTeamAndUser } from "../../../../types/team";

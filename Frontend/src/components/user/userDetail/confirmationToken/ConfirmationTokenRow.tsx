@@ -1,4 +1,4 @@
-import { tConfirmationToken } from "../../../../types/authentication";
+import { tConfirmationToken } from "../../../../types/user";
 import FormItem from "../../../ui/form/FormItem";
 
 const ConfirmationTokenRow: React.FC<{

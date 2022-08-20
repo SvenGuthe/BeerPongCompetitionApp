@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import EnumOverview from "../../components/enums/EnumOverview";
 import Hierarchy from "../../components/ui/Hierarchy";
-import { privilegeRoute } from "../../api-routes/authentication";
+import { privilegeRoute } from "../../api-routes/user";
 import { RootState } from "../../store/combine-store";
 import { homeHierarchy, privilegeHierarchy } from "../../utility/hierarchy";
 import { storePrivileges } from "../../store/user/user-store";

@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tUser } from "../../../types/authentication";
+import { tUser } from "../../../types/user";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 
 interface tProps {

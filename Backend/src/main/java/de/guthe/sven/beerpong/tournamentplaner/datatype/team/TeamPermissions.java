@@ -1,7 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.datatype.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.configuration.CustomPermission;
-import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
+import de.guthe.sven.beerpong.tournamentplaner.datatype.user.SecurityRole;
 import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import org.springframework.security.acls.model.Permission;
 import org.springframework.security.acls.model.Sid;

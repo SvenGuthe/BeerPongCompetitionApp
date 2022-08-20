@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../store/user/user-store-actions";
-import { tUser, tUserUpdate } from "../../../types/authentication";
+import { tUser, tUserUpdate } from "../../../types/user";
 import { tSecurityRole } from "../../../types/enums/securityRole";
 import { tUserStatusType } from "../../../types/enums/userStatusType";
 import FormItem from "../../ui/form/FormItem";
@@ -48,7 +48,7 @@ const UserDetailsTable: React.FC<{
             }
 
             dispatch(updateUser(newMetaData));
-            
+
         }
 
     }

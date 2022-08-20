@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/competition")
+@RequestMapping("/competition/competitionplayer")
 public class CompetitionPlayerStatusController {
 
 	private final CompetitionPlayerStatusRepository competitionPlayerStatusRepository;
