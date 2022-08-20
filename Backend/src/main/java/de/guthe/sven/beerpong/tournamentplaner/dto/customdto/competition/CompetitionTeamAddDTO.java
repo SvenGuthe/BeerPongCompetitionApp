@@ -3,7 +3,6 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 
 import javax.validation.constraints.NotNull;
-import java.util.Optional;
 
 // ID = Competition ID
 public class CompetitionTeamAddDTO extends ID {
