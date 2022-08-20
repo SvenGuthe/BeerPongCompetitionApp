@@ -1,13 +1,12 @@
 package de.guthe.sven.beerpong.tournamentplaner.repository.competition.billing;
 
-import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.BillingStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface BillingStatusRepository extends JpaRepository<BillingStatus, Long> {
 
@@ -21,6 +20,6 @@ public interface BillingStatusRepository extends JpaRepository<BillingStatus, Lo
 
 	@Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) = LOWER(?1)",
 			nativeQuery = true)
-	List<BillingStatus> findByStatus(String billingStatusType);
+	Optional<BillingStatus> findByStatus(String billingStatusType);
 
 }
