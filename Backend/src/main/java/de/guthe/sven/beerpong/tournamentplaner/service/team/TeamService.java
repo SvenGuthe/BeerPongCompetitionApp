@@ -9,6 +9,7 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLinkHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
@@ -19,7 +20,6 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.team.teamcomposition.T
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teamcomposition.TeamCompositionStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -131,8 +131,10 @@ public class TeamService {
 		team.addTeamInvitationLink(teamInvitationLink);
 		teamRepository.save(team);
 
-		return new TeamInvitationLinkDTO(
-				team.getTeamInvitationLinkHistories().get(team.getTeamInvitationLinkHistories().size() - 1));
+		List<TeamInvitationLinkHistory> teamInvitationLinkHistory = team.getTeamInvitationLinkHistories();
+		teamInvitationLinkHistory.sort(Comparator.comparing(TeamInvitationLinkHistory::getValidFrom));
+
+		return new TeamInvitationLinkDTO(teamInvitationLinkHistory.get(teamInvitationLinkHistory.size() - 1));
 	}
 
 	public TeamCompositionDTO updateTeamComposition(TeamCompositionUpdateDTO teamCompositionUpdateDTO) {

@@ -6,6 +6,8 @@ import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.Tea
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TeamInvitationLinkDTO extends EnumDTO {
 
@@ -41,7 +43,14 @@ public class TeamInvitationLinkDTO extends EnumDTO {
 		super(teamInvitationLink.getId(), teamInvitationLink.getTeamInvitationLink());
 		this.teamInvitationLink = teamInvitationLink.getTeamInvitationLink();
 		this.creationTime = teamInvitationLink.getCreationTime();
-		this.validFrom = null;
+
+		List<TeamInvitationLinkHistory> teamInvitationLinkHistoryList = teamInvitationLink
+				.getTeamInvitationLinkHistories();
+		TeamInvitationLinkHistory validTeamInvitationLink = teamInvitationLinkHistoryList.stream()
+				.filter(teamInvitationLinkHistory -> teamInvitationLinkHistory.getValidTo() == null)
+				.collect(Collectors.toList()).get(0);
+
+		this.validFrom = validTeamInvitationLink.getValidFrom();
 		this.validTo = null;
 	}
 
