@@ -47,7 +47,9 @@ public class CompetitionTeamDTO extends ID {
 		super(competitionTeam.getId());
 		this.competitionTeamName = competitionTeam.getCompetitionTeamName();
 		this.creationTime = competitionTeam.getCreationTime();
-		this.team = new TeamDTO(competitionTeam.getTeam());
+		if (competitionTeam.getTeam() != null) {
+			this.team = new TeamDTO(competitionTeam.getTeam());
+		}
 		this.competitionPlayer = competitionTeam.getCompetitionPlayers().stream().map(CompetitionPlayerDTO::new)
 				.collect(Collectors.toList());
 		this.billingStatus = competitionTeam.getBillingStatusHistories().stream().map(BillingStatusDTO::new)

@@ -23,7 +23,15 @@ public class CompetitionAdminStatusService {
 			@NotNull CompetitionAdminStatusType competitionAdminStatusType) {
 		Optional<CompetitionAdminStatus> competitionAdminStatus = competitionAdminStatusRepository
 				.findByStatus(competitionAdminStatusType.name());
-		return competitionAdminStatus.orElseGet(() -> new CompetitionAdminStatus(competitionAdminStatusType));
+		CompetitionAdminStatus finalCompetitionAdminStatus;
+		if (competitionAdminStatus.isEmpty()) {
+			finalCompetitionAdminStatus = new CompetitionAdminStatus(competitionAdminStatusType);
+			competitionAdminStatusRepository.save(finalCompetitionAdminStatus);
+		}
+		else {
+			finalCompetitionAdminStatus = competitionAdminStatus.get();
+		}
+		return finalCompetitionAdminStatus;
 	}
 
 }

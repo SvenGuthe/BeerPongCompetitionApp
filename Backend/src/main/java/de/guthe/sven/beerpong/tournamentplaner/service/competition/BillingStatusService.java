@@ -21,7 +21,15 @@ public class BillingStatusService {
 
 	public BillingStatus getOrCreateBillingStatus(@NotNull BillingStatusType billingStatusType) {
 		Optional<BillingStatus> billingStatus = billingStatusRepository.findByStatus(billingStatusType.name());
-		return billingStatus.orElseGet(() -> new BillingStatus(billingStatusType));
+		BillingStatus finalBillingStatus;
+		if (billingStatus.isEmpty()) {
+			finalBillingStatus = new BillingStatus(billingStatusType);
+			billingStatusRepository.save(finalBillingStatus);
+		}
+		else {
+			finalBillingStatus = billingStatus.get();
+		}
+		return finalBillingStatus;
 	}
 
 }

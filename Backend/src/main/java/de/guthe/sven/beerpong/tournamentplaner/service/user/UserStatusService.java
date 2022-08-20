@@ -18,7 +18,16 @@ public class UserStatusService {
 
 	public UserStatus getOrCreateUserStatus(UserStatusType userStatusType) {
 		Optional<UserStatus> userStatus = userStatusRepository.findByStatus(userStatusType.name());
-		return userStatus.orElseGet(() -> new UserStatus(userStatusType));
+		UserStatus finalUserStatus;
+		if (userStatus.isEmpty()) {
+			finalUserStatus = new UserStatus(userStatusType);
+			userStatusRepository.save(finalUserStatus);
+		}
+		else {
+			finalUserStatus = userStatus.get();
+		}
+
+		return finalUserStatus;
 	}
 
 }
