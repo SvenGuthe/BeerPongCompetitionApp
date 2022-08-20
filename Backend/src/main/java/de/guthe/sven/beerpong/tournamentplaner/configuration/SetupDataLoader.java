@@ -23,6 +23,7 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserStatusReposit
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teaminvitationlink.TeamInvitationLinkRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamCompositionStatusService;
 import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -65,7 +66,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
-	private TeamService teamService;
+	private TeamCompositionStatusService teamCompositionStatusService;
 
 	@Override
 	@Transactional
@@ -157,7 +158,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		TeamStatus teamStatus = new TeamStatus();
 		teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
 
-		TeamCompositionStatus teamCompositionStatus = teamService
+		TeamCompositionStatus teamCompositionStatus = teamCompositionStatusService
 				.getOrCreateTeamCompositionStatus(TeamCompositionStatusType.PROMISED);
 
 		Team teamPlayer = new Team();

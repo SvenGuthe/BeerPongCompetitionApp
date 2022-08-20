@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserStatusRepository extends JpaRepository<UserStatus, Long> {
 
@@ -19,6 +19,6 @@ public interface UserStatusRepository extends JpaRepository<UserStatus, Long> {
 	Page<UserStatus> findAll(PageRequest pageRequest);
 
 	@Query(value = "SELECT * FROM UserStatus us WHERE LOWER(us.userstatus) = LOWER(?1)", nativeQuery = true)
-	List<UserStatus> findByStatus(String userStatusType);
+	Optional<UserStatus> findByStatus(String userStatusType);
 
 }

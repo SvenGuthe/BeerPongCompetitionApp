@@ -5,6 +5,7 @@ import { RootState } from "../../../store/combine-store";
 import { addUser, removeUserDetail, storeUserDetail } from "../../../store/user/user-store";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
+import { userRoute } from "../../../api-routes/user";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
 import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
@@ -46,7 +47,7 @@ const UserDetails: React.FC = () => {
     useEffect(() => {
 
         if (id) {
-            dispatch(getRequestWithID(+id, "/authentication/user", [addUser, storeUserDetail]));
+            dispatch(getRequestWithID(+id, userRoute, [addUser, storeUserDetail]));
         }
 
         return () => {

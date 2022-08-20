@@ -34,13 +34,17 @@ public class UserService {
 
 	UserStatusRepository userStatusRepository;
 
+	UserStatusService userStatusService;
+
 	@Autowired
 	public UserService(UserRepository userRepository, RoleRepository roleRepository,
-			UserStatusRepository userStatusRepository, ConfirmationTokenRepository confirmationTokenRepository) {
+			UserStatusRepository userStatusRepository, ConfirmationTokenRepository confirmationTokenRepository,
+			UserStatusService userStatusService) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.userStatusRepository = userStatusRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
+		this.userStatusService = userStatusService;
 	}
 
 	public UserDetailDTO transformUserToUserDetailDTO(Long id) throws Exception {
@@ -87,15 +91,7 @@ public class UserService {
 		 * user.setRoles(roles);
 		 */
 
-		List<UserStatus> userStatus = userStatusRepository.findByStatus(userUpdateDTO.getUserStatusType().name());
-		UserStatus newUserStatus;
-
-		if (userStatus.size() == 0) {
-			newUserStatus = new UserStatus(userUpdateDTO.getUserStatusType());
-		}
-		else {
-			newUserStatus = userStatus.get(0);
-		}
+		UserStatus newUserStatus = userStatusService.getOrCreateUserStatus(userUpdateDTO.getUserStatusType());
 
 		/*
 		 * TODO: Handle Update UserStatus separate in Front- and Backend
