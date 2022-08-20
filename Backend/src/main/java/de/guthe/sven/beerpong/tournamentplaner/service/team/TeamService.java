@@ -19,6 +19,7 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.team.teamcomposition.T
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teamcomposition.TeamCompositionStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,32 +41,24 @@ public class TeamService {
 
 	TeamCompositionStatusRepository teamCompositionStatusRepository;
 
+	TeamCompositionStatusService teamCompositionStatusService;
+
+	TeamStatusService teamStatusService;
+
 	UserRepository userRepository;
 
 	@Autowired
 	public TeamService(TeamRepository teamRepository, TeamStatusRepository teamStatusRepository,
 			TeamCompositionRepository teamCompositionRepository, UserRepository userRepository,
-			TeamCompositionStatusRepository teamCompositionStatusRepository) {
+			TeamCompositionStatusRepository teamCompositionStatusRepository,
+			TeamCompositionStatusService teamCompositionStatusService, TeamStatusService teamStatusService) {
 		this.teamRepository = teamRepository;
 		this.teamStatusRepository = teamStatusRepository;
 		this.teamCompositionRepository = teamCompositionRepository;
 		this.userRepository = userRepository;
 		this.teamCompositionStatusRepository = teamCompositionStatusRepository;
-	}
-
-	public TeamCompositionStatus getOrCreateTeamCompositionStatus(TeamCompositionStatusType teamCompositionStatusType) {
-		Optional<TeamCompositionStatus> teamCompositionStatus = teamCompositionStatusRepository
-				.findByStatus(teamCompositionStatusType.name());
-		if (teamCompositionStatus.isPresent()) {
-			return teamCompositionStatus.get();
-		}
-		else {
-			TeamCompositionStatus newTeamCompositionStatus = new TeamCompositionStatus();
-			newTeamCompositionStatus.setTeamCompositionStatusType(teamCompositionStatusType);
-			teamCompositionStatusRepository.save(newTeamCompositionStatus);
-
-			return newTeamCompositionStatus;
-		}
+		this.teamCompositionStatusService = teamCompositionStatusService;
+		this.teamStatusService = teamStatusService;
 	}
 
 	public TeamDetailDTO transformTeamToTeamDetailDTO(Long id) throws Exception {
@@ -108,16 +101,7 @@ public class TeamService {
 	public List<TeamStatusDTO> updateTeamStatus(TeamStatusUpdateDTO teamStatusUpdateDTO) {
 		Team team = teamRepository.findById(teamStatusUpdateDTO.getId()).get();
 
-		Optional<TeamStatus> teamStatusList = teamStatusRepository
-				.findByStatus(teamStatusUpdateDTO.getTeamStatusType().name());
-		TeamStatus teamStatus;
-
-		if (teamStatusList.isEmpty()) {
-			teamStatus = new TeamStatus(teamStatusUpdateDTO.getTeamStatusType());
-		}
-		else {
-			teamStatus = teamStatusList.get();
-		}
+		TeamStatus teamStatus = teamStatusService.getOrCreateTeamStatus(teamStatusUpdateDTO.getTeamStatusType());
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
@@ -166,8 +150,8 @@ public class TeamService {
 
 		TeamComposition teamComposition = new TeamComposition(team, user, isAdmin);
 
-		TeamCompositionStatus teamCompositionStatus = getOrCreateTeamCompositionStatus(
-				TeamCompositionStatusType.PROMISED);
+		TeamCompositionStatus teamCompositionStatus = teamCompositionStatusService
+				.getOrCreateTeamCompositionStatus(TeamCompositionStatusType.PROMISED);
 
 		teamComposition.addTeamCompositionStatus(teamCompositionStatus);
 

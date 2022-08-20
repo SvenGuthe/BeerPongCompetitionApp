@@ -218,7 +218,9 @@ export const competitionSlice = createSlice({
                         }
                     })
 
-                    newCompetitionPlayerStatusState.push(action.payload.competitionPlayerStatus[1]);
+                    if (singleCompetitionPlayer.id === action.payload.competitionPlayerId) {
+                        newCompetitionPlayerStatusState.push(action.payload.competitionPlayerStatus[1]);
+                    }
 
                     const newSingleCompetitionPlayer: tCompetitionPlayer = {
                         ...singleCompetitionPlayer,

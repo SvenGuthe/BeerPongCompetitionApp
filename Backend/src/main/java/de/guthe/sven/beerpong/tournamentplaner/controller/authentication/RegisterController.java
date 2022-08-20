@@ -17,6 +17,7 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.user.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.EmailSenderService;
+import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamCompositionStatusService;
 import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -41,21 +42,22 @@ public class RegisterController {
 
 	private final ConfirmationTokenRepository confirmationTokenRepository;
 
-	private final TeamService teamService;
+	private final TeamCompositionStatusService teamCompositionStatusService;
 
 	private final EmailSenderService emailSenderService;
 
 	@Autowired
 	public RegisterController(UserRepository userRepository, RoleRepository roleRepository,
 			ConfirmationTokenRepository confirmationTokenRepository, EmailSenderService emailSenderService,
-			PasswordEncoder passwordEncoder, TeamStatusRepository teamStatusRepository, TeamService teamService) {
+			PasswordEncoder passwordEncoder, TeamStatusRepository teamStatusRepository,
+			TeamCompositionStatusService teamCompositionStatusService) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
 		this.emailSenderService = emailSenderService;
 		this.passwordEncoder = passwordEncoder;
 		this.teamStatusRepository = teamStatusRepository;
-		this.teamService = teamService;
+		this.teamCompositionStatusService = teamCompositionStatusService;
 	}
 
 	@PostMapping("/register")
@@ -98,7 +100,7 @@ public class RegisterController {
 			team.setPassword("");
 			team.addTeamStatus(teamStatus);
 
-			TeamCompositionStatus teamCompositionStatus = teamService
+			TeamCompositionStatus teamCompositionStatus = teamCompositionStatusService
 					.getOrCreateTeamCompositionStatus(TeamCompositionStatusType.PROMISED);
 
 			user.addTeam(team, true, teamCompositionStatus);
