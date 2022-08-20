@@ -6,6 +6,8 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplay
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class CompetitionPlayerDTO extends ID {
 
@@ -13,12 +15,12 @@ public class CompetitionPlayerDTO extends ID {
 	private UserDTO user;
 
 	@NotNull(message = "competitionPlayerStatus in CompetitionPlayerDTO have to be set.")
-	private CompetitionPlayerStatusDTO competitionPlayerStatus;
+	private Collection<CompetitionPlayerStatusDTO> competitionPlayerStatus;
 
 	@NotNull(message = "creationTime in CompetitionPlayerDTO have to be set.")
 	private Timestamp creationTime;
 
-	public CompetitionPlayerDTO(Long id, UserDTO user, CompetitionPlayerStatusDTO competitionPlayerStatus,
+	public CompetitionPlayerDTO(Long id, UserDTO user, Collection<CompetitionPlayerStatusDTO> competitionPlayerStatus,
 			Timestamp creationTime) {
 		super(id);
 		this.user = user;
@@ -29,7 +31,8 @@ public class CompetitionPlayerDTO extends ID {
 	public CompetitionPlayerDTO(CompetitionPlayer competitionPlayer) {
 		super(competitionPlayer.getId());
 		this.user = new UserDTO(competitionPlayer.getUser());
-		this.competitionPlayerStatus = new CompetitionPlayerStatusDTO(competitionPlayer.getCompetitionPlayerStatus());
+		this.competitionPlayerStatus = competitionPlayer.getCompetitionPlayerStatusHistories().stream()
+				.map(CompetitionPlayerStatusDTO::new).collect(Collectors.toList());
 		this.creationTime = competitionPlayer.getCreationTime();
 	}
 
@@ -41,11 +44,11 @@ public class CompetitionPlayerDTO extends ID {
 		this.user = user;
 	}
 
-	public CompetitionPlayerStatusDTO getCompetitionPlayerStatus() {
+	public Collection<CompetitionPlayerStatusDTO> getCompetitionPlayerStatus() {
 		return competitionPlayerStatus;
 	}
 
-	public void setCompetitionPlayerStatus(CompetitionPlayerStatusDTO competitionPlayerStatus) {
+	public void setCompetitionPlayerStatus(Collection<CompetitionPlayerStatusDTO> competitionPlayerStatus) {
 		this.competitionPlayerStatus = competitionPlayerStatus;
 	}
 

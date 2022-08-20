@@ -103,7 +103,7 @@ export const competitionSlice = createSlice({
                     const newSingleCompetitionAdmin: tCompetitionAdmin = {
                         ...singleCompetitionAdmin,
                         competitionAdminStatus: newCompetitionAdminStatusState
-                    }
+                    };
 
                     return newSingleCompetitionAdmin;
                 } else {
@@ -205,18 +205,41 @@ export const competitionSlice = createSlice({
         },
         updateCompetitionPlayerStatus: (state, action: PayloadAction<{
             competitionPlayerId: number,
-            competitionPlayerStatus: tCompetitionPlayerStatus
+            competitionPlayerStatus: tCompetitionPlayerStatus[]
         }>) => {
-            state.competitionDetail?.competition.competitionTeams.map(competitionTeam => {
-                return competitionTeam.competitionPlayer.map(singleCompetitionPlayer => {
-                    if (singleCompetitionPlayer.id === action.payload.competitionPlayerId) {
-                        singleCompetitionPlayer.competitionPlayerStatus = action.payload.competitionPlayerStatus
-                    }
-                    return singleCompetitionPlayer;
+            const newCompetitionTeams = state.competitionDetail!.competition.competitionTeams.map(competitionTeam => {
+                const newCompetitionPlayer = competitionTeam.competitionPlayer.map(singleCompetitionPlayer => {
+
+                    const newCompetitionPlayerStatusState = singleCompetitionPlayer.competitionPlayerStatus.map(singleCompetitionPlayerStatus => {
+                        if (singleCompetitionPlayerStatus.id === action.payload.competitionPlayerStatus[0].id) {
+                            return action.payload.competitionPlayerStatus[0];
+                        } else {
+                            return singleCompetitionPlayerStatus;
+                        }
+                    })
+
+                    newCompetitionPlayerStatusState.push(action.payload.competitionPlayerStatus[1]);
+
+                    const newSingleCompetitionPlayer: tCompetitionPlayer = {
+                        ...singleCompetitionPlayer,
+                        competitionPlayerStatus: newCompetitionPlayerStatusState
+                    };
+
+                    return newSingleCompetitionPlayer;
                 })
+
+                const newCompetitionTeam: tCompetitionTeam = {
+                    ...competitionTeam,
+                    competitionPlayer: newCompetitionPlayer
+                };
+
+                return newCompetitionTeam;
+
             })
+
+            state.competitionDetail!.competition.competitionTeams = newCompetitionTeams;
         },
-        updateCompetitionTeam: (state, action:PayloadAction<tCompetitionTeam>) => {
+        updateCompetitionTeam: (state, action: PayloadAction<tCompetitionTeam>) => {
             state.competitionDetail?.competition.competitionTeams.map(competitionTeam => {
                 if (competitionTeam.id === action.payload.id) {
                     return action.payload;

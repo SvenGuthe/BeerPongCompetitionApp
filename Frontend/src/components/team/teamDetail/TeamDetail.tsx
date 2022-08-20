@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
 import { updateTeamComposition } from "../../../store/team/team-store-actions";
+import { tEnum } from "../../../types/defaults/generics";
 import { tTeamCompositionUpdate } from "../../../types/team";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
@@ -73,7 +74,7 @@ const TeamDetail: React.FC = () => {
             <TeamDetailTable team={teamDetail.team} />
             {teamStatus && <TableSection>
                 <h3>Team Status</h3>
-                <EnumTable enumData={teamStatus.map(singleTeamStatus => {
+                <EnumTable enumData={[...teamStatus.map(singleTeamStatus => {
 
                     const additionalAttributes = [
                         {
@@ -93,7 +94,7 @@ const TeamDetail: React.FC = () => {
 
                     return newTeamStatus;
 
-                })} wrapped addRow={<TeamStatusAddRow id={teamDetail.team.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<TeamStatusAddRow id={teamDetail.team.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {teamInvitationLinks && <TableSection>
                 <h3>Team Einladungslinks</h3>

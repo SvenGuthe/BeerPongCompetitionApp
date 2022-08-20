@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -131,6 +132,8 @@ public class TeamService {
 
 		teamStatus.setTeamStatusHistories(currentTeamStatusHistory);
 		teamStatusRepository.save(teamStatus);
+
+		currentTeamStatusHistory.sort(Comparator.comparing(TeamStatusHistory::getValidFrom));
 
 		return currentTeamStatusHistory.subList(currentTeamStatusHistory.size() - 2, currentTeamStatusHistory.size())
 				.stream().map(TeamStatusDTO::new).collect(Collectors.toList());

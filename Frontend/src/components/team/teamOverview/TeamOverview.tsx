@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { removeTeams, storeTeams } from "../../../store/team/team-store";
+import { tTeam } from "../../../types/team";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import TeamTable from "./TeamTable";
@@ -25,7 +26,7 @@ const TeamOverview: React.FC = (props) => {
 
     useEffect(() => {
         dispatch(getRequest(`/team/team?page=${filterValues.page}&size=${filterValues.size}&search=${encodeURIComponent(filterValues.search)}`, [storeTeams]));
-    
+
         return () => {
             dispatch(removeTeams());
         }
@@ -36,7 +37,7 @@ const TeamOverview: React.FC = (props) => {
     }, []);
 
     return teams ? <TableWithSearchAndFilter changeFunction={changeFunction} itemCount={teams.size} pageSizes={pageSizes}>
-        <TeamTable teams={teams.data} />
+        <TeamTable teams={[...teams.data].sort((a: tTeam, b: tTeam) => a.id - b.id)} />
     </TableWithSearchAndFilter> : <></>;
 
 };

@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class CompetitionPlayerStatusController {
 
 	@PutMapping("/competitionplayerstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionPlayerStatusDTO updateCompetitionPlayerStatus(
+	public Collection<CompetitionPlayerStatusDTO> updateCompetitionPlayerStatus(
 			@RequestBody CompetitionPlayerStatusUpdateDTO competitionPlayerStatusUpdateDTO) {
 		return competitionService.updateCompetitionPlayerStatus(competitionPlayerStatusUpdateDTO);
 	}

@@ -24,6 +24,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmi
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdminStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayerStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayerStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
@@ -42,6 +43,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -132,6 +134,8 @@ public class CompetitionService {
 		competition.setCompetitionStatusHistories(currentCompetitionStatusHistory);
 		competitionRepository.save(competition);
 
+		currentCompetitionStatusHistory.sort(Comparator.comparing(CompetitionStatusHistory::getValidFrom));
+
 		return currentCompetitionStatusHistory
 				.subList(currentCompetitionStatusHistory.size() - 2, currentCompetitionStatusHistory.size()).stream()
 				.map(CompetitionStatusDTO::new).collect(Collectors.toList());
@@ -170,6 +174,8 @@ public class CompetitionService {
 		competitionAdmin.setCompetitionAdminStatusHistories(currentCompetitionAdminStatusHistory);
 		competitionAdminRepository.save(competitionAdmin);
 
+		currentCompetitionAdminStatusHistory.sort(Comparator.comparing(CompetitionAdminStatusHistory::getValidFrom));
+
 		return currentCompetitionAdminStatusHistory
 				.subList(currentCompetitionAdminStatusHistory.size() - 2, currentCompetitionAdminStatusHistory.size())
 				.stream().map(CompetitionAdminStatusDTO::new).collect(Collectors.toList());
@@ -205,6 +211,8 @@ public class CompetitionService {
 		registrationStatus.setRegistrationStatusHistories(currentRegistrationStatusHistory);
 		registrationStatusRepository.save(registrationStatus);
 
+		currentRegistrationStatusHistory.sort(Comparator.comparing(RegistrationStatusHistory::getValidFrom));
+
 		return currentRegistrationStatusHistory
 				.subList(currentRegistrationStatusHistory.size() - 2, currentRegistrationStatusHistory.size()).stream()
 				.map(RegistrationStatusDTO::new).collect(Collectors.toList());
@@ -238,6 +246,8 @@ public class CompetitionService {
 
 		billingStatus.setBillingStatusHistories(currentBillingStatusHistory);
 		billingStatusRepository.save(billingStatus);
+
+		currentBillingStatusHistory.sort(Comparator.comparing(BillingStatusHistory::getValidFrom));
 
 		return currentBillingStatusHistory
 				.subList(currentBillingStatusHistory.size() - 2, currentBillingStatusHistory.size()).stream()
@@ -286,7 +296,7 @@ public class CompetitionService {
 
 		CompetitionPlayer competitionPlayer = new CompetitionPlayer();
 		competitionPlayer.setCompetitionTeam(competitionTeam);
-		competitionPlayer.setCompetitionPlayerStatus(competitionPlayerStatus);
+		competitionPlayer.addCompetitionPlayerStatus(competitionPlayerStatus);
 		competitionPlayer.setUser(user);
 
 		competitionPlayerRepository.save(competitionPlayer);
@@ -347,7 +357,11 @@ public class CompetitionService {
 						competitionPlayerStatus = competitionPlayerStatusList.get(0);
 					}
 
-					return new CompetitionPlayer(competitionTeam, user, competitionPlayerStatus);
+					CompetitionPlayer competitionPlayer = new CompetitionPlayer();
+					competitionPlayer.setCompetitionTeam(competitionTeam);
+					competitionPlayer.setUser(user);
+					competitionPlayer.addCompetitionPlayerStatus(competitionPlayerStatus);
+					return competitionPlayer;
 
 				}).collect(Collectors.toList());
 
@@ -374,7 +388,7 @@ public class CompetitionService {
 		return new CompetitionDTO(competition);
 	}
 
-	public CompetitionPlayerStatusDTO updateCompetitionPlayerStatus(
+	public List<CompetitionPlayerStatusDTO> updateCompetitionPlayerStatus(
 			CompetitionPlayerStatusUpdateDTO competitionPlayerStatusUpdateDTO) {
 		CompetitionPlayer competitionPlayer = competitionPlayerRepository
 				.findById(competitionPlayerStatusUpdateDTO.getId()).get();
@@ -391,11 +405,27 @@ public class CompetitionService {
 			competitionPlayerStatus = competitionPlayerStatusList.get(0);
 		}
 
-		competitionPlayer.setCompetitionPlayerStatus(competitionPlayerStatus);
+		Timestamp now = new Timestamp(System.currentTimeMillis());
 
+		List<CompetitionPlayerStatusHistory> currentCompetitionPlayerStatusHistory = competitionPlayer
+				.getCompetitionPlayerStatusHistories().stream().peek(competitionPlayerStatusHistory -> {
+					if (competitionPlayerStatusHistory.getValidTo() == null) {
+						competitionPlayerStatusHistory.setValidTo(now);
+					}
+				}).collect(Collectors.toList());
+
+		currentCompetitionPlayerStatusHistory
+				.add(new CompetitionPlayerStatusHistory(competitionPlayer, competitionPlayerStatus, now));
+
+		competitionPlayer.setCompetitionPlayerStatusHistories(currentCompetitionPlayerStatusHistory);
 		competitionPlayerRepository.save(competitionPlayer);
 
-		return new CompetitionPlayerStatusDTO(competitionPlayerStatus);
+		currentCompetitionPlayerStatusHistory.sort(Comparator.comparing(CompetitionPlayerStatusHistory::getValidFrom));
+
+		return currentCompetitionPlayerStatusHistory
+				.subList(currentCompetitionPlayerStatusHistory.size() - 2, currentCompetitionPlayerStatusHistory.size())
+				.stream().map(CompetitionPlayerStatusDTO::new).collect(Collectors.toList());
+
 	}
 
 	public CompetitionTeamDTO updateCompetitionTeam(CompetitionTeamUpdateDTO competitionTeamUpdateDTO) {

@@ -26,7 +26,7 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 
 	@OneToMany(mappedBy = "competitionPlayerStatus", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	private List<CompetitionPlayer> competitionPlayers;
+	private List<CompetitionPlayerStatusHistory> competitionPlayerStatusHistories;
 
 	public CompetitionPlayerStatus(CompetitionPlayerStatusType competitionPlayerStatusDescription) {
 		this.competitionPlayerStatusDescription = competitionPlayerStatusDescription;
@@ -54,12 +54,12 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 		this.competitionPlayerStatusDescription = competitionPlayerStatusDescription;
 	}
 
-	public List<CompetitionPlayer> getCompetitionPlayers() {
-		return competitionPlayers;
+	public List<CompetitionPlayerStatusHistory> getCompetitionPlayers() {
+		return competitionPlayerStatusHistories;
 	}
 
-	public void setCompetitionPlayers(List<CompetitionPlayer> competitionPlayers) {
-		this.competitionPlayers = competitionPlayers;
+	public void setCompetitionPlayers(List<CompetitionPlayerStatusHistory> competitionPlayerStatusHistories) {
+		this.competitionPlayerStatusHistories = competitionPlayerStatusHistories;
 	}
 
 	public Timestamp getCreationTime() {
@@ -68,14 +68,6 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 
 	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
-	}
-
-	public void addCompetitionPlayer(CompetitionPlayer competitionPlayer) {
-		if (this.competitionPlayers == null) {
-			this.competitionPlayers = new ArrayList<>();
-		}
-		competitionPlayer.setCompetitionPlayerStatus(this);
-		this.competitionPlayers.add(competitionPlayer);
 	}
 
 }

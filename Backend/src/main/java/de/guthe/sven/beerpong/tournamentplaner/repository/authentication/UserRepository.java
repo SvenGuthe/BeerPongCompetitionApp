@@ -32,10 +32,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query(value = "SELECT DISTINCT u.userid, u.gamertag FROM User u "
 			+ "LEFT JOIN CompetitionPlayer cp ON u.userid = cp.userid "
-			+ "LEFT JOIN CompetitionPlayerStatus cps ON cp.competitionplayerstatusid = cps.competitionplayerstatusid "
+			+ "LEFT JOIN CompetitionPlayerStatusHistory cpsh ON cp.competitionplayerid = cpsh.competitionplayerid "
+			+ "LEFT JOIN CompetitionPlayerStatus cps ON cpsh.competitionplayerstatusid = cps.competitionplayerstatusid "
 			+ "LEFT JOIN CompetitionTeam ct ON cp.competitionteamid = ct.competitionteamid "
 			+ "LEFT JOIN Competition c ON ct.competitionid = c.competitionid "
-			+ "WHERE NOT (c.competitionid = ?1 AND cps.competitionplayerstatusdescription IS NOT NULL AND cps.competitionplayerstatusdescription IN ('INVITED', 'PROMISED'))",
+			+ "WHERE NOT (c.competitionid = ?1 AND cpsh.validto IS NULL AND cps.competitionplayerstatusdescription IS NOT NULL AND cps.competitionplayerstatusdescription IN ('INVITED', 'PROMISED'))",
 			nativeQuery = true)
 	Collection<IUserIDAndGamerTagDTO> findAllPossiblePlayers(Long competitionId);
 

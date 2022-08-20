@@ -7,6 +7,8 @@ import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "competitionplayer")
@@ -27,10 +29,9 @@ public class CompetitionPlayer implements ACLObjectInterface {
 	@JsonIgnore
 	private User user;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-	@JoinColumn(name = "competitionplayerstatusid", nullable = false)
-	@JsonIgnore
-	private CompetitionPlayerStatus competitionPlayerStatus;
+	@OneToMany(mappedBy = "competitionPlayer", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<CompetitionPlayerStatusHistory> competitionPlayerStatusHistories;
 
 	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
@@ -39,10 +40,10 @@ public class CompetitionPlayer implements ACLObjectInterface {
 	}
 
 	public CompetitionPlayer(CompetitionTeam competitionTeam, User user,
-			CompetitionPlayerStatus competitionPlayerStatus) {
+			List<CompetitionPlayerStatusHistory> competitionPlayerStatusHistories) {
 		this.competitionTeam = competitionTeam;
 		this.user = user;
-		this.competitionPlayerStatus = competitionPlayerStatus;
+		this.competitionPlayerStatusHistories = competitionPlayerStatusHistories;
 	}
 
 	@Override
@@ -71,12 +72,23 @@ public class CompetitionPlayer implements ACLObjectInterface {
 		this.user = user;
 	}
 
-	public CompetitionPlayerStatus getCompetitionPlayerStatus() {
-		return competitionPlayerStatus;
+	public List<CompetitionPlayerStatusHistory> getCompetitionPlayerStatusHistories() {
+		return competitionPlayerStatusHistories;
 	}
 
-	public void setCompetitionPlayerStatus(CompetitionPlayerStatus competitionPlayerStatus) {
-		this.competitionPlayerStatus = competitionPlayerStatus;
+	public void setCompetitionPlayerStatusHistories(
+			List<CompetitionPlayerStatusHistory> competitionPlayerStatusHistories) {
+		this.competitionPlayerStatusHistories = competitionPlayerStatusHistories;
+	}
+
+	public void addCompetitionPlayerStatus(CompetitionPlayerStatus competitionPlayerStatus) {
+		CompetitionPlayerStatusHistory competitionPlayerStatusHistory = new CompetitionPlayerStatusHistory();
+		competitionPlayerStatusHistory.setCompetitionPlayer(this);
+		competitionPlayerStatusHistory.setCompetitionPlayerStatus(competitionPlayerStatus);
+		if (this.competitionPlayerStatusHistories == null) {
+			this.competitionPlayerStatusHistories = new ArrayList<>();
+		}
+		this.competitionPlayerStatusHistories.add(competitionPlayerStatusHistory);
 	}
 
 	public Timestamp getCreationTime() {

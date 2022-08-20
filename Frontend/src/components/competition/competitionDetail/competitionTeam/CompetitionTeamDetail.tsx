@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { tUserIDAndGamerTag } from "../../../../types/authentication";
 import { tCompetitionTeam } from "../../../../types/competition";
+import { tEnum } from "../../../../types/defaults/generics";
 import { tTeamAndUser } from "../../../../types/team";
 import EnumTable from "../../../enums/EnumTable";
 import TableSection from "../../../layout/TableSection";
@@ -42,7 +43,7 @@ const CompetitionTeamDetail: React.FC<{
             <CompetitionTeamDetailTable teams={props.teams} competitionTeamDetail={competitionTeamDetail} />
             {competitionTeamRegistrationStatus && <TableSection>
                 <h5>Turnier Team Registrations Status</h5>
-                <EnumTable enumData={competitionTeamRegistrationStatus.map(singleCompetitionTeamRegistrationStatus => {
+                <EnumTable enumData={[...competitionTeamRegistrationStatus.map(singleCompetitionTeamRegistrationStatus => {
 
                     const additionalAttributes = [
                         {
@@ -62,11 +63,11 @@ const CompetitionTeamDetail: React.FC<{
 
                     return newCompetitionTeamRegistrationStatus;
 
-                })} wrapped addRow={<RegistrationStatusAddRow id={competitionTeamDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<RegistrationStatusAddRow id={competitionTeamDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionTeamBillingStatus && <TableSection>
                 <h5>Turnier Team Zahlungs Status</h5>
-                <EnumTable enumData={competitionTeamBillingStatus.map(singleCompetitionTeamBillingStatus => {
+                <EnumTable enumData={[...competitionTeamBillingStatus.map(singleCompetitionTeamBillingStatus => {
 
                     const additionalAttributes = [
                         {
@@ -86,7 +87,7 @@ const CompetitionTeamDetail: React.FC<{
 
                     return newCompetitionTeamBillingStatus;
 
-                })} wrapped addRow={<BillingStatusAddRow id={competitionTeamDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<BillingStatusAddRow id={competitionTeamDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionPlayer && <TableSection>
                 <h5>Turnier Spieler</h5>

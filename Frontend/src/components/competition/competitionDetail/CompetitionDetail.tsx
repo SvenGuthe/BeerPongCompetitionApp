@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addCompetition, removeCompetitionDetail, storeCompetitionDetail } from "../../../store/competition/competition-store";
+import { tEnum } from "../../../types/defaults/generics";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
@@ -53,7 +54,7 @@ const CompetitionDetail: React.FC = (props) => {
             <CompetitionDetailTable competition={competitionDetail.competition} />
             {competitionStatus && <TableSection>
                 <h3>Turnier Status</h3>
-                <EnumTable enumData={competitionStatus.map(singleCompetitionStatus => {
+                <EnumTable enumData={[...competitionStatus.map(singleCompetitionStatus => {
 
                     const additionalAttributes = [
                         {
@@ -73,7 +74,7 @@ const CompetitionDetail: React.FC = (props) => {
 
                     return newCompetitionStatus;
 
-                })} wrapped addRow={<CompetitionStatusAddRow id={competitionDetail.competition.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<CompetitionStatusAddRow id={competitionDetail.competition.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
             {competitionAdminStatus && <TableSection>
                 <h3>Turnier Admins</h3>

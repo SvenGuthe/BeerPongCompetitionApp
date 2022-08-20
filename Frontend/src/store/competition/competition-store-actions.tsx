@@ -122,7 +122,12 @@ export const updateCompetitionPlayerStatus = (competitionPlayerStatus: tCompetit
     return async (dispatch: Dispatch<any>) => {
         console.log(`Send ${competitionPlayerStatusRoute} [PUT] Request`);
         const sendRequest = async () => await axios.put(competitionPlayerStatusRoute, competitionPlayerStatus).then((response) => {
-            dispatch(updateCompetitionPlayerStatusState(response.data));
+            dispatch(
+                updateCompetitionPlayerStatusState({
+                    competitionPlayerId: competitionPlayerStatus.id,
+                    competitionPlayerStatus: response.data
+                })
+            );
         }).catch(function (error) {
             console.log(error);
         });

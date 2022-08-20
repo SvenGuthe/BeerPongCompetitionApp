@@ -197,11 +197,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		CompetitionPlayer competitionPlayerMod = new CompetitionPlayer();
 		competitionPlayerMod.setUser(moderatorUser);
-		competitionPlayerMod.setCompetitionPlayerStatus(competitionPlayerStatus);
+		competitionPlayerMod.addCompetitionPlayerStatus(competitionPlayerStatus);
 
 		CompetitionPlayer competitionPlayerAdmin = new CompetitionPlayer();
 		competitionPlayerAdmin.setUser(adminUser);
-		competitionPlayerAdmin.setCompetitionPlayerStatus(competitionPlayerStatus);
+		competitionPlayerAdmin.addCompetitionPlayerStatus(competitionPlayerStatus);
 
 		BillingStatus billingStatus = new BillingStatus();
 		billingStatus.setBillingStatusDescription(BillingStatusType.PAYED);

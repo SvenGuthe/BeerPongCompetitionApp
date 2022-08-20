@@ -26,8 +26,11 @@ export type tCompetitionAdminStatus = tEnum & {
 }
 
 export type tCompetitionPlayerStatus = tEnum & {
+    competitionPlayerStatusId: number,
     competitionPlayerStatusDescription: tCompetitionPlayerStatusType,
-    creationTime: tTimestamp
+    creationTime: tTimestamp,
+    validFrom: tTimestamp,
+    validTo?: tTimestamp
 }
 
 export type tCompetitionStatus = tEnum & tAdditionalAttributes & {
@@ -54,7 +57,7 @@ export type tCompetitionAdmin = tID & {
 
 export type tCompetitionPlayer = tID & {
     user: tUser,
-    competitionPlayerStatus: tCompetitionPlayerStatus,
+    competitionPlayerStatus: tCompetitionPlayerStatus[],
     creationTime: tTimestamp
 }
 

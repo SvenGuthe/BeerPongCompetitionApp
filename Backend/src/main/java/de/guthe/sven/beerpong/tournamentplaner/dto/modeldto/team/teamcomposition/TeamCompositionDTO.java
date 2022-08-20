@@ -27,7 +27,8 @@ public class TeamCompositionDTO extends ID {
 	@NotNull(message = "teamCompositionStatusDTOS in TeamCompositionDTO have to be set.")
 	private Collection<TeamCompositionStatusDTO> teamCompositionStatus;
 
-	public TeamCompositionDTO(Long id, TeamDTO team, UserDTO user, Boolean isAdmin, Timestamp creationTime, Collection<TeamCompositionStatusDTO> teamCompositionStatus) {
+	public TeamCompositionDTO(Long id, TeamDTO team, UserDTO user, Boolean isAdmin, Timestamp creationTime,
+			Collection<TeamCompositionStatusDTO> teamCompositionStatus) {
 		super(id);
 		this.team = team;
 		this.user = user;
@@ -42,7 +43,8 @@ public class TeamCompositionDTO extends ID {
 		this.user = new UserDTO(teamComposition.getUser());
 		this.isAdmin = teamComposition.getAdmin();
 		this.creationTime = teamComposition.getCreationTime();
-		this.teamCompositionStatus = teamComposition.getTeamCompositionStatusHistories().stream().map(TeamCompositionStatusDTO::new).collect(Collectors.toList());
+		this.teamCompositionStatus = teamComposition.getTeamCompositionStatusHistories().stream()
+				.map(TeamCompositionStatusDTO::new).collect(Collectors.toList());
 	}
 
 	public TeamDTO getTeam() {
@@ -84,4 +86,5 @@ public class TeamCompositionDTO extends ID {
 	public void setTeamCompositionStatus(Collection<TeamCompositionStatusDTO> teamCompositionStatus) {
 		this.teamCompositionStatus = teamCompositionStatus;
 	}
+
 }
