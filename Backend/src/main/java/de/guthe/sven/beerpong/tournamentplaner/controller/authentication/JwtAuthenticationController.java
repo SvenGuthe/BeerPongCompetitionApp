@@ -34,8 +34,7 @@ public class JwtAuthenticationController {
 	private AuthenticationManager authenticationManager;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public JwtResponseDTO createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest)
-			throws Exception {
+	public JwtResponseDTO createAuthenticationToken(@RequestBody JwtRequestDTO authenticationRequest) throws Exception {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 

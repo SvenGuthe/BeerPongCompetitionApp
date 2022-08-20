@@ -10,7 +10,7 @@ const TeamInvitationLinkTable: React.FC<{
     additionalAttributesHeader?: string[]
 }> = (props) => {
 
-    const teamInvitationLinks = props.teamInvitationLinks;
+    const teamInvitationLinks = [...props.teamInvitationLinks].sort((a: tTeamInvitationLink, b: tTeamInvitationLink) => a.id - b.id);
     const wrapped = props.wrapped ? props.wrapped : false;
     const additionalAttributesHeader = props.additionalAttributesHeader ? props.additionalAttributesHeader : [];
 

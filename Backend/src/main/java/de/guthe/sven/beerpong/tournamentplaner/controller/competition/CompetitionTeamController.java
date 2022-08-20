@@ -2,7 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionTeamUpdateDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionTeamDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionteam.CompetitionTeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionTeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
@@ -19,16 +19,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionTeamController {
 
-	private ACLService aclService;
+	private final ACLService aclService;
 
-	private CompetitionTeamRepository competitionTeamRepository;
+	private final CompetitionTeamRepository competitionTeamRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public CompetitionTeamController(ACLService aclService,
-									 CompetitionTeamRepository competitionTeamRepository,
-									 CompetitionService competitionService) {
+	public CompetitionTeamController(ACLService aclService, CompetitionTeamRepository competitionTeamRepository,
+			CompetitionService competitionService) {
 		this.aclService = aclService;
 		this.competitionTeamRepository = competitionTeamRepository;
 		this.competitionService = competitionService;
@@ -59,20 +58,23 @@ public class CompetitionTeamController {
 	}
 
 	/*
-	@PostMapping("/competitionteam")
-	@Transactional
-	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public CompetitionTeam addCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Sid sidCreator = new PrincipalSid(authentication);
-
-		Map<Sid, List<Permission>> initialCompetitionTeamPermissions = CompetitionTeamPermission.initialCompetitionTeamPermissions;
-		initialCompetitionTeamPermissions.put(sidCreator, CompetitionTeamPermission.ownerPermissions);
-
-		competitionTeamRepository.save(competitionTeam);
-		aclService.setPrivileges(competitionTeam, initialCompetitionTeamPermissions);
-		return competitionTeam;
-	}
+	 * @PostMapping("/competitionteam")
+	 *
+	 * @Transactional
+	 *
+	 * @PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')") public CompetitionTeam
+	 * addCompetitionTeam(@RequestBody CompetitionTeam competitionTeam) { Authentication
+	 * authentication = SecurityContextHolder.getContext().getAuthentication(); Sid
+	 * sidCreator = new PrincipalSid(authentication);
+	 *
+	 * Map<Sid, List<Permission>> initialCompetitionTeamPermissions =
+	 * CompetitionTeamPermission.initialCompetitionTeamPermissions;
+	 * initialCompetitionTeamPermissions.put(sidCreator,
+	 * CompetitionTeamPermission.ownerPermissions);
+	 *
+	 * competitionTeamRepository.save(competitionTeam);
+	 * aclService.setPrivileges(competitionTeam, initialCompetitionTeamPermissions);
+	 * return competitionTeam; }
 	 */
 
 }

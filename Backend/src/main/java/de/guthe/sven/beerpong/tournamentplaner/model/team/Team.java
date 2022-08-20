@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLink;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLinkHistory;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -19,7 +23,7 @@ public class Team implements ACLObjectInterface {
 	@Column(name = "teamid")
 	private Long id;
 
-	@Column(name = "teamname", nullable = false)
+	@Column(name = "teamname", nullable = false, unique = true)
 	private String teamName;
 
 	@Column(name = "password", nullable = false)
@@ -115,11 +119,12 @@ public class Team implements ACLObjectInterface {
 		this.teamStatusHistories = teamStatusHistories;
 	}
 
-	public void addUser(User user) {
+	public void addUser(User user, Boolean admin, TeamCompositionStatus teamCompositionStatus) {
 		TeamComposition teamComposition = new TeamComposition();
 		teamComposition.setTeam(this);
 		teamComposition.setUser(user);
-		teamComposition.setAdmin(true);
+		teamComposition.setAdmin(admin);
+		teamComposition.addTeamCompositionStatus(teamCompositionStatus);
 		if (this.teamCompositions == null) {
 			this.teamCompositions = new ArrayList<>();
 		}
@@ -153,4 +158,5 @@ public class Team implements ACLObjectInterface {
 	public void setCompetitionTeams(List<CompetitionTeam> competitionTeams) {
 		this.competitionTeams = competitionTeams;
 	}
+
 }

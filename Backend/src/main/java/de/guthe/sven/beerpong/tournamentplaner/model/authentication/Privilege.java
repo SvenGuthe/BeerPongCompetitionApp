@@ -16,14 +16,14 @@ public class Privilege {
 	@Column(name = "privilegeid", nullable = false)
 	private Long id;
 
-	@Column(name = "privilege", nullable = false)
+	@Column(name = "privilege", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private SecurityPrivilege privilege;
 
-	@ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY,
+	@OneToMany(mappedBy = "privilege", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
-	private Collection<Role> roles;
+	private Collection<RolePrivilege> rolePrivileges;
 
 	public Privilege() {
 	}
@@ -44,12 +44,12 @@ public class Privilege {
 		this.privilege = privilege;
 	}
 
-	public Collection<Role> getRoles() {
-		return roles;
+	public Collection<RolePrivilege> getRolePrivileges() {
+		return rolePrivileges;
 	}
 
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
+	public void setRolePrivileges(Collection<RolePrivilege> rolePrivileges) {
+		this.rolePrivileges = rolePrivileges;
 	}
 
 }

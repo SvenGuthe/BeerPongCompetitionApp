@@ -4,23 +4,26 @@ import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityPr
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.PredefinedPrivileges;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.*;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.UserStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdminStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayerStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamInvitationLink;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatus;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.PrivilegeRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamInvitationLinkRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.team.teaminvitationlink.TeamInvitationLinkRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamRepository;
+import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -29,10 +32,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -63,6 +63,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private TeamService teamService;
 
 	@Override
 	@Transactional
@@ -95,7 +98,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		adminUser.setRoles(Arrays.asList(adminRole, moderatorRole, playerRole));
 		adminUser.setEnabled(true);
 		adminUser.setGamerTag("admin");
-		adminUser.setUserStatus(userStatus);
+
+		UserStatusHistory userStatusHistoryAdmin = new UserStatusHistory();
+		userStatusHistoryAdmin.setUser(adminUser);
+		userStatusHistoryAdmin.setUserStatus(userStatus);
+
+		adminUser.addUserStatusHistory(userStatusHistoryAdmin);
 		userRepository.save(adminUser);
 
 		User moderatorUser = new User();
@@ -106,7 +114,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		moderatorUser.setRoles(Arrays.asList(moderatorRole, playerRole));
 		moderatorUser.setEnabled(true);
 		moderatorUser.setGamerTag("moderator");
-		moderatorUser.setUserStatus(userStatus);
+
+		UserStatusHistory userStatusHistoryModerator = new UserStatusHistory();
+		userStatusHistoryModerator.setUser(moderatorUser);
+		userStatusHistoryModerator.setUserStatus(userStatus);
+
+		moderatorUser.addUserStatusHistory(userStatusHistoryModerator);
 		userRepository.save(moderatorUser);
 
 		User playerUser = new User();
@@ -114,10 +127,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		playerUser.setLastName("player");
 		playerUser.setPassword(passwordEncoder.encode("player"));
 		playerUser.setEmail("player@player.com");
-		playerUser.setRoles(Arrays.asList(playerRole));
+		playerUser.setRoles(Collections.singletonList(playerRole));
 		playerUser.setEnabled(true);
 		playerUser.setGamerTag("player");
-		playerUser.setUserStatus(userStatus);
+
+		UserStatusHistory userStatusHistoryPlayer = new UserStatusHistory();
+		userStatusHistoryPlayer.setUser(playerUser);
+		userStatusHistoryPlayer.setUserStatus(userStatus);
+
+		playerUser.addUserStatusHistory(userStatusHistoryPlayer);
 		userRepository.save(playerUser);
 
 		User testUser = new User();
@@ -125,20 +143,28 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		testUser.setLastName("test");
 		testUser.setPassword(passwordEncoder.encode("test"));
 		testUser.setEmail("test@test.com");
-		testUser.setRoles(Arrays.asList(playerRole));
+		testUser.setRoles(Collections.singletonList(playerRole));
 		testUser.setEnabled(true);
 		testUser.setGamerTag("test");
-		testUser.setUserStatus(userStatus);
+
+		UserStatusHistory userStatusHistoryTest = new UserStatusHistory();
+		userStatusHistoryTest.setUser(testUser);
+		userStatusHistoryTest.setUserStatus(userStatus);
+
+		testUser.addUserStatusHistory(userStatusHistoryTest);
 		userRepository.save(testUser);
 
 		TeamStatus teamStatus = new TeamStatus();
 		teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
 
+		TeamCompositionStatus teamCompositionStatus = teamService
+				.getOrCreateTeamCompositionStatus(TeamCompositionStatusType.PROMISED);
+
 		Team teamPlayer = new Team();
 		teamPlayer.setPassword("password");
 		teamPlayer.setPlayerTeam(true);
 		teamPlayer.setTeamName(playerUser.getGamerTag());
-		teamPlayer.addUser(playerUser);
+		teamPlayer.addUser(playerUser, true, teamCompositionStatus);
 		teamPlayer.addTeamStatus(teamStatus);
 
 		teamRepository.save(teamPlayer);
@@ -157,9 +183,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		teamModAdmin.setPassword("password");
 		teamModAdmin.setPlayerTeam(false);
 		teamModAdmin.setTeamName("teamModAdmin");
-		teamModAdmin.addUser(moderatorUser);
-		teamModAdmin.addUser(adminUser);
-		teamModAdmin.addUser(testUser);
+		teamModAdmin.addUser(moderatorUser, true, teamCompositionStatus);
+		teamModAdmin.addUser(adminUser, true, teamCompositionStatus);
+		teamModAdmin.addUser(testUser, true, teamCompositionStatus);
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink1);
 		teamModAdmin.addTeamInvitationLink(teamInvitationLink2);
 		teamModAdmin.addTeamStatus(teamStatus);
@@ -171,11 +197,11 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		CompetitionPlayer competitionPlayerMod = new CompetitionPlayer();
 		competitionPlayerMod.setUser(moderatorUser);
-		competitionPlayerMod.setCompetitionPlayerStatus(competitionPlayerStatus);
+		competitionPlayerMod.addCompetitionPlayerStatus(competitionPlayerStatus);
 
 		CompetitionPlayer competitionPlayerAdmin = new CompetitionPlayer();
 		competitionPlayerAdmin.setUser(adminUser);
-		competitionPlayerAdmin.setCompetitionPlayerStatus(competitionPlayerStatus);
+		competitionPlayerAdmin.addCompetitionPlayerStatus(competitionPlayerStatus);
 
 		BillingStatus billingStatus = new BillingStatus();
 		billingStatus.setBillingStatusDescription(BillingStatusType.PAYED);

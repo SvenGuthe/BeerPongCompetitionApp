@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatusHistory;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.registration.RegistrationStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;

@@ -8,7 +8,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@NamedQuery(name = "TeamStatus.findByDescription", query = "SELECT ts FROM TeamStatus ts WHERE teamStatusDescription = ?1")
+@NamedQuery(name = "TeamStatus.findByDescription",
+		query = "SELECT ts FROM TeamStatus ts WHERE teamStatusDescription = ?1")
 @Table(name = "teamstatus")
 public class TeamStatus implements ACLObjectInterface {
 
@@ -17,7 +18,7 @@ public class TeamStatus implements ACLObjectInterface {
 	@Column(name = "teamstatusid")
 	private Long id;
 
-	@Column(name = "teamstatusdescription", nullable = false)
+	@Column(name = "teamstatusdescription", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private TeamStatusType teamStatusDescription;
 

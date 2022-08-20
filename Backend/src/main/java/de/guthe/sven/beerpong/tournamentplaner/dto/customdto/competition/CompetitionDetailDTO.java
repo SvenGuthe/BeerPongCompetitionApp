@@ -9,55 +9,56 @@ import java.util.Collection;
 
 public class CompetitionDetailDTO {
 
-    @NotNull(message = "competition in CompetitionDetailDTO have to be set.")
-    CompetitionDTO competition;
+	@NotNull(message = "competition in CompetitionDetailDTO have to be set.")
+	CompetitionDTO competition;
 
-    @NotNull(message = "possibleAdminUsers in CompetitionDetailDTO have to be set.")
-    Collection<UserIDAndGamerTagDTO> possibleAdminUsers;
+	@NotNull(message = "possibleAdminUsers in CompetitionDetailDTO have to be set.")
+	Collection<UserIDAndGamerTagDTO> possibleAdminUsers;
 
-    @NotNull(message = "possiblePlayers in CompetitionDetailDTO have to be set.")
-    Collection<UserIDAndGamerTagDTO> possiblePlayers;
+	@NotNull(message = "possiblePlayers in CompetitionDetailDTO have to be set.")
+	Collection<UserIDAndGamerTagDTO> possiblePlayers;
 
-    @NotNull(message = "teams in CompetitionDetailDTO have to be set.")
-    Collection<TeamAndUserDTO> teams;
+	@NotNull(message = "teams in CompetitionDetailDTO have to be set.")
+	Collection<TeamAndUserDTO> teams;
 
-    public CompetitionDetailDTO(CompetitionDTO competition, Collection<UserIDAndGamerTagDTO> possibleAdminUsers, Collection<UserIDAndGamerTagDTO> possiblePlayers, Collection<TeamAndUserDTO> teams) {
-        this.competition = competition;
-        this.possibleAdminUsers = possibleAdminUsers;
-        this.possiblePlayers = possiblePlayers;
-        this.teams = teams;
-    }
+	public CompetitionDetailDTO(CompetitionDTO competition, Collection<UserIDAndGamerTagDTO> possibleAdminUsers,
+			Collection<UserIDAndGamerTagDTO> possiblePlayers, Collection<TeamAndUserDTO> teams) {
+		this.competition = competition;
+		this.possibleAdminUsers = possibleAdminUsers;
+		this.possiblePlayers = possiblePlayers;
+		this.teams = teams;
+	}
 
-    public CompetitionDTO getCompetition() {
-        return competition;
-    }
+	public CompetitionDTO getCompetition() {
+		return competition;
+	}
 
-    public void setCompetition(CompetitionDTO competition) {
-        this.competition = competition;
-    }
+	public void setCompetition(CompetitionDTO competition) {
+		this.competition = competition;
+	}
 
-    public Collection<UserIDAndGamerTagDTO> getPossibleAdminUsers() {
-        return possibleAdminUsers;
-    }
+	public Collection<UserIDAndGamerTagDTO> getPossibleAdminUsers() {
+		return possibleAdminUsers;
+	}
 
-    public void setPossibleAdminUsers(Collection<UserIDAndGamerTagDTO> possibleAdminUsers) {
-        this.possibleAdminUsers = possibleAdminUsers;
-    }
+	public void setPossibleAdminUsers(Collection<UserIDAndGamerTagDTO> possibleAdminUsers) {
+		this.possibleAdminUsers = possibleAdminUsers;
+	}
 
-    public Collection<UserIDAndGamerTagDTO> getPossiblePlayers() {
-        return possiblePlayers;
-    }
+	public Collection<UserIDAndGamerTagDTO> getPossiblePlayers() {
+		return possiblePlayers;
+	}
 
-    public void setPossiblePlayers(Collection<UserIDAndGamerTagDTO> possiblePlayers) {
-        this.possiblePlayers = possiblePlayers;
-    }
+	public void setPossiblePlayers(Collection<UserIDAndGamerTagDTO> possiblePlayers) {
+		this.possiblePlayers = possiblePlayers;
+	}
 
-    public Collection<TeamAndUserDTO> getTeams() {
-        return teams;
-    }
+	public Collection<TeamAndUserDTO> getTeams() {
+		return teams;
+	}
 
-    public void setTeams(Collection<TeamAndUserDTO> teams) {
-        this.teams = teams;
-    }
+	public void setTeams(Collection<TeamAndUserDTO> teams) {
+		this.teams = teams;
+	}
 
 }

@@ -18,7 +18,7 @@ const UserRow: React.FC<{ user: tUser }> = (props) => {
         <td>{user.id}</td>
         <td>{user.gamerTag}</td>
         <td>{user.enabled ? "true" : "false"}</td>
-        <td>{user.userStatus.userStatus}</td>
+        <td>{user.userStatus.filter(status => status.validTo === null)[0].userStatus}</td>
         {additionalAttributes.map(additionalAttribute => {
             return additionalAttribute.reactElement ? <td key={additionalAttribute.id}>{additionalAttribute.reactElement}</td> : <td key={additionalAttribute.id}>{additionalAttribute.value}</td>;
         })}

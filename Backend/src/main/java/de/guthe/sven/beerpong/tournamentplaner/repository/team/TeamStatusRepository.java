@@ -11,18 +11,17 @@ import java.util.List;
 
 public interface TeamStatusRepository extends JpaRepository<TeamStatus, Long> {
 
-    List<TeamStatus> findByDescription(TeamStatusType teamstatustype);
+	List<TeamStatus> findByDescription(TeamStatusType teamstatustype);
 
-    @Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.id LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.id LIKE CONCAT(?1, '%')",
-            nativeQuery = true)
-    Page<TeamStatus> findAll(String search, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR ts.id LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<TeamStatus> findAll(String search, PageRequest pageRequest);
 
-    @Query("select p from TeamStatus p")
-    Page<TeamStatus> findAll(PageRequest pageRequest);
+	@Query("select p from TeamStatus p")
+	Page<TeamStatus> findAll(PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) = LOWER(?1)",
-            nativeQuery = true)
-    List<TeamStatus> findByStatus(String teamStatusType);
+	@Query(value = "SELECT * FROM TeamStatus ts WHERE LOWER(ts.teamstatusdescription) = LOWER(?1)", nativeQuery = true)
+	List<TeamStatus> findByStatus(String teamStatusType);
 
 }

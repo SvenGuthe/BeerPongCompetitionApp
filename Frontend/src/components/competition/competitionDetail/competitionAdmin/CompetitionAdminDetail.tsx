@@ -4,6 +4,7 @@ import TableSection from "../../../layout/TableSection";
 import EnumTable from "../../../enums/EnumTable";
 import AdminStatusAddRow from "./adminStatus/AdminStatusAddRow";
 import { useMemo } from "react";
+import { tEnum } from "../../../../types/defaults/generics";
 
 const CompetitionAdminDetail: React.FC<{
     competitionAdminDetail: tCompetitionAdmin;
@@ -21,7 +22,7 @@ const CompetitionAdminDetail: React.FC<{
             <CompetitionAdminDetailTable competitionAdminDetail={competitionAdminDetail} />
             {competitionAdminStatus && <TableSection>
                 <h5>Turnier Admin Status</h5>
-                <EnumTable enumData={competitionAdminStatus.map(singleCompetitionAdminStatus => {
+                <EnumTable enumData={[...competitionAdminStatus.map(singleCompetitionAdminStatus => {
 
                     const additionalAttributes = [
                         {
@@ -41,7 +42,7 @@ const CompetitionAdminDetail: React.FC<{
 
                     return newCompetitionAdminStatus;
 
-                })} wrapped addRow={<AdminStatusAddRow id={competitionAdminDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<AdminStatusAddRow id={competitionAdminDetail.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
             </TableSection>}
         </>}
     </>;

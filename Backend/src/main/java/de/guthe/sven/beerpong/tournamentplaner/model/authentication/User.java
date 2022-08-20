@@ -1,10 +1,12 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionAdmin;
-import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionPlayer;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.confirmationtoken.ConfirmationTokenHistory;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
-import de.guthe.sven.beerpong.tournamentplaner.model.team.TeamComposition;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamComposition;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatus;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedQuery(name = "Role.findByEmail", query = "SELECT u FROM User u WHERE LOWER(u.email) = LOWER(?1)")
@@ -29,10 +32,10 @@ public class User {
 	@Column(name = "lastname", nullable = false)
 	private String lastName;
 
-	@Column(name = "gamertag", nullable = false)
+	@Column(name = "gamertag", nullable = false, unique = true)
 	private String gamerTag;
 
-	@Column(name = "email", nullable = false)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
 	@Column(name = "password", nullable = false)
@@ -41,28 +44,27 @@ public class User {
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
 
-	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp")
+	@Column(name = "creationtime", columnDefinition = "timestamp default current_timestamp", nullable = false)
 	private Timestamp creationTime = new Timestamp(System.currentTimeMillis());
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private List<TeamComposition> teamCompositions;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "userid", referencedColumnName = "userid"),
-			inverseJoinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid"))
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
-	private Collection<Role> roles;
+	private Collection<UserRole> userRoles;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	private Collection<CompetitionPlayer> competitionPlayers;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "userstatusid")
-	private UserStatus userStatus;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	private List<UserStatusHistory> userStatusHistories;
 
 	@OneToMany(mappedBy = "user", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	private Collection<ConfirmationToken> confirmationToken;
+	private List<ConfirmationTokenHistory> confirmationTokenHistories;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
@@ -132,27 +134,44 @@ public class User {
 		this.creationTime = creationTime;
 	}
 
-	public UserStatus getUserStatus() {
-		return userStatus;
+	public List<UserStatusHistory> getUserStatusHistories() {
+		return userStatusHistories;
 	}
 
-	public void setUserStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
+	public void setUserStatusHistories(List<UserStatusHistory> userStatusHistories) {
+		this.userStatusHistories = userStatusHistories;
 	}
 
-	public Collection<Role> getRoles() {
-		return roles;
+	public void addUserStatusHistory(UserStatusHistory userStatusHistories) {
+		if (this.userStatusHistories == null) {
+			this.userStatusHistories = new LinkedList<>();
+		}
+		this.userStatusHistories.add(userStatusHistories);
+	}
+
+	public Collection<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Collection<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+
+	public void addUserRole(UserRole userRole) {
+		if (this.userRoles == null) {
+			this.userRoles = new LinkedList<>();
+		}
+		this.userRoles.add(userRole);
 	}
 
 	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
-	}
-
-	public void addRole(Role role) {
-		if (this.roles == null) {
-			this.roles = new LinkedList<>();
-		}
-		this.roles.add(role);
+		Collection<UserRole> userRoles = roles.stream().map(role -> {
+			UserRole userRole = new UserRole();
+			userRole.setRole(role);
+			userRole.setUser(this);
+			return userRole;
+		}).collect(Collectors.toList());
+		setUserRoles(userRoles);
 	}
 
 	public List<TeamComposition> getTeamCompositions() {
@@ -163,11 +182,12 @@ public class User {
 		this.teamCompositions = teamCompositions;
 	}
 
-	public void addTeam(Team team) {
+	public void addTeam(Team team, Boolean admin, TeamCompositionStatus teamCompositionStatus) {
 		TeamComposition teamComposition = new TeamComposition();
 		teamComposition.setUser(this);
 		teamComposition.setTeam(team);
-		teamComposition.setAdmin(true);
+		teamComposition.setAdmin(admin);
+		teamComposition.addTeamCompositionStatus(teamCompositionStatus);
 		if (this.teamCompositions == null) {
 			this.teamCompositions = new ArrayList<>();
 		}
@@ -182,27 +202,23 @@ public class User {
 		this.competitionPlayers = competitionPlayers;
 	}
 
-	public Collection<ConfirmationToken> getConfirmationToken() {
-		return confirmationToken;
+	public List<ConfirmationTokenHistory> getConfirmationTokenHistories() {
+		return confirmationTokenHistories;
 	}
 
-	public void setConfirmationToken(List<ConfirmationToken> confirmationToken) {
-		this.confirmationToken = confirmationToken;
+	public void setConfirmationTokenHistories(List<ConfirmationTokenHistory> confirmationTokenHistories) {
+		this.confirmationTokenHistories = confirmationTokenHistories;
 	}
 
-	public void addConfirmationToken(ConfirmationToken confirmationToken) {
-		if (this.confirmationToken == null) {
-			this.confirmationToken = new ArrayList<>();
+	public void addConfirmationTokenHistory(ConfirmationTokenHistory confirmationTokenHistory) {
+		if (this.confirmationTokenHistories == null) {
+			this.confirmationTokenHistories = new LinkedList<>();
 		}
-		this.confirmationToken.add(confirmationToken);
+		this.confirmationTokenHistories.add(confirmationTokenHistory);
 	}
 
 	public void setCompetitionPlayers(Collection<CompetitionPlayer> competitionPlayers) {
 		this.competitionPlayers = competitionPlayers;
-	}
-
-	public void setConfirmationToken(Collection<ConfirmationToken> confirmationToken) {
-		this.confirmationToken = confirmationToken;
 	}
 
 	public Collection<CompetitionAdmin> getCompetitionAdmins() {
@@ -212,4 +228,5 @@ public class User {
 	public void setCompetitionAdmins(Collection<CompetitionAdmin> competitionAdmins) {
 		this.competitionAdmins = competitionAdmins;
 	}
+
 }

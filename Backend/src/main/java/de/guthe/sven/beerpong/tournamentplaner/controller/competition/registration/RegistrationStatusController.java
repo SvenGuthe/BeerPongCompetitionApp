@@ -22,34 +22,33 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition/registration")
 public class RegistrationStatusController {
 
-	private RegistrationStatusRepository registrationStatusRepository;
+	private final RegistrationStatusRepository registrationStatusRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public RegistrationStatusController(RegistrationStatusRepository registrationStatusRepository, CompetitionService competitionService) {
+	public RegistrationStatusController(RegistrationStatusRepository registrationStatusRepository,
+			CompetitionService competitionService) {
 		this.registrationStatusRepository = registrationStatusRepository;
 		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/registrationstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getRegistrationStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getRegistrationStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<RegistrationStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = registrationStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = registrationStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 
@@ -61,7 +60,8 @@ public class RegistrationStatusController {
 
 	@PutMapping("/registrationstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Collection<RegistrationStatusDTO> updateRegistrationStatus(@RequestBody RegistrationStatusUpdateDTO registrationStatusUpdateDTO) {
+	public Collection<RegistrationStatusDTO> updateRegistrationStatus(
+			@RequestBody RegistrationStatusUpdateDTO registrationStatusUpdateDTO) {
 		return competitionService.updateRegistrationStatus(registrationStatusUpdateDTO);
 	}
 

@@ -16,7 +16,7 @@ public class RegistrationStatus implements ACLObjectInterface {
 	@Column(name = "registrationstatusid")
 	private Long id;
 
-	@Column(name = "registrationstatusdescription", nullable = false)
+	@Column(name = "registrationstatusdescription", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private RegistrationStatusType registrationStatusDescription;
 

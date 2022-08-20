@@ -15,14 +15,14 @@ public class UserStatus {
 	@Column(name = "userstatusid", nullable = false)
 	private Long id;
 
-	@Column(name = "userstatus", nullable = false)
+	@Column(name = "userstatus", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private UserStatusType userStatus;
 
 	@OneToMany(mappedBy = "userStatus", fetch = FetchType.LAZY,
 			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
-	private List<User> users;
+	private List<UserStatusHistory> userStatusHistories;
 
 	public UserStatus() {
 	}
@@ -43,12 +43,12 @@ public class UserStatus {
 		this.userStatus = userStatus;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<UserStatusHistory> getUserStatusHistories() {
+		return userStatusHistories;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setUserStatusHistories(List<UserStatusHistory> userStatusHistories) {
+		this.userStatusHistories = userStatusHistories;
 	}
 
 }

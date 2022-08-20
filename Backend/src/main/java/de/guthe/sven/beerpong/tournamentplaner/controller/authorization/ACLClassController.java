@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/acl")
 public class ACLClassController {
 
-	private ACLClassRepository aclClassRepository;
+	private final ACLClassRepository aclClassRepository;
 
 	@Autowired
 	public ACLClassController(ACLClassRepository aclClassRepository) {
@@ -35,22 +35,20 @@ public class ACLClassController {
 
 	@GetMapping("/aclclass")
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getACLClasses(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getACLClasses(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<ACLClass> pageRequest;
 		if (search.equals("")) {
 			pageRequest = aclClassRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = aclClassRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 

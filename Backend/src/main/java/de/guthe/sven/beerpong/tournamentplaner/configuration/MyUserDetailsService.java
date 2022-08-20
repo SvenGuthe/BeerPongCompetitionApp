@@ -1,8 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.configuration;
 
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Privilege;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.Role;
-import de.guthe.sven.beerpong.tournamentplaner.model.authentication.User;
+import de.guthe.sven.beerpong.tournamentplaner.model.authentication.*;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("userDetailsService")
 @Transactional
@@ -35,11 +31,13 @@ public class MyUserDetailsService implements UserDetailsService {
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
 			return new org.springframework.security.core.userdetails.User(" ", " ", true, true, true, true,
-					getAuthorities(Arrays.asList(roleRepository.findByName("ROLE_USER"))));
+					getAuthorities(Collections.singletonList(roleRepository.findByName("ROLE_USER"))));
 		}
 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
-				user.isEnabled(), true, true, true, getAuthorities(user.getRoles()));
+				user.isEnabled(), true, true, true,
+				getAuthorities(user.getUserRoles().stream().filter(userRole -> userRole.getValidTo() == null)
+						.map(UserRole::getRole).collect(Collectors.toList())));
 	}
 
 	private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
@@ -55,7 +53,9 @@ public class MyUserDetailsService implements UserDetailsService {
 		List<String> privileges = new ArrayList<>();
 		List<Privilege> collection = new ArrayList<>();
 		for (Role role : roles) {
-			collection.addAll(role.getPrivileges());
+			collection.addAll(
+					role.getRolePrivileges().stream().filter(rolePrivilege -> rolePrivilege.getValidTo() == null)
+							.map(RolePrivilege::getPrivilege).collect(Collectors.toList()));
 		}
 		for (Privilege item : collection) {
 			privileges.add(item.getPrivilege().name());

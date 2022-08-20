@@ -22,34 +22,33 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition/billing")
 public class BillingStatusController {
 
-	private BillingStatusRepository billingStatusRepository;
+	private final BillingStatusRepository billingStatusRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public BillingStatusController(BillingStatusRepository billingStatusRepository, CompetitionService competitionService) {
+	public BillingStatusController(BillingStatusRepository billingStatusRepository,
+			CompetitionService competitionService) {
 		this.billingStatusRepository = billingStatusRepository;
 		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/billingstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getBillingStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getBillingStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<BillingStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = billingStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = billingStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 
@@ -61,7 +60,8 @@ public class BillingStatusController {
 
 	@PutMapping("/billingstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Collection<BillingStatusDTO> updateBillingStatus(@RequestBody BillingStatusUpdateDTO billingStatusUpdateDTO) {
+	public Collection<BillingStatusDTO> updateBillingStatus(
+			@RequestBody BillingStatusUpdateDTO billingStatusUpdateDTO) {
 		return competitionService.updateBillingStatus(billingStatusUpdateDTO);
 	}
 

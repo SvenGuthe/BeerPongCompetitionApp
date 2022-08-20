@@ -7,20 +7,20 @@ import javax.validation.constraints.NotNull;
 // ID = CompetitionTeam ID
 public class CompetitionPlayerAddDTO extends ID {
 
-    @NotNull(message = "userId in CompetitionPlayerAddDTO have to be set.")
-    private Long userId;
+	@NotNull(message = "userId in CompetitionPlayerAddDTO have to be set.")
+	private Long userId;
 
-    public CompetitionPlayerAddDTO(Long id, Long userId) {
-        super(id);
-        this.userId = userId;
-    }
+	public CompetitionPlayerAddDTO(Long id, Long userId) {
+		super(id);
+		this.userId = userId;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
+	public Long getUserId() {
+		return userId;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 }

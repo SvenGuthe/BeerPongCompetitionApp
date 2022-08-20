@@ -3,6 +3,7 @@ import { tCompetition } from "./competition"
 import { tEnum, tID } from "./defaults/generics"
 import { tAdditionalAttributes } from "./defaults/tables"
 import { tTimestamp } from "./defaults/timestamp"
+import { tTeamCompositionStatusType } from "./enums/teamCompositionStatusType"
 import { tTeamStatusType } from "./enums/teamStatusType"
 
 export type tTeamStatus = tEnum & tAdditionalAttributes & {
@@ -32,7 +33,14 @@ export type tTeamComposition = tEnum & {
     team: tTeam,
     user: tUser,
     admin: boolean,
-    creationTime: tTimestamp
+    creationTime: tTimestamp,
+    teamCompositionStatus: tTeamCompositionStatus[]
+}
+
+export type tTeamCompositionStatus = tEnum & {
+    teamCompositionStatusType: tTeamCompositionStatusType,
+    validFrom: tTimestamp,
+    validTo?: tTimestamp
 }
 
 // --------- CUSTOM DTOs --------- //

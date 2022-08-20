@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/authentication")
 public class PrivilegeController {
 
-	private PrivilegeRepository privilegeRepository;
+	private final PrivilegeRepository privilegeRepository;
 
 	@Autowired
 	public PrivilegeController(PrivilegeRepository privilegeRepository) {
@@ -40,22 +40,20 @@ public class PrivilegeController {
 
 	@GetMapping("/privilege")
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getPrivileges(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getPrivileges(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<Privilege> pageRequest;
 		if (search.equals("")) {
 			pageRequest = privilegeRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = privilegeRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 	}
 
 }

@@ -8,20 +8,20 @@ import javax.validation.constraints.NotNull;
 // ID = Team ID
 public class TeamStatusUpdateDTO extends ID {
 
-    @NotNull(message = "teamStatusType in TeamStatusUpdateDTO have to be set.")
-    private TeamStatusType teamStatusType;
+	@NotNull(message = "teamStatusType in TeamStatusUpdateDTO have to be set.")
+	private TeamStatusType teamStatusType;
 
-    public TeamStatusUpdateDTO(Long id, TeamStatusType teamStatusType) {
-        super(id);
-        this.teamStatusType = teamStatusType;
-    }
+	public TeamStatusUpdateDTO(Long id, TeamStatusType teamStatusType) {
+		super(id);
+		this.teamStatusType = teamStatusType;
+	}
 
-    public TeamStatusType getTeamStatusType() {
-        return teamStatusType;
-    }
+	public TeamStatusType getTeamStatusType() {
+		return teamStatusType;
+	}
 
-    public void setTeamStatusType(TeamStatusType teamStatusType) {
-        this.teamStatusType = teamStatusType;
-    }
+	public void setTeamStatusType(TeamStatusType teamStatusType) {
+		this.teamStatusType = teamStatusType;
+	}
 
 }

@@ -11,16 +11,16 @@ import java.util.List;
 
 public interface BillingStatusRepository extends JpaRepository<BillingStatus, Long> {
 
-    @Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.id LIKE CONCAT(?1, '%')",
-            countQuery = "SELECT count(*) FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.id LIKE CONCAT(?1, '%')",
-            nativeQuery = true)
-    Page<BillingStatus> findAll(String search, PageRequest pageRequest);
+	@Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.id LIKE CONCAT(?1, '%')",
+			countQuery = "SELECT count(*) FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) LIKE CONCAT(LOWER(?1), '%') OR bs.id LIKE CONCAT(?1, '%')",
+			nativeQuery = true)
+	Page<BillingStatus> findAll(String search, PageRequest pageRequest);
 
-    @Query("select bs from BillingStatus bs")
-    Page<BillingStatus> findAll(PageRequest pageRequest);
+	@Query("select bs from BillingStatus bs")
+	Page<BillingStatus> findAll(PageRequest pageRequest);
 
-    @Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) = LOWER(?1)",
-            nativeQuery = true)
-    List<BillingStatus> findByStatus(String billingStatusType);
+	@Query(value = "SELECT * FROM BillingStatus bs WHERE LOWER(bs.billingstatusdescription) = LOWER(?1)",
+			nativeQuery = true)
+	List<BillingStatus> findByStatus(String billingStatusType);
 
 }

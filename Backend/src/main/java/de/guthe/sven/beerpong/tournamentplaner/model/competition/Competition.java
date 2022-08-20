@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.model.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.model.authorization.ACLObjectInterface;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -16,7 +17,7 @@ public class Competition implements ACLObjectInterface {
 	@Column(name = "competitionid")
 	private Long id;
 
-	@Column(name = "competitionname", nullable = false)
+	@Column(name = "competitionname", nullable = false, unique = true)
 	private String competitionName;
 
 	@Column(name = "competitionstarttimestamp")

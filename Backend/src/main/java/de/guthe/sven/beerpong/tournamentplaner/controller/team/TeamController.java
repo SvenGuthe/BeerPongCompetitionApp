@@ -29,11 +29,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/team")
 public class TeamController {
 
-	private ACLService aclService;
+	private final ACLService aclService;
 
-	private TeamRepository teamRepository;
+	private final TeamRepository teamRepository;
 
-	private TeamService teamService;
+	private final TeamService teamService;
 
 	@Autowired
 	public TeamController(ACLService aclService, TeamRepository teamRepository, TeamService teamService) {
@@ -44,22 +44,20 @@ public class TeamController {
 
 	@GetMapping("/team")
 	@PreAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
-	public PaginationDTO<TeamDTO> getTeams(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<TeamDTO> getTeams(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<Team> pageRequest;
 		if (search.equals("")) {
 			pageRequest = teamRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = teamRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<TeamDTO> data = pageRequest.stream().map(TeamDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 
 	}
 
@@ -95,9 +93,10 @@ public class TeamController {
 	// on raw-database
 	// TODO: entries are just allowed with ADMIN Privileges
 	// @PutMapping("/team")
-	// @PreAuthorize("hasPermission(#team, 'UPDATE_TEAM') or hasAuthority('ADMIN_TEAM_PRIVILEGE')")
+	// @PreAuthorize("hasPermission(#team, 'UPDATE_TEAM') or
+	// hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	// public Team updateTeam(@RequestBody Team team) {
-	// 	return teamRepository.save(team);
+	// return teamRepository.save(team);
 	// }
 
 }

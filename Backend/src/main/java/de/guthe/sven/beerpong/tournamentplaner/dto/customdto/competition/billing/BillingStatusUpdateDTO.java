@@ -7,20 +7,20 @@ import javax.validation.constraints.NotNull;
 
 public class BillingStatusUpdateDTO extends ID {
 
-    @NotNull(message = "billingStatusType in BillingStatusUpdateDTO have to be set.")
-    BillingStatusType billingStatusType;
+	@NotNull(message = "billingStatusType in BillingStatusUpdateDTO have to be set.")
+	BillingStatusType billingStatusType;
 
-    public BillingStatusUpdateDTO(Long id, BillingStatusType billingStatusType) {
-        super(id);
-        this.billingStatusType = billingStatusType;
-    }
+	public BillingStatusUpdateDTO(Long id, BillingStatusType billingStatusType) {
+		super(id);
+		this.billingStatusType = billingStatusType;
+	}
 
-    public BillingStatusType getBillingStatusType() {
-        return billingStatusType;
-    }
+	public BillingStatusType getBillingStatusType() {
+		return billingStatusType;
+	}
 
-    public void setBillingStatusType(BillingStatusType billingStatusType) {
-        this.billingStatusType = billingStatusType;
-    }
+	public void setBillingStatusType(BillingStatusType billingStatusType) {
+		this.billingStatusType = billingStatusType;
+	}
 
 }

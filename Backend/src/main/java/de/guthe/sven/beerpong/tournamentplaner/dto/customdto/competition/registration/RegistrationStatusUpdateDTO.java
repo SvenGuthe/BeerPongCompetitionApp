@@ -7,20 +7,20 @@ import javax.validation.constraints.NotNull;
 
 public class RegistrationStatusUpdateDTO extends ID {
 
-    @NotNull(message = "registrationStatusType in RegistrationStatusUpdateDTO have to be set.")
-    private RegistrationStatusType registrationStatusType;
+	@NotNull(message = "registrationStatusType in RegistrationStatusUpdateDTO have to be set.")
+	private RegistrationStatusType registrationStatusType;
 
-    public RegistrationStatusUpdateDTO(Long id, RegistrationStatusType registrationStatusType) {
-        super(id);
-        this.registrationStatusType = registrationStatusType;
-    }
+	public RegistrationStatusUpdateDTO(Long id, RegistrationStatusType registrationStatusType) {
+		super(id);
+		this.registrationStatusType = registrationStatusType;
+	}
 
-    public RegistrationStatusType getRegistrationStatusType() {
-        return registrationStatusType;
-    }
+	public RegistrationStatusType getRegistrationStatusType() {
+		return registrationStatusType;
+	}
 
-    public void setRegistrationStatusType(RegistrationStatusType registrationStatusType) {
-        this.registrationStatusType = registrationStatusType;
-    }
+	public void setRegistrationStatusType(RegistrationStatusType registrationStatusType) {
+		this.registrationStatusType = registrationStatusType;
+	}
 
 }

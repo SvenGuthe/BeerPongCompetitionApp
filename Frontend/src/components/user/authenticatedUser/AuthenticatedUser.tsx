@@ -1,9 +1,6 @@
 import { Table } from "react-bootstrap";
-import { tPrivilege, tUser } from "../../../types/authentication";
-import { tSecurityPrivilege } from "../../../types/enums/securityPrivilege";
+import { tUser } from "../../../types/authentication";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
-import FormItem from "../../ui/form/FormItem";
-import { SecurityPrivilegeInput } from "../../ui/form/PredefinedSelectInputs";
 
 interface tProps {
     authenticatedUser?: tUser
@@ -53,24 +50,6 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
         </Table>);
     }
 
-    const allPrivileges: tPrivilege[] = [
-        {
-            id: 1,
-            privilege: tSecurityPrivilege.ADMIN_ACL_PRIVILEGE,
-            value: tSecurityPrivilege.ADMIN_ACL_PRIVILEGE
-        },
-        {
-            id: 2,
-            privilege: tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE,
-            value: tSecurityPrivilege.ADMIN_AUTHENTICATION_PRIVILEGE
-        },
-        {
-            id: 3,
-            privilege: tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE,
-            value: tSecurityPrivilege.ADMIN_COMPETITION_PRIVILEGE
-        }
-    ]
-
     return <>
         <Table striped bordered hover size="sm">
             <tbody>
@@ -102,11 +81,11 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
                 </tr>
                 <tr>
                     <td>User Status</td>
-                    <td>{authenticatedUser?.userStatus?.userStatus}</td>
+                    <td>{authenticatedUser?.userStatus?.filter(status => status.validTo === null)[0].userStatus}</td>
                 </tr>
                 <tr>
                     <td>User Status ID</td>
-                    <td>{authenticatedUser?.userStatus?.id}</td>
+                    <td>{authenticatedUser?.userStatus?.filter(status => status.validTo === null)[0].id}</td>
                 </tr>
                 <tr>
                     <td>Datum</td>
@@ -115,11 +94,6 @@ const AuthenticatedUser: React.FC<tProps> = (props) => {
             </tbody>
 
         </Table>
-
-        <FormItem defaultValue="ABC" saveValue={(newValue, changed) => console.log(newValue, changed)} />
-        <FormItem defaultValue={true} saveValue={(newValue, changed) => console.log(newValue, changed)} />
-        <SecurityPrivilegeInput defaultValue={allPrivileges[0].privilege} saveValue={(newValue, changed) => console.log(newValue, changed)} />
-        <FormItem defaultValue={[allPrivileges[0].value, allPrivileges[1].value]} possibleValues={allPrivileges.map(privilege => privilege.value)} multiSelect saveValue={(newValue, changed) => console.log(newValue, changed)} />
 
         {roleTable}
 

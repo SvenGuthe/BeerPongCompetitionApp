@@ -9,20 +9,27 @@ import { tUserTeam } from "./team";
 
 export type tConfirmationToken = tID & tAdditionalAttributes & {
     confirmationToken: string,
-    createdDate: tTimestamp
+    validFrom: tTimestamp,
+    validTo?: tTimestamp
 }
 
 export type tPrivilege = tEnum & {
-    privilege: tSecurityPrivilege
+    privilege: tSecurityPrivilege,
+    validFrom: tTimestamp,
+    validTo?: tTimestamp
 }
 
 export type tRole = tEnum & {
     role: tSecurityRole,
+    validFrom: tTimestamp,
+    validTo?: tTimestamp,
     privileges: tPrivilege[]
 }
 
 export type tUserStatus = tEnum & {
-    userStatus: tUserStatusType
+    userStatus: tUserStatusType,
+    validFrom: tTimestamp,
+    validTo?: tTimestamp
 }
 
 export type tUser = tID & tAdditionalAttributes & {
@@ -33,7 +40,7 @@ export type tUser = tID & tAdditionalAttributes & {
     enabled: boolean,
     creationTime: tTimestamp,
     roles: tRole[],
-    userStatus: tUserStatus,
+    userStatus: tUserStatus[],
     confirmationToken: tConfirmationToken[]
 }
 

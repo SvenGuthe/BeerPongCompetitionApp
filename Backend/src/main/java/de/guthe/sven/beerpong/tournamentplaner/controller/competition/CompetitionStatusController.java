@@ -22,34 +22,33 @@ import java.util.stream.Collectors;
 @RequestMapping("/competition")
 public class CompetitionStatusController {
 
-	private CompetitionStatusRepository competitionStatusRepository;
+	private final CompetitionStatusRepository competitionStatusRepository;
 
-	private CompetitionService competitionService;
+	private final CompetitionService competitionService;
 
 	@Autowired
-	public CompetitionStatusController(CompetitionStatusRepository competitionStatusRepository, CompetitionService competitionService) {
+	public CompetitionStatusController(CompetitionStatusRepository competitionStatusRepository,
+			CompetitionService competitionService) {
 		this.competitionStatusRepository = competitionStatusRepository;
 		this.competitionService = competitionService;
 	}
 
 	@GetMapping("/competitionstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public PaginationDTO<EnumDTO> getCompetitionStati(@RequestParam int page, @RequestParam int size, @RequestParam String search) {
+	public PaginationDTO<EnumDTO> getCompetitionStati(@RequestParam int page, @RequestParam int size,
+			@RequestParam String search) {
 
 		Page<CompetitionStatus> pageRequest;
 		if (search.equals("")) {
 			pageRequest = competitionStatusRepository.findAll(PageRequest.of(page, size));
-		} else {
+		}
+		else {
 			pageRequest = competitionStatusRepository.findAll(search, PageRequest.of(page, size));
 		}
 
 		List<EnumDTO> data = pageRequest.stream().map(EnumDTO::new).collect(Collectors.toList());
 
-		return new PaginationDTO<>(
-				pageRequest.getTotalElements(),
-				pageRequest.getTotalPages(),
-				data
-		);
+		return new PaginationDTO<>(pageRequest.getTotalElements(), pageRequest.getTotalPages(), data);
 	}
 
 	@GetMapping("/competitionstatus/{competitionStatusId}")
@@ -60,7 +59,8 @@ public class CompetitionStatusController {
 
 	@PutMapping("/competitionstatus")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
-	public Collection<CompetitionStatusDTO> updateCompetitionStatus(@RequestBody CompetitionStatusUpdateDTO competitionStatusUpdateDTO) {
+	public Collection<CompetitionStatusDTO> updateCompetitionStatus(
+			@RequestBody CompetitionStatusUpdateDTO competitionStatusUpdateDTO) {
 		return competitionService.updateCompetitionStatus(competitionStatusUpdateDTO);
 	}
 

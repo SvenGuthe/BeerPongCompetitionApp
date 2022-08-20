@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.authorization.SecurityRole;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
 @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE LOWER(r.role) = LOWER(?1)")
@@ -17,18 +17,19 @@ public class Role {
 	@Column(name = "roleid", nullable = false)
 	private Long id;
 
-	@Column(name = "role", nullable = false)
+	@Column(name = "role", nullable = false, unique = true)
 	@Enumerated(EnumType.STRING)
 	private SecurityRole role;
 
-	@ManyToMany(mappedBy = "roles", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	private Collection<User> users;
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "roleid", referencedColumnName = "roleid"),
-			inverseJoinColumns = @JoinColumn(name = "privilegeid", referencedColumnName = "privilegeid"))
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JsonIgnore
-	private Collection<Privilege> privileges;
+	private Collection<UserRole> userRoles;
+
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY,
+			cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JsonIgnore
+	private Collection<RolePrivilege> rolePrivileges;
 
 	public Role() {
 	}
@@ -49,27 +50,30 @@ public class Role {
 		this.role = role;
 	}
 
-	public Collection<User> getUsers() {
-		return users;
+	public Collection<UserRole> getUserRoles() {
+		return userRoles;
 	}
 
-	public void setUsers(Collection<User> users) {
-		this.users = users;
+	public void setUserRoles(Collection<UserRole> userRoles) {
+		this.userRoles = userRoles;
 	}
 
-	public Collection<Privilege> getPrivileges() {
-		return privileges;
+	public Collection<RolePrivilege> getRolePrivileges() {
+		return rolePrivileges;
+	}
+
+	public void setRolePrivileges(Collection<RolePrivilege> rolePrivileges) {
+		this.rolePrivileges = rolePrivileges;
 	}
 
 	public void setPrivileges(Collection<Privilege> privileges) {
-		this.privileges = privileges;
-	}
-
-	public void addPrivilege(Privilege privilege) {
-		if (this.privileges == null) {
-			this.privileges = new ArrayList<>();
-		}
-		this.privileges.add(privilege);
+		Collection<RolePrivilege> rolePrivileges = privileges.stream().map(privilege -> {
+			RolePrivilege rolePrivilege = new RolePrivilege();
+			rolePrivilege.setPrivilege(privilege);
+			rolePrivilege.setRole(this);
+			return rolePrivilege;
+		}).collect(Collectors.toList());
+		setRolePrivileges(rolePrivileges);
 	}
 
 }
