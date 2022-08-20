@@ -22,7 +22,16 @@ public class RegistrationStatusService {
 	public RegistrationStatus getOrCreateRegistrationStatus(@NotNull RegistrationStatusType registrationStatusType) {
 		Optional<RegistrationStatus> registrationStatus = registrationStatusRepository
 				.findByStatus(registrationStatusType.name());
-		return registrationStatus.orElseGet(() -> new RegistrationStatus(registrationStatusType));
+		RegistrationStatus finalRegistrationStatus;
+		if (registrationStatus.isEmpty()) {
+			finalRegistrationStatus = new RegistrationStatus(registrationStatusType);
+			registrationStatusRepository.save(finalRegistrationStatus);
+		}
+		else {
+			finalRegistrationStatus = registrationStatus.get();
+		}
+
+		return finalRegistrationStatus;
 	}
 
 }

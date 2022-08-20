@@ -23,7 +23,16 @@ public class TeamCompositionStatusService {
 			@NotNull TeamCompositionStatusType teamCompositionStatusType) {
 		Optional<TeamCompositionStatus> teamCompositionStatus = teamCompositionStatusRepository
 				.findByStatus(teamCompositionStatusType.name());
-		return teamCompositionStatus.orElseGet(() -> new TeamCompositionStatus(teamCompositionStatusType));
+		TeamCompositionStatus finalTeamCompositionStatus;
+		if (teamCompositionStatus.isEmpty()) {
+			finalTeamCompositionStatus = new TeamCompositionStatus(teamCompositionStatusType);
+			teamCompositionStatusRepository.save(finalTeamCompositionStatus);
+		}
+		else {
+			finalTeamCompositionStatus = teamCompositionStatus.get();
+		}
+
+		return finalTeamCompositionStatus;
 	}
 
 }

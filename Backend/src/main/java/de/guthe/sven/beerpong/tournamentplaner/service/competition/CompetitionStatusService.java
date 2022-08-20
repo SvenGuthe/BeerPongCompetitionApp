@@ -22,7 +22,16 @@ public class CompetitionStatusService {
 	public CompetitionStatus getOrCreateCompetitionStatus(@NotNull CompetitionStatusType competitionStatusType) {
 		Optional<CompetitionStatus> competitionStatus = competitionStatusRepository
 				.findByStatus(competitionStatusType.name());
-		return competitionStatus.orElseGet(() -> new CompetitionStatus(competitionStatusType));
+		CompetitionStatus finalCompetitionStatus;
+		if (competitionStatus.isEmpty()) {
+			finalCompetitionStatus = new CompetitionStatus(competitionStatusType);
+			competitionStatusRepository.save(finalCompetitionStatus);
+		}
+		else {
+			finalCompetitionStatus = competitionStatus.get();
+		}
+
+		return finalCompetitionStatus;
 	}
 
 }

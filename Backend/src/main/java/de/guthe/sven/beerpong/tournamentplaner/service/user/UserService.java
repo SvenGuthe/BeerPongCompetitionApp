@@ -11,10 +11,7 @@ import de.guthe.sven.beerpong.tournamentplaner.model.user.*;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.confirmationtoken.ConfirmationToken;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.confirmationtoken.ConfirmationTokenHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionadmin.CompetitionAdmin;
-import de.guthe.sven.beerpong.tournamentplaner.repository.user.ConfirmationTokenRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.user.RoleRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
-import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +29,8 @@ public class UserService {
 
 	ConfirmationTokenRepository confirmationTokenRepository;
 
+	ConfirmationTokenHistoryRepository confirmationTokenHistoryRepository;
+
 	UserStatusRepository userStatusRepository;
 
 	UserStatusService userStatusService;
@@ -39,12 +38,14 @@ public class UserService {
 	@Autowired
 	public UserService(UserRepository userRepository, RoleRepository roleRepository,
 			UserStatusRepository userStatusRepository, ConfirmationTokenRepository confirmationTokenRepository,
-			UserStatusService userStatusService) {
+			UserStatusService userStatusService,
+			ConfirmationTokenHistoryRepository confirmationTokenHistoryRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.userStatusRepository = userStatusRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
 		this.userStatusService = userStatusService;
+		this.confirmationTokenHistoryRepository = confirmationTokenHistoryRepository;
 	}
 
 	public UserDetailDTO transformUserToUserDetailDTO(Long id) throws Exception {
@@ -108,8 +109,10 @@ public class UserService {
 		User user = userRepository.findById(confirmationTokenAddDTO.getId()).get();
 
 		ConfirmationToken confirmationToken = new ConfirmationToken(confirmationTokenAddDTO.getConfirmationToken());
+		confirmationTokenRepository.save(confirmationToken);
 
 		ConfirmationTokenHistory confirmationTokenHistory = new ConfirmationTokenHistory(user, confirmationToken);
+		confirmationTokenHistoryRepository.save(confirmationTokenHistory);
 
 		user.addConfirmationTokenHistory(confirmationTokenHistory);
 		userRepository.save(user);

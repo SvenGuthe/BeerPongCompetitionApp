@@ -19,7 +19,16 @@ public class TeamStatusService {
 
 	public TeamStatus getOrCreateTeamStatus(@NotNull TeamStatusType teamStatusType) {
 		Optional<TeamStatus> teamStatus = teamStatusRepository.findByStatus(teamStatusType.name());
-		return teamStatus.orElseGet(() -> new TeamStatus(teamStatusType));
+		TeamStatus finalTeamStatus;
+		if (teamStatus.isEmpty()) {
+			finalTeamStatus = new TeamStatus(teamStatusType);
+			teamStatusRepository.save(finalTeamStatus);
+		}
+		else {
+			finalTeamStatus = teamStatus.get();
+		}
+
+		return finalTeamStatus;
 	}
 
 }

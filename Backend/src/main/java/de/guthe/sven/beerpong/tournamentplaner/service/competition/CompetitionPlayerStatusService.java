@@ -23,7 +23,16 @@ public class CompetitionPlayerStatusService {
 			@NotNull CompetitionPlayerStatusType competitionPlayerStatusType) {
 		Optional<CompetitionPlayerStatus> competitionPlayerStatus = competitionPlayerStatusRepository
 				.findByStatus(competitionPlayerStatusType.name());
-		return competitionPlayerStatus.orElseGet(() -> new CompetitionPlayerStatus(competitionPlayerStatusType));
+		CompetitionPlayerStatus finalCompetitionPlayerStatus;
+		if (competitionPlayerStatus.isEmpty()) {
+			finalCompetitionPlayerStatus = new CompetitionPlayerStatus(competitionPlayerStatusType);
+			competitionPlayerStatusRepository.save(finalCompetitionPlayerStatus);
+		}
+		else {
+			finalCompetitionPlayerStatus = competitionPlayerStatus.get();
+		}
+
+		return finalCompetitionPlayerStatus;
 	}
 
 }
