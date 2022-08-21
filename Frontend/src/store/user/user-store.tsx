@@ -64,6 +64,23 @@ export const userSlice = createSlice({
         },
         addConfirmationToken: (state, action: PayloadAction<tConfirmationToken>) => {
             state.userDetail?.user.confirmationToken.push(action.payload);
+        },
+        toggleConfirmationToken: (state, action: PayloadAction<tConfirmationToken>) => {
+            const confirmationToken = action.payload;
+            const existingToken = state.userDetail?.user.confirmationToken.find(token => token.id === confirmationToken.id);
+
+            if (existingToken) {
+                state.userDetail!.user.confirmationToken = state.userDetail!.user.confirmationToken.map(token => {
+                    if (token.id === confirmationToken.id) {
+                        return confirmationToken;
+                    } else {
+                        return token;
+                    }
+                })
+            } else {
+                state.userDetail?.user.confirmationToken.push(action.payload);
+            }
+
         }
     }
 })
@@ -78,7 +95,8 @@ export const {
     removeUserDetail,
     removeUsers,
     updateUser,
-    addConfirmationToken
+    addConfirmationToken,
+    toggleConfirmationToken
 } = userSlice.actions
 
 export const teamStore = configureStore({

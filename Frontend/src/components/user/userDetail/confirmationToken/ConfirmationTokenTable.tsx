@@ -19,7 +19,9 @@ const ConfirmationTokenTable: React.FC<{
             <tr>
                 <th>ID</th>
                 <th>Erstellt am</th>
+                <th>Valide bis</th>
                 <th>Token</th>
+                <th></th>
                 {additionalAttributesHeader.map(singleAdditionalAttributesHeader => {
                     return <th key={singleAdditionalAttributesHeader}>{singleAdditionalAttributesHeader}</th>
                 })}

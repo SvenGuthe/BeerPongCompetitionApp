@@ -15,7 +15,9 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -118,6 +120,33 @@ public class UserService {
 		userRepository.save(user);
 
 		return new ConfirmationTokenDTO(confirmationTokenHistory);
+	}
+
+	public ConfirmationTokenDTO toggleConfirmationToken(ConfirmationTokenDTO confirmationTokenDTO) {
+		ConfirmationTokenHistory confirmationTokenHistory = confirmationTokenHistoryRepository
+				.findById(confirmationTokenDTO.getId()).get();
+
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		ConfirmationTokenHistory resultConfirmationTokenHistory;
+
+		if (confirmationTokenHistory.getValidTo() == null) {
+			confirmationTokenHistory.setValidTo(now);
+			confirmationTokenHistoryRepository.save(confirmationTokenHistory);
+
+			resultConfirmationTokenHistory = confirmationTokenHistory;
+		}
+		else {
+			ConfirmationToken newConfirmationToken = new ConfirmationToken(
+					confirmationTokenHistory.getConfirmationToken().getConfirmationToken());
+			confirmationTokenRepository.save(newConfirmationToken);
+
+			ConfirmationTokenHistory newConfirmationTokenHistory = new ConfirmationTokenHistory(
+					confirmationTokenHistory.getUser(), newConfirmationToken);
+			confirmationTokenHistoryRepository.save(newConfirmationTokenHistory);
+			resultConfirmationTokenHistory = newConfirmationTokenHistory;
+		}
+
+		return new ConfirmationTokenDTO(resultConfirmationTokenHistory);
 	}
 
 }

@@ -11,8 +11,8 @@ const ConfirmationTokenAddRow: React.FC<{
 
     const dispatch = useDispatch();
 
-    return <tr style={{borderTop: "2px dashed black"}}>
-        <td colSpan={2} style={{ textAlign: "right" }}>Neuen Token erzeugen:</td>
+    return <tr style={{ borderTop: "2px dashed black" }}>
+        <td colSpan={4} style={{ textAlign: "right" }}>Neuen Token erzeugen:</td>
         <td><FormItem ref={confirmationTokenRef} defaultValue="" saveValue={(newValue, changed) => {
             dispatch(addConfirmationToken({
                 id: props.id,
