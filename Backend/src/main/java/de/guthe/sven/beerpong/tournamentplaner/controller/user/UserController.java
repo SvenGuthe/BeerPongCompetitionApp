@@ -44,6 +44,12 @@ public class UserController {
 		return userService.addConfirmationToken(confirmationTokenAddDTO);
 	}
 
+	@PutMapping("/confirmationtoken")
+	@PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
+	public ConfirmationTokenDTO toggleConfirmToken(@RequestBody ConfirmationTokenDTO confirmationTokenDTO) {
+		return userService.toggleConfirmationToken(confirmationTokenDTO);
+	}
+
 	@PutMapping("/user")
 	@PreAuthorize("hasAuthority('ADMIN_AUTHENTICATION_PRIVILEGE')")
 	public UserDTO updateUser(@RequestBody UserUpdateDTO userUpdateDTO) {

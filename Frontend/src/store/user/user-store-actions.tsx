@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { confirmationTokenRoute, userRoute } from "../../api-routes/user";
-import { tConfirmationTokenAdd, tUserUpdate } from "../../types/user";
-import { updateUser as updateUserState, addConfirmationToken as addConfirmationTokenState } from "./user-store";
+import { tConfirmationToken, tConfirmationTokenAdd, tUserUpdate } from "../../types/user";
+import { updateUser as updateUserState, addConfirmationToken as addConfirmationTokenState, toggleConfirmationToken as toggleConfirmationTokenState } from "./user-store";
 
 export const updateUser = (user: tUserUpdate) => {
 
@@ -29,4 +29,16 @@ export const addConfirmationToken = (confirmationToken: tConfirmationTokenAdd) =
         return sendRequest();
     }
 
+}
+
+export const toggleConfirmationToken = (confirmationToken: tConfirmationToken) => {
+    return async (dispatch: Dispatch<any>) => {
+        console.log(`Send ${confirmationTokenRoute} [PUT] Request`);
+        const sendRequest = async () => await axios.put(confirmationTokenRoute, confirmationToken).then((response) => {
+            dispatch(toggleConfirmationTokenState(response.data));
+        }).catch(function (error) {
+            console.log(error);
+        });
+        return sendRequest();
+    }
 }
