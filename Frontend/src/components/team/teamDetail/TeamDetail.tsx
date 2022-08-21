@@ -3,17 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
 import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
-import { updateTeamComposition } from "../../../store/team/team-store-actions";
 import { tEnum } from "../../../types/defaults/generics";
-import { tTeamCompositionUpdate } from "../../../types/team";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
 import CompetitionTable from "../../competition/competitionOverview/CompetitionTable";
 import EnumTable from "../../enums/EnumTable";
 import TableSection from "../../layout/TableSection";
-import FormItem from "../../ui/form/FormItem";
-import UserTable from "../../user/userOverview/UserTable";
+import UserDetailsTableTeam from "../../user/userDetail/UserDetailTableTeam";
 import TeamCompositionAdd from "./teamComposition/TeamCompositionAdd";
+import TeamCompositionStatusAddRow from "./teamComposition/TeamCompositionStatusAddRow";
 import TeamDetailTable from "./TeamDetailTable";
 import TeamInvitationLinkTable from "./teamInvitationLink/TeamInvitationLinkTable";
 import TeamStatusAddRow from "./teamStatus/TeamStatusAddRow";
@@ -45,14 +43,6 @@ const TeamDetail: React.FC = () => {
         return removeDuplicates(teamDetail?.competitions);
     }, [teamDetail])
 
-    const onSaveHandler = (teamCompositionId: number, newValue: boolean) => {
-        const teamComposition: tTeamCompositionUpdate = {
-            id: teamCompositionId,
-            isAdmin: newValue
-        }
-        dispatch(updateTeamComposition(teamComposition));
-    }
-
     useEffect(() => {
 
         if (id) {
@@ -64,10 +54,6 @@ const TeamDetail: React.FC = () => {
         }
 
     }, [id, dispatch]);
-
-    const refs = useMemo(() => {
-        return Array.from({ length: users ? users!.length : 0 }).map(() => React.createRef<HTMLInputElement>())
-    }, [users]);
 
     return <>
         {teamDetail && <>
@@ -101,23 +87,35 @@ const TeamDetail: React.FC = () => {
                 <TeamInvitationLinkTable id={teamDetail.team.id} teamInvitationLinks={teamInvitationLinks} wrapped />
             </TableSection>}
             {users && <TableSection>
-                <h3>Nutzer</h3>
-                <UserTable users={users.map((user, i) => {
-                    const additionalAttributes = [
-                        {
-                            id: user.id + "_isAdmin",
-                            value: String(user.admin),
-                            reactElement: <FormItem ref={refs[i]} defaultValue={user.admin} saveValue={(newValue, changed) => onSaveHandler(user.id, newValue as boolean)} />
-                        }
-                    ]
+                <h3>Team Mitglieder</h3>
+                {users.map(user => {
+                    return <TableSection key={user.id}>
+                        <h4>{user.user.gamerTag}</h4>
+                        <UserDetailsTableTeam user={user.user} admin={user.admin} teamCompositionId={user.id}></UserDetailsTableTeam>
 
-                    const newUser = {
-                        ...user.user,
-                        additionalAttributes: additionalAttributes
-                    }
+                        <EnumTable enumData={[...user.teamCompositionStatus.map(singleTeamCompositionStatus => {
 
-                    return newUser;
-                })} wrapped additionalAttributesHeader={["Admin"]} />
+                            const additionalAttributes = [
+                                {
+                                    id: singleTeamCompositionStatus.id + "_validFrom",
+                                    value: singleTeamCompositionStatus.validFrom
+                                },
+                                {
+                                    id: singleTeamCompositionStatus.id + "_validTo",
+                                    value: singleTeamCompositionStatus.validTo
+                                }
+                            ]
+
+                            const newTeamCompositionStatus = {
+                                ...singleTeamCompositionStatus,
+                                additionalAttributes
+                            }
+
+                            return newTeamCompositionStatus;
+
+                        })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<TeamCompositionStatusAddRow id={user.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
+                    </TableSection>
+                })}
                 <TeamCompositionAdd id={teamDetail.team.id} users={teamDetail.possibleUsers} />
             </TableSection>}
             {competitions && <TableSection>

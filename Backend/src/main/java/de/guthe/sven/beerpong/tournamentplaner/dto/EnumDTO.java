@@ -1,5 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto;
 
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatus;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.Privilege;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.Role;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.UserStatus;
@@ -70,6 +71,11 @@ public class EnumDTO extends ID {
 	public EnumDTO(CompetitionStatus competitionStatus) {
 		super(competitionStatus.getId());
 		this.value = competitionStatus.getCompetitionStatusType().name();
+	}
+
+	public EnumDTO(TeamCompositionStatus teamCompositionStatus) {
+		super(teamCompositionStatus.getId());
+		this.value = teamCompositionStatus.getTeamCompositionStatusType().name();
 	}
 
 	public EnumDTO(CompetitionAdminStatus competitionAdminStatus) {

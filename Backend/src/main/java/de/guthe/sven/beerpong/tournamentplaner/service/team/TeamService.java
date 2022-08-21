@@ -3,12 +3,14 @@ package de.guthe.sven.beerpong.tournamentplaner.service.team;
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamCompositionStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.TeamUserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.*;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition.TeamCompositionStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition.TeamCompositionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLinkHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.User;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.*;
@@ -160,6 +162,36 @@ public class TeamService {
 		teamCompositionRepository.save(teamComposition);
 
 		return new TeamCompositionDTO(teamComposition);
+	}
+
+	public List<TeamCompositionStatusDTO> updateTeamCompositionStatus(
+			TeamCompositionStatusUpdateDTO teamCompositionStatusUpdateDTO) {
+		TeamComposition teamComposition = teamCompositionRepository.findById(teamCompositionStatusUpdateDTO.getId())
+				.get();
+
+		TeamCompositionStatus teamCompositionStatus = teamCompositionStatusService
+				.getOrCreateTeamCompositionStatus(teamCompositionStatusUpdateDTO.getTeamCompositionStatusType());
+
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+
+		List<TeamCompositionStatusHistory> currentTeamCompositionStatusHistory = teamComposition
+				.getTeamCompositionStatusHistories().stream().peek(teamCompositionStatusHistory -> {
+					if (teamCompositionStatusHistory.getValidTo() == null) {
+						teamCompositionStatusHistory.setValidTo(now);
+					}
+				}).collect(Collectors.toList());
+
+		currentTeamCompositionStatusHistory
+				.add(new TeamCompositionStatusHistory(now, teamComposition, teamCompositionStatus));
+
+		teamCompositionStatus.setTeamCompositionStatusHistories(currentTeamCompositionStatusHistory);
+		teamCompositionStatusRepository.save(teamCompositionStatus);
+
+		currentTeamCompositionStatusHistory.sort(Comparator.comparing(TeamCompositionStatusHistory::getValidFrom));
+
+		return currentTeamCompositionStatusHistory
+				.subList(currentTeamCompositionStatusHistory.size() - 2, currentTeamCompositionStatusHistory.size())
+				.stream().map(TeamCompositionStatusDTO::new).collect(Collectors.toList());
 	}
 
 }

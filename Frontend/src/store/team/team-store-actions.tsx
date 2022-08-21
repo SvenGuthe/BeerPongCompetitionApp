@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Dispatch } from "react";
-import { teamCompositionRoute, teamInvitationLinkRoute, teamRoute, teamStatusRoute } from "../../api-routes/team";
-import { tTeamCompositionAdd, tTeamCompositionUpdate, tTeamInvitationLinkAdd, tTeamStatusUpdate, tTeamUpdate } from "../../types/team";
-import { updateTeam as updateTeamState, updateTeamStatus as updateTeamStatusState, addTeamInvitationLink as addTeamInvitationLinkState, updateTeamComposition as updateTeamCompositionState, addTeamComposition as addTeamCompositionState } from "./team-store";
+import { teamCompositionRoute, teamCompositionStatusRoute, teamInvitationLinkRoute, teamRoute, teamStatusRoute } from "../../api-routes/team";
+import { tTeamCompositionAdd, tTeamCompositionStatusUpdate, tTeamCompositionUpdate, tTeamInvitationLinkAdd, tTeamStatusUpdate, tTeamUpdate } from "../../types/team";
+import { updateTeam as updateTeamState, updateTeamStatus as updateTeamStatusState, addTeamInvitationLink as addTeamInvitationLinkState, updateTeamComposition as updateTeamCompositionState, updateTeamCompositionStatus as updateTeamCompositionStatusState, addTeamComposition as addTeamCompositionState } from "./team-store";
 
 export const updateTeam = (team: tTeamUpdate) => {
     return async (dispatch: Dispatch<any>) => {
@@ -47,6 +47,18 @@ export const updateTeamComposition = (teamComposition: tTeamCompositionUpdate) =
         console.log(`Send ${teamCompositionRoute} [PUT] Request`);
         const sendRequest = async () => await axios.put(teamCompositionRoute, teamComposition).then((response) => {
             dispatch(updateTeamCompositionState(response.data));
+        }).catch(function (error) {
+            console.log(error);
+        });
+        return sendRequest();
+    }
+}
+
+export const updateTeamCompositionStatus = (teamCompositionStatus: tTeamCompositionStatusUpdate) => {
+    return async (dispatch: Dispatch<any>) => {
+        console.log(`Send ${teamCompositionStatusRoute} [PUT] Request`);
+        const sendRequest = async () => await axios.put(teamCompositionStatusRoute, teamCompositionStatus).then((response) => {
+            dispatch(updateTeamCompositionStatusState(response.data));
         }).catch(function (error) {
             console.log(error);
         });

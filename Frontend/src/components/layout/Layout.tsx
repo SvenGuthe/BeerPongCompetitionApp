@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store/combine-store';
 import { logout } from '../../store/authentication/authentication-store';
 import { removeDuplicates } from '../../utility/arrayFunctions';
-import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, privilegeHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from '../../utility/hierarchy';
+import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, privilegeHierarchy, registrationStatusHierarchy, roleHierarchy, teamCompositionStatusHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from '../../utility/hierarchy';
 import { tSecurityRole } from '../../types/enums/securityRole';
 import { tSecurityPrivilege } from '../../types/enums/securityPrivilege';
 
@@ -58,6 +58,9 @@ const Layout: React.FC = () => {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item as={Link} to={teamStatusHierarchy.relative} className={classes.sub}>
                                         <Nav.Link as="div">{teamStatusHierarchy.label}</Nav.Link>
+                                    </NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to={teamCompositionStatusHierarchy.relative} className={classes.sub}>
+                                        <Nav.Link as="div">{teamCompositionStatusHierarchy.label}</Nav.Link>
                                     </NavDropdown.Item>
                                 </>
                             }

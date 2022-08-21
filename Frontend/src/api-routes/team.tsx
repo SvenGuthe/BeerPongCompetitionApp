@@ -9,3 +9,4 @@ export const teamInvitationLinkRoute = `${baseTeamInvitationLink}/teaminvitation
 
 const baseTeamComposition = `${base}/teamcomposition`;
 export const teamCompositionRoute = `${baseTeamComposition}/teamcomposition`;
+export const teamCompositionStatusRoute = `${baseTeamComposition}/teamcompositionstatus`;

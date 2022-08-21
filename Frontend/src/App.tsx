@@ -29,8 +29,9 @@ import CompetitionAdminStatus from "./pages/Competition/CompetitionAdminStatus";
 import CompetitionPlayerStatus from "./pages/Competition/CompetitionPlayerStatus";
 import RegistrationStatus from "./pages/Competition/RegistrationStatus";
 import BillingStatus from "./pages/Competition/BillingStatus";
-import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, confirmResultHierarchy, confirmWaitHierarchy, homeHierarchy, loginHierarchy, notFoundHierarchy, privilegeHierarchy, registerHierarchy, registrationStatusHierarchy, roleHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from "./utility/hierarchy";
+import { aclClassHierarchy, billingStatusHierarchy, competitionAdminStatusHierarchy, competitionHierarchy, competitionPlayerStatusHierarchy, competitionStatusHierarchy, confirmResultHierarchy, confirmWaitHierarchy, homeHierarchy, loginHierarchy, notFoundHierarchy, privilegeHierarchy, registerHierarchy, registrationStatusHierarchy, roleHierarchy, teamCompositionStatusHierarchy, teamHierarchy, teamStatusHierarchy, userHierarchy, userStatusHierarchy } from "./utility/hierarchy";
 import { tSecurityPrivilege } from "./types/enums/securityPrivilege";
+import TeamCompositionStatus from "./pages/Team/TeamCompositionStatus";
 
 const App: React.FC = () => {
 
@@ -84,6 +85,14 @@ const App: React.FC = () => {
                 {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_TEAM_PRIVILEGE) ?
                     <>
                         <Route index element={<TeamStatus />} />
+                    </>
+                    :
+                    <Route index element={<NotFound />} />}
+            </Route>
+            <Route path={teamCompositionStatusHierarchy.relativeLabel}>
+                {privileges?.find(privilege => privilege.privilege === tSecurityPrivilege.ADMIN_TEAM_PRIVILEGE) ?
+                    <>
+                        <Route index element={<TeamCompositionStatus />} />
                     </>
                     :
                     <Route index element={<NotFound />} />}

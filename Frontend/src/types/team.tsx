@@ -48,6 +48,7 @@ export type tTeamCompositionStatus = tEnum & {
 export type tUserTeam = tID & {
     team: tTeam,
     admin: boolean,
+    teamCompositionStatus: tTeamCompositionStatus[],
     creationTime: tTimestamp
 }
 
@@ -81,6 +82,10 @@ export type tTeamInvitationLinkAdd = tID & {
 
 export type tTeamCompositionUpdate = tID & {
     isAdmin: boolean
+}
+
+export type tTeamCompositionStatusUpdate = tID & {
+    teamCompositionStatusType: tTeamCompositionStatusType
 }
 
 export type tTeamCompositionAdd = tID & {
