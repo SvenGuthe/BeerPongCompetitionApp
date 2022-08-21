@@ -5,7 +5,7 @@ import { tTimestamp } from "./defaults/timestamp";
 import { tSecurityPrivilege } from "./enums/securityPrivilege";
 import { tSecurityRole } from "./enums/securityRole";
 import { tUserStatusType } from "./enums/userStatusType";
-import { tUserTeam } from "./team";
+import { tTeamCompositionStatus, tUserTeam } from "./team";
 
 export type tConfirmationToken = tID & tAdditionalAttributes & {
     confirmationToken: string,
@@ -56,6 +56,7 @@ export type tUserDetail = {
 export type tTeamUser = tID & {
     user: tUser,
     admin: boolean,
+    teamCompositionStatus: tTeamCompositionStatus[],
     creationTime: tTimestamp
 }
 

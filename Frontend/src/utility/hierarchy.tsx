@@ -103,6 +103,13 @@ export const teamStatusHierarchy: HierarchyItem = {
     relative: "/teamstatus"
 }
 
+export const teamCompositionStatusHierarchy: HierarchyItem = {
+    label: "Team Composition Status",
+    relativeLabel: "teamcompositionstatus",
+    url: "/teamcompositionstatus",
+    relative: "/teamcompositionstatus"
+}
+
 export const competitionAdminStatusHierarchy: HierarchyItem = {
     label: "Turnier Administrator Status",
     relativeLabel: "competitionadminstatus",

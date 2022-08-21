@@ -6,6 +6,7 @@ import { tCompetitionStatusType } from "../../../types/enums/competitionStatusTy
 import { tRegistrationStatusType } from "../../../types/enums/registrationStatusType";
 import { tSecurityPrivilege } from "../../../types/enums/securityPrivilege";
 import { tSecurityRole } from "../../../types/enums/securityRole";
+import { tTeamCompositionStatusType } from "../../../types/enums/teamCompositionStatusType";
 import { tTeamStatusType } from "../../../types/enums/teamStatusType";
 import { tUserStatusType } from "../../../types/enums/userStatusType";
 import FormItem from "./FormItem";
@@ -162,6 +163,24 @@ export const TeamStatusTypeInput: React.FC<{
 }> = (props) => {
 
     const allPossibleValues = Object.keys(tTeamStatusType);
+    const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
+
+    return <FormItem
+        defaultValue={[defaultValue]}
+        possibleValues={allPossibleValues}
+        saveValue={props.saveValue}
+        add={props.add}
+    />;
+
+}
+
+export const TeamCompositionStatusTypeInput: React.FC<{
+    defaultValue?: tTeamCompositionStatusType,
+    saveValue: (newValue: string | number | boolean | string[] | number[], changed: boolean) => void,
+    add?: boolean
+}> = (props) => {
+
+    const allPossibleValues = Object.keys(tTeamCompositionStatusType);
     const defaultValue = props.defaultValue ? props.defaultValue : allPossibleValues[0];
 
     return <FormItem
