@@ -76,4 +76,10 @@ public class Role {
 		setRolePrivileges(rolePrivileges);
 	}
 
+	@Override
+	public String toString() {
+		return "Role{" + "id=" + id + ", role=" + role + ", userRoles=" + userRoles + ", rolePrivileges="
+				+ rolePrivileges + '}';
+	}
+
 }

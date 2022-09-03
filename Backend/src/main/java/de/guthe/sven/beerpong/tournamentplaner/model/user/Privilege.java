@@ -52,4 +52,9 @@ public class Privilege {
 		this.rolePrivileges = rolePrivileges;
 	}
 
+	@Override
+	public String toString() {
+		return "Privilege{" + "id=" + id + ", privilege=" + privilege + ", rolePrivileges=" + rolePrivileges + '}';
+	}
+
 }

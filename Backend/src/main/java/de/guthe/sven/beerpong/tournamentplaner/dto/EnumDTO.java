@@ -91,4 +91,9 @@ public class EnumDTO extends ID {
 		this.value = value;
 	}
 
+	@Override
+	public String toString() {
+		return "EnumDTO{" + "value='" + value + '\'' + ", id=" + id + '}';
+	}
+
 }

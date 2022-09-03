@@ -83,4 +83,11 @@ public class CompetitionPlayerStatusHistory implements ACLObjectInterface {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionPlayerStatusHistory{" + "id=" + id + ", competitionPlayer=" + competitionPlayer
+				+ ", competitionPlayerStatus=" + competitionPlayerStatus + ", validFrom=" + validFrom + ", validTo="
+				+ validTo + '}';
+	}
+
 }

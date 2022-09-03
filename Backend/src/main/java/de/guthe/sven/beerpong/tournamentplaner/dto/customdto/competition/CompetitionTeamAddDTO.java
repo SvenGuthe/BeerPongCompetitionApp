@@ -3,6 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition;
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 // ID = Competition ID
 public class CompetitionTeamAddDTO extends ID {
@@ -56,6 +57,12 @@ public class CompetitionTeamAddDTO extends ID {
 
 	public void setPlayerIds(Long[] playerIds) {
 		this.playerIds = playerIds;
+	}
+
+	@Override
+	public String toString() {
+		return "CompetitionTeamAddDTO{" + "teamname='" + teamname + '\'' + ", password='" + password + '\''
+				+ ", teamId=" + teamId + ", playerIds=" + Arrays.toString(playerIds) + ", id=" + id + '}';
 	}
 
 }

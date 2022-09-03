@@ -70,4 +70,11 @@ public class TeamCompositionStatus implements ACLObjectInterface {
 		this.teamCompositionStatusHistories = teamCompositionStatusHistories;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamCompositionStatus{" + "id=" + id + ", teamCompositionStatusType=" + teamCompositionStatusType
+				+ ", creationTime=" + creationTime + ", teamCompositionStatusHistories="
+				+ teamCompositionStatusHistories + '}';
+	}
+
 }

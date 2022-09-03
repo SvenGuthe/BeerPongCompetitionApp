@@ -33,4 +33,9 @@ public class UserIDAndGamerTagDTO extends ID {
 		this.gamerTag = gamerTag;
 	}
 
+	@Override
+	public String toString() {
+		return "UserIDAndGamerTagDTO{" + "gamerTag='" + gamerTag + '\'' + ", id=" + id + '}';
+	}
+
 }

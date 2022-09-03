@@ -51,4 +51,10 @@ public class UserStatus {
 		this.userStatusHistories = userStatusHistories;
 	}
 
+	@Override
+	public String toString() {
+		return "UserStatus{" + "id=" + id + ", userStatus=" + userStatus + ", userStatusHistories="
+				+ userStatusHistories + '}';
+	}
+
 }

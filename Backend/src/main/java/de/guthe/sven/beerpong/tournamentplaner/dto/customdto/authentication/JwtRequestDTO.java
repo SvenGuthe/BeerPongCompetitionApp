@@ -36,4 +36,9 @@ public class JwtRequestDTO implements Serializable {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "JwtRequestDTO{" + "username='" + username + '\'' + ", password='" + password + '\'' + '}';
+	}
+
 }

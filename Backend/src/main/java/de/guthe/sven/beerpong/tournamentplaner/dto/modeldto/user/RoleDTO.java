@@ -70,4 +70,10 @@ public class RoleDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "RoleDTO{" + "role=" + role + ", validFrom=" + validFrom + ", validTo=" + validTo + ", privileges="
+				+ privileges + ", id=" + id + '}';
+	}
+
 }

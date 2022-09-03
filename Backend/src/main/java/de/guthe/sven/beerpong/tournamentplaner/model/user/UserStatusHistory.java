@@ -75,4 +75,10 @@ public class UserStatusHistory {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "UserStatusHistory{" + "id=" + id + ", user=" + user + ", userStatus=" + userStatus + ", validFrom="
+				+ validFrom + ", validTo=" + validTo + '}';
+	}
+
 }

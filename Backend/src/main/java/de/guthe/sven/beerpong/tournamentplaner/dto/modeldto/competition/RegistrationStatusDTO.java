@@ -88,4 +88,11 @@ public class RegistrationStatusDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "RegistrationStatusDTO{" + "registrationStatusDescription=" + registrationStatusDescription
+				+ ", creationTime=" + creationTime + ", validFrom=" + validFrom + ", validTo=" + validTo + ", id=" + id
+				+ '}';
+	}
+
 }

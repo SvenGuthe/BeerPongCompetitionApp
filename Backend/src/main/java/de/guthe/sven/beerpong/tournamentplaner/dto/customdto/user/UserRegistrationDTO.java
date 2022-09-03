@@ -70,4 +70,10 @@ public class UserRegistrationDTO {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "UserRegistrationDTO{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+				+ ", gamerTag='" + gamerTag + '\'' + ", email='" + email + '\'' + ", password='***" + '\'' + '}';
+	}
+
 }

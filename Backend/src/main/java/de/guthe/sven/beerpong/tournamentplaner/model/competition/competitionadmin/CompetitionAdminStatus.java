@@ -68,4 +68,11 @@ public class CompetitionAdminStatus implements ACLObjectInterface {
 		this.competitionAdminStatusHistories = competitionAdminStatusHistories;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionAdminStatus{" + "id=" + id + ", competitionAdminStatusDescription="
+				+ competitionAdminStatusDescription + ", creationTime=" + creationTime
+				+ ", competitionAdminStatusHistories=" + competitionAdminStatusHistories + '}';
+	}
+
 }

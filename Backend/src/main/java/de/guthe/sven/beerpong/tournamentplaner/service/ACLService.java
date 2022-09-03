@@ -18,30 +18,24 @@ import java.util.Map;
 @Service
 public class ACLService {
 
-	ACLClassRepository aclClassRepository;
+	private final JdbcMutableAclService aclService;
 
-	ACLSidRepository aclSidRepository;
-
-	ACLObjectIdentityRepository aclObjectIdentityRepository;
-
-	ACLEntryRepository aclEntryRepository;
-
-	UserRepository userRepository;
-
-	JdbcMutableAclService aclService;
-
+	/**
+	 * Constructor to auto-wire the services / components / ...
+	 * @param aclService service to handle all the transformations / database queries
+	 * regarding the acl
+	 */
 	@Autowired
-	public ACLService(ACLClassRepository aclClassRepository, ACLSidRepository aclSidRepository,
-			ACLObjectIdentityRepository aclObjectIdentityRepository, ACLEntryRepository aclEntryRepository,
-			UserRepository userRepository, JdbcMutableAclService aclService) {
-		this.aclClassRepository = aclClassRepository;
-		this.aclSidRepository = aclSidRepository;
-		this.aclObjectIdentityRepository = aclObjectIdentityRepository;
-		this.aclEntryRepository = aclEntryRepository;
-		this.userRepository = userRepository;
+	public ACLService(JdbcMutableAclService aclService) {
 		this.aclService = aclService;
 	}
 
+	/**
+	 * Set privileges to an object
+	 * @param aclObjectInterface the object where someone needs permissions
+	 * @param permissions a map of (user(Sid) and List of permissions) which should be
+	 * added to the user
+	 */
 	public void setPrivileges(ACLObjectInterface aclObjectInterface, Map<Sid, List<Permission>> permissions) {
 
 		ObjectIdentity oi = new ObjectIdentityImpl(aclObjectInterface.getACLClass(), aclObjectInterface.getId());
@@ -55,6 +49,7 @@ public class ACLService {
 			acl = aclService.createAcl(oi);
 		}
 
+		// Set the permissions for the sid
 		for (Map.Entry<Sid, List<Permission>> entry : permissions.entrySet()) {
 			Sid sid = entry.getKey();
 			for (Permission permission : entry.getValue()) {
@@ -62,6 +57,7 @@ public class ACLService {
 			}
 		}
 
+		// Update the ACL for the given object
 		aclService.updateAcl(acl);
 
 	}

@@ -22,4 +22,9 @@ public class CompetitionAdminAddDTO extends ID {
 		this.userId = userId;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionAdminAddDTO{" + "userId=" + userId + ", id=" + id + '}';
+	}
+
 }

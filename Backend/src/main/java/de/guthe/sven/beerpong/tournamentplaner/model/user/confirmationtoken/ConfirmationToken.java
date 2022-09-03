@@ -52,4 +52,10 @@ public class ConfirmationToken {
 		this.confirmationTokenHistory = confirmationTokenHistory;
 	}
 
+	@Override
+	public String toString() {
+		return "ConfirmationToken{" + "id=" + id + ", confirmationToken='" + confirmationToken + '\''
+				+ ", confirmationTokenHistory=" + confirmationTokenHistory + '}';
+	}
+
 }

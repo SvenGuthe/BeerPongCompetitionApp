@@ -95,4 +95,10 @@ public class TeamInvitationLinkDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamInvitationLinkDTO{" + "teamInvitationLink='" + teamInvitationLink + '\'' + ", creationTime="
+				+ creationTime + ", validFrom=" + validFrom + ", validTo=" + validTo + ", id=" + id + '}';
+	}
+
 }

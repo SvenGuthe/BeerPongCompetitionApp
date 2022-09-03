@@ -54,4 +54,10 @@ public class ConfirmationTokenDTO extends ID {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "ConfirmationTokenDTO{" + "confirmationToken='" + confirmationToken + '\'' + ", validFrom=" + validFrom
+				+ ", validTo=" + validTo + ", id=" + id + '}';
+	}
+
 }

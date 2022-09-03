@@ -89,4 +89,11 @@ public class CompetitionPlayerStatusDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionPlayerStatusDTO{" + "competitionPlayerStatusDescription="
+				+ competitionPlayerStatusDescription + ", creationTime=" + creationTime + ", validFrom=" + validFrom
+				+ ", validTo=" + validTo + ", id=" + id + '}';
+	}
+
 }

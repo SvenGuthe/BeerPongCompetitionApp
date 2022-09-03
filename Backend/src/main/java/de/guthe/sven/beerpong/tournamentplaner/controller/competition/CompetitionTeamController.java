@@ -6,6 +6,8 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competit
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionTeamRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -25,6 +27,14 @@ public class CompetitionTeamController {
 
 	private final CompetitionService competitionService;
 
+	/**
+	 * Constructor to auto-wire the services / components / ...
+	 * @param aclService service to set privileges for objects
+	 * @param competitionTeamRepository jpa repository to handle all database queries
+	 * directly in this controller regarding the competition teams
+	 * @param competitionService service to handle all the transformations / database
+	 * queries regarding the competition
+	 */
 	@Autowired
 	public CompetitionTeamController(ACLService aclService, CompetitionTeamRepository competitionTeamRepository,
 			CompetitionService competitionService) {
@@ -33,31 +43,62 @@ public class CompetitionTeamController {
 		this.competitionService = competitionService;
 	}
 
+	final private Logger logger = LoggerFactory.getLogger(CompetitionTeamController.class);
+
+	/**
+	 * Route to return all Competition Teams TODO: Check if we want to change it to
+	 * pagination
+	 * @return all Competition Teams
+	 */
 	@GetMapping("/competitionteam")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public List<CompetitionTeamDTO> getCompetitionTeams() {
+		logger.info("Fetch all Competition Teams");
 		return competitionTeamRepository.findAll().stream().map(CompetitionTeamDTO::new).collect(Collectors.toList());
 	}
 
+	/**
+	 * Route to get a single Competition Team by the ID
+	 * @param competitionTeamId the id of the Competition Team in the database
+	 * @return the Competition Team
+	 */
 	@GetMapping("/competitionteam/{competitionTeamId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionTeamDTO getCompetitionTeam(@PathVariable Long competitionTeamId) {
+		logger.info("Trying to find a Competition Team with id: " + competitionTeamId);
+		// TODO: check if the result is empty -> If this is the case return a custom
+		// error-message
 		return new CompetitionTeamDTO(competitionTeamRepository.findById(competitionTeamId).orElseThrow());
 	}
 
+	/**
+	 * Route to add the Competition Team manually
+	 * @param competitionTeamAddDTO Competition Team wrapped in data transfer object
+	 * @return the created Competition Team
+	 */
 	@PostMapping("/competitionteam")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionTeamDTO addCompetitionTeam(@RequestBody CompetitionTeamAddDTO competitionTeamAddDTO) {
+		logger.info("Trying to save " + competitionTeamAddDTO);
 		return competitionService.addCompetitionTeam(competitionTeamAddDTO);
 	}
 
+	/**
+	 * Route to update the Competition Team manually
+	 * @param competitionTeamUpdateDTO the updated entry (id is the identifier)
+	 * @return the updated entry if the update was successful
+	 */
 	@PutMapping("/competitionteam")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionTeamDTO updateCompetitionTeam(@RequestBody CompetitionTeamUpdateDTO competitionTeamUpdateDTO) {
+		logger.info("Trying to update the Competition Team with id = " + competitionTeamUpdateDTO.getId()
+				+ " and the following content (Wrapped in a DTO): " + competitionTeamUpdateDTO);
 		return competitionService.updateCompetitionTeam(competitionTeamUpdateDTO);
 	}
 
 	/*
+	 * TODO: Check how to activate the privileges for competition teams
+	 *
 	 * @PostMapping("/competitionteam")
 	 *
 	 * @Transactional

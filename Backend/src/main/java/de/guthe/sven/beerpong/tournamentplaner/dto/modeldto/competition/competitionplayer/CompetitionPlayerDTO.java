@@ -60,4 +60,10 @@ public class CompetitionPlayerDTO extends ID {
 		this.creationTime = creationTime;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionPlayerDTO{" + "user=" + user + ", competitionPlayerStatus=" + competitionPlayerStatus
+				+ ", creationTime=" + creationTime + ", id=" + id + '}';
+	}
+
 }

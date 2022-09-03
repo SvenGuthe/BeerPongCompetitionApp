@@ -5,6 +5,8 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competit
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.competitionplayer.CompetitionPlayerRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
@@ -24,6 +26,14 @@ public class CompetitionPlayerController {
 
 	private final CompetitionService competitionService;
 
+	/**
+	 * Constructor to auto-wire the services / components / ...
+	 * @param aclService service to set privileges for objects
+	 * @param competitionPlayerRepository jpa repository to handle all database queries
+	 * directly in this controller regarding the competition player
+	 * @param competitionService service to handle all the transformations / database
+	 * queries regarding the competition
+	 */
 	@Autowired
 	public CompetitionPlayerController(ACLService aclService, CompetitionPlayerRepository competitionPlayerRepository,
 			CompetitionService competitionService) {
@@ -32,25 +42,49 @@ public class CompetitionPlayerController {
 		this.competitionService = competitionService;
 	}
 
+	final private Logger logger = LoggerFactory.getLogger(CompetitionPlayerController.class);
+
+	/**
+	 * Route to return all Competition Player TODO: Change this (if we need the route) to
+	 * a paginated result
+	 * @return a list of Data Transfer Object with the Competition Player information
+	 */
 	@GetMapping("/competitionplayer")
 	@PostFilter("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public List<CompetitionPlayerDTO> getCompetitionPlayers() {
+		logger.info("Fetch all Competition Player");
 		return competitionPlayerRepository.findAll().stream().map(CompetitionPlayerDTO::new)
 				.collect(Collectors.toList());
 	}
 
+	/**
+	 * Route to get a single Competition Player by the ID
+	 * @param competitionPlayerId the id of the Competition Player in the database
+	 * @return the Data Transfer Object with the Competition Player Information
+	 */
 	@GetMapping("/competitionplayer/{competitionPlayerId}")
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionPlayerDTO getCompetitionPlayer(@PathVariable Long competitionPlayerId) {
+		logger.info("Trying to find a Competition Player with id: " + competitionPlayerId);
+		// TODO: check if the result is empty -> If this is the case return a custom
+		// error-message
 		return new CompetitionPlayerDTO(competitionPlayerRepository.findById(competitionPlayerId).orElseThrow());
 	}
 
+	/**
+	 * Route to store a new Competition Player
+	 * @param competitionPlayerAddDTO a Data Transfer Object with information to create a
+	 * new Competition Player
+	 * @return the Data Transfer Object with the stored Competition Player Information
+	 */
 	@PostMapping("/competitionplayer")
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionPlayerDTO addCompetitionPlayer(@RequestBody CompetitionPlayerAddDTO competitionPlayerAddDTO) {
+		logger.info("Trying to store: " + competitionPlayerAddDTO);
 		return competitionService.addCompetitionPlayer(competitionPlayerAddDTO);
 	}
 
+	// TODO: Edit the comment here (IDK for know if we need permissions to the object)
 	/*
 	 * @PostMapping("/competitionplayer")
 	 *

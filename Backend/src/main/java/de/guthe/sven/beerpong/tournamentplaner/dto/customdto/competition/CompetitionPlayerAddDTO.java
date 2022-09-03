@@ -23,4 +23,9 @@ public class CompetitionPlayerAddDTO extends ID {
 		this.userId = userId;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionPlayerAddDTO{" + "userId=" + userId + ", id=" + id + '}';
+	}
+
 }

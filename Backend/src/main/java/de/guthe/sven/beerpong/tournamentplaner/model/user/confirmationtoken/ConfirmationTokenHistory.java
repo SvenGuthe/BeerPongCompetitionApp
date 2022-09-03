@@ -81,4 +81,10 @@ public class ConfirmationTokenHistory {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "ConfirmationTokenHistory{" + "id=" + id + ", user=" + user + ", confirmationToken=" + confirmationToken
+				+ ", validFrom=" + validFrom + ", validTo=" + validTo + '}';
+	}
+
 }

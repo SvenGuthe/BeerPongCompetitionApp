@@ -99,4 +99,11 @@ public class ACLEntry {
 		this.auditFailure = auditFailure;
 	}
 
+	@Override
+	public String toString() {
+		return "ACLEntry{" + "id=" + id + ", objectIdentity=" + objectIdentity + ", aceOrder=" + aceOrder + ", aclSid="
+				+ aclSid + ", mask=" + mask + ", granting=" + granting + ", auditSuccess=" + auditSuccess
+				+ ", auditFailure=" + auditFailure + '}';
+	}
+
 }

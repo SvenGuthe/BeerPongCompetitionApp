@@ -60,4 +60,10 @@ public class CompetitionAdminDTO extends ID {
 		this.competitionAdminStatus = competitionAdminStatus;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionAdminDTO{" + "user=" + user + ", creationTime=" + creationTime + ", competitionAdminStatus="
+				+ competitionAdminStatus + ", id=" + id + '}';
+	}
+
 }

@@ -22,9 +22,9 @@ public class TeamAndUserDTO {
 
 	public TeamAndUserDTO(Team team) {
 		this.team = new TeamIDAndNameDTO(team);
-		this.users = team.getTeamCompositions().stream().map(teamComposition -> {
-			return new UserIDAndGamerTagDTO(teamComposition.getUser());
-		}).collect(Collectors.toList());
+		this.users = team.getTeamCompositions().stream()
+				.map(teamComposition -> new UserIDAndGamerTagDTO(teamComposition.getUser()))
+				.collect(Collectors.toList());
 	}
 
 	public TeamIDAndNameDTO getTeam() {
@@ -41,6 +41,11 @@ public class TeamAndUserDTO {
 
 	public void setUsers(Collection<UserIDAndGamerTagDTO> users) {
 		this.users = users;
+	}
+
+	@Override
+	public String toString() {
+		return "TeamAndUserDTO{" + "team=" + team + ", users=" + users + '}';
 	}
 
 }

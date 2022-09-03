@@ -23,4 +23,9 @@ public class ConfirmationTokenAddDTO extends ID {
 		this.confirmationToken = confirmationToken;
 	}
 
+	@Override
+	public String toString() {
+		return "ConfirmationTokenAddDTO{" + "confirmationToken='" + confirmationToken + '\'' + ", id=" + id + '}';
+	}
+
 }

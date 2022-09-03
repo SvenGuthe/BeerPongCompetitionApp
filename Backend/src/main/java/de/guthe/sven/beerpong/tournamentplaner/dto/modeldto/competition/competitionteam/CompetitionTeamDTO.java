@@ -106,4 +106,11 @@ public class CompetitionTeamDTO extends ID {
 		this.team = team;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionTeamDTO{" + "competitionTeamName='" + competitionTeamName + '\'' + ", creationTime="
+				+ creationTime + ", team=" + team + ", competitionPlayer=" + competitionPlayer + ", billingStatus="
+				+ billingStatus + ", registrationStatus=" + registrationStatus + ", id=" + id + '}';
+	}
+
 }
