@@ -70,4 +70,11 @@ public class CompetitionPlayerStatus implements ACLObjectInterface {
 		this.creationTime = creationTime;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionPlayerStatus{" + "id=" + id + ", competitionPlayerStatusDescription="
+				+ competitionPlayerStatusDescription + ", creationTime=" + creationTime
+				+ ", competitionPlayerStatusHistories=" + competitionPlayerStatusHistories + '}';
+	}
+
 }

@@ -144,4 +144,12 @@ public class UserDTO extends ID {
 		this.confirmationToken = confirmationToken;
 	}
 
+	@Override
+	public String toString() {
+		return "UserDTO{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", gamerTag='"
+				+ gamerTag + '\'' + ", email='" + email + '\'' + ", enabled=" + enabled + ", creationTime="
+				+ creationTime + ", roles=" + roles + ", userStatus=" + userStatus + ", confirmationToken="
+				+ confirmationToken + ", id=" + id + '}';
+	}
+
 }

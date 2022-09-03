@@ -28,4 +28,9 @@ public class TeamIDAndNameDTO extends ID {
 		this.teamName = teamName;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamIDAndNameDTO{" + "teamName='" + teamName + '\'' + ", id=" + id + '}';
+	}
+
 }

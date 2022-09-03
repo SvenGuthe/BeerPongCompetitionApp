@@ -55,4 +55,10 @@ public class UserStatusDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "UserStatusDTO{" + "userStatus=" + userStatus + ", validFrom=" + validFrom + ", validTo=" + validTo
+				+ ", id=" + id + '}';
+	}
+
 }

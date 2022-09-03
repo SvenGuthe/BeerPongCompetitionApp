@@ -55,4 +55,10 @@ public class PrivilegeDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "PrivilegeDTO{" + "privilege=" + privilege + ", validFrom=" + validFrom + ", validTo=" + validTo
+				+ ", id=" + id + '}';
+	}
+
 }

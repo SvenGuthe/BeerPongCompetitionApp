@@ -98,4 +98,11 @@ public class UserUpdateDTO extends ID {
 		this.roles = roles;
 	}
 
+	@Override
+	public String toString() {
+		return "UserUpdateDTO{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", gamerTag='"
+				+ gamerTag + '\'' + ", email='" + email + '\'' + ", enabled=" + enabled + ", userStatusType="
+				+ userStatusType + ", roles=" + roles + ", id=" + id + '}';
+	}
+
 }

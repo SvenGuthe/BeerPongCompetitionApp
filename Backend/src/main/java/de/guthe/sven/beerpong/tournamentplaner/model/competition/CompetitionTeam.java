@@ -159,4 +159,13 @@ public class CompetitionTeam implements ACLObjectInterface {
 		this.registrationStatusHistories.add(registrationStatusHistory);
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionTeam{" + "id=" + id + ", team=" + team + ", competition=" + competition
+				+ ", competitionTeamName='" + competitionTeamName + '\'' + ", password='" + password + '\''
+				+ ", creationTime=" + creationTime + ", competitionPlayers=" + competitionPlayers
+				+ ", billingStatusHistories=" + billingStatusHistories + ", registrationStatusHistories="
+				+ registrationStatusHistories + '}';
+	}
+
 }

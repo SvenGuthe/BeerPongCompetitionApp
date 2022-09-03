@@ -23,4 +23,9 @@ public class TeamCompositionUpdateDTO extends ID {
 		isAdmin = admin;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamCompositionUpdateDTO{" + "isAdmin=" + isAdmin + ", id=" + id + '}';
+	}
+
 }

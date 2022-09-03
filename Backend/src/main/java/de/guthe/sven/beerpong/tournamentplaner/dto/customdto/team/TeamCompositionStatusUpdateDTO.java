@@ -24,4 +24,10 @@ public class TeamCompositionStatusUpdateDTO extends ID {
 		this.teamCompositionStatusType = teamCompositionStatusType;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamCompositionStatusUpdateDTO{" + "teamCompositionStatusType=" + teamCompositionStatusType + ", id="
+				+ id + '}';
+	}
+
 }

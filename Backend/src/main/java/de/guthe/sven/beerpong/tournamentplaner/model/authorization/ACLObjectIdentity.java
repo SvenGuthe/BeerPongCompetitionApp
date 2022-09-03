@@ -93,4 +93,11 @@ public class ACLObjectIdentity {
 		this.aclEntries = aclEntries;
 	}
 
+	@Override
+	public String toString() {
+		return "ACLObjectIdentity{" + "id=" + id + ", aclClass=" + aclClass + ", objectIdIdentitiy=" + objectIdIdentitiy
+				+ ", parentObject=" + parentObject + ", aclSid=" + aclSid + ", entriesInheriting=" + entriesInheriting
+				+ ", aclEntries=" + aclEntries + '}';
+	}
+
 }

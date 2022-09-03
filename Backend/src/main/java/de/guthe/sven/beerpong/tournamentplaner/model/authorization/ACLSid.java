@@ -69,4 +69,10 @@ public class ACLSid {
 		this.aclObjectIdentities = aclObjectIdentities;
 	}
 
+	@Override
+	public String toString() {
+		return "ACLSid{" + "id=" + id + ", principle=" + principle + ", sid='" + sid + '\'' + ", aclEntries="
+				+ aclEntries + ", aclObjectIdentities=" + aclObjectIdentities + '}';
+	}
+
 }

@@ -75,4 +75,10 @@ public class RolePrivilege {
 		this.role = role;
 	}
 
+	@Override
+	public String toString() {
+		return "RolePrivilege{" + "id=" + id + ", validFrom=" + validFrom + ", validTo=" + validTo + ", privilege="
+				+ privilege + ", role=" + role + '}';
+	}
+
 }

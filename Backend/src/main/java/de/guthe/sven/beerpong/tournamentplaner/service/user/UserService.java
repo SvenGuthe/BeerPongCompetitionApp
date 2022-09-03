@@ -17,68 +17,106 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-	UserRepository userRepository;
+	private final UserRepository userRepository;
 
-	RoleRepository roleRepository;
+	private final ConfirmationTokenRepository confirmationTokenRepository;
 
-	ConfirmationTokenRepository confirmationTokenRepository;
+	private final ConfirmationTokenHistoryRepository confirmationTokenHistoryRepository;
 
-	ConfirmationTokenHistoryRepository confirmationTokenHistoryRepository;
+	private final UserStatusService userStatusService;
 
-	UserStatusRepository userStatusRepository;
-
-	UserStatusService userStatusService;
-
+	/**
+	 * Constructor to auto-wire the services / components / ...
+	 * @param userRepository jpa repository to handle all database queries directly in
+	 * this controller regarding the user
+	 * @param confirmationTokenRepository jpa repository to handle all database queries
+	 * directly in this controller regarding the confirmation token
+	 * @param userStatusService jpa repository to handle all database queries directly in
+	 * this controller regarding the user status
+	 * @param confirmationTokenHistoryRepository jpa repository to handle all database
+	 * queries directly in this controller regarding the confirmation token history
+	 */
 	@Autowired
-	public UserService(UserRepository userRepository, RoleRepository roleRepository,
-			UserStatusRepository userStatusRepository, ConfirmationTokenRepository confirmationTokenRepository,
+	public UserService(UserRepository userRepository, ConfirmationTokenRepository confirmationTokenRepository,
 			UserStatusService userStatusService,
 			ConfirmationTokenHistoryRepository confirmationTokenHistoryRepository) {
 		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
-		this.userStatusRepository = userStatusRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
 		this.userStatusService = userStatusService;
 		this.confirmationTokenHistoryRepository = confirmationTokenHistoryRepository;
 	}
 
+	/**
+	 * Function to transform a User to the Data Transfer Object of the user details
+	 * @param id the User ID
+	 * @return the Data Transfer Object of the User Details
+	 * @throws Exception if there was no user with the id TODO: Check if it is better to
+	 * throw an exception or use Optional
+	 */
 	public UserDetailDTO transformUserToUserDetailDTO(Long id) throws Exception {
+
+		// Trying to fetch the user with the given id
 		Optional<User> user = userRepository.findById(id);
+
+		// If user was present then create the Data Transfer Object
 		if (user.isPresent()) {
 			return transformUserToUserDetailDTO(user.get());
 		}
+		// If the team does not exist, throw an error
 		else {
 			throw new Exception("User not found with id " + id);
 		}
 	}
 
+	/**
+	 * Function to transform a User to the Data Transfer Object of the user details
+	 * @param user the User object of the model class
+	 * @return the User Details
+	 */
 	public UserDetailDTO transformUserToUserDetailDTO(User user) {
 
+		// Create the Data Transfer Object of the User
 		UserDTO userDTO = new UserDTO(user);
 
+		// Create a list of User Teams from the team compositions
+		// TODO: do we have to check the status here?
 		Collection<UserTeamDTO> userTeams = user.getTeamCompositions().stream().map(UserTeamDTO::new)
 				.collect(Collectors.toList());
 
+		// Create a list of Competitions from the competition admins
+		// TODO: do we have to check the status here?
 		Collection<CompetitionDTO> competitionsWhereAdmin = user.getCompetitionAdmins().stream()
 				.map(CompetitionAdmin::getCompetition).map(CompetitionDTO::new).collect(Collectors.toList());
+
+		// Create a list of Competitions from the competition players
+		// TODO: do we have to check the status here?
 		Collection<CompetitionDTO> competitionsWherePlayer = user.getCompetitionPlayers().stream()
 				.map(competitionPlayer -> new CompetitionDTO(competitionPlayer.getCompetitionTeam().getCompetition()))
 				.collect(Collectors.toList());
 
+		// Return the user details as a Data Transfer Object
 		return new UserDetailDTO(userDTO, userTeams, competitionsWhereAdmin, competitionsWherePlayer);
 	}
 
+	/**
+	 * Update the user
+	 * @param userUpdateDTO values which should be updated
+	 * @return the updated Data Transfer Object of the user
+	 */
 	public UserDTO updateUser(UserUpdateDTO userUpdateDTO) {
 
+		// Trying to fetch the user with the id which was given through the User Update
+		// DTO
+		// TODO: Change logic to Optional if the id is not present
 		User user = userRepository.findById(userUpdateDTO.getId()).get();
+
+		// Set the new values
 		user.setFirstName(userUpdateDTO.getFirstName());
 		user.setLastName(userUpdateDTO.getLastName());
 		user.setGamerTag(userUpdateDTO.getGamerTag());
@@ -107,34 +145,64 @@ public class UserService {
 
 	}
 
+	/**
+	 * Add a new confirmation token to the current user
+	 * @param confirmationTokenAddDTO the Data Transfer Object with the id of the user and
+	 * the new confirmation token
+	 * @return the created confirmation token
+	 */
 	public ConfirmationTokenDTO addConfirmationToken(ConfirmationTokenAddDTO confirmationTokenAddDTO) {
+
+		// Trying to fetch the user with the user-id which was given through the
+		// Confirmation Token Add DTO
+		// TODO: Change logic to Optional if the id is not present
 		User user = userRepository.findById(confirmationTokenAddDTO.getId()).get();
 
+		// Create the new confirmation token and store it
 		ConfirmationToken confirmationToken = new ConfirmationToken(confirmationTokenAddDTO.getConfirmationToken());
 		confirmationTokenRepository.save(confirmationToken);
 
+		// Create the new confirmation token history and store it
 		ConfirmationTokenHistory confirmationTokenHistory = new ConfirmationTokenHistory(user, confirmationToken);
 		confirmationTokenHistoryRepository.save(confirmationTokenHistory);
 
 		user.addConfirmationTokenHistory(confirmationTokenHistory);
+
+		// Update the user
 		userRepository.save(user);
 
+		// Return the created confirmation token
 		return new ConfirmationTokenDTO(confirmationTokenHistory);
 	}
 
+	/**
+	 * Update the confirmation token
+	 * @param confirmationTokenDTO the confirmation token where the "status" should be
+	 * toggled
+	 * @return the updated Data Transfer Object of the confirmation token
+	 */
 	public ConfirmationTokenDTO toggleConfirmationToken(ConfirmationTokenDTO confirmationTokenDTO) {
+
+		// Trying to fetch the confirmation token history with the id which was given
+		// through the Confirmation Token DTO
+		// TODO: Change logic to Optional if the id is not present
 		ConfirmationTokenHistory confirmationTokenHistory = confirmationTokenHistoryRepository
 				.findById(confirmationTokenDTO.getId()).get();
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		ConfirmationTokenHistory resultConfirmationTokenHistory;
 
+		// Check if the getValid is not set (so is enabled)
+		// If this is the case, set the value so that the confirmation token is disabled
 		if (confirmationTokenHistory.getValidTo() == null) {
 			confirmationTokenHistory.setValidTo(now);
 			confirmationTokenHistoryRepository.save(confirmationTokenHistory);
 
 			resultConfirmationTokenHistory = confirmationTokenHistory;
 		}
+		// If the getValid is set (so is disabled currently)
+		// create a new Confirmation Token and add it to the user
+		// so it is no real "toggle" - but creating a new one with the same string
 		else {
 			ConfirmationToken newConfirmationToken = new ConfirmationToken(
 					confirmationTokenHistory.getConfirmationToken().getConfirmationToken());

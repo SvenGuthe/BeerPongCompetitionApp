@@ -62,4 +62,10 @@ public class TeamDetailDTO {
 		this.possibleUsers = possibleUsers;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamDetailDTO{" + "team=" + team + ", users=" + users + ", competitions=" + competitions
+				+ ", possibleUsers=" + possibleUsers + '}';
+	}
+
 }

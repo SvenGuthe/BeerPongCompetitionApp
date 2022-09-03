@@ -58,4 +58,10 @@ public class TeamCompositionStatusDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamCompositionStatusDTO{" + "teamCompositionStatusType=" + teamCompositionStatusType + ", validFrom="
+				+ validFrom + ", validTo=" + validTo + ", id=" + id + '}';
+	}
+
 }

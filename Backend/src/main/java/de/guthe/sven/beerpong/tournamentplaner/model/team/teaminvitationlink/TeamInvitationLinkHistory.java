@@ -82,4 +82,10 @@ public class TeamInvitationLinkHistory implements ACLObjectInterface {
 		this.teamInvitationLink = teamInvitationLink;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamInvitationLinkHistory{" + "id=" + id + ", validFrom=" + validFrom + ", validTo=" + validTo
+				+ ", team=" + team + ", teamInvitationLink=" + teamInvitationLink + '}';
+	}
+
 }

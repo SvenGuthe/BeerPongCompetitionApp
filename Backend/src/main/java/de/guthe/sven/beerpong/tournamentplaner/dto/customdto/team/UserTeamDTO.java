@@ -56,4 +56,10 @@ public class UserTeamDTO extends ID {
 		this.creationTime = creationTime;
 	}
 
+	@Override
+	public String toString() {
+		return "UserTeamDTO{" + "team=" + team + ", isAdmin=" + isAdmin + ", creationTime=" + creationTime + ", id="
+				+ id + '}';
+	}
+
 }

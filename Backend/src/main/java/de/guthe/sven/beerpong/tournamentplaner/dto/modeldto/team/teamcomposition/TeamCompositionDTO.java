@@ -87,4 +87,10 @@ public class TeamCompositionDTO extends ID {
 		this.teamCompositionStatus = teamCompositionStatus;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamCompositionDTO{" + "team=" + team + ", user=" + user + ", isAdmin=" + isAdmin + ", creationTime="
+				+ creationTime + ", teamCompositionStatus=" + teamCompositionStatus + ", id=" + id + '}';
+	}
+
 }

@@ -23,4 +23,9 @@ public class BillingStatusUpdateDTO extends ID {
 		this.billingStatusType = billingStatusType;
 	}
 
+	@Override
+	public String toString() {
+		return "BillingStatusUpdateDTO{" + "billingStatusType=" + billingStatusType + ", id=" + id + '}';
+	}
+
 }

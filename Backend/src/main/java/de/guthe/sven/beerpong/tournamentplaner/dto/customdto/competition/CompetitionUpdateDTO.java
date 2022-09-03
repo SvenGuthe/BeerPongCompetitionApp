@@ -101,4 +101,12 @@ public class CompetitionUpdateDTO extends ID {
 		this.setOfRules = setOfRules;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionUpdateDTO{" + "competitionName='" + competitionName + '\'' + ", competitionStartTimestamp="
+				+ competitionStartTimestamp + ", minTeams=" + minTeams + ", maxTeams=" + maxTeams + ", fee=" + fee
+				+ ", registrationStart=" + registrationStart + ", registrationEnd=" + registrationEnd + ", setOfRules='"
+				+ setOfRules + '\'' + ", id=" + id + '}';
+	}
+
 }

@@ -61,4 +61,10 @@ public class CompetitionDetailDTO {
 		this.teams = teams;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionDetailDTO{" + "competition=" + competition + ", possibleAdminUsers=" + possibleAdminUsers
+				+ ", possiblePlayers=" + possiblePlayers + ", teams=" + teams + '}';
+	}
+
 }

@@ -16,9 +16,12 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.user.ConfirmationToken
 import de.guthe.sven.beerpong.tournamentplaner.repository.user.RoleRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserRepository;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusRepository;
+import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.EmailSenderService;
 import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamCompositionStatusService;
-import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +39,8 @@ public class RegisterController {
 
 	private final UserRepository userRepository;
 
+	private final UserStatusRepository userStatusRepository;
+
 	private final RoleRepository roleRepository;
 
 	private final TeamStatusRepository teamStatusRepository;
@@ -46,11 +51,29 @@ public class RegisterController {
 
 	private final EmailSenderService emailSenderService;
 
+	/**
+	 * Constructor to auto-wire the services / components / ...
+	 * @param userRepository jpa repository to handle all database queries directly in
+	 * this controller regarding the user information
+	 * @param roleRepository jpa repository to handle all database queries directly in
+	 * this controller regarding the roles
+	 * @param confirmationTokenRepository jpa repository to handle all database queries
+	 * directly in this controller regarding the confirmation token
+	 * @param emailSenderService service to handle all E-Mail logic
+	 * @param passwordEncoder PasswordEncoder defined in the WebSecurityConfig ->
+	 * BCryptPasswordEncoder
+	 * @param teamStatusRepository jpa repository to handle all database queries directly
+	 * in this controller regarding the team status
+	 * @param teamCompositionStatusService service to handle all the transformations /
+	 * database queries regarding the team composition (user <-> team)
+	 * @param userStatusRepository jpa repository to handle all database queries directly
+	 * in this controller regarding the user
+	 */
 	@Autowired
 	public RegisterController(UserRepository userRepository, RoleRepository roleRepository,
 			ConfirmationTokenRepository confirmationTokenRepository, EmailSenderService emailSenderService,
 			PasswordEncoder passwordEncoder, TeamStatusRepository teamStatusRepository,
-			TeamCompositionStatusService teamCompositionStatusService) {
+			TeamCompositionStatusService teamCompositionStatusService, UserStatusRepository userStatusRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.confirmationTokenRepository = confirmationTokenRepository;
@@ -58,13 +81,33 @@ public class RegisterController {
 		this.passwordEncoder = passwordEncoder;
 		this.teamStatusRepository = teamStatusRepository;
 		this.teamCompositionStatusService = teamCompositionStatusService;
+		this.userStatusRepository = userStatusRepository;
 	}
 
-	@PostMapping("/register")
-	public UserDTO registerUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
-		UserStatus userStatus = new UserStatus();
-		userStatus.setUserStatus(UserStatusType.ACTIVE);
+	final private Logger logger = LoggerFactory.getLogger(RegisterController.class);
 
+	/**
+	 * Route to register a new user
+	 * @param userRegistrationDTO data transfer object including all necessary information
+	 * to create a user (e.g. username / email and password)
+	 * @return the created user information as a data transfer object important to know:
+	 * this user will be not available at first, because he has to click the link in the
+	 * generated email to activate his account
+	 */
+	@PostMapping("/register")
+	public UserDTO registerUser(@RequestBody @NotNull UserRegistrationDTO userRegistrationDTO) {
+
+		logger.info("Received a user registration request: " + userRegistrationDTO);
+
+		// TODO: Most of the logic should be moved to a service
+		// TODO: Why is the User Status Type set to ACTIVE?
+		// Create a new UserStatus and set the User Status Type = ACTIVE
+		UserStatus userStatus = userStatusRepository.findByStatus(UserStatusType.ACTIVE.name())
+				.orElse(new UserStatus(UserStatusType.ACTIVE));
+
+		// Transfer the information provided by the real user in the body of the request
+		// to the internal
+		// user class and encode the password with the password encoder
 		User user = new User();
 		user.setEmail(userRegistrationDTO.getEmail());
 		user.setFirstName(userRegistrationDTO.getFirstName());
@@ -72,46 +115,64 @@ public class RegisterController {
 		user.setGamerTag(userRegistrationDTO.getGamerTag());
 		user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
 
+		// Create a first entry of the User Status History with the Active Status as the
+		// current one
 		UserStatusHistory userStatusHistory = new UserStatusHistory();
 		userStatusHistory.setUser(user);
 		userStatusHistory.setUserStatus(userStatus);
-
 		user.addUserStatusHistory(userStatusHistory);
 
+		// Check, if there is already a user with this email address (this is not allowed,
+		// because it is our identifier)
+		// TODO: Change logic to send an Error to the user that the email is already used
+		// TODO: Move this logic in the beginning of this controller
 		User checkUser = userRepository.findByEmail(user.getEmail());
 		if (checkUser != null) {
+			logger.error("The email " + user.getEmail() + " already exists");
 			return new UserDTO(checkUser);
 		}
 		else {
+			// Query the role ROLE_PLAYER from the database
+			// TODO: We have to make sure that this entry really exists - anyway, should
+			// we check here if the role was found?
 			Role playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
 
+			// Create the new User Role with the fetched role entity
 			UserRole userRole = new UserRole();
 			userRole.setUser(user);
 			userRole.setRole(playerRole);
-
 			user.addUserRole(userRole);
 
-			TeamStatus teamStatus = new TeamStatus();
-			teamStatus.setTeamStatusDescription(TeamStatusType.INACTIVE);
+			// Create a new Team Status for the single player "team" and set the status to
+			// INACTIVE
+			TeamStatus teamStatus = teamStatusRepository.findByStatus(TeamStatusType.INACTIVE.name())
+					.orElse(new TeamStatus(TeamStatusType.INACTIVE));
 
+			// Create the new Team with name = gamerTag
+			// TODO: I think we have to set password for the team as optional
 			Team team = new Team();
 			team.setTeamName(user.getGamerTag());
 			team.setPlayerTeam(true);
 			team.setPassword("");
 			team.addTeamStatus(teamStatus);
 
+			// Link the single player "team" with the user
 			TeamCompositionStatus teamCompositionStatus = teamCompositionStatusService
 					.getOrCreateTeamCompositionStatus(TeamCompositionStatusType.PROMISED);
-
 			user.addTeam(team, true, teamCompositionStatus);
 
+			// Create a new Confirmation Token for the user to activate the account
 			ConfirmationToken confirmationToken = new ConfirmationToken();
 			ConfirmationTokenHistory confirmationTokenHistory = new ConfirmationTokenHistory(user, confirmationToken);
-
 			user.addConfirmationTokenHistory(confirmationTokenHistory);
 
+			logger.info("Save the new user to the database: " + user);
+
+			// Save now the user to the database
 			userRepository.save(user);
 
+			// Create an E-Mail (and use the gmail account of me) with the confirmation
+			// token to activate the account
 			SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 			simpleMailMessage.setTo(user.getEmail());
 			simpleMailMessage.setSubject("Complete Registration!");
@@ -121,21 +182,52 @@ public class RegisterController {
 
 			emailSenderService.sendEmail(simpleMailMessage);
 
+			logger.info("Confirmation E-Mail was sent to " + user.getEmail());
+
+			// Send the created user back as a response
 			return new UserDTO(user);
 		}
 	}
 
+	/**
+	 * Route to activate the user account
+	 * @param token the token will be the confirmation token created within the
+	 * registration process
+	 * @return the data transfer object with the user information
+	 */
 	@GetMapping("/confirm-account")
 	public UserDTO confirmUser(@RequestParam String token) {
+
+		logger.info("Try to confirm the account with confirmation-token = " + token);
+
+		// TODO: Most of the logic should be moved to a service
+		// Try to find the confirmation token in the database provided in the request
+		// parameter
+		// TODO: Implement a logic, that the confirmation token could expire after a
+		// period of time
+		// TODO: And also think about the flow, what a user could do if the token is
+		// expired (maybe recreate an other token and send it again)
+		// TODO: Check also if the account for the confirmation token is already activated
 		ConfirmationToken confirmationToken = confirmationTokenRepository.findByConfirmationToken(token);
 
+		// If the token was found, then continue with the processing
+		// If this was not the case, just return null
+		// TODO: Send an error message back to the user with the information, that the
+		// confirmation token does not exists
 		if (token != null) {
+			// Get the history of the confirmation token and use this one, with getValidTo
+			// == null
+			// TODO: Change the logic, that maybe use the token, where the timestamp now <
+			// getValidTo()
+			// TODO: Change .get(0) -> first check if this element exists
 			List<ConfirmationTokenHistory> confirmationTokenHistories = confirmationToken.getConfirmationTokenHistory();
 			ConfirmationTokenHistory confirmationTokenHistory = confirmationTokenHistories.stream()
 					.filter(singleHistory -> singleHistory.getValidTo() == null).collect(Collectors.toList()).get(0);
 
-			User user = userRepository.findByEmail(confirmationTokenHistory.getUser().getEmail());
+			// Get the user with the confirmation token
+			User user = confirmationTokenHistory.getUser();
 
+			// Invalidate the confirmation token with the current timestamp
 			List<ConfirmationTokenHistory> newConfirmationTokenHistories = confirmationTokenHistories.stream()
 					.peek(singleHistory -> {
 						if (singleHistory.getValidTo() == null) {
@@ -143,9 +235,11 @@ public class RegisterController {
 						}
 					}).collect(Collectors.toList());
 
+			// Enable the user
 			user.setEnabled(true);
 			user.setConfirmationTokenHistories(newConfirmationTokenHistories);
 
+			// Set the Team Status of the single player "team" to ACTIVE
 			TeamStatus teamStatusActive;
 			List<TeamStatus> teamStatusActiveDatabase = teamStatusRepository.findByDescription(TeamStatusType.ACTIVE);
 
@@ -155,12 +249,15 @@ public class RegisterController {
 				teamStatusActive = teamStatus;
 			}
 			else {
+				// TODO: Maybe check also if the size == 1 -> There shouldn't be a
+				// duplicate
 				teamStatusActive = teamStatusActiveDatabase.get(0);
 			}
 
 			List<TeamComposition> teamCompositions = user.getTeamCompositions().stream().peek(teamComposition -> {
 				if (teamComposition.getTeam().isPlayerTeam()) {
 					Team team = teamComposition.getTeam();
+					// Invalidate the old Team Status
 					List<TeamStatusHistory> teamStatusHistories = team.getTeamStatusHistories().stream()
 							.peek(teamStatusHistory -> {
 								if (teamStatusHistory.getValidTo() == null) {
@@ -168,6 +265,7 @@ public class RegisterController {
 								}
 							}).collect(Collectors.toList());
 
+					// Activate the new Team Status
 					TeamStatusHistory newTeamStatusHistory = new TeamStatusHistory();
 					newTeamStatusHistory.setTeamStatus(teamStatusActive);
 					newTeamStatusHistory.setTeam(teamComposition.getTeam());
@@ -177,15 +275,22 @@ public class RegisterController {
 					team.setTeamStatusHistories(teamStatusHistories);
 
 					teamComposition.setTeam(team);
+
 				}
 			}).collect(Collectors.toList());
 
 			user.setTeamCompositions(teamCompositions);
 
+			logger.info("Update the activated user: " + user);
+
+			// Save the changes of the user
 			userRepository.save(user);
+
+			// Return the updated user information via the data transfer object
 			return new UserDTO(user);
 		}
 		else {
+			logger.error("There was no confirmation token in the database");
 			return null;
 		}
 	}

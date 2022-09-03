@@ -23,4 +23,9 @@ public class RegistrationStatusUpdateDTO extends ID {
 		this.registrationStatusType = registrationStatusType;
 	}
 
+	@Override
+	public String toString() {
+		return "RegistrationStatusUpdateDTO{" + "registrationStatusType=" + registrationStatusType + ", id=" + id + '}';
+	}
+
 }

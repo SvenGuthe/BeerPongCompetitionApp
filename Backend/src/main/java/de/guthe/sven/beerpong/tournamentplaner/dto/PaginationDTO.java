@@ -44,4 +44,9 @@ public class PaginationDTO<T> {
 		this.data = data;
 	}
 
+	@Override
+	public String toString() {
+		return "PaginationDTO{" + "size=" + size + ", pages=" + pages + ", data=" + data + '}';
+	}
+
 }

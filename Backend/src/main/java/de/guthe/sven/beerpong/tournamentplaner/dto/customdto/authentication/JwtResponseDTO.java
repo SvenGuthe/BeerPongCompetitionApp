@@ -25,4 +25,9 @@ public class JwtResponseDTO {
 		return userDTO;
 	}
 
+	@Override
+	public String toString() {
+		return "JwtResponseDTO{" + "jwtToken='" + jwtToken + '\'' + ", userDTO=" + userDTO + '}';
+	}
+
 }

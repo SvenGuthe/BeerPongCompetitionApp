@@ -45,4 +45,10 @@ public class ACLClass {
 		this.aclObjectIdentities = aclObjectIdentities;
 	}
 
+	@Override
+	public String toString() {
+		return "ACLClass{" + "id=" + id + ", aclClass='" + aclClass + '\'' + ", aclObjectIdentities="
+				+ aclObjectIdentities + '}';
+	}
+
 }

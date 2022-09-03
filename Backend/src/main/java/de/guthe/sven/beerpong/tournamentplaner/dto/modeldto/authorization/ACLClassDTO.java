@@ -28,4 +28,9 @@ public class ACLClassDTO extends EnumDTO {
 		this.aclClass = aclClass;
 	}
 
+	@Override
+	public String toString() {
+		return "ACLClassDTO{" + "aclClass='" + aclClass + '\'' + ", id=" + id + '}';
+	}
+
 }

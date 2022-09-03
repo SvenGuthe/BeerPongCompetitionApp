@@ -159,4 +159,12 @@ public class Team implements ACLObjectInterface {
 		this.competitionTeams = competitionTeams;
 	}
 
+	@Override
+	public String toString() {
+		return "Team{" + "id=" + id + ", teamName='" + teamName + '\'' + ", password='" + password + '\''
+				+ ", isPlayerTeam=" + isPlayerTeam + ", creationTime=" + creationTime + ", teamInvitationLinkHistories="
+				+ teamInvitationLinkHistories + ", teamCompositions=" + teamCompositions + ", teamStatusHistories="
+				+ teamStatusHistories + ", competitionTeams=" + competitionTeams + '}';
+	}
+
 }

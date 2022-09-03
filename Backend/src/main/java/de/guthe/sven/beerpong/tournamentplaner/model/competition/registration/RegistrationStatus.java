@@ -68,4 +68,11 @@ public class RegistrationStatus implements ACLObjectInterface {
 		this.registrationStatusHistories = registrationStatusHistories;
 	}
 
+	@Override
+	public String toString() {
+		return "RegistrationStatus{" + "id=" + id + ", registrationStatusDescription=" + registrationStatusDescription
+				+ ", creationTime=" + creationTime + ", registrationStatusHistories=" + registrationStatusHistories
+				+ '}';
+	}
+
 }

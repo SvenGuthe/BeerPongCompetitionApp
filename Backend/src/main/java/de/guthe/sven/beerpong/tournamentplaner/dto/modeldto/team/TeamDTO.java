@@ -92,4 +92,11 @@ public class TeamDTO extends ID {
 		this.teamStatus = teamStatus;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamDTO{" + "teamName='" + teamName + '\'' + ", isPlayerTeam=" + isPlayerTeam + ", creationTime="
+				+ creationTime + ", teamInvitationLinks=" + teamInvitationLinks + ", teamStatus=" + teamStatus + ", id="
+				+ id + '}';
+	}
+
 }

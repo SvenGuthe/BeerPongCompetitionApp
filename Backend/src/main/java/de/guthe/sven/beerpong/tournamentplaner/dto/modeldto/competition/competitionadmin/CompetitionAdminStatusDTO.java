@@ -89,4 +89,11 @@ public class CompetitionAdminStatusDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionAdminStatusDTO{" + "competitionAdminStatusDescription=" + competitionAdminStatusDescription
+				+ ", creationTime=" + creationTime + ", validFrom=" + validFrom + ", validTo=" + validTo + ", id=" + id
+				+ '}';
+	}
+
 }

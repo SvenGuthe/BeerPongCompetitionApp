@@ -35,4 +35,9 @@ public class TeamCompositionAddDTO extends ID {
 		isAdmin = admin;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamCompositionAddDTO{" + "userId=" + userId + ", isAdmin=" + isAdmin + ", id=" + id + '}';
+	}
+
 }

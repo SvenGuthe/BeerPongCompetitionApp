@@ -175,4 +175,14 @@ public class CompetitionDTO extends ID {
 		this.competitionAdmins = competitionAdmins;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionDTO{" + "competitionName='" + competitionName + '\'' + ", competitionStartTimestamp="
+				+ competitionStartTimestamp + ", minTeams=" + minTeams + ", maxTeams=" + maxTeams + ", fee=" + fee
+				+ ", registrationStart=" + registrationStart + ", registrationEnd=" + registrationEnd + ", setOfRules='"
+				+ setOfRules + '\'' + ", creationTime=" + creationTime + ", competitionStatus=" + competitionStatus
+				+ ", competitionTeams=" + competitionTeams + ", competitionAdmins=" + competitionAdmins + ", id=" + id
+				+ '}';
+	}
+
 }

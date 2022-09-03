@@ -102,4 +102,11 @@ public class BillingStatusDTO extends EnumDTO {
 		this.billingStatusId = billingStatusId;
 	}
 
+	@Override
+	public String toString() {
+		return "BillingStatusDTO{" + "billingStatusId=" + billingStatusId + ", billingStatusDescription="
+				+ billingStatusDescription + ", creationTime=" + creationTime + ", validFrom=" + validFrom
+				+ ", validTo=" + validTo + ", id=" + id + '}';
+	}
+
 }

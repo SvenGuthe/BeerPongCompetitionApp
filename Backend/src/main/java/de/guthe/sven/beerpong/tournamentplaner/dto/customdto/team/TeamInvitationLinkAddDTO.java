@@ -23,4 +23,9 @@ public class TeamInvitationLinkAddDTO extends ID {
 		this.teamInvitationLink = teamInvitationLink;
 	}
 
+	@Override
+	public String toString() {
+		return "TeamInvitationLinkAddDTO{" + "teamInvitationLink='" + teamInvitationLink + '\'' + ", id=" + id + '}';
+	}
+
 }

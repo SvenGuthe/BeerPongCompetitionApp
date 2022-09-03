@@ -24,4 +24,10 @@ public class CompetitionPlayerStatusUpdateDTO extends ID {
 		this.competitionPlayerStatusType = competitionPlayerStatusType;
 	}
 
+	@Override
+	public String toString() {
+		return "CompetitionPlayerStatusUpdateDTO{" + "competitionPlayerStatusType=" + competitionPlayerStatusType
+				+ ", id=" + id + '}';
+	}
+
 }

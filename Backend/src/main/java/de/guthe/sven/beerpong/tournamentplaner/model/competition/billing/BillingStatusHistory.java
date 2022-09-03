@@ -83,4 +83,10 @@ public class BillingStatusHistory implements ACLObjectInterface {
 		this.billingStatus = billingStatus;
 	}
 
+	@Override
+	public String toString() {
+		return "BillingStatusHistory{" + "id=" + id + ", validFrom=" + validFrom + ", validTo=" + validTo
+				+ ", competitionTeam=" + competitionTeam + ", billingStatus=" + billingStatus + '}';
+	}
+
 }

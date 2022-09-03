@@ -229,4 +229,14 @@ public class User {
 		this.competitionAdmins = competitionAdmins;
 	}
 
+	@Override
+	public String toString() {
+		return "User{" + "id=" + id + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+				+ ", gamerTag='" + gamerTag + '\'' + ", email='" + email + '\'' + ", password='***" + '\''
+				+ ", enabled=" + enabled + ", creationTime=" + creationTime + ", teamCompositions=" + teamCompositions
+				+ ", userRoles=" + userRoles + ", competitionPlayers=" + competitionPlayers + ", userStatusHistories="
+				+ userStatusHistories + ", confirmationTokenHistories=" + confirmationTokenHistories
+				+ ", competitionAdmins=" + competitionAdmins + '}';
+	}
+
 }

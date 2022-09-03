@@ -61,4 +61,10 @@ public class UserDetailDTO {
 		this.competitionsWherePlayer = competitionsWherePlayer;
 	}
 
+	@Override
+	public String toString() {
+		return "UserDetailDTO{" + "user=" + user + ", teams=" + teams + ", competitionsWhereAdmin="
+				+ competitionsWhereAdmin + ", competitionsWherePlayer=" + competitionsWherePlayer + '}';
+	}
+
 }
