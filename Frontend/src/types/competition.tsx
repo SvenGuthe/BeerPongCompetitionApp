@@ -10,137 +10,139 @@ import { tRegistrationStatusType } from "./enums/registrationStatusType";
 import { tTeam, tTeamAndUser } from "./team";
 
 export type tBillingStatus = tEnum & {
-    billingStatusId: number,
-    billingStatusDescription: tBillingStatusType,
-    creationTime: tTimestamp,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+  billingStatusId: number;
+  billingStatusDescription: tBillingStatusType;
+  creationTime: tTimestamp;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export type tCompetitionAdminStatus = tEnum & {
-    competitionAdminStatusId: number,
-    competitionAdminStatusDescription: tCompetitionAdminStatusType,
-    creationTime: tTimestamp,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+  competitionAdminStatusId: number;
+  competitionAdminStatusDescription: tCompetitionAdminStatusType;
+  creationTime: tTimestamp;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export type tCompetitionPlayerStatus = tEnum & {
-    competitionPlayerStatusId: number,
-    competitionPlayerStatusDescription: tCompetitionPlayerStatusType,
-    creationTime: tTimestamp,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+  competitionPlayerStatusId: number;
+  competitionPlayerStatusDescription: tCompetitionPlayerStatusType;
+  creationTime: tTimestamp;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
-export type tCompetitionStatus = tEnum & tAdditionalAttributes & {
-    competitionStatusId: number,
-    competitionStatusType: tCompetitionAdminStatusType,
-    creationTime: tTimestamp,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+export type tCompetitionStatus = tEnum &
+  tAdditionalAttributes & {
+    competitionStatusId: number;
+    competitionStatusType: tCompetitionAdminStatusType;
+    creationTime: tTimestamp;
+    validFrom: tTimestamp;
+    validTo?: tTimestamp;
+  };
 
 export type tRegistrationStatus = tEnum & {
-    registrationStatusId: number,
-    registrationStatusDescription: tRegistrationStatusType,
-    creationTime: tTimestamp,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+  registrationStatusId: number;
+  registrationStatusDescription: tRegistrationStatusType;
+  creationTime: tTimestamp;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export type tCompetitionAdmin = tID & {
-    user: tUser,
-    creationTime: tTimestamp,
-    competitionAdminStatus: tCompetitionAdminStatus[]
-}
+  user: tUser;
+  creationTime: tTimestamp;
+  competitionAdminStatus: tCompetitionAdminStatus[];
+};
 
 export type tCompetitionPlayer = tID & {
-    user: tUser,
-    competitionPlayerStatus: tCompetitionPlayerStatus[],
-    creationTime: tTimestamp
-}
+  user: tUser;
+  competitionPlayerStatus: tCompetitionPlayerStatus[];
+  creationTime: tTimestamp;
+};
 
 export type tCompetitionTeam = tID & {
-    competitionTeamName: string,
-    creationTime: tTimestamp,
-    team?: tTeam,
-    competitionPlayer: tCompetitionPlayer[],
-    billingStatus: tBillingStatus[],
-    registrationStatus: tRegistrationStatus[]
-}
+  competitionTeamName: string;
+  creationTime: tTimestamp;
+  team?: tTeam;
+  competitionPlayer: tCompetitionPlayer[];
+  billingStatus: tBillingStatus[];
+  registrationStatus: tRegistrationStatus[];
+};
 
-export type tCompetition = tID & tAdditionalAttributes & {
-    competitionName: string,
-    competitionStartTimestamp?: tTimestamp,
-    minTeams?: number,
-    maxTeams?: number,
-    fee?: number,
-    registrationStart?: tTimestamp,
-    registrationEnd?: tTimestamp,
-    setOfRules?: string,
-    creationTime: tTimestamp,
-    competitionStatus: tCompetitionStatus[],
-    competitionTeams: tCompetitionTeam[],
-    competitionAdmins: tCompetitionAdmin[]
-}
+export type tCompetition = tID &
+  tAdditionalAttributes & {
+    competitionName: string;
+    competitionStartTimestamp?: tTimestamp;
+    minTeams?: number;
+    maxTeams?: number;
+    fee?: number;
+    registrationStart?: tTimestamp;
+    registrationEnd?: tTimestamp;
+    setOfRules?: string;
+    creationTime: tTimestamp;
+    competitionStatus: tCompetitionStatus[];
+    competitionTeams: tCompetitionTeam[];
+    competitionAdmins: tCompetitionAdmin[];
+  };
 
 // --------- CUSTOM DTOs --------- //
 
 export type tCompetitionDetail = {
-    competition: tCompetition,
-    possibleAdminUsers: tUserIDAndGamerTag[],
-    possiblePlayers: tUserIDAndGamerTag[],
-    teams: tTeamAndUser[]
-}
+  competition: tCompetition;
+  possibleAdminUsers: tUserIDAndGamerTag[];
+  possiblePlayers: tUserIDAndGamerTag[];
+  teams: tTeamAndUser[];
+};
 
 export type tCompetitionStatusUpdate = tID & {
-    competitionStatusType: tCompetitionStatusType
+  competitionStatusType: tCompetitionStatusType;
 };
 
 export type tCompetitionAdminStatusUpdate = tID & {
-    competitionAdminStatusType: tCompetitionAdminStatusType
-}
+  competitionAdminStatusType: tCompetitionAdminStatusType;
+};
 
 export type tRegistrationStatusUpdate = tID & {
-    registrationStatusType: tRegistrationStatusType
-}
+  registrationStatusType: tRegistrationStatusType;
+};
 
 export type tBillingStatusUpdate = tID & {
-    billingStatusType: tBillingStatusType
-}
+  billingStatusType: tBillingStatusType;
+};
 
 export type tCompetitionAdminAdd = tID & {
-    userId: number
-}
+  userId: number;
+};
 
 export type tCompetitionPlayerAdd = tID & {
-    userId: number
-}
+  userId: number;
+};
 
 export type tCompetitionTeamAdd = tID & {
-    teamname: string,
-    password: string,
-    teamId?: number,
-    playerIds: number[]
-}
+  teamname: string;
+  password: string;
+  teamId?: number;
+  playerIds: number[];
+};
 
 export type tCompetitionUpdate = tID & {
-    competitionName: string,
-    competitionStartTimestamp: string, // TODO: Convert to tTimestamp
-    minTeams: number,
-    maxTeams: number,
-    fee: number,
-    registrationStart: string, // TODO: Convert to tTimestamp
-    registrationEnd: string, // TODO: Convert to tTimestamp
-    setOfRules: string
-}
+  competitionName: string;
+  competitionStartTimestamp: string; // TODO: Convert to tTimestamp
+  minTeams: number;
+  maxTeams: number;
+  fee: number;
+  registrationStart: string; // TODO: Convert to tTimestamp
+  registrationEnd: string; // TODO: Convert to tTimestamp
+  setOfRules: string;
+};
 
 export type tCompetitionPlayerStatusUpdate = tID & {
-    competitionPlayerStatusType: tCompetitionPlayerStatusType
-}
+  competitionPlayerStatusType: tCompetitionPlayerStatusType;
+};
 
 export type tCompetitionTeamUpdate = tID & {
-    teamname: string,
-    teamId?: number
-}
+  teamname: string;
+  teamId?: number;
+};

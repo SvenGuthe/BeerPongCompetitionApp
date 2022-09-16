@@ -2,7 +2,11 @@ import React, { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../../../store/combine-store";
-import { addTeam, removeTeamDetail, storeTeamDetail } from "../../../store/team/team-store";
+import {
+  addTeam,
+  removeTeamDetail,
+  storeTeamDetail,
+} from "../../../store/team/team-store";
 import { tEnum } from "../../../types/defaults/generics";
 import { removeDuplicates } from "../../../utility/arrayFunctions";
 import { getRequestWithID } from "../../../utility/genericHTTPFunctions";
@@ -16,115 +20,165 @@ import TeamDetailTable from "./TeamDetailTable";
 import TeamInvitationLinkTable from "./teamInvitationLink/TeamInvitationLinkTable";
 import TeamStatusAddRow from "./teamStatus/TeamStatusAddRow";
 
+/**
+ * Component to show the team details and the teamstatus + teamlinks + teamusers + all competitions of the teams
+ * @returns JSX with all the information of a team
+ */
 const TeamDetail: React.FC = () => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
-    const id = useParams().id;
+  // get the team id from the url params
+  const id = useParams().id;
 
-    const { teamDetail } = useSelector((state: RootState) => {
-        return {
-            teamDetail: state.team.teamDetail
-        };
-    });
+  // get the team details from redux
+  const { teamDetail } = useSelector((state: RootState) => {
+    return {
+      teamDetail: state.team.teamDetail,
+    };
+  });
 
-    const teamStatus = useMemo(() => {
-        return teamDetail?.team.teamStatus;
-    }, [teamDetail]);
+  // just if the team detail changes, the team status should be reloaded
+  const teamStatus = useMemo(() => {
+    return teamDetail?.team.teamStatus;
+  }, [teamDetail]);
 
-    const teamInvitationLinks = useMemo(() => {
-        return teamDetail?.team.teamInvitationLinks;
-    }, [teamDetail]);
+  // just if the team detail changes, the team invitation links should be reloaded
+  const teamInvitationLinks = useMemo(() => {
+    return teamDetail?.team.teamInvitationLinks;
+  }, [teamDetail]);
 
-    const users = useMemo(() => {
-        return teamDetail?.users;
-    }, [teamDetail]);
+  // just if the team detail changes, the team users should be reloaded
+  const users = useMemo(() => {
+    return teamDetail?.users;
+  }, [teamDetail]);
 
-    const competitions = useMemo(() => {
-        return removeDuplicates(teamDetail?.competitions);
-    }, [teamDetail])
+  // just if the team detail changes, the team competitions should be reloaded
+  const competitions = useMemo(() => {
+    return removeDuplicates(teamDetail?.competitions);
+  }, [teamDetail]);
 
-    useEffect(() => {
+  // if there is an id in the url, load the team details from the api
+  useEffect(() => {
+    if (id) {
+      // load the details for the given id, add the team to the local fetched teams (if not already stored) and also add the team details
+      dispatch(getRequestWithID(+id, "/team/team", [addTeam, storeTeamDetail]));
+    }
 
-        if (id) {
-            dispatch(getRequestWithID(+id, "/team/team", [addTeam, storeTeamDetail]));
-        }
+    // if the page is unmount, remove the team detail
+    return () => {
+      dispatch(removeTeamDetail());
+    };
 
-        return () => {
-            dispatch(removeTeamDetail());
-        }
+    // Reload if the id was changed
+  }, [id, dispatch]);
 
-    }, [id, dispatch]);
-
-    return <>
-        {teamDetail && <>
-            <TeamDetailTable team={teamDetail.team} />
-            {teamStatus && <TableSection>
-                <h3>Team Status</h3>
-                <EnumTable enumData={[...teamStatus.map(singleTeamStatus => {
-
+  return (
+    <>
+      {teamDetail && (
+        <>
+          <TeamDetailTable team={teamDetail.team} />
+          {teamStatus && (
+            <TableSection>
+              <h3>Team Status</h3>
+              <EnumTable
+                enumData={[
+                  ...teamStatus.map((singleTeamStatus) => {
                     const additionalAttributes = [
-                        {
-                            id: singleTeamStatus.id + "_validFrom",
-                            value: singleTeamStatus.validFrom
-                        },
-                        {
-                            id: singleTeamStatus.id + "_validTo",
-                            value: singleTeamStatus.validTo
-                        }
-                    ]
+                      {
+                        id: singleTeamStatus.id + "_validFrom",
+                        value: singleTeamStatus.validFrom,
+                      },
+                      {
+                        id: singleTeamStatus.id + "_validTo",
+                        value: singleTeamStatus.validTo,
+                      },
+                    ];
 
                     const newTeamStatus = {
-                        ...singleTeamStatus,
-                        additionalAttributes
-                    }
+                      ...singleTeamStatus,
+                      additionalAttributes,
+                    };
 
                     return newTeamStatus;
+                  }),
+                ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
+                wrapped
+                addRow={<TeamStatusAddRow id={teamDetail.team.id} />}
+                additionalAttributesHeader={["Valide von", "Valide bis"]}
+              />
+            </TableSection>
+          )}
+          {teamInvitationLinks && (
+            <TableSection>
+              <h3>Team Einladungslinks</h3>
+              <TeamInvitationLinkTable
+                id={teamDetail.team.id}
+                teamInvitationLinks={teamInvitationLinks}
+                wrapped
+              />
+            </TableSection>
+          )}
+          {users && (
+            <TableSection>
+              <h3>Team Mitglieder</h3>
+              {users.map((user) => {
+                return (
+                  <TableSection key={user.id}>
+                    <h4>{user.user.gamerTag}</h4>
+                    <UserDetailsTableTeam
+                      user={user.user}
+                      admin={user.admin}
+                      teamCompositionId={user.id}
+                    ></UserDetailsTableTeam>
 
-                })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<TeamStatusAddRow id={teamDetail.team.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
-            </TableSection>}
-            {teamInvitationLinks && <TableSection>
-                <h3>Team Einladungslinks</h3>
-                <TeamInvitationLinkTable id={teamDetail.team.id} teamInvitationLinks={teamInvitationLinks} wrapped />
-            </TableSection>}
-            {users && <TableSection>
-                <h3>Team Mitglieder</h3>
-                {users.map(user => {
-                    return <TableSection key={user.id}>
-                        <h4>{user.user.gamerTag}</h4>
-                        <UserDetailsTableTeam user={user.user} admin={user.admin} teamCompositionId={user.id}></UserDetailsTableTeam>
-
-                        <EnumTable enumData={[...user.teamCompositionStatus.map(singleTeamCompositionStatus => {
-
+                    <EnumTable
+                      enumData={[
+                        ...user.teamCompositionStatus.map(
+                          (singleTeamCompositionStatus) => {
                             const additionalAttributes = [
-                                {
-                                    id: singleTeamCompositionStatus.id + "_validFrom",
-                                    value: singleTeamCompositionStatus.validFrom
-                                },
-                                {
-                                    id: singleTeamCompositionStatus.id + "_validTo",
-                                    value: singleTeamCompositionStatus.validTo
-                                }
-                            ]
+                              {
+                                id:
+                                  singleTeamCompositionStatus.id + "_validFrom",
+                                value: singleTeamCompositionStatus.validFrom,
+                              },
+                              {
+                                id: singleTeamCompositionStatus.id + "_validTo",
+                                value: singleTeamCompositionStatus.validTo,
+                              },
+                            ];
 
                             const newTeamCompositionStatus = {
-                                ...singleTeamCompositionStatus,
-                                additionalAttributes
-                            }
+                              ...singleTeamCompositionStatus,
+                              additionalAttributes,
+                            };
 
                             return newTeamCompositionStatus;
-
-                        })].sort((a: tEnum, b: tEnum) => a.id - b.id)} wrapped addRow={<TeamCompositionStatusAddRow id={user.id} />} additionalAttributesHeader={["Valide von", "Valide bis"]} />
-                    </TableSection>
-                })}
-                <TeamCompositionAdd id={teamDetail.team.id} users={teamDetail.possibleUsers} />
-            </TableSection>}
-            {competitions && <TableSection>
-                <h3>Turniere</h3>
-                <CompetitionTable competitions={competitions} wrapped />
-            </TableSection>}
-        </>}
-    </>;
-
-}
+                          }
+                        ),
+                      ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
+                      wrapped
+                      addRow={<TeamCompositionStatusAddRow id={user.id} />}
+                      additionalAttributesHeader={["Valide von", "Valide bis"]}
+                    />
+                  </TableSection>
+                );
+              })}
+              <TeamCompositionAdd
+                id={teamDetail.team.id}
+                users={teamDetail.possibleUsers}
+              />
+            </TableSection>
+          )}
+          {competitions && (
+            <TableSection>
+              <h3>Turniere</h3>
+              <CompetitionTable competitions={competitions} wrapped />
+            </TableSection>
+          )}
+        </>
+      )}
+    </>
+  );
+};
 
 export default TeamDetail;

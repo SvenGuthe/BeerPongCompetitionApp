@@ -7,73 +7,75 @@ import { tSecurityRole } from "./enums/securityRole";
 import { tUserStatusType } from "./enums/userStatusType";
 import { tTeamCompositionStatus, tUserTeam } from "./team";
 
-export type tConfirmationToken = tID & tAdditionalAttributes & {
-    confirmationToken: string,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+export type tConfirmationToken = tID &
+  tAdditionalAttributes & {
+    confirmationToken: string;
+    validFrom: tTimestamp;
+    validTo?: tTimestamp;
+  };
 
 export type tPrivilege = tEnum & {
-    privilege: tSecurityPrivilege,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+  privilege: tSecurityPrivilege;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export type tRole = tEnum & {
-    role: tSecurityRole,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp,
-    privileges: tPrivilege[]
-}
+  role: tSecurityRole;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+  privileges: tPrivilege[];
+};
 
 export type tUserStatus = tEnum & {
-    userStatus: tUserStatusType,
-    validFrom: tTimestamp,
-    validTo?: tTimestamp
-}
+  userStatus: tUserStatusType;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
-export type tUser = tID & tAdditionalAttributes & {
-    firstName: string,
-    lastName: string,
-    gamerTag: string,
-    email: string,
-    enabled: boolean,
-    creationTime: tTimestamp,
-    roles: tRole[],
-    userStatus: tUserStatus[],
-    confirmationToken: tConfirmationToken[]
-}
+export type tUser = tID &
+  tAdditionalAttributes & {
+    firstName: string;
+    lastName: string;
+    gamerTag: string;
+    email: string;
+    enabled: boolean;
+    creationTime: tTimestamp;
+    roles: tRole[];
+    userStatus: tUserStatus[];
+    confirmationToken: tConfirmationToken[];
+  };
 
 // --------- CUSTOM DTOs --------- //
 
 export type tUserDetail = {
-    user: tUser,
-    teams: tUserTeam[],
-    competitionsWhereAdmin: tCompetition[],
-    competitionsWherePlayer: tCompetition[]
-}
+  user: tUser;
+  teams: tUserTeam[];
+  competitionsWhereAdmin: tCompetition[];
+  competitionsWherePlayer: tCompetition[];
+};
 
 export type tTeamUser = tID & {
-    user: tUser,
-    admin: boolean,
-    teamCompositionStatus: tTeamCompositionStatus[],
-    creationTime: tTimestamp
-}
+  user: tUser;
+  admin: boolean;
+  teamCompositionStatus: tTeamCompositionStatus[];
+  creationTime: tTimestamp;
+};
 
 export type tUserIDAndGamerTag = tID & {
-    gamerTag: string
-}
+  gamerTag: string;
+};
 
 export type tUserUpdate = tID & {
-    firstName: string,
-    lastName: string,
-    gamerTag: string,
-    email: string,
-    enabled: boolean,
-    userStatusType: tUserStatusType,
-    roles: tSecurityRole[]
-}
+  firstName: string;
+  lastName: string;
+  gamerTag: string;
+  email: string;
+  enabled: boolean;
+  userStatusType: tUserStatusType;
+  roles: tSecurityRole[];
+};
 
 export type tConfirmationTokenAdd = tID & {
-    confirmationToken: string
-}
+  confirmationToken: string;
+};

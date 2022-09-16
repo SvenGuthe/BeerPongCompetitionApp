@@ -7,17 +7,21 @@ import { billingStatusRoute } from "../../api-routes/competition";
 import { storeBillingStatus } from "../../store/competition/competition-store";
 
 const BillingStatus = () => {
+  const billingStatus = useSelector((state: RootState) => {
+    return state.competition.billingStatus;
+  });
 
-    const billingStatus = useSelector((state: RootState) => {
-        return state.competition.billingStatus;
-    })
-
-    return <>
-        <Hierarchy hierarchyItems={[homeHierarchy, billingStatusHierarchy]} />
-        <h2>Zahlungs Status</h2>
-        <EnumOverview url={billingStatusRoute} storeFunction={storeBillingStatus} paginationData={billingStatus} />
+  return (
+    <>
+      <Hierarchy hierarchyItems={[homeHierarchy, billingStatusHierarchy]} />
+      <h2>Zahlungs Status</h2>
+      <EnumOverview
+        url={billingStatusRoute}
+        storeFunction={storeBillingStatus}
+        paginationData={billingStatus}
+      />
     </>
-
+  );
 };
 
 export default BillingStatus;

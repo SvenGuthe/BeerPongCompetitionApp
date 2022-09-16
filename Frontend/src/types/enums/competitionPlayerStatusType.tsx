@@ -1,5 +1,5 @@
 export enum tCompetitionPlayerStatusType {
-    INVITED = "INVITED",
-    PROMISED = "PROMISED",
-    NOT_PROMISED = "NOT_PROMISED"
+  INVITED = "INVITED",
+  PROMISED = "PROMISED",
+  NOT_PROMISED = "NOT_PROMISED",
 }

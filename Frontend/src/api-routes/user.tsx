@@ -1,3 +1,5 @@
+// Routes to handle the user requests
+
 const base = "/user";
 
 export const privilegeRoute = `${base}/privilege`;

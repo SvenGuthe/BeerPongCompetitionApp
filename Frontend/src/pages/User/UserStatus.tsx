@@ -7,17 +7,21 @@ import { storeUserStatus } from "../../store/user/user-store";
 import { homeHierarchy, userStatusHierarchy } from "../../utility/hierarchy";
 
 const UserStatus = () => {
+  const userStatus = useSelector((state: RootState) => {
+    return state.user.userStatus;
+  });
 
-    const userStatus = useSelector((state: RootState) => {
-        return state.user.userStatus;
-    })
-
-    return <>
-        <Hierarchy hierarchyItems={[homeHierarchy, userStatusHierarchy]} />
-        <h2>Nutzer Status</h2>
-        <EnumOverview url={userStatusRoute} storeFunction={storeUserStatus} paginationData={userStatus} />
+  return (
+    <>
+      <Hierarchy hierarchyItems={[homeHierarchy, userStatusHierarchy]} />
+      <h2>Nutzer Status</h2>
+      <EnumOverview
+        url={userStatusRoute}
+        storeFunction={storeUserStatus}
+        paginationData={userStatus}
+      />
     </>
-
+  );
 };
 
 export default UserStatus;
