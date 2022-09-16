@@ -4,30 +4,47 @@ import { tTeamCompositionStatusType } from "../../../../types/enums/teamComposit
 import { tTeamCompositionStatusUpdate } from "../../../../types/team";
 import { TeamCompositionStatusTypeInput } from "../../../ui/form/PredefinedSelectInputs";
 
+/**
+ * Component to add a row to an existing table with a select field to choose a new team composition status
+ * @param props the id of the team composition
+ * @returns JSX with a single table row (4 columns) and the possibility (select input) to choose a new status for the team composition
+ */
 const TeamCompositionStatusAddRow: React.FC<{
-    id: number
+  id: number;
 }> = (props) => {
+  // get the team composition id from the props
+  const id = props.id;
+  const dispatch = useDispatch();
 
-    const id = props.id;
-    const dispatch = useDispatch();
+  // Handler when clicked the add button
+  const onSaveNewTeamCompositionStatusType = (newValue: string[]) => {
+    const newStatus = newValue[0] as tTeamCompositionStatusType;
 
-    const onSaveNewTeamCompositionStatusType = (newValue: string[]) => {
-        const newStatus = newValue[0] as tTeamCompositionStatusType;
-        const teamCompositionStatus: tTeamCompositionStatusUpdate = {
-            id: id,
-            teamCompositionStatusType: newStatus
-        }
-        dispatch(updateTeamCompositionStatus(teamCompositionStatus));
-    }
+    // Create the DTO with the team composition id and the selected team composition status
+    const teamCompositionStatus: tTeamCompositionStatusUpdate = {
+      id: id,
+      teamCompositionStatusType: newStatus,
+    };
 
-    return <tr style={{ borderTop: "2px dashed black" }}>
-        <td colSpan={2} style={{ textAlign: "right" }}>Neuen Team Composition Status setzen:</td>
-        <td colSpan={2}><TeamCompositionStatusTypeInput saveValue={(newValue, changed) =>
+    // Send a PUT request to the team composition status route to set the new team composition status
+    dispatch(updateTeamCompositionStatus(teamCompositionStatus));
+  };
+
+  return (
+    <tr style={{ borderTop: "2px dashed black" }}>
+      <td colSpan={2} style={{ textAlign: "right" }}>
+        Neuen Team Composition Status setzen:
+      </td>
+      <td colSpan={2}>
+        <TeamCompositionStatusTypeInput
+          saveValue={(newValue, changed) =>
             onSaveNewTeamCompositionStatusType(newValue as string[])
-        } add /></td>
-    </tr>;
-
-
-}
+          }
+          add
+        />
+      </td>
+    </tr>
+  );
+};
 
 export default TeamCompositionStatusAddRow;

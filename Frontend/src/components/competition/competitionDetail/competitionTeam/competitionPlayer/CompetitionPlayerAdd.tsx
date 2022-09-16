@@ -7,51 +7,83 @@ import { tUserIDAndGamerTag } from "../../../../../types/user";
 import { tCompetitionPlayerAdd } from "../../../../../types/competition";
 import { tTeamAndUser } from "../../../../../types/team";
 
+/**
+ * Component to add a new competition player to a team
+ * @param props an optional team if the competition team is a real team
+ *              all possible users which could be added to a competition team
+ *              the competition team id
+ * @returns JSX to add new players to a competition team
+ */
 const CompetitionPlayerAdd: React.FC<{
-    team?: tTeamAndUser,
-    user: tUserIDAndGamerTag[],
-    id: number
+  team?: tTeamAndUser;
+  user: tUserIDAndGamerTag[];
+  id: number;
 }> = (props) => {
+  // get the team from props
+  // the team is present, if the competition team is registered with a real team
+  // in this case, just other members of this real team are allowed in the competition team
+  const team = props.team;
 
-    const team = props.team;
-    const user = props.user;
+  // get the user from props
+  const user = props.user;
 
-    const selectRef = useRef<HTMLSelectElement>(null);
-    const dispatch = useDispatch();
+  const selectRef = useRef<HTMLSelectElement>(null);
+  const dispatch = useDispatch();
 
-    const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-        const competitionPlayer: tCompetitionPlayerAdd = {
-            id: props.id,
-            userId: +selectRef.current!.value
-        }
-        dispatch(addCompetitionPlayer(competitionPlayer));
-    }
+  // Handler when clicked the add button
+  const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
 
-    let possibleUsers = user;
+    // Create the DTO with the competition team id and the selected user (user id)
+    const competitionPlayer: tCompetitionPlayerAdd = {
+      id: props.id,
+      userId: +selectRef.current!.value, // TODO: Check ! and +
+    };
 
-    if (team) {
-        possibleUsers = team.users.filter(singleTeamUser => user.find(singleUser => singleUser.id === singleTeamUser.id))
-    }
+    // Send a POST request to the competition player route to add a user to the competition player
+    dispatch(addCompetitionPlayer(competitionPlayer));
+  };
 
-    return <Container style={{ padding: "0px", margin: "0px" }}>
-        <Form>
-            <Row>
-                <Form.Group as={Col} sm={4}>
-                    <Form.Label htmlFor={`teamuser_${props.id}`}>Teamspieler</Form.Label>
-                    <Form.Select id={`teamuser_${props.id}`} ref={selectRef}>
-                        {possibleUsers.map(user => <option key={user.id} value={user.id}>{user.gamerTag}</option>)}
-                    </Form.Select>
-                </Form.Group>
-                <Col sm={2} style={{ textAlign: "right" }}>
-                    <Button variant="secondary" type="submit" size="sm" onClick={onAddHandler} style={{ width: '100px' }}>
-                        Add
-                    </Button>
-                </Col>
-            </Row>
-        </Form>
+  let possibleUsers = user;
+
+  // If a team is present, then filter out all possible users which are not in the team
+  if (team) {
+    possibleUsers = team.users.filter((singleTeamUser) =>
+      user.find((singleUser) => singleUser.id === singleTeamUser.id)
+    );
+  }
+
+  return (
+    <Container style={{ padding: "0px", margin: "0px" }}>
+      <Form>
+        <Row>
+          <Form.Group as={Col} sm={4}>
+            <Form.Label htmlFor={`teamuser_${props.id}`}>
+              Teamspieler
+            </Form.Label>
+            <Form.Select id={`teamuser_${props.id}`} ref={selectRef}>
+              {possibleUsers.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.gamerTag}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Col sm={2} style={{ textAlign: "right" }}>
+            <Button
+              variant="secondary"
+              type="submit"
+              size="sm"
+              onClick={onAddHandler}
+              style={{ width: "100px" }}
+            >
+              Add
+            </Button>
+          </Col>
+        </Row>
+      </Form>
     </Container>
-
+  );
 };
 
 export default CompetitionPlayerAdd;

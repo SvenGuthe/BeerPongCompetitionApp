@@ -1,3 +1,5 @@
+// Routes for the authentication
+
 const base = "/authentication";
 
 export const loginRoute = `${base}/login`;

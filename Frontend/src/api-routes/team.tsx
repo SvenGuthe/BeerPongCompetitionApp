@@ -1,3 +1,5 @@
+// Routes to handle the team requests
+
 const base = "/team";
 
 export const teamStatusRoute = `${base}/teamstatus`;

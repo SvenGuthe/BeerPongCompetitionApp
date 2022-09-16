@@ -7,17 +7,21 @@ import { homeHierarchy, privilegeHierarchy } from "../../utility/hierarchy";
 import { storePrivileges } from "../../store/user/user-store";
 
 const Privilege = () => {
+  const privileges = useSelector((state: RootState) => {
+    return state.user.privileges;
+  });
 
-    const privileges = useSelector((state: RootState) => {
-        return state.user.privileges;
-    })
-
-    return <>
-        <Hierarchy hierarchyItems={[homeHierarchy, privilegeHierarchy]} />
-        <h2>Privilegien</h2>
-        <EnumOverview url={privilegeRoute} storeFunction={storePrivileges} paginationData={privileges} />
+  return (
+    <>
+      <Hierarchy hierarchyItems={[homeHierarchy, privilegeHierarchy]} />
+      <h2>Privilegien</h2>
+      <EnumOverview
+        url={privilegeRoute}
+        storeFunction={storePrivileges}
+        paginationData={privileges}
+      />
     </>
-
+  );
 };
 
 export default Privilege;

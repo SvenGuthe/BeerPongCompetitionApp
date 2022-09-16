@@ -7,17 +7,21 @@ import { storeRoles } from "../../store/user/user-store";
 import { homeHierarchy, roleHierarchy } from "../../utility/hierarchy";
 
 const Role = () => {
+  const roles = useSelector((state: RootState) => {
+    return state.user.roles;
+  });
 
-    const roles = useSelector((state: RootState) => {
-        return state.user.roles;
-    })
-
-    return <>
-        <Hierarchy hierarchyItems={[homeHierarchy, roleHierarchy]} />
-        <h2>Rollen</h2>
-        <EnumOverview url={roleRoute} storeFunction={storeRoles} paginationData={roles} />
+  return (
+    <>
+      <Hierarchy hierarchyItems={[homeHierarchy, roleHierarchy]} />
+      <h2>Rollen</h2>
+      <EnumOverview
+        url={roleRoute}
+        storeFunction={storeRoles}
+        paginationData={roles}
+      />
     </>
-
+  );
 };
 
 export default Role;
