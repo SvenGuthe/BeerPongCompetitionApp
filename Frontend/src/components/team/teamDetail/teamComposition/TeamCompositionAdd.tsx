@@ -12,7 +12,7 @@ import tUser from "../../../../types/user/user";
  * @returns JSX to select and add a new user (possible users) to the team
  */
 const TeamCompositionAdd: React.FC<{
-  id: number;
+  teamId: number;
   users: tUser[];
 }> = (props) => {
   // get the possible users from props
@@ -30,7 +30,7 @@ const TeamCompositionAdd: React.FC<{
     // Create the DTO with the team id and the selected user (user id)
     // Additional the admin-value could be set via a checkbox
     const teamComposition: tTeamCompositionAdd = {
-      id: props.id,
+      id: props.teamId,
       userId: +userRef.current!.value,
       isAdmin: activatedRef.current!.checked,
     };
@@ -45,8 +45,8 @@ const TeamCompositionAdd: React.FC<{
       <Form>
         <Row>
           <Form.Group as={Col} sm={3}>
-            <Form.Label htmlFor={`user_${props.id}`}>Spieler</Form.Label>
-            <Form.Select id={`user_${props.id}`} ref={userRef}>
+            <Form.Label htmlFor={`user_${props.teamId}`}>Spieler</Form.Label>
+            <Form.Select id={`user_${props.teamId}`} ref={userRef}>
               {possibleUsers.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.gamerTag}
@@ -55,8 +55,8 @@ const TeamCompositionAdd: React.FC<{
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} sm={2}>
-            <Form.Label htmlFor={`admin_${props.id}`}>Admin</Form.Label>
-            <Form.Check id={`admin_${props.id}`} ref={activatedRef} />
+            <Form.Label htmlFor={`admin_${props.teamId}`}>Admin</Form.Label>
+            <Form.Check id={`admin_${props.teamId}`} ref={activatedRef} />
           </Form.Group>
           <Col sm={2} style={{ textAlign: "right" }}>
             <Button

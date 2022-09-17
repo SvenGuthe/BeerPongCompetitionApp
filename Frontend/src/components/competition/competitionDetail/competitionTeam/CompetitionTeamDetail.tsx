@@ -94,7 +94,9 @@ const CompetitionTeamDetail: React.FC<{
                 ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
                 wrapped
                 addRow={
-                  <RegistrationStatusAddRow id={competitionTeamDetail.id} />
+                  <RegistrationStatusAddRow
+                    competitionTeamId={competitionTeamDetail.id}
+                  />
                 }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}
               />
@@ -132,7 +134,11 @@ const CompetitionTeamDetail: React.FC<{
                   ),
                 ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
                 wrapped
-                addRow={<BillingStatusAddRow id={competitionTeamDetail.id} />}
+                addRow={
+                  <BillingStatusAddRow
+                    competitionTeamId={competitionTeamDetail.id}
+                  />
+                }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}
               />
             </TableSection>
@@ -152,7 +158,7 @@ const CompetitionTeamDetail: React.FC<{
               <CompetitionPlayerAdd
                 team={team}
                 user={props.users}
-                id={competitionTeamDetail.id}
+                competitionTeamId={competitionTeamDetail.id}
               />
             </TableSection>
           )}

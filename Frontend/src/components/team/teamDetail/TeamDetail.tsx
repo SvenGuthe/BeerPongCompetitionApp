@@ -28,7 +28,7 @@ const TeamDetail: React.FC = () => {
   const dispatch = useDispatch();
 
   // get the team id from the url params
-  const id = useParams().id;
+  const teamId = useParams().id;
 
   // get the team details from redux
   const { teamDetail } = useSelector((state: RootState) => {
@@ -59,9 +59,11 @@ const TeamDetail: React.FC = () => {
 
   // if there is an id in the url, load the team details from the api
   useEffect(() => {
-    if (id) {
+    if (teamId) {
       // load the details for the given id, add the team to the local fetched teams (if not already stored) and also add the team details
-      dispatch(getRequestWithID(+id, "/team/team", [addTeam, storeTeamDetail]));
+      dispatch(
+        getRequestWithID(+teamId, "/team/team", [addTeam, storeTeamDetail])
+      );
     }
 
     // if the page is unmount, remove the team detail
@@ -70,7 +72,7 @@ const TeamDetail: React.FC = () => {
     };
 
     // Reload if the id was changed
-  }, [id, dispatch]);
+  }, [teamId, dispatch]);
 
   return (
     <>
@@ -103,7 +105,7 @@ const TeamDetail: React.FC = () => {
                   }),
                 ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
                 wrapped
-                addRow={<TeamStatusAddRow id={teamDetail.team.id} />}
+                addRow={<TeamStatusAddRow teamId={teamDetail.team.id} />}
                 additionalAttributesHeader={["Valide von", "Valide bis"]}
               />
             </TableSection>
@@ -112,7 +114,7 @@ const TeamDetail: React.FC = () => {
             <TableSection>
               <h3>Team Einladungslinks</h3>
               <TeamInvitationLinkTable
-                id={teamDetail.team.id}
+                teamId={teamDetail.team.id}
                 teamInvitationLinks={teamInvitationLinks}
                 wrapped
               />
@@ -157,14 +159,18 @@ const TeamDetail: React.FC = () => {
                         ),
                       ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
                       wrapped
-                      addRow={<TeamCompositionStatusAddRow id={user.id} />}
+                      addRow={
+                        <TeamCompositionStatusAddRow
+                          teamCompositionId={user.id}
+                        />
+                      }
                       additionalAttributesHeader={["Valide von", "Valide bis"]}
                     />
                   </TableSection>
                 );
               })}
               <TeamCompositionAdd
-                id={teamDetail.team.id}
+                teamId={teamDetail.team.id}
                 users={teamDetail.possibleUsers}
               />
             </TableSection>

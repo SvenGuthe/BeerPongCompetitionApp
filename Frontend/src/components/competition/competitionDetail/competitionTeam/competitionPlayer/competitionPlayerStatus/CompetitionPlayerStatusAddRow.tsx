@@ -10,17 +10,17 @@ import { CompetitionPlayerStatusTypeInput } from "../../../../../ui/form/Predefi
  * @returns JSX with a sngle table row (4 columns) and the possibility (select input) to choose a new competition player status for the competition player
  */
 const CompetitionPlayerStatusAddRow: React.FC<{
-  id: number;
+  competitionPlayerId: number;
 }> = (props) => {
   // get the competition player id from the props
-  const id = props.id;
+  const competitionPlayerId = props.competitionPlayerId;
   const dispatch = useDispatch();
 
   // Handler when clicked the add button
   const onSaveNewCompetitionPlayerStatusType = (newValue: string[]) => {
     // Create the DTO with the competition player id and the selected competition player status
     const competitionPlayerStatus: tCompetitionPlayerStatusUpdate = {
-      id: id,
+      id: competitionPlayerId,
       competitionPlayerStatusType: newValue[0] as tCompetitionPlayerStatusType,
     };
 

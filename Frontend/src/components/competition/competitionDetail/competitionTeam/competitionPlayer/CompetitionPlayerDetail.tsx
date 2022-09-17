@@ -62,7 +62,7 @@ const CompetitionPlayerDetail: React.FC<{
                 wrapped
                 addRow={
                   <CompetitionPlayerStatusAddRow
-                    id={competitionPlayerDetail.id}
+                    competitionPlayerId={competitionPlayerDetail.id}
                   />
                 }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}

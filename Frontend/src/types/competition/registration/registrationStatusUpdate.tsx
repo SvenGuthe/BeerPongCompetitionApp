@@ -3,7 +3,7 @@
 import { tID } from "../../defaults/generics";
 import { tRegistrationStatusType } from "../../enums/registrationStatusType";
 
-// id = RegistrationStatusID
+// id = CompetitionTeamID
 type tRegistrationStatusUpdate = tID & {
   registrationStatusType: tRegistrationStatusType;
 };

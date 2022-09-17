@@ -13,7 +13,7 @@ import TeamInvitationLinkRow from "./TeamInvitationLinkRow";
  */
 const TeamInvitationLinkTable: React.FC<{
   teamInvitationLinks: tTeamInvitationLink[];
-  id: number;
+  teamId: number;
   wrapped?: boolean;
   additionalAttributesHeader?: string[];
 }> = (props) => {
@@ -54,7 +54,7 @@ const TeamInvitationLinkTable: React.FC<{
             teamInvitationLink={teamInvitationLink}
           />
         ))}
-        <TeamInvitationLinkAddRow id={props.id} />
+        <TeamInvitationLinkAddRow teamId={props.teamId} />
       </tbody>
     </>
   );

@@ -9,7 +9,7 @@ import FormItem from "../../../ui/form/FormItem";
  * @returns JSX with a single table row (5 columns) and the possibility (input) to add a new custom confirmation token
  */
 const ConfirmationTokenAddRow: React.FC<{
-  id: number;
+  userId: number;
 }> = (props) => {
   const confirmationTokenRef = useRef<HTMLInputElement>(null);
 
@@ -28,7 +28,7 @@ const ConfirmationTokenAddRow: React.FC<{
             // Send a POST request to the confirmation token route to add a new one
             dispatch(
               addConfirmationToken({
-                id: props.id,
+                id: props.userId,
                 confirmationToken: newValue as string,
               })
             );

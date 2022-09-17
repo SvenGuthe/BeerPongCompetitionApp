@@ -10,10 +10,10 @@ import { TeamCompositionStatusTypeInput } from "../../../ui/form/PredefinedSelec
  * @returns JSX with a single table row (4 columns) and the possibility (select input) to choose a new status for the team composition
  */
 const TeamCompositionStatusAddRow: React.FC<{
-  id: number;
+  teamCompositionId: number;
 }> = (props) => {
   // get the team composition id from the props
-  const id = props.id;
+  const teamCompositionId = props.teamCompositionId;
   const dispatch = useDispatch();
 
   // Handler when clicked the add button
@@ -22,7 +22,7 @@ const TeamCompositionStatusAddRow: React.FC<{
 
     // Create the DTO with the team composition id and the selected team composition status
     const teamCompositionStatus: tTeamCompositionStatusUpdate = {
-      id: id,
+      id: teamCompositionId,
       teamCompositionStatusType: newStatus,
     };
 

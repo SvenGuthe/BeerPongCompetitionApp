@@ -17,7 +17,7 @@ import tUserIDAndGamerTag from "../../../../../types/user/userIDAndGamerTag";
 const CompetitionPlayerAdd: React.FC<{
   team?: tTeamAndUser;
   user: tUserIDAndGamerTag[];
-  id: number;
+  competitionTeamId: number;
 }> = (props) => {
   // get the team from props
   // the team is present, if the competition team is registered with a real team
@@ -36,7 +36,7 @@ const CompetitionPlayerAdd: React.FC<{
 
     // Create the DTO with the competition team id and the selected user (user id)
     const competitionPlayer: tCompetitionPlayerAdd = {
-      id: props.id,
+      id: props.competitionTeamId,
       userId: +selectRef.current!.value, // TODO: Check ! and +
     };
 
@@ -58,10 +58,13 @@ const CompetitionPlayerAdd: React.FC<{
       <Form>
         <Row>
           <Form.Group as={Col} sm={4}>
-            <Form.Label htmlFor={`teamuser_${props.id}`}>
+            <Form.Label htmlFor={`teamuser_${props.competitionTeamId}`}>
               Teamspieler
             </Form.Label>
-            <Form.Select id={`teamuser_${props.id}`} ref={selectRef}>
+            <Form.Select
+              id={`teamuser_${props.competitionTeamId}`}
+              ref={selectRef}
+            >
               {possibleUsers.map((user) => (
                 <option key={user.id} value={user.id}>
                   {user.gamerTag}

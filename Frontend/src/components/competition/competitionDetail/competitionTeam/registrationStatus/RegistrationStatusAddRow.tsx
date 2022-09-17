@@ -10,17 +10,17 @@ import { RegistrationStatusTypeInput } from "../../../../ui/form/PredefinedSelec
  * @returns JSX with a single table row (4 columns) and the possibility (select input) to choose a new registration status for the competition team
  */
 const RegistrationStatusAddRow: React.FC<{
-  id: number;
+  competitionTeamId: number;
 }> = (props) => {
   // get the competition team id from the props
-  const id = props.id;
+  const competitionTeamId = props.competitionTeamId;
   const dispatch = useDispatch();
 
   // Handler when clicked the add button
   const onSaveNewRegistrationStatusType = (newValue: string[]) => {
     // Create the DTO with the competition team id and the selcted registration status
     const registrationStatus: tRegistrationStatusUpdate = {
-      id: id,
+      id: competitionTeamId,
       registrationStatusType: newValue[0] as tRegistrationStatusType,
     };
 
