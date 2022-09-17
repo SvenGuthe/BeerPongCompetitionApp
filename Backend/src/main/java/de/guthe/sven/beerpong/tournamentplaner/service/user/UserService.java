@@ -15,6 +15,7 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.user.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Optional;
@@ -113,15 +114,20 @@ public class UserService {
 
 		// Trying to fetch the user with the id which was given through the User Update
 		// DTO
-		// TODO: Change logic to Optional if the id is not present
-		User user = userRepository.findById(userUpdateDTO.getId()).get();
+		Optional<User> user = userRepository.findById(userUpdateDTO.getId());
+
+		if (user.isEmpty()) {
+			throw new RuntimeException("User not present with given id " + userUpdateDTO.getId());
+		}
+
+		User singleUser = user.get();
 
 		// Set the new values
-		user.setFirstName(userUpdateDTO.getFirstName());
-		user.setLastName(userUpdateDTO.getLastName());
-		user.setGamerTag(userUpdateDTO.getGamerTag());
-		user.setEmail(userUpdateDTO.getEmail());
-		user.setEnabled(userUpdateDTO.isEnabled());
+		singleUser.setFirstName(userUpdateDTO.getFirstName());
+		singleUser.setLastName(userUpdateDTO.getLastName());
+		singleUser.setGamerTag(userUpdateDTO.getGamerTag());
+		singleUser.setEmail(userUpdateDTO.getEmail());
+		singleUser.setEnabled(userUpdateDTO.isEnabled());
 
 		/*
 		 * TODO: Handle Update Roles separate in Front- and Backend TODO: Do we need the
@@ -139,9 +145,9 @@ public class UserService {
 		 * user.setUserStatus(newUserStatus);
 		 */
 
-		userRepository.save(user);
+		userRepository.save(singleUser);
 
-		return new UserDTO(user);
+		return new UserDTO(singleUser);
 
 	}
 
@@ -155,21 +161,26 @@ public class UserService {
 
 		// Trying to fetch the user with the user-id which was given through the
 		// Confirmation Token Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		User user = userRepository.findById(confirmationTokenAddDTO.getId()).get();
+		Optional<User> user = userRepository.findById(confirmationTokenAddDTO.getId());
+
+		if (user.isEmpty()) {
+			throw new RuntimeException("User not present with given id " + confirmationTokenAddDTO.getId());
+		}
+
+		User singleUser = user.get();
 
 		// Create the new confirmation token and store it
 		ConfirmationToken confirmationToken = new ConfirmationToken(confirmationTokenAddDTO.getConfirmationToken());
 		confirmationTokenRepository.save(confirmationToken);
 
 		// Create the new confirmation token history and store it
-		ConfirmationTokenHistory confirmationTokenHistory = new ConfirmationTokenHistory(user, confirmationToken);
+		ConfirmationTokenHistory confirmationTokenHistory = new ConfirmationTokenHistory(singleUser, confirmationToken);
 		confirmationTokenHistoryRepository.save(confirmationTokenHistory);
 
-		user.addConfirmationTokenHistory(confirmationTokenHistory);
+		singleUser.addConfirmationTokenHistory(confirmationTokenHistory);
 
 		// Update the user
-		userRepository.save(user);
+		userRepository.save(singleUser);
 
 		// Return the created confirmation token
 		return new ConfirmationTokenDTO(confirmationTokenHistory);
@@ -185,31 +196,37 @@ public class UserService {
 
 		// Trying to fetch the confirmation token history with the id which was given
 		// through the Confirmation Token DTO
-		// TODO: Change logic to Optional if the id is not present
-		ConfirmationTokenHistory confirmationTokenHistory = confirmationTokenHistoryRepository
-				.findById(confirmationTokenDTO.getId()).get();
+		Optional<ConfirmationTokenHistory> confirmationTokenHistory = confirmationTokenHistoryRepository
+				.findById(confirmationTokenDTO.getId());
+
+		if (confirmationTokenHistory.isEmpty()) {
+			throw new RuntimeException(
+					"Confirmation Token History not present with given id " + confirmationTokenDTO.getId());
+		}
+
+		ConfirmationTokenHistory singleConfirmationTokenHistory = confirmationTokenHistory.get();
 
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		ConfirmationTokenHistory resultConfirmationTokenHistory;
 
 		// Check if the getValid is not set (so is enabled)
 		// If this is the case, set the value so that the confirmation token is disabled
-		if (confirmationTokenHistory.getValidTo() == null) {
-			confirmationTokenHistory.setValidTo(now);
-			confirmationTokenHistoryRepository.save(confirmationTokenHistory);
+		if (singleConfirmationTokenHistory.getValidTo() == null) {
+			singleConfirmationTokenHistory.setValidTo(now);
+			confirmationTokenHistoryRepository.save(singleConfirmationTokenHistory);
 
-			resultConfirmationTokenHistory = confirmationTokenHistory;
+			resultConfirmationTokenHistory = singleConfirmationTokenHistory;
 		}
 		// If the getValid is set (so is disabled currently)
 		// create a new Confirmation Token and add it to the user
 		// so it is no real "toggle" - but creating a new one with the same string
 		else {
 			ConfirmationToken newConfirmationToken = new ConfirmationToken(
-					confirmationTokenHistory.getConfirmationToken().getConfirmationToken());
+					singleConfirmationTokenHistory.getConfirmationToken().getConfirmationToken());
 			confirmationTokenRepository.save(newConfirmationToken);
 
 			ConfirmationTokenHistory newConfirmationTokenHistory = new ConfirmationTokenHistory(
-					confirmationTokenHistory.getUser(), newConfirmationToken);
+					singleConfirmationTokenHistory.getUser(), newConfirmationToken);
 			confirmationTokenHistoryRepository.save(newConfirmationTokenHistory);
 			resultConfirmationTokenHistory = newConfirmationTokenHistory;
 		}

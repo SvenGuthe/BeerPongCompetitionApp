@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -92,9 +93,15 @@ public class BillingStatusController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public BillingStatusDTO getBillingStatus(@PathVariable Long billingStatusId) {
 		logger.info("Trying to find a Billing Status with id: " + billingStatusId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new BillingStatusDTO(billingStatusRepository.findById(billingStatusId).orElseThrow());
+
+		Optional<BillingStatus> billingStatus = billingStatusRepository.findById(billingStatusId);
+
+		if (billingStatus.isEmpty()) {
+			throw new RuntimeException("Billing Status not present with given id " + billingStatusId);
+		}
+		else {
+			return new BillingStatusDTO(billingStatus.get());
+		}
 	}
 
 	/**

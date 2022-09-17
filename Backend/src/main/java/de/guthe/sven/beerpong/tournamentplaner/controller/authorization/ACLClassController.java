@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -98,9 +99,16 @@ public class ACLClassController {
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLClassDTO getACLClass(@PathVariable Long aclClassId) {
 		logger.info("Trying to find the ACL Class with the ID " + aclClassId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new ACLClassDTO(aclClassRepository.findById(aclClassId).orElseThrow());
+
+		Optional<ACLClass> aclClass = aclClassRepository.findById(aclClassId);
+
+		if (aclClass.isEmpty()) {
+			throw new RuntimeException("ACL Class not present with given id " + aclClassId);
+		}
+		else {
+			return new ACLClassDTO(aclClassRepository.findById(aclClassId).orElseThrow());
+		}
+
 	}
 
 }

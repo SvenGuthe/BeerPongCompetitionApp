@@ -87,16 +87,21 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		userStatusRepository.save(userStatus);
 
-		Role adminRole = roleRepository.findByName(SecurityRole.ROLE_ADMINISTRATOR.toString());
-		Role moderatorRole = roleRepository.findByName(SecurityRole.ROLE_MODERATOR.toString());
-		Role playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
+		Optional<Role> adminRole = roleRepository.findByName(SecurityRole.ROLE_ADMINISTRATOR.toString());
+		Optional<Role> moderatorRole = roleRepository.findByName(SecurityRole.ROLE_MODERATOR.toString());
+		Optional<Role> playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
+
+		if (adminRole.isEmpty() || moderatorRole.isEmpty() || playerRole.isEmpty()) {
+			throw new RuntimeException(
+					"ROLE_ADMINISTRATOR, ROLE_MODERATOR or ROLE_PLAYER are not available in the database.");
+		}
 
 		User adminUser = new User();
 		adminUser.setFirstName("admin");
 		adminUser.setLastName("admin");
 		adminUser.setPassword(passwordEncoder.encode("admin"));
 		adminUser.setEmail("admin@admin.com");
-		adminUser.setRoles(Arrays.asList(adminRole, moderatorRole, playerRole));
+		adminUser.setRoles(Arrays.asList(adminRole.get(), moderatorRole.get(), playerRole.get()));
 		adminUser.setEnabled(true);
 		adminUser.setGamerTag("admin");
 
@@ -112,7 +117,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		moderatorUser.setLastName("moderator");
 		moderatorUser.setPassword(passwordEncoder.encode("moderator"));
 		moderatorUser.setEmail("moderator@moderator.com");
-		moderatorUser.setRoles(Arrays.asList(moderatorRole, playerRole));
+		moderatorUser.setRoles(Arrays.asList(moderatorRole.get(), playerRole.get()));
 		moderatorUser.setEnabled(true);
 		moderatorUser.setGamerTag("moderator");
 
@@ -128,7 +133,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		playerUser.setLastName("player");
 		playerUser.setPassword(passwordEncoder.encode("player"));
 		playerUser.setEmail("player@player.com");
-		playerUser.setRoles(Collections.singletonList(playerRole));
+		playerUser.setRoles(Collections.singletonList(playerRole.get()));
 		playerUser.setEnabled(true);
 		playerUser.setGamerTag("player");
 
@@ -144,7 +149,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		testUser.setLastName("test");
 		testUser.setPassword(passwordEncoder.encode("test"));
 		testUser.setEmail("test@test.com");
-		testUser.setRoles(Collections.singletonList(playerRole));
+		testUser.setRoles(Collections.singletonList(playerRole.get()));
 		testUser.setEnabled(true);
 		testUser.setGamerTag("test");
 
@@ -268,13 +273,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Transactional
 	Role createRoleIfNotFound(SecurityRole securityRole, Collection<Privilege> privileges) {
-		Role role = roleRepository.findByName(securityRole.toString());
-		if (role == null) {
-			role = new Role(securityRole);
-			role.setPrivileges(privileges);
-			roleRepository.save(role);
+		Optional<Role> role = roleRepository.findByName(securityRole.toString());
+		if (role.isEmpty()) {
+			Role newRole = new Role(securityRole);
+			newRole.setPrivileges(privileges);
+			roleRepository.save(newRole);
+			role = Optional.of(newRole);
 		}
-		return role;
+		return role.get();
 	}
 
 }

@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	Role findByName(String name);
+	Optional<Role> findByName(String name);
 
 	@Query(value = "SELECT * FROM Role r WHERE LOWER(r.name) LIKE CONCAT(LOWER(?1), '%') OR r.id LIKE CONCAT(?1, '%')",
 			countQuery = "SELECT count(*) FROM Role r WHERE LOWER(r.name) LIKE CONCAT(LOWER(?1), '%') OR r.id LIKE CONCAT(?1, '%')",

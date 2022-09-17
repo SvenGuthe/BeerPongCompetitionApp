@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -88,9 +89,15 @@ public class CompetitionStatusController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionStatusDTO getCompetitionStatus(@PathVariable Long competitionStatusId) {
 		logger.info("Trying to find a Competition Status with id: " + competitionStatusId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new CompetitionStatusDTO(competitionStatusRepository.findById(competitionStatusId).orElseThrow());
+
+		Optional<CompetitionStatus> competitionStatus = competitionStatusRepository.findById(competitionStatusId);
+
+		if (competitionStatus.isEmpty()) {
+			throw new RuntimeException("Competition Status not present with given id " + competitionStatusId);
+		}
+		else {
+			return new CompetitionStatusDTO(competitionStatus.get());
+		}
 	}
 
 	/**

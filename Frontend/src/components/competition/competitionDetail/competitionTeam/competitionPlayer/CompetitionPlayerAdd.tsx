@@ -34,14 +34,18 @@ const CompetitionPlayerAdd: React.FC<{
   const onAddHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    // Create the DTO with the competition team id and the selected user (user id)
-    const competitionPlayer: tCompetitionPlayerAdd = {
-      id: props.competitionTeamId,
-      userId: +selectRef.current!.value, // TODO: Check ! and +
-    };
+    const userId = selectRef.current?.value;
 
-    // Send a POST request to the competition player route to add a user to the competition player
-    dispatch(addCompetitionPlayer(competitionPlayer));
+    if (userId !== null) {
+      // Create the DTO with the competition team id and the selected user (user id)
+      const competitionPlayer: tCompetitionPlayerAdd = {
+        id: props.competitionTeamId,
+        userId: +userId!,
+      };
+
+      // Send a POST request to the competition player route to add a user to the competition player
+      dispatch(addCompetitionPlayer(competitionPlayer));
+    }
   };
 
   let possibleUsers = user;

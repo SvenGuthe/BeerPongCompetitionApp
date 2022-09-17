@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/acl")
@@ -67,9 +68,16 @@ public class ACLObjectIdentityController {
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLObjectIdentity getACLObjectIdentity(@PathVariable Long aclObjectIdentityId) {
 		logger.info("Trying to find an ACL Object Identity with id: " + aclObjectIdentityId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return aclObjectIdentityRepository.findById(aclObjectIdentityId).orElseThrow();
+
+		Optional<ACLObjectIdentity> aclObjectIdentity = aclObjectIdentityRepository.findById(aclObjectIdentityId);
+
+		if (aclObjectIdentity.isEmpty()) {
+			throw new RuntimeException("ACL Object Identity not present with given id " + aclObjectIdentityId);
+		}
+		else {
+			return aclObjectIdentity.get();
+		}
+
 	}
 
 	/**

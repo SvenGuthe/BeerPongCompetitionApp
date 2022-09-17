@@ -62,9 +62,16 @@ const CompetitionTeamAdd: React.FC<{
     // Find the users with the given id and add them to the selected values
     let selectedValues: tUserIDAndGamerTag[] = [];
     for (let i = 0; i < value.length; i++) {
-      // TODO: Check ? and !
       possibleUsersOption
-        ?.filter((user) => user.id === +value.item(i)!.value)
+        ?.filter((user) => {
+          const item = value.item(i);
+
+          if (item !== null) {
+            return user.id === +item!.value;
+          } else {
+            return false;
+          }
+        })
         .forEach((user) => {
           selectedValues.push(user);
         });

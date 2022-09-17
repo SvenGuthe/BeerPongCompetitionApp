@@ -30,6 +30,7 @@ import de.guthe.sven.beerpong.tournamentplaner.repository.team.TeamStatusReposit
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Comparator;
@@ -148,17 +149,22 @@ public class TeamService {
 
 		// Trying to fetch the team with the id which was given through the Team Update
 		// DTO
-		// TODO: Change logic to Optional if the id is not present
-		Team team = teamRepository.findById(teamUpdateDTO.getId()).get();
+		Optional<Team> team = teamRepository.findById(teamUpdateDTO.getId());
+
+		if (team.isEmpty()) {
+			throw new RuntimeException("Team not present with given id " + teamUpdateDTO.getId());
+		}
+
+		Team singleTeam = team.get();
 
 		// Set the new values
-		team.setTeamName(teamUpdateDTO.getTeamName());
+		singleTeam.setTeamName(teamUpdateDTO.getTeamName());
 
 		// Store the new team
-		teamRepository.save(team);
+		teamRepository.save(singleTeam);
 
 		// Return the stored team
-		return new TeamDTO(team);
+		return new TeamDTO(singleTeam);
 	}
 
 	/**
@@ -173,8 +179,13 @@ public class TeamService {
 
 		// Trying to fetch the team with the id which was given through the Team Status
 		// Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		Team team = teamRepository.findById(teamStatusUpdateDTO.getId()).get();
+		Optional<Team> team = teamRepository.findById(teamStatusUpdateDTO.getId());
+
+		if (team.isEmpty()) {
+			throw new RuntimeException("Team not present with given id " + teamStatusUpdateDTO.getId());
+		}
+
+		Team singleTeam = team.get();
 
 		// Fetch the team status which should be set from the database or create this one
 		// new
@@ -185,14 +196,14 @@ public class TeamService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<TeamStatusHistory> currentTeamStatusHistory = team.getTeamStatusHistories().stream()
+		List<TeamStatusHistory> currentTeamStatusHistory = singleTeam.getTeamStatusHistories().stream()
 				.peek(teamStatusHistory -> {
 					if (teamStatusHistory.getValidTo() == null) {
 						teamStatusHistory.setValidTo(now);
 					}
 				}).collect(Collectors.toList());
 
-		currentTeamStatusHistory.add(new TeamStatusHistory(now, team, teamStatus));
+		currentTeamStatusHistory.add(new TeamStatusHistory(now, singleTeam, teamStatus));
 
 		// Set the new Team Status History and save it to the database
 		teamStatus.setTeamStatusHistories(currentTeamStatusHistory);
@@ -202,7 +213,10 @@ public class TeamService {
 		currentTeamStatusHistory.sort(Comparator.comparing(TeamStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentTeamStatusHistory.size() < 2) {
+			throw new RuntimeException("Team Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentTeamStatusHistory.subList(currentTeamStatusHistory.size() - 2, currentTeamStatusHistory.size())
 				.stream().map(TeamStatusDTO::new).collect(Collectors.toList());
 
@@ -218,19 +232,24 @@ public class TeamService {
 
 		// Trying to fetch the team with the team-id which was given through the Team
 		// Invitation Link Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		Team team = teamRepository.findById(teamInvitationLinkAddDTO.getId()).get();
+		Optional<Team> team = teamRepository.findById(teamInvitationLinkAddDTO.getId());
+
+		if (team.isEmpty()) {
+			throw new RuntimeException("Team not present with given id " + teamInvitationLinkAddDTO.getId());
+		}
+
+		Team singleTeam = team.get();
 
 		// Add the team invitation link to the invitation links of the user
 		TeamInvitationLink teamInvitationLink = new TeamInvitationLink(
 				teamInvitationLinkAddDTO.getTeamInvitationLink());
-		team.addTeamInvitationLink(teamInvitationLink);
+		singleTeam.addTeamInvitationLink(teamInvitationLink);
 
 		// Store the new team with the added team invitation link
-		teamRepository.save(team);
+		teamRepository.save(singleTeam);
 
 		// TODO: Check if we can just use the teamInvitationLink above
-		List<TeamInvitationLinkHistory> teamInvitationLinkHistory = team.getTeamInvitationLinkHistories();
+		List<TeamInvitationLinkHistory> teamInvitationLinkHistory = singleTeam.getTeamInvitationLinkHistories();
 		teamInvitationLinkHistory.sort(Comparator.comparing(TeamInvitationLinkHistory::getValidFrom));
 
 		return new TeamInvitationLinkDTO(teamInvitationLinkHistory.get(teamInvitationLinkHistory.size() - 1));
@@ -245,17 +264,24 @@ public class TeamService {
 
 		// Trying to fetch the team composition with the id which was given through the
 		// Team Competition Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		TeamComposition teamComposition = teamCompositionRepository.findById(teamCompositionUpdateDTO.getId()).get();
+		Optional<TeamComposition> teamComposition = teamCompositionRepository
+				.findById(teamCompositionUpdateDTO.getId());
+
+		if (teamComposition.isEmpty()) {
+			throw new RuntimeException(
+					"Team Composition not present with given id " + teamCompositionUpdateDTO.getId());
+		}
+
+		TeamComposition singleTeamComposition = teamComposition.get();
 
 		// Set the new values
-		teamComposition.setAdmin(teamCompositionUpdateDTO.getAdmin());
+		singleTeamComposition.setAdmin(teamCompositionUpdateDTO.getAdmin());
 
 		// Store the new team composition
-		teamCompositionRepository.save(teamComposition);
+		teamCompositionRepository.save(singleTeamComposition);
 
 		// Return the stored team composition
-		return new TeamCompositionDTO(teamComposition);
+		return new TeamCompositionDTO(singleTeamComposition);
 	}
 
 	/**
@@ -268,17 +294,28 @@ public class TeamService {
 
 		// Trying to fetch the team with the team-id which was given through the Team
 		// Composition Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		Team team = teamRepository.findById(teamCompositionAddDTO.getId()).get();
+		Optional<Team> team = teamRepository.findById(teamCompositionAddDTO.getId());
+
+		if (team.isEmpty()) {
+			throw new RuntimeException("Team not present with given id " + teamCompositionAddDTO.getId());
+		}
+
+		Team singleTeam = team.get();
 
 		// Trying to fetch the user with the user-id which was given through the Team
 		// Composition Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		User user = userRepository.findById(teamCompositionAddDTO.getUserId()).get();
+		Optional<User> user = userRepository.findById(teamCompositionAddDTO.getUserId());
+
+		if (user.isEmpty()) {
+			throw new RuntimeException("User not present with given id " + teamCompositionAddDTO.getUserId());
+		}
+
+		User singleUser = user.get();
+
 		Boolean isAdmin = teamCompositionAddDTO.getAdmin();
 
 		// Create the new Team Composition Object
-		TeamComposition teamComposition = new TeamComposition(team, user, isAdmin);
+		TeamComposition teamComposition = new TeamComposition(singleTeam, singleUser, isAdmin);
 
 		// Fetch the team composition status which should be set from the database or
 		// create this one new
@@ -307,9 +344,15 @@ public class TeamService {
 
 		// Trying to fetch the team composition with the id which was given through the
 		// Team Composition Status Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		TeamComposition teamComposition = teamCompositionRepository.findById(teamCompositionStatusUpdateDTO.getId())
-				.get();
+		Optional<TeamComposition> teamComposition = teamCompositionRepository
+				.findById(teamCompositionStatusUpdateDTO.getId());
+
+		if (teamComposition.isEmpty()) {
+			throw new RuntimeException(
+					"Team Composition not present with given id " + teamCompositionStatusUpdateDTO.getId());
+		}
+
+		TeamComposition singleTeamComposition = teamComposition.get();
 
 		// Fetch the team composition status which should be set from the database or
 		// create this one new
@@ -321,7 +364,7 @@ public class TeamService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<TeamCompositionStatusHistory> currentTeamCompositionStatusHistory = teamComposition
+		List<TeamCompositionStatusHistory> currentTeamCompositionStatusHistory = singleTeamComposition
 				.getTeamCompositionStatusHistories().stream().peek(teamCompositionStatusHistory -> {
 					if (teamCompositionStatusHistory.getValidTo() == null) {
 						teamCompositionStatusHistory.setValidTo(now);
@@ -329,7 +372,7 @@ public class TeamService {
 				}).collect(Collectors.toList());
 
 		currentTeamCompositionStatusHistory
-				.add(new TeamCompositionStatusHistory(now, teamComposition, teamCompositionStatus));
+				.add(new TeamCompositionStatusHistory(now, singleTeamComposition, teamCompositionStatus));
 
 		// Set the new Team Composition Status History and save it to the database
 		teamCompositionStatus.setTeamCompositionStatusHistories(currentTeamCompositionStatusHistory);
@@ -339,7 +382,11 @@ public class TeamService {
 		currentTeamCompositionStatusHistory.sort(Comparator.comparing(TeamCompositionStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentTeamCompositionStatusHistory.size() < 2) {
+			throw new RuntimeException(
+					"Team Composition Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentTeamCompositionStatusHistory
 				.subList(currentTeamCompositionStatusHistory.size() - 2, currentTeamCompositionStatusHistory.size())
 				.stream().map(TeamCompositionStatusDTO::new).collect(Collectors.toList());

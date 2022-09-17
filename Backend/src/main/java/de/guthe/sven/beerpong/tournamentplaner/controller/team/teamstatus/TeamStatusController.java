@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -79,8 +80,8 @@ public class TeamStatusController {
 	}
 
 	/**
-	 * Route to update the Team Status manually
-	 * TODO: Check if we should change this to PUT Method
+	 * Route to update the Team Status manually TODO: Check if we should change this to
+	 * PUT Method
 	 * @param teamStatusUpdateDTO the updated entry (id is the identifier)
 	 * @return the updated entry if the update was successful
 	 */
@@ -101,9 +102,15 @@ public class TeamStatusController {
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamStatusDTO getTeamStatus(@PathVariable Long teamStatusId) {
 		logger.info("Trying to find a Team Status with id: " + teamStatusId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new TeamStatusDTO(teamStatusRepository.findById(teamStatusId).orElseThrow());
+
+		Optional<TeamStatus> teamStatus = teamStatusRepository.findById(teamStatusId);
+
+		if (teamStatus.isEmpty()) {
+			throw new RuntimeException("Team Status not present with given id " + teamStatusId);
+		}
+		else {
+			return new TeamStatusDTO(teamStatus.get());
+		}
 	}
 
 }

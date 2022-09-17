@@ -30,8 +30,14 @@ public class MyUserDetailsService implements UserDetailsService {
 
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
-			return new org.springframework.security.core.userdetails.User(" ", " ", true, true, true, true,
-					getAuthorities(Collections.singletonList(roleRepository.findByName("ROLE_USER"))));
+			Optional<Role> role = roleRepository.findByName("ROLE_USER");
+			if (role.isPresent()) {
+				return new org.springframework.security.core.userdetails.User(" ", " ", true, true, true, true,
+						getAuthorities(Collections.singletonList(role.get())));
+			}
+			else {
+				throw new RuntimeException("ROLE_USER could not be found in the role table");
+			}
 		}
 
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),

@@ -2,6 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition.competiti
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.competitionplayer.CompetitionPlayerAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionplayer.CompetitionPlayerDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.competition.competitionplayer.CompetitionPlayer;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.competitionplayer.CompetitionPlayerRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -66,9 +68,15 @@ public class CompetitionPlayerController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionPlayerDTO getCompetitionPlayer(@PathVariable Long competitionPlayerId) {
 		logger.info("Trying to find a Competition Player with id: " + competitionPlayerId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new CompetitionPlayerDTO(competitionPlayerRepository.findById(competitionPlayerId).orElseThrow());
+
+		Optional<CompetitionPlayer> competitionPlayer = competitionPlayerRepository.findById(competitionPlayerId);
+
+		if (competitionPlayer.isEmpty()) {
+			throw new RuntimeException("Competition Player not present with given id " + competitionPlayerId);
+		}
+		else {
+			return new CompetitionPlayerDTO(competitionPlayer.get());
+		}
 	}
 
 	/**

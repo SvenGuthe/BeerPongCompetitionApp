@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -92,9 +93,15 @@ public class RegistrationStatusController {
 	@PostAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public RegistrationStatusDTO getRegistrationStatus(@PathVariable Long registrationStatusId) {
 		logger.info("Trying to find a Registration Status with id: " + registrationStatusId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new RegistrationStatusDTO(registrationStatusRepository.findById(registrationStatusId).orElseThrow());
+
+		Optional<RegistrationStatus> registrationStatus = registrationStatusRepository.findById(registrationStatusId);
+
+		if (registrationStatus.isEmpty()) {
+			throw new RuntimeException("Registration Status not present with given id " + registrationStatusId);
+		}
+		else {
+			return new RegistrationStatusDTO(registrationStatus.get());
+		}
 	}
 
 	/**

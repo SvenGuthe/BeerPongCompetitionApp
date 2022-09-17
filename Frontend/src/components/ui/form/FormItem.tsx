@@ -88,10 +88,9 @@ const FormItem = React.forwardRef<HTMLElement, Props>((props, ref) => {
   const onChangeSelectHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    // TODO: Investigate "!"
     // Set the choosen value
     setValue(
-      (possibleValues! as string[]).filter(
+      (possibleValues as string[]).filter(
         (value) => value === event.target.value
       )
     );

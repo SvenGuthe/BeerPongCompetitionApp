@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -101,8 +102,6 @@ public class CompetitionController {
 	@PreAuthorize("hasAuthority('ADMIN_COMPETITION_PRIVILEGE')")
 	public CompetitionDetailDTO getCompetition(@PathVariable Long competitionId) {
 		logger.info("Trying to find a Competition with id: " + competitionId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
 		return competitionService.getCompetitionDetail(competitionId);
 	}
 

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -133,14 +134,17 @@ public class RegisterController {
 		}
 		else {
 			// Query the role ROLE_PLAYER from the database
-			// TODO: We have to make sure that this entry really exists - anyway, should
 			// we check here if the role was found?
-			Role playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
+			Optional<Role> playerRole = roleRepository.findByName(SecurityRole.ROLE_PLAYER.toString());
+
+			if (playerRole.isEmpty()) {
+				throw new RuntimeException("ROLE_PLAYER is not available in the database.");
+			}
 
 			// Create the new User Role with the fetched role entity
 			UserRole userRole = new UserRole();
 			userRole.setUser(user);
-			userRole.setRole(playerRole);
+			userRole.setRole(playerRole.get());
 			user.addUserRole(userRole);
 
 			// Create a new Team Status for the single player "team" and set the status to
@@ -219,16 +223,22 @@ public class RegisterController {
 			// == null
 			// TODO: Change the logic, that maybe use the token, where the timestamp now <
 			// getValidTo()
-			// TODO: Change .get(0) -> first check if this element exists
-			List<ConfirmationTokenHistory> confirmationTokenHistories = confirmationToken.getConfirmationTokenHistory();
-			ConfirmationTokenHistory confirmationTokenHistory = confirmationTokenHistories.stream()
-					.filter(singleHistory -> singleHistory.getValidTo() == null).collect(Collectors.toList()).get(0);
+			List<ConfirmationTokenHistory> wholeConfirmationTokenHistories = confirmationToken
+					.getConfirmationTokenHistory();
+			List<ConfirmationTokenHistory> currentValidConfirmationTokenHistory = wholeConfirmationTokenHistories
+					.stream().filter(singleHistory -> singleHistory.getValidTo() == null).collect(Collectors.toList());
+
+			if (currentValidConfirmationTokenHistory.isEmpty()) {
+				throw new RuntimeException("The confirmation history is empty for the selected user");
+			}
+
+			ConfirmationTokenHistory currentValidConfirmationToken = currentValidConfirmationTokenHistory.get(0);
 
 			// Get the user with the confirmation token
-			User user = confirmationTokenHistory.getUser();
+			User user = currentValidConfirmationToken.getUser();
 
 			// Invalidate the confirmation token with the current timestamp
-			List<ConfirmationTokenHistory> newConfirmationTokenHistories = confirmationTokenHistories.stream()
+			List<ConfirmationTokenHistory> newConfirmationTokenHistories = wholeConfirmationTokenHistories.stream()
 					.peek(singleHistory -> {
 						if (singleHistory.getValidTo() == null) {
 							singleHistory.setValidTo(new Timestamp(System.currentTimeMillis()));
@@ -248,10 +258,11 @@ public class RegisterController {
 				teamStatus.setTeamStatusDescription(TeamStatusType.ACTIVE);
 				teamStatusActive = teamStatus;
 			}
-			else {
-				// TODO: Maybe check also if the size == 1 -> There shouldn't be a
-				// duplicate
+			else if (teamStatusActiveDatabase.size() == 1) {
 				teamStatusActive = teamStatusActiveDatabase.get(0);
+			}
+			else {
+				throw new RuntimeException("There is a duplicate of the team status description in the database.");
 			}
 
 			List<TeamComposition> teamCompositions = user.getTeamCompositions().stream().peek(teamComposition -> {

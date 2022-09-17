@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -56,9 +57,15 @@ public class PrivilegeController {
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public Privilege getPrivilege(@PathVariable Long privilegeId) {
 		logger.info("Trying to find a Privilege with id: " + privilegeId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return privilegeRepository.findById(privilegeId).orElseThrow();
+
+		Optional<Privilege> privilege = privilegeRepository.findById(privilegeId);
+
+		if (privilege.isEmpty()) {
+			throw new RuntimeException("Privilege not present with given id " + privilegeId);
+		}
+		else {
+			return privilege.get();
+		}
 	}
 
 	/**

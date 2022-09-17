@@ -2,6 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.team.teaminvitationli
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teaminvitationlink.TeamInvitationLinkAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
+import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teaminvitationlink.TeamInvitationLinkRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -61,9 +63,15 @@ public class TeamInvitationLinkController {
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamInvitationLinkDTO getTeamInvitationLink(@PathVariable Long teamInvitationLinkId) {
 		logger.info("Trying to find a Team Invitation Link with id: " + teamInvitationLinkId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return new TeamInvitationLinkDTO(teamInvitationLinkRepository.findById(teamInvitationLinkId).orElseThrow());
+
+		Optional<TeamInvitationLink> teamInvitationLink = teamInvitationLinkRepository.findById(teamInvitationLinkId);
+
+		if (teamInvitationLink.isEmpty()) {
+			throw new RuntimeException("Team Invitation Link not present with given id " + teamInvitationLinkId);
+		}
+		else {
+			return new TeamInvitationLinkDTO(teamInvitationLink.get());
+		}
 	}
 
 	/**

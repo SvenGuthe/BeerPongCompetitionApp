@@ -49,6 +49,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -144,8 +145,13 @@ public class CompetitionService {
 	public CompetitionDetailDTO getCompetitionDetail(Long competitionId) {
 		// Trying to create a Competition Data Transfer Object from the database with the
 		// given ID
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionDTO competition = new CompetitionDTO(competitionRepository.findById(competitionId).get());
+		Optional<Competition> competition = competitionRepository.findById(competitionId);
+
+		if (competition.isEmpty()) {
+			throw new RuntimeException("Competition not present with given id " + competitionId);
+		}
+
+		CompetitionDTO competitionDTO = new CompetitionDTO(competition.get());
 
 		// Fetch all possible admins for the current competition
 		// A possible admin could be everyone who is not admin already with status Invited
@@ -166,7 +172,7 @@ public class CompetitionService {
 		Collection<TeamAndUserDTO> teamAndUser = teamRepository.findAll().stream().map(TeamAndUserDTO::new)
 				.collect(Collectors.toList());
 
-		return new CompetitionDetailDTO(competition, possibleAdminUsers, possiblePlayers, teamAndUser);
+		return new CompetitionDetailDTO(competitionDTO, possibleAdminUsers, possiblePlayers, teamAndUser);
 	}
 
 	/**
@@ -181,8 +187,13 @@ public class CompetitionService {
 
 		// Trying to fetch the competition with the id which was given through the
 		// Competition Status Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		Competition competition = competitionRepository.findById(competitionStatusUpdateDTO.getId()).get();
+		Optional<Competition> competition = competitionRepository.findById(competitionStatusUpdateDTO.getId());
+
+		if (competition.isEmpty()) {
+			throw new RuntimeException("Competition not present with given id " + competitionStatusUpdateDTO.getId());
+		}
+
+		Competition singleCompetition = competition.get();
 
 		// Fetch the competition status which should be set from the database or create
 		// this one new
@@ -194,24 +205,28 @@ public class CompetitionService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<CompetitionStatusHistory> currentCompetitionStatusHistory = competition.getCompetitionStatusHistories()
-				.stream().peek(competitionStatusHistory -> {
+		List<CompetitionStatusHistory> currentCompetitionStatusHistory = singleCompetition
+				.getCompetitionStatusHistories().stream().peek(competitionStatusHistory -> {
 					if (competitionStatusHistory.getValidTo() == null) {
 						competitionStatusHistory.setValidTo(now);
 					}
 				}).collect(Collectors.toList());
 
-		currentCompetitionStatusHistory.add(new CompetitionStatusHistory(now, competition, competitionStatus));
+		currentCompetitionStatusHistory.add(new CompetitionStatusHistory(now, singleCompetition, competitionStatus));
 
 		// Set the new Competition Status History and save it to the database
-		competition.setCompetitionStatusHistories(currentCompetitionStatusHistory);
-		competitionRepository.save(competition);
+		singleCompetition.setCompetitionStatusHistories(currentCompetitionStatusHistory);
+		competitionRepository.save(singleCompetition);
 
 		// Sort the history via the validFrom value
 		currentCompetitionStatusHistory.sort(Comparator.comparing(CompetitionStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentCompetitionStatusHistory.size() < 2) {
+			throw new RuntimeException(
+					"Competition Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentCompetitionStatusHistory
 				.subList(currentCompetitionStatusHistory.size() - 2, currentCompetitionStatusHistory.size()).stream()
 				.map(CompetitionStatusDTO::new).collect(Collectors.toList());
@@ -231,9 +246,15 @@ public class CompetitionService {
 
 		// Trying to fetch the competition admin with the id which was given through the
 		// Competition Admin Status Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionAdmin competitionAdmin = competitionAdminRepository.findById(competitionAdminStatusUpdateDTO.getId())
-				.get();
+		Optional<CompetitionAdmin> competitionAdmin = competitionAdminRepository
+				.findById(competitionAdminStatusUpdateDTO.getId());
+
+		if (competitionAdmin.isEmpty()) {
+			throw new RuntimeException(
+					"Competition Admin not present with given id " + competitionAdminStatusUpdateDTO.getId());
+		}
+
+		CompetitionAdmin singleCompetitionAdmin = competitionAdmin.get();
 
 		// Fetch the competition admin status which should be set from the database or
 		// create this one new
@@ -245,7 +266,7 @@ public class CompetitionService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<CompetitionAdminStatusHistory> currentCompetitionAdminStatusHistory = competitionAdmin
+		List<CompetitionAdminStatusHistory> currentCompetitionAdminStatusHistory = singleCompetitionAdmin
 				.getCompetitionAdminStatusHistories().stream().peek(competitionAdminStatusHistory -> {
 					if (competitionAdminStatusHistory.getValidTo() == null) {
 						competitionAdminStatusHistory.setValidTo(now);
@@ -253,17 +274,21 @@ public class CompetitionService {
 				}).collect(Collectors.toList());
 
 		currentCompetitionAdminStatusHistory
-				.add(new CompetitionAdminStatusHistory(now, competitionAdmin, competitionAdminStatus));
+				.add(new CompetitionAdminStatusHistory(now, singleCompetitionAdmin, competitionAdminStatus));
 
 		// Set the new Competition Admin Status History and save it to the database
-		competitionAdmin.setCompetitionAdminStatusHistories(currentCompetitionAdminStatusHistory);
-		competitionAdminRepository.save(competitionAdmin);
+		singleCompetitionAdmin.setCompetitionAdminStatusHistories(currentCompetitionAdminStatusHistory);
+		competitionAdminRepository.save(singleCompetitionAdmin);
 
 		// Sort the history via the validFrom value
 		currentCompetitionAdminStatusHistory.sort(Comparator.comparing(CompetitionAdminStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentCompetitionAdminStatusHistory.size() < 2) {
+			throw new RuntimeException(
+					"Competition Admin Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentCompetitionAdminStatusHistory
 				.subList(currentCompetitionAdminStatusHistory.size() - 2, currentCompetitionAdminStatusHistory.size())
 				.stream().map(CompetitionAdminStatusDTO::new).collect(Collectors.toList());
@@ -283,8 +308,15 @@ public class CompetitionService {
 
 		// Trying to fetch the competition team with the id which was given through the
 		// Registration Status Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionTeam competitionTeam = competitionTeamRepository.findById(registrationStatusUpdateDTO.getId()).get();
+		Optional<CompetitionTeam> competitionTeam = competitionTeamRepository
+				.findById(registrationStatusUpdateDTO.getId());
+
+		if (competitionTeam.isEmpty()) {
+			throw new RuntimeException(
+					"Competition Team not present with given id " + registrationStatusUpdateDTO.getId());
+		}
+
+		CompetitionTeam singleCompetitionTeam = competitionTeam.get();
 
 		// Fetch the registration status which should be set from the database or create
 		// this one new
@@ -296,14 +328,15 @@ public class CompetitionService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<RegistrationStatusHistory> currentRegistrationStatusHistory = competitionTeam
+		List<RegistrationStatusHistory> currentRegistrationStatusHistory = singleCompetitionTeam
 				.getRegistrationStatusHistories().stream().peek(registrationStatusHistory -> {
 					if (registrationStatusHistory.getValidTo() == null) {
 						registrationStatusHistory.setValidTo(now);
 					}
 				}).collect(Collectors.toList());
 
-		currentRegistrationStatusHistory.add(new RegistrationStatusHistory(now, competitionTeam, registrationStatus));
+		currentRegistrationStatusHistory
+				.add(new RegistrationStatusHistory(now, singleCompetitionTeam, registrationStatus));
 
 		// Set the new Registration Status History and save it to the database
 		registrationStatus.setRegistrationStatusHistories(currentRegistrationStatusHistory);
@@ -313,7 +346,11 @@ public class CompetitionService {
 		currentRegistrationStatusHistory.sort(Comparator.comparing(RegistrationStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentRegistrationStatusHistory.size() < 2) {
+			throw new RuntimeException(
+					"Registration Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentRegistrationStatusHistory
 				.subList(currentRegistrationStatusHistory.size() - 2, currentRegistrationStatusHistory.size()).stream()
 				.map(RegistrationStatusDTO::new).collect(Collectors.toList());
@@ -332,8 +369,13 @@ public class CompetitionService {
 
 		// Trying to fetch the competition team with the id which was given through the
 		// Billing Status Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionTeam competitionTeam = competitionTeamRepository.findById(billingStatusUpdateDTO.getId()).get();
+		Optional<CompetitionTeam> competitionTeam = competitionTeamRepository.findById(billingStatusUpdateDTO.getId());
+
+		if (competitionTeam.isEmpty()) {
+			throw new RuntimeException("Competition Team not present with given id " + billingStatusUpdateDTO.getId());
+		}
+
+		CompetitionTeam singleCompetitionTeam = competitionTeam.get();
 
 		// Fetch the billing status which should be set from the database or create this
 		// one new
@@ -345,14 +387,14 @@ public class CompetitionService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<BillingStatusHistory> currentBillingStatusHistory = competitionTeam.getBillingStatusHistories().stream()
-				.peek(billingStatusHistory -> {
+		List<BillingStatusHistory> currentBillingStatusHistory = singleCompetitionTeam.getBillingStatusHistories()
+				.stream().peek(billingStatusHistory -> {
 					if (billingStatusHistory.getValidTo() == null) {
 						billingStatusHistory.setValidTo(now);
 					}
 				}).collect(Collectors.toList());
 
-		currentBillingStatusHistory.add(new BillingStatusHistory(now, competitionTeam, billingStatus));
+		currentBillingStatusHistory.add(new BillingStatusHistory(now, singleCompetitionTeam, billingStatus));
 
 		// Set the new Billing Status History and save it to the database
 		billingStatus.setBillingStatusHistories(currentBillingStatusHistory);
@@ -362,7 +404,10 @@ public class CompetitionService {
 		currentBillingStatusHistory.sort(Comparator.comparing(BillingStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentBillingStatusHistory.size() < 2) {
+			throw new RuntimeException("Billing Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentBillingStatusHistory
 				.subList(currentBillingStatusHistory.size() - 2, currentBillingStatusHistory.size()).stream()
 				.map(BillingStatusDTO::new).collect(Collectors.toList());
@@ -379,13 +424,23 @@ public class CompetitionService {
 
 		// Trying to fetch the competition with the competition-id which was given through
 		// the Competition Admin Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		Competition competition = competitionRepository.findById(competitionAdminAddDTO.id).get();
+		Optional<Competition> competition = competitionRepository.findById(competitionAdminAddDTO.getId());
+
+		if (competition.isEmpty()) {
+			throw new RuntimeException("Competition not present with given id " + competitionAdminAddDTO.getId());
+		}
+
+		Competition singleCompetition = competition.get();
 
 		// Trying to fetch the user with the user-id which was given through the
 		// Competition Admin Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		User user = userRepository.findById(competitionAdminAddDTO.getUserId()).get();
+		Optional<User> user = userRepository.findById(competitionAdminAddDTO.getUserId());
+
+		if (user.isEmpty()) {
+			throw new RuntimeException("User not present with given id " + competitionAdminAddDTO.getId());
+		}
+
+		User singleUser = user.get();
 
 		// Fetch the competition admin status which should be set from the database or
 		// create this one new
@@ -394,8 +449,8 @@ public class CompetitionService {
 
 		// Add the user to the competition admins of the competition
 		CompetitionAdmin competitionAdmin = new CompetitionAdmin();
-		competitionAdmin.setUser(user);
-		competitionAdmin.setCompetition(competition);
+		competitionAdmin.setUser(singleUser);
+		competitionAdmin.setCompetition(singleCompetition);
 		competitionAdmin.addCompetitionAdminStatus(competitionAdminStatus);
 
 		// Store the new competition admin
@@ -416,13 +471,23 @@ public class CompetitionService {
 
 		// Trying to fetch the competition team with the competition team-id which was
 		// given through the Competition Player Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionTeam competitionTeam = competitionTeamRepository.findById(competitionPlayerAddDTO.getId()).get();
+		Optional<CompetitionTeam> competitionTeam = competitionTeamRepository.findById(competitionPlayerAddDTO.getId());
+
+		if (competitionTeam.isEmpty()) {
+			throw new RuntimeException("Competition Team not present with given id " + competitionPlayerAddDTO.getId());
+		}
+
+		CompetitionTeam singleCompetitionTeam = competitionTeam.get();
 
 		// Trying to fetch the user with the user-id which was given through the
 		// Competition Player Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		User user = userRepository.findById(competitionPlayerAddDTO.getUserId()).get();
+		Optional<User> user = userRepository.findById(competitionPlayerAddDTO.getUserId());
+
+		if (user.isEmpty()) {
+			throw new RuntimeException("User not present with given id " + competitionPlayerAddDTO.getUserId());
+		}
+
+		User singleUser = user.get();
 
 		// Fetch the competition player status which should be set from the database or
 		// create this one new
@@ -431,9 +496,9 @@ public class CompetitionService {
 
 		// Add the user to the competition players of the competition
 		CompetitionPlayer competitionPlayer = new CompetitionPlayer();
-		competitionPlayer.setCompetitionTeam(competitionTeam);
+		competitionPlayer.setCompetitionTeam(singleCompetitionTeam);
 		competitionPlayer.addCompetitionPlayerStatus(competitionPlayerStatus);
-		competitionPlayer.setUser(user);
+		competitionPlayer.setUser(singleUser);
 
 		// Store the new competition player
 		competitionPlayerRepository.save(competitionPlayer);
@@ -453,16 +518,25 @@ public class CompetitionService {
 
 		// Trying to fetch the competition with the competition-id which was given through
 		// the Competition Team Add DTO
-		// TODO: Change logic to Optional if the id is not present
-		Competition competition = competitionRepository.findById(competitionTeamAddDTO.getId()).get();
+		Optional<Competition> competition = competitionRepository.findById(competitionTeamAddDTO.getId());
 
-		Team team = null;
+		if (competition.isEmpty()) {
+			throw new RuntimeException("Competition not present with given id " + competitionTeamAddDTO.getId());
+		}
+
+		Competition singleCompetition = competition.get();
+
+		Team singleTeam = null;
 
 		// Trying to fetch the team with the team-id which was given through the
 		// Competition Team Add DTO
-		// TODO: Change logic to Optional if the id is not present
 		if (competitionTeamAddDTO.getTeamId() != null) {
-			team = teamRepository.findById(competitionTeamAddDTO.getTeamId()).get();
+			Optional<Team> team = teamRepository.findById(competitionTeamAddDTO.getTeamId());
+
+			if (team.isPresent()) {
+				singleTeam = team.get();
+			}
+
 		}
 
 		// Fetch the billing status which should be set from the database or create this
@@ -476,10 +550,10 @@ public class CompetitionService {
 
 		// Add the team to the competition teams of the competition
 		CompetitionTeam competitionTeam = new CompetitionTeam();
-		competitionTeam.setCompetition(competition);
+		competitionTeam.setCompetition(singleCompetition);
 		competitionTeam.setCompetitionTeamName(competitionTeamAddDTO.getTeamname());
 		competitionTeam.setPassword(competitionTeamAddDTO.getPassword());
-		competitionTeam.setTeam(team);
+		competitionTeam.setTeam(singleTeam);
 		competitionTeam.addBillingStatus(billingStatus);
 		competitionTeam.addRegistrationStatus(registrationStatus);
 
@@ -488,8 +562,13 @@ public class CompetitionService {
 				.map(playerId -> {
 					// Trying to fetch the user with the user-id which was given through
 					// the Competition Team Add DTO
-					// TODO: Change logic to Optional if the id is not present
-					User user = userRepository.findById(playerId).get();
+					Optional<User> user = userRepository.findById(playerId);
+
+					if (user.isEmpty()) {
+						throw new RuntimeException("User not present with given id " + playerId);
+					}
+
+					User singleUser = user.get();
 
 					// Fetch the competition player status which should be set from the
 					// database or create this one new
@@ -499,7 +578,7 @@ public class CompetitionService {
 					// Add the user to the competition players of this competition team
 					CompetitionPlayer competitionPlayer = new CompetitionPlayer();
 					competitionPlayer.setCompetitionTeam(competitionTeam);
-					competitionPlayer.setUser(user);
+					competitionPlayer.setUser(singleUser);
 					competitionPlayer.addCompetitionPlayerStatus(competitionPlayerStatus);
 					return competitionPlayer;
 
@@ -523,24 +602,29 @@ public class CompetitionService {
 
 		// Trying to fetch the competition with the id which was given through the
 		// Competition Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		Competition competition = competitionRepository.findById(competitionUpdateDTO.getId()).get();
+		Optional<Competition> competition = competitionRepository.findById(competitionUpdateDTO.getId());
+
+		if (competition.isEmpty()) {
+			throw new RuntimeException("Competition not present with given id " + competitionUpdateDTO.getId());
+		}
+
+		Competition singleCompetition = competition.get();
 
 		// Set the new values
-		competition.setCompetitionName(competitionUpdateDTO.getCompetitionName());
-		competition.setCompetitionStartTimestamp(competitionUpdateDTO.getCompetitionStartTimestamp());
-		competition.setMinTeams(competitionUpdateDTO.getMinTeams());
-		competition.setMaxTeams(competitionUpdateDTO.getMaxTeams());
-		competition.setFee(competitionUpdateDTO.getFee());
-		competition.setRegistrationStart(competitionUpdateDTO.getRegistrationStart());
-		competition.setRegistrationEnd(competitionUpdateDTO.getRegistrationEnd());
-		competition.setSetOfRules(competitionUpdateDTO.getSetOfRules());
+		singleCompetition.setCompetitionName(competitionUpdateDTO.getCompetitionName());
+		singleCompetition.setCompetitionStartTimestamp(competitionUpdateDTO.getCompetitionStartTimestamp());
+		singleCompetition.setMinTeams(competitionUpdateDTO.getMinTeams());
+		singleCompetition.setMaxTeams(competitionUpdateDTO.getMaxTeams());
+		singleCompetition.setFee(competitionUpdateDTO.getFee());
+		singleCompetition.setRegistrationStart(competitionUpdateDTO.getRegistrationStart());
+		singleCompetition.setRegistrationEnd(competitionUpdateDTO.getRegistrationEnd());
+		singleCompetition.setSetOfRules(competitionUpdateDTO.getSetOfRules());
 
 		// Store the new competition
-		competitionRepository.save(competition);
+		competitionRepository.save(singleCompetition);
 
 		// Return the stored competition
-		return new CompetitionDTO(competition);
+		return new CompetitionDTO(singleCompetition);
 	}
 
 	/**
@@ -556,9 +640,15 @@ public class CompetitionService {
 
 		// Trying to fetch the competition player with the id which was given through the
 		// Competition Player Status Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionPlayer competitionPlayer = competitionPlayerRepository
-				.findById(competitionPlayerStatusUpdateDTO.getId()).get();
+		Optional<CompetitionPlayer> competitionPlayer = competitionPlayerRepository
+				.findById(competitionPlayerStatusUpdateDTO.getId());
+
+		if (competitionPlayer.isEmpty()) {
+			throw new RuntimeException(
+					"Competition Player not present with given id " + competitionPlayerStatusUpdateDTO.getId());
+		}
+
+		CompetitionPlayer singleCompetitionPlayer = competitionPlayer.get();
 
 		// Fetch the competition player status which should be set from the database or
 		// create this one new
@@ -570,7 +660,7 @@ public class CompetitionService {
 		// And add the new status with validFrom and the current timestamp
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		List<CompetitionPlayerStatusHistory> currentCompetitionPlayerStatusHistory = competitionPlayer
+		List<CompetitionPlayerStatusHistory> currentCompetitionPlayerStatusHistory = singleCompetitionPlayer
 				.getCompetitionPlayerStatusHistories().stream().peek(competitionPlayerStatusHistory -> {
 					if (competitionPlayerStatusHistory.getValidTo() == null) {
 						competitionPlayerStatusHistory.setValidTo(now);
@@ -578,17 +668,21 @@ public class CompetitionService {
 				}).collect(Collectors.toList());
 
 		currentCompetitionPlayerStatusHistory
-				.add(new CompetitionPlayerStatusHistory(competitionPlayer, competitionPlayerStatus, now));
+				.add(new CompetitionPlayerStatusHistory(singleCompetitionPlayer, competitionPlayerStatus, now));
 
 		// Set the new Competition Player Status History and save it to the database
-		competitionPlayer.setCompetitionPlayerStatusHistories(currentCompetitionPlayerStatusHistory);
-		competitionPlayerRepository.save(competitionPlayer);
+		singleCompetitionPlayer.setCompetitionPlayerStatusHistories(currentCompetitionPlayerStatusHistory);
+		competitionPlayerRepository.save(singleCompetitionPlayer);
 
 		// Sort the history via the validFrom value
 		currentCompetitionPlayerStatusHistory.sort(Comparator.comparing(CompetitionPlayerStatusHistory::getValidFrom));
 
 		// Return the last 2 values
-		// TODO: Check first if the size > 2 (otherwise the first value is not positive)
+		if (currentCompetitionPlayerStatusHistory.size() < 2) {
+			throw new RuntimeException(
+					"Competition Player Status History has less than 2 entries. This will lead to an error.");
+		}
+
 		return currentCompetitionPlayerStatusHistory
 				.subList(currentCompetitionPlayerStatusHistory.size() - 2, currentCompetitionPlayerStatusHistory.size())
 				.stream().map(CompetitionPlayerStatusDTO::new).collect(Collectors.toList());
@@ -604,26 +698,38 @@ public class CompetitionService {
 
 		// Trying to fetch the competition team with the id which was given through the
 		// Competition Team Update DTO
-		// TODO: Change logic to Optional if the id is not present
-		CompetitionTeam competitionTeam = competitionTeamRepository.findById(competitionTeamUpdateDTO.getId()).get();
+		Optional<CompetitionTeam> competitionTeam = competitionTeamRepository
+				.findById(competitionTeamUpdateDTO.getId());
+
+		if (competitionTeam.isEmpty()) {
+			throw new RuntimeException(
+					"Competition Team not present with given id " + competitionTeamUpdateDTO.getId());
+		}
+
+		CompetitionTeam singleCompetitionTeam = competitionTeam.get();
 
 		if (competitionTeamUpdateDTO.getTeamId() != null) {
 			// Trying to fetch the team with the team-id which was given through the
 			// Competition Team Update DTO
-			// TODO: Change logic to Optional if the id is not present
-			Team team = teamRepository.findById(competitionTeamUpdateDTO.getTeamId()).get();
-			competitionTeam.setTeam(team);
+			Optional<Team> team = teamRepository.findById(competitionTeamUpdateDTO.getTeamId());
+
+			if (team.isEmpty()) {
+				throw new RuntimeException("Team not present with given id " + competitionTeamUpdateDTO.getTeamId());
+			}
+
+			Team singleTeam = team.get();
+			singleCompetitionTeam.setTeam(singleTeam);
 		}
 		else {
-			competitionTeam.setTeam(null);
+			singleCompetitionTeam.setTeam(null);
 		}
-		competitionTeam.setCompetitionTeamName(competitionTeamUpdateDTO.getTeamname());
+		singleCompetitionTeam.setCompetitionTeamName(competitionTeamUpdateDTO.getTeamname());
 
 		// Store the new competition team
-		competitionTeamRepository.save(competitionTeam);
+		competitionTeamRepository.save(singleCompetitionTeam);
 
 		// Return the stored competition team
-		return new CompetitionTeamDTO(competitionTeam);
+		return new CompetitionTeamDTO(singleCompetitionTeam);
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/acl")
@@ -67,9 +68,15 @@ public class ACLSidController {
 	@PreAuthorize("hasAuthority('READ_ACL_PRIVILEGE')")
 	public ACLSid getACLSid(@PathVariable Long aclSidId) {
 		logger.info("Trying to find an ACL SID with id: " + aclSidId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return aclSidRepository.findById(aclSidId).orElseThrow();
+
+		Optional<ACLSid> aclSid = aclSidRepository.findById(aclSidId);
+
+		if (aclSid.isEmpty()) {
+			throw new RuntimeException("ACL Sid not present with given id " + aclSidId);
+		}
+		else {
+			return aclSid.get();
+		}
 	}
 
 	/**

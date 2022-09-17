@@ -99,9 +99,15 @@ public class TeamController {
 	@PostAuthorize("hasAuthority('ADMIN_TEAM_PRIVILEGE')")
 	public TeamDetailDTO getTeam(@PathVariable Long teamId) {
 		logger.info("Trying to find a Team with id: " + teamId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return teamService.transformTeamToTeamDetailDTO(teamRepository.findById(teamId).orElseThrow());
+
+		Optional<Team> team = teamRepository.findById(teamId);
+
+		if (team.isEmpty()) {
+			throw new RuntimeException("Team not present with given id " + teamId);
+		}
+		else {
+			return teamService.transformTeamToTeamDetailDTO(team.get());
+		}
 	}
 
 	/**

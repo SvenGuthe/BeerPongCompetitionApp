@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -141,9 +142,15 @@ public class UserController {
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public UserDetailDTO getUser(@PathVariable Long userId) {
 		logger.info("Trying to find a User with id: " + userId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return userService.transformUserToUserDetailDTO(userRepository.findById(userId).orElseThrow());
+
+		Optional<User> user = userRepository.findById(userId);
+
+		if (user.isEmpty()) {
+			throw new RuntimeException("User not present with given id " + userId);
+		}
+		else {
+			return userService.transformUserToUserDetailDTO(user.get());
+		}
 	}
 
 }

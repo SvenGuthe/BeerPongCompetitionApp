@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -91,10 +92,16 @@ public class UserStatusController {
 	@PreAuthorize("hasAuthority('READ_AUTHENTICATION_PRIVILEGE')")
 	public List<UserStatusDTO> getUserStatus(@PathVariable Long userStatusId) {
 		logger.info("Trying to find a User Status with id: " + userStatusId);
-		// TODO: check if the result is empty -> If this is the case return a custom
-		// error-message
-		return userStatusRepository.findById(userStatusId).orElseThrow().getUserStatusHistories().stream()
-				.map(UserStatusDTO::new).collect(Collectors.toList());
+
+		Optional<UserStatus> userStatus = userStatusRepository.findById(userStatusId);
+
+		if (userStatus.isEmpty()) {
+			throw new RuntimeException("User Status not present with given id " + userStatusId);
+		}
+		else {
+			return userStatus.get().getUserStatusHistories().stream().map(UserStatusDTO::new)
+					.collect(Collectors.toList());
+		}
 	}
 
 }
