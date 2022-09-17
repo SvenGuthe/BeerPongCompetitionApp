@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user;
+package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.userstatus;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.UserStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;

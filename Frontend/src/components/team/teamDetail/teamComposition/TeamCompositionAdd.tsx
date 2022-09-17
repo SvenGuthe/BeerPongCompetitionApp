@@ -3,8 +3,8 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Container, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addTeamComposition } from "../../../../store/team/team-store-actions";
-import { tUser } from "../../../../types/user";
-import { tTeamCompositionAdd } from "../../../../types/team";
+import tTeamCompositionAdd from "../../../../types/team/teamcomposition/teamCompositionAdd";
+import tUser from "../../../../types/user/user";
 
 /**
  * Component to add a user to a team (team composition)

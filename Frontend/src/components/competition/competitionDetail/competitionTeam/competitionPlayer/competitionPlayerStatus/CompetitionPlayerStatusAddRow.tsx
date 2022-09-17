@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { updateCompetitionPlayerStatus } from "../../../../../../store/competition/competition-store-actions";
-import { tCompetitionPlayerStatusUpdate } from "../../../../../../types/competition";
+import tCompetitionPlayerStatusUpdate from "../../../../../../types/competition/competitionplayer/competitionPlayerStatusUpdate";
 import { tCompetitionPlayerStatusType } from "../../../../../../types/enums/competitionPlayerStatusType";
 import { CompetitionPlayerStatusTypeInput } from "../../../../../ui/form/PredefinedSelectInputs";
 

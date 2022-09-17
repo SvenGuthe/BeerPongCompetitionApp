@@ -7,11 +7,10 @@ import { tBillingStatusType } from "../../enums/billingStatusType";
 // id = BillingStatusID
 // value = BillingStatusType
 type tBillingStatus = tEnum & {
-    billingStatusId: number;
-    billingStatusDescription: tBillingStatusType;
-    creationTime: tTimestamp;
-    validFrom: tTimestamp;
-    validTo?: tTimestamp;
-}
+  billingStatusDescription: tBillingStatusType;
+  creationTime: tTimestamp;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export default tBillingStatus;

@@ -4,7 +4,7 @@ import { tID } from "../../defaults/generics";
 
 // id = CompetitionID
 type tCompetitionAdminAdd = tID & {
-    userId: number;
+  userId: number;
 };
 
 export default tCompetitionAdminAdd;

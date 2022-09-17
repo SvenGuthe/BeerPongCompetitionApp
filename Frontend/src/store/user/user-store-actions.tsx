@@ -1,11 +1,9 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { confirmationTokenRoute, userRoute } from "../../api-routes/user";
-import {
-  tConfirmationToken,
-  tConfirmationTokenAdd,
-  tUserUpdate,
-} from "../../types/user";
+import tConfirmationToken from "../../types/user/confirmationtoken/confirmationToken";
+import tConfirmationTokenAdd from "../../types/user/confirmationtoken/confirmationTokenAdd";
+import tUserUpdate from "../../types/user/userUpdate";
 import {
   updateUser as updateUserState,
   addConfirmationToken as addConfirmationTokenState,

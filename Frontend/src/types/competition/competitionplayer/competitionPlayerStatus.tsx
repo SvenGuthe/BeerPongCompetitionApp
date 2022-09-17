@@ -7,10 +7,10 @@ import { tCompetitionPlayerStatusType } from "../../enums/competitionPlayerStatu
 // id = CompetitionPlayerStatusID
 // value = CompetitionPlayerStatusType
 type tCompetitionPlayerStatus = tEnum & {
-    competitionPlayerStatusDescription: tCompetitionPlayerStatusType;
-    creationTime: tTimestamp;
-    validFrom: tTimestamp;
-    validTo?: tTimestamp;
-}
+  competitionPlayerStatusDescription: tCompetitionPlayerStatusType;
+  creationTime: tTimestamp;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export default tCompetitionPlayerStatus;

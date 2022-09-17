@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateTeam } from "../../../store/team/team-store-actions";
-import { tTeam } from "../../../types/team";
+import tTeam from "../../../types/team/team";
 import FormItem from "../../ui/form/FormItem";
 
 /**
@@ -64,7 +64,7 @@ const TeamDetailTable: React.FC<{
           </tr>
           <tr>
             <th>Player Team</th>
-            <td>{String(team.playerTeam)}</td>
+            <td>{String(team.isPlayerTeam)}</td>
           </tr>
           <tr>
             <th>Erzeugt am</th>

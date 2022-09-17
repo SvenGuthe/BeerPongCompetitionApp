@@ -2,8 +2,8 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionStatusUpdateDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.competitionstatus.CompetitionStatusUpdateDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionstatus.CompetitionStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.CompetitionStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;

@@ -1,16 +1,14 @@
 import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
-import {
-  tBillingStatus,
-  tCompetition,
-  tCompetitionAdmin,
-  tCompetitionAdminStatus,
-  tCompetitionDetail,
-  tCompetitionPlayer,
-  tCompetitionPlayerStatus,
-  tCompetitionStatus,
-  tCompetitionTeam,
-  tRegistrationStatus,
-} from "../../types/competition";
+import tBillingStatus from "../../types/competition/billing/billingStatus";
+import tCompetition from "../../types/competition/competition";
+import tCompetitionAdmin from "../../types/competition/competitionadmin/competitionAdmin";
+import tCompetitionAdminStatus from "../../types/competition/competitionadmin/competitionAdminStatus";
+import tCompetitionDetail from "../../types/competition/competitionDetail";
+import tCompetitionPlayer from "../../types/competition/competitionplayer/competitionPlayer";
+import tCompetitionPlayerStatus from "../../types/competition/competitionplayer/competitionPlayerStatus";
+import tCompetitionStatus from "../../types/competition/competitionstatus/competitionStatus";
+import tCompetitionTeam from "../../types/competition/competitionteam/competitionTeam";
+import tRegistrationStatus from "../../types/competition/registration/registrationStatus";
 import { tEnum, tPaginationDTO } from "../../types/defaults/generics";
 
 type SliceState = {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { tUser } from "../../types/user";
 import { tSecurityRole } from "../../types/enums/securityRole";
+import tUser from "../../types/user/user";
 import FormItem from "../ui/form/FormItem";
 
 const UserRoleCheckboxes: React.FC<{

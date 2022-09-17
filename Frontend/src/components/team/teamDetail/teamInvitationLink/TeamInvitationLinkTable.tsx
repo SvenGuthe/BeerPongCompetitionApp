@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tTeamInvitationLink } from "../../../../types/team";
+import tTeamInvitationLink from "../../../../types/team/teaminvitationlink/teamInvitationLink";
 import TeamInvitationLinkAddRow from "./TeamInvitationLinkAddRow";
 import TeamInvitationLinkRow from "./TeamInvitationLinkRow";
 

@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition;
+package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.billing;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.BillingStatusType;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
@@ -9,9 +9,6 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
 public class BillingStatusDTO extends EnumDTO {
-
-	@NotNull(message = "billingStatusId in BillingStatusDTO have to be set.")
-	private Long billingStatusId;
 
 	@NotNull(message = "billingStatusDescription in BillingStatusDTO have to be set.")
 	private BillingStatusType billingStatusDescription;
@@ -27,7 +24,6 @@ public class BillingStatusDTO extends EnumDTO {
 	public BillingStatusDTO(Long id, BillingStatusType billingStatusDescription, Timestamp creationTime,
 			Timestamp validFrom, Timestamp validTo) {
 		super(id, billingStatusDescription.name());
-		this.billingStatusId = id;
 		this.billingStatusDescription = billingStatusDescription;
 		this.creationTime = creationTime;
 		this.validFrom = validFrom;
@@ -36,7 +32,6 @@ public class BillingStatusDTO extends EnumDTO {
 
 	public BillingStatusDTO(BillingStatus billingStatus, Timestamp validFrom, Timestamp validTo) {
 		super(billingStatus.getId(), billingStatus.getBillingStatusDescription().name());
-		this.billingStatusId = billingStatus.getId();
 		this.billingStatusDescription = billingStatus.getBillingStatusDescription();
 		this.creationTime = billingStatus.getCreationTime();
 		this.validFrom = validFrom;
@@ -45,7 +40,6 @@ public class BillingStatusDTO extends EnumDTO {
 
 	public BillingStatusDTO(BillingStatus billingStatus) {
 		super(billingStatus.getId(), billingStatus.getBillingStatusDescription().name());
-		this.billingStatusId = billingStatus.getId();
 		this.billingStatusDescription = billingStatus.getBillingStatusDescription();
 		this.creationTime = billingStatus.getCreationTime();
 		this.validFrom = null;
@@ -55,7 +49,6 @@ public class BillingStatusDTO extends EnumDTO {
 	public BillingStatusDTO(BillingStatusHistory billingStatusHistory) {
 		super(billingStatusHistory.getId(),
 				billingStatusHistory.getBillingStatus().getBillingStatusDescription().name());
-		this.billingStatusId = billingStatusHistory.getBillingStatus().getId();
 		this.billingStatusDescription = billingStatusHistory.getBillingStatus().getBillingStatusDescription();
 		this.creationTime = billingStatusHistory.getBillingStatus().getCreationTime();
 		this.validFrom = billingStatusHistory.getValidFrom();
@@ -94,19 +87,10 @@ public class BillingStatusDTO extends EnumDTO {
 		this.validTo = validTo;
 	}
 
-	public Long getBillingStatusId() {
-		return billingStatusId;
-	}
-
-	public void setBillingStatusId(Long billingStatusId) {
-		this.billingStatusId = billingStatusId;
-	}
-
 	@Override
 	public String toString() {
-		return "BillingStatusDTO{" + "billingStatusId=" + billingStatusId + ", billingStatusDescription="
-				+ billingStatusDescription + ", creationTime=" + creationTime + ", validFrom=" + validFrom
-				+ ", validTo=" + validTo + ", id=" + id + '}';
+		return "BillingStatusDTO{ billingStatusDescription=" + billingStatusDescription + ", creationTime="
+				+ creationTime + ", validFrom=" + validFrom + ", validTo=" + validTo + ", id=" + id + '}';
 	}
 
 }

@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tConfirmationToken } from "../../../../types/user";
+import tConfirmationToken from "../../../../types/user/confirmationtoken/confirmationToken";
 import ConfirmationTokenAddRow from "./ConfirmationTokenAddRow";
 import ConfirmationTokenRow from "./ConfirmationTokenRow";
 

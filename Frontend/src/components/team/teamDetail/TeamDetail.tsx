@@ -127,7 +127,7 @@ const TeamDetail: React.FC = () => {
                     <h4>{user.user.gamerTag}</h4>
                     <UserDetailsTableTeam
                       user={user.user}
-                      admin={user.admin}
+                      admin={user.isAdmin}
                       teamCompositionId={user.id}
                     ></UserDetailsTableTeam>
 

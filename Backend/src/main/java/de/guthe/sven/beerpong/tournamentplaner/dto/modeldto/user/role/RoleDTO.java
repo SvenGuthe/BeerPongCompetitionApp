@@ -1,7 +1,8 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user;
+package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.role;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.user.SecurityRole;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.privilege.PrivilegeDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.UserRole;
 
 import javax.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user;
+package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.confirmationtoken;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.confirmationtoken.ConfirmationTokenHistory;

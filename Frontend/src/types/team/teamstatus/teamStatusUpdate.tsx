@@ -5,7 +5,7 @@ import { tTeamStatusType } from "../../enums/teamStatusType";
 
 // id = TeamID
 type tTeamStatusUpdate = tID & {
-    teamStatusType: tTeamStatusType;
-}
+  teamStatusType: tTeamStatusType;
+};
 
 export default tTeamStatusUpdate;

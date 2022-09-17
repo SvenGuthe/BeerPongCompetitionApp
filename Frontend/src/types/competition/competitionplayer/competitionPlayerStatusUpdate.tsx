@@ -5,7 +5,7 @@ import { tCompetitionPlayerStatusType } from "../../enums/competitionPlayerStatu
 
 // id = CompetitionPlayerID
 type tCompetitionPlayerStatusUpdate = tID & {
-    competitionPlayerStatusType: tCompetitionPlayerStatusType;
+  competitionPlayerStatusType: tCompetitionPlayerStatusType;
 };
 
 export default tCompetitionPlayerStatusUpdate;

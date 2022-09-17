@@ -1,13 +1,15 @@
 // --------- MODEL Datatypes --------- //
 
 import { tID } from "../defaults/generics";
+import { tAdditionalAttributes } from "../defaults/tables";
 import { tTimestamp } from "../defaults/timestamp";
 import tCompetitionAdmin from "./competitionadmin/competitionAdmin";
 import tCompetitionStatus from "./competitionstatus/competitionStatus";
 import tCompetitionTeam from "./competitionteam/competitionTeam";
 
 // id = CompetitionID
-type tCompetition = tID & {
+type tCompetition = tID &
+  tAdditionalAttributes & {
     competitionName: string;
     competitionStartTimestamp?: tTimestamp;
     minTeams?: number;
@@ -20,6 +22,6 @@ type tCompetition = tID & {
     competitionStatus: tCompetitionStatus[];
     competitionTeams: tCompetitionTeam[];
     competitionAdmins: tCompetitionAdmin[];
-};
+  };
 
 export default tCompetition;

@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeBillingStatus } from "../../../../../store/competition/competition-store-actions";
-import { tBillingStatusUpdate } from "../../../../../types/competition";
+import tBillingStatusUpdate from "../../../../../types/competition/billing/billingStatusUpdate";
 import { tBillingStatusType } from "../../../../../types/enums/billingStatusType";
 import { BillingStatusTypeSelectInput } from "../../../../ui/form/PredefinedSelectInputs";
 

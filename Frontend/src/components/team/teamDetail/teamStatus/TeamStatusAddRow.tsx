@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateTeamStatus } from "../../../../store/team/team-store-actions";
 import { tTeamStatusType } from "../../../../types/enums/teamStatusType";
-import { tTeamStatusUpdate } from "../../../../types/team";
+import tTeamStatusUpdate from "../../../../types/team/teamstatus/teamStatusUpdate";
 import { TeamStatusTypeInput } from "../../../ui/form/PredefinedSelectInputs";
 
 /**

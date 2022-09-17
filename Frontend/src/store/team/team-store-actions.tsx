@@ -7,14 +7,12 @@ import {
   teamRoute,
   teamStatusRoute,
 } from "../../api-routes/team";
-import {
-  tTeamCompositionAdd,
-  tTeamCompositionStatusUpdate,
-  tTeamCompositionUpdate,
-  tTeamInvitationLinkAdd,
-  tTeamStatusUpdate,
-  tTeamUpdate,
-} from "../../types/team";
+import tTeamCompositionAdd from "../../types/team/teamcomposition/teamCompositionAdd";
+import tTeamCompositionStatusUpdate from "../../types/team/teamcomposition/teamCompositionStatusUpdate";
+import tTeamCompositionUpdate from "../../types/team/teamcomposition/teamCompositionUpdate";
+import tTeamInvitationLinkAdd from "../../types/team/teaminvitationlink/teamInvitationLinkAdd";
+import tTeamStatusUpdate from "../../types/team/teamstatus/teamStatusUpdate";
+import tTeamUpdate from "../../types/team/teamUpdate";
 import {
   updateTeam as updateTeamState,
   updateTeamStatus as updateTeamStatusState,

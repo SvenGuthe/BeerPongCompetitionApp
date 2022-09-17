@@ -4,7 +4,7 @@ import { tID } from "../../defaults/generics";
 
 // id = TeamID
 type tTeamInvitationLinkAdd = tID & {
-    teamInvitationLink: string;
+  teamInvitationLink: string;
 };
 
 export default tTeamInvitationLinkAdd;

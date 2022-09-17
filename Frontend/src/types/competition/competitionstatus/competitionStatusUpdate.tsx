@@ -5,7 +5,7 @@ import { tCompetitionStatusType } from "../../enums/competitionStatusType";
 
 // id = CompetitionID
 type tCompetitionStatusUpdate = tID & {
-    competitionStatusType: tCompetitionStatusType;
+  competitionStatusType: tCompetitionStatusType;
 };
 
 export default tCompetitionStatusUpdate;

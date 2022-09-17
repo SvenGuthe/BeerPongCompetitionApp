@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tCompetitionPlayer } from "../../../../../types/competition";
+import tCompetitionPlayer from "../../../../../types/competition/competitionplayer/competitionPlayer";
 
 /**
  * Component to show the meta data of a single competition player

@@ -7,9 +7,9 @@ import { tTeamCompositionStatusType } from "../../enums/teamCompositionStatusTyp
 // id = TeamCompositionStatusID
 // value = TeamCompositionStatusType
 type tTeamCompositionStatus = tEnum & {
-    teamCompositionStatusType: tTeamCompositionStatusType;
-    validFrom: tTimestamp;
-    validTo?: tTimestamp;
-}
+  teamCompositionStatusType: tTeamCompositionStatusType;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export default tTeamCompositionStatus;

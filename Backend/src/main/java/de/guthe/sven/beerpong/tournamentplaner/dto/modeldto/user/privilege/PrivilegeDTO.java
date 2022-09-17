@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user;
+package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.privilege;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.user.SecurityPrivilege;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;

@@ -7,13 +7,13 @@ import {
   setAuthenticatedUser,
   setLoading,
 } from "./authentication-store";
-import { tUserRegistration } from "../../types/authentication";
 import {
   authenticatedUserRoute,
   confirmRoute,
   loginRoute,
   registerRoute,
 } from "../../api-routes/authentication";
+import tUserRegistration from "../../types/user/userRegistration";
 
 export const sendLoginRequest = (email: String, password: String) => {
   return async (dispatch: Dispatch<any>) => {

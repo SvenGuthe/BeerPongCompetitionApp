@@ -4,7 +4,7 @@ import { tID } from "../defaults/generics";
 
 // id = TeamID
 type tTeamIDAndName = tID & {
-    teamName: string;
-}
+  teamName: string;
+};
 
 export default tTeamIDAndName;

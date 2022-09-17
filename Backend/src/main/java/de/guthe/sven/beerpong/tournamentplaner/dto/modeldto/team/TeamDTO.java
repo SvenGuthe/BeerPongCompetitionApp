@@ -2,6 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamstatus.TeamStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.Team;
 
 import javax.validation.constraints.NotNull;

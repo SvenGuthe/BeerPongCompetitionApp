@@ -5,7 +5,7 @@ import { tBillingStatusType } from "../../enums/billingStatusType";
 
 // id = BillingStatusID
 type tBillingStatusUpdate = tID & {
-    billingStatusType: tBillingStatusType;
+  billingStatusType: tBillingStatusType;
 };
 
 export default tBillingStatusUpdate;

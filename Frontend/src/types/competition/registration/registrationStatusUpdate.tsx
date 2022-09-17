@@ -5,7 +5,7 @@ import { tRegistrationStatusType } from "../../enums/registrationStatusType";
 
 // id = RegistrationStatusID
 type tRegistrationStatusUpdate = tID & {
-    registrationStatusType: tRegistrationStatusType;
-}
+  registrationStatusType: tRegistrationStatusType;
+};
 
 export default tRegistrationStatusUpdate;

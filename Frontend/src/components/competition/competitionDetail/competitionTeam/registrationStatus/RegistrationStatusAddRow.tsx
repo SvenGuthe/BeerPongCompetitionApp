@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeRegistrationStatus } from "../../../../../store/competition/competition-store-actions";
-import { tRegistrationStatusUpdate } from "../../../../../types/competition";
+import tRegistrationStatusUpdate from "../../../../../types/competition/registration/registrationStatusUpdate";
 import { tRegistrationStatusType } from "../../../../../types/enums/registrationStatusType";
 import { RegistrationStatusTypeInput } from "../../../../ui/form/PredefinedSelectInputs";
 

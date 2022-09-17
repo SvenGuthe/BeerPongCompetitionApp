@@ -1,8 +1,8 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionteam;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.BillingStatusDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.RegistrationStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.billing.BillingStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.registration.RegistrationStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionplayer.CompetitionPlayerDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.CompetitionTeam;

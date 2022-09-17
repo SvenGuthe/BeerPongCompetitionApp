@@ -1,6 +1,6 @@
 import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { tUser } from "../../types/user";
+import tUser from "../../types/user/user";
 
 type SliceState = {
   redirectToHome: boolean;

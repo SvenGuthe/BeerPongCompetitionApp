@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { toggleConfirmationToken } from "../../../../store/user/user-store-actions";
-import { tConfirmationToken } from "../../../../types/user";
+import tConfirmationToken from "../../../../types/user/confirmationtoken/confirmationToken";
 
 /**
  * Component which defines a single row (a single confirmation token)

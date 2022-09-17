@@ -105,7 +105,7 @@ const UserDetails: React.FC = () => {
                   const additionalAttributes = [
                     {
                       id: team.id + "_admin",
-                      value: String(team.admin),
+                      value: String(team.isAdmin),
                     },
                     {
                       id: team.id + "_creationTime",

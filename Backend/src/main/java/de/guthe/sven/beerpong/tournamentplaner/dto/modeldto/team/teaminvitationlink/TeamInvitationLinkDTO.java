@@ -1,6 +1,7 @@
 package de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLink;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLinkHistory;
 
@@ -9,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TeamInvitationLinkDTO extends EnumDTO {
+public class TeamInvitationLinkDTO extends ID {
 
 	@NotNull(message = "teamInvitationLink in TeamInvitationLinkDTO have to be set.")
 	private String teamInvitationLink;
@@ -24,7 +25,7 @@ public class TeamInvitationLinkDTO extends EnumDTO {
 
 	public TeamInvitationLinkDTO(Long id, String teamInvitationLink, Timestamp creationTime, Timestamp validFrom,
 			Timestamp validTo) {
-		super(id, teamInvitationLink);
+		super(id);
 		this.teamInvitationLink = teamInvitationLink;
 		this.creationTime = creationTime;
 		this.validFrom = validFrom;
@@ -32,7 +33,7 @@ public class TeamInvitationLinkDTO extends EnumDTO {
 	}
 
 	public TeamInvitationLinkDTO(TeamInvitationLink teamInvitationLink, Timestamp validFrom, Timestamp validTo) {
-		super(teamInvitationLink.getId(), teamInvitationLink.getTeamInvitationLink());
+		super(teamInvitationLink.getId());
 		this.teamInvitationLink = teamInvitationLink.getTeamInvitationLink();
 		this.creationTime = teamInvitationLink.getCreationTime();
 		this.validFrom = validFrom;
@@ -40,7 +41,7 @@ public class TeamInvitationLinkDTO extends EnumDTO {
 	}
 
 	public TeamInvitationLinkDTO(TeamInvitationLink teamInvitationLink) {
-		super(teamInvitationLink.getId(), teamInvitationLink.getTeamInvitationLink());
+		super(teamInvitationLink.getId());
 		this.teamInvitationLink = teamInvitationLink.getTeamInvitationLink();
 		this.creationTime = teamInvitationLink.getCreationTime();
 
@@ -55,8 +56,7 @@ public class TeamInvitationLinkDTO extends EnumDTO {
 	}
 
 	public TeamInvitationLinkDTO(TeamInvitationLinkHistory teamInvitationLinkHistory) {
-		super(teamInvitationLinkHistory.getTeamInvitationLink().getId(),
-				teamInvitationLinkHistory.getTeamInvitationLink().getTeamInvitationLink());
+		super(teamInvitationLinkHistory.getTeamInvitationLink().getId());
 		this.teamInvitationLink = teamInvitationLinkHistory.getTeamInvitationLink().getTeamInvitationLink();
 		this.creationTime = teamInvitationLinkHistory.getTeamInvitationLink().getCreationTime();
 		this.validFrom = teamInvitationLinkHistory.getValidFrom();

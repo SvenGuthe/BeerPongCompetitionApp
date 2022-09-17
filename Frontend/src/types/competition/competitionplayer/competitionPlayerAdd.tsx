@@ -4,7 +4,7 @@ import { tID } from "../../defaults/generics";
 
 // id = CompetitionTeamID
 type tCompetitionPlayerAdd = tID & {
-    userId: number;
+  userId: number;
 };
 
 export default tCompetitionPlayerAdd;

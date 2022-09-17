@@ -7,9 +7,9 @@ import { tUserStatusType } from "../../enums/userStatusType";
 // id = UserStatusID
 // value = UserStatusType
 type tUserStatus = tEnum & {
-    userStatus: tUserStatusType;
-    validFrom: tTimestamp;
-    validTo?: tTimestamp;
-}
+  userStatus: tUserStatusType;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+};
 
 export default tUserStatus;

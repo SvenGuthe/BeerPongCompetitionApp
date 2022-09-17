@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateTeamComposition } from "../../../store/team/team-store-actions";
-import { tTeamCompositionUpdate } from "../../../types/team";
-import { tUser } from "../../../types/user";
+import tTeamCompositionUpdate from "../../../types/team/teamcomposition/teamCompositionUpdate";
+import tUser from "../../../types/user/user";
 import CheckboxInput from "../../ui/form/CheckboxInput";
 
 /**

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addTeamInvitationLink } from "../../../../store/team/team-store-actions";
-import { tTeamInvitationLinkAdd } from "../../../../types/team";
+import tTeamInvitationLinkAdd from "../../../../types/team/teaminvitationlink/teamInvitationLinkAdd";
 import FormItem from "../../../ui/form/FormItem";
 
 /**

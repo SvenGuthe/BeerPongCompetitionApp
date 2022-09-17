@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../store/user/user-store-actions";
-import { tUser, tUserUpdate } from "../../../types/user";
 import { tSecurityRole } from "../../../types/enums/securityRole";
 import { tUserStatusType } from "../../../types/enums/userStatusType";
 import FormItem from "../../ui/form/FormItem";
@@ -10,6 +9,8 @@ import {
   MultiSecurityRoleInput,
   UserStatusTypeInput,
 } from "../../ui/form/PredefinedSelectInputs";
+import tUser from "../../../types/user/user";
+import tUserUpdate from "../../../types/user/userUpdate";
 
 /**
  * Component to show meta data of a single user

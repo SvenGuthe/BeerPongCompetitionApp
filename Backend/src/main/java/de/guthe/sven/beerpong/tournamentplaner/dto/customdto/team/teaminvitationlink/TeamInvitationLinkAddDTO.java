@@ -1,4 +1,4 @@
-package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team;
+package de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teaminvitationlink;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.ID;
 

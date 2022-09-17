@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tCompetitionAdmin } from "../../../../types/competition";
+import tCompetitionAdmin from "../../../../types/competition/competitionadmin/competitionAdmin";
 
 /**
  * Component to show the meta data of a single competition admin

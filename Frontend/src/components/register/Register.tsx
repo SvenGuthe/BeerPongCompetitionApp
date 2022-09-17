@@ -3,10 +3,10 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import classes from "./Register.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { sendRegisterRequest } from "../../store/authentication/authentication-store-actions";
-import { tUserRegistration } from "../../types/authentication";
 import { RootState } from "../../store/combine-store";
 import { useNavigate } from "react-router-dom";
 import { afterRegisterCleanup } from "../../store/authentication/authentication-store";
+import tUserRegistration from "../../types/user/userRegistration";
 
 /**
  * Component to display the registration page

@@ -1,11 +1,11 @@
 // --------- MODEL Datatypes --------- //
 
-import { tTeamIDAndName } from "../team"
-import { tUserIDAndGamerTag } from "../user";
+import tUserIDAndGamerTag from "../user/userIDAndGamerTag";
+import tTeamIDAndName from "./teamIDAndName";
 
 type tTeamAndUser = {
-    team: tTeamIDAndName;
-    users: tUserIDAndGamerTag[];
-}
+  team: tTeamIDAndName;
+  users: tUserIDAndGamerTag[];
+};
 
 export default tTeamAndUser;

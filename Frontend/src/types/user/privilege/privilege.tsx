@@ -7,9 +7,9 @@ import { tSecurityPrivilege } from "../../enums/securityPrivilege";
 // id = PrivilegeID
 // value = SecurityPrivilege
 type tPrivilege = tEnum & {
-    privilege: tSecurityPrivilege;
-    validFrom: tTimestamp;
-    validTo?: tTimestamp;
+  privilege: tSecurityPrivilege;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
 };
 
 export default tPrivilege;

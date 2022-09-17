@@ -11,18 +11,16 @@ import {
   competitionTeamRoute,
   registrationStatusRoute,
 } from "../../api-routes/competition";
-import {
-  tBillingStatusUpdate,
-  tCompetitionAdminAdd,
-  tCompetitionAdminStatusUpdate,
-  tCompetitionPlayerAdd,
-  tCompetitionPlayerStatusUpdate,
-  tCompetitionStatusUpdate,
-  tCompetitionTeamAdd,
-  tCompetitionTeamUpdate,
-  tCompetitionUpdate,
-  tRegistrationStatusUpdate,
-} from "../../types/competition";
+import tBillingStatusUpdate from "../../types/competition/billing/billingStatusUpdate";
+import tCompetitionAdminAdd from "../../types/competition/competitionadmin/competitionAdminAdd";
+import tCompetitionAdminStatusUpdate from "../../types/competition/competitionadmin/competitionAdminStatusUpdate";
+import tCompetitionPlayerAdd from "../../types/competition/competitionplayer/competitionPlayerAdd";
+import tCompetitionPlayerStatusUpdate from "../../types/competition/competitionplayer/competitionPlayerStatusUpdate";
+import tCompetitionStatusUpdate from "../../types/competition/competitionstatus/competitionStatusUpdate";
+import tCompetitionTeamAdd from "../../types/competition/competitionteam/competitionTeamAdd";
+import tCompetitionTeamUpdate from "../../types/competition/competitionteam/competitionTeamUpdate";
+import tCompetitionUpdate from "../../types/competition/competitionUpdate";
+import tRegistrationStatusUpdate from "../../types/competition/registration/registrationStatusUpdate";
 import {
   updateBillingStatus,
   updateCompetitionAdminStatus,

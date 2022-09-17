@@ -3,9 +3,9 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Container, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionPlayer } from "../../../../../store/competition/competition-store-actions";
-import { tUserIDAndGamerTag } from "../../../../../types/user";
-import { tCompetitionPlayerAdd } from "../../../../../types/competition";
-import { tTeamAndUser } from "../../../../../types/team";
+import tCompetitionPlayerAdd from "../../../../../types/competition/competitionplayer/competitionPlayerAdd";
+import tTeamAndUser from "../../../../../types/team/teamAndUser";
+import tUserIDAndGamerTag from "../../../../../types/user/userIDAndGamerTag";
 
 /**
  * Component to add a new competition player to a team

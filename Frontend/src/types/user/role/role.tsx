@@ -8,10 +8,10 @@ import tPrivilege from "../privilege/privilege";
 // id = RoleID
 // value = SecurityRole
 type tRole = tEnum & {
-    role: tSecurityRole;
-    validFrom: tTimestamp;
-    validTo?: tTimestamp;
-    privileges: tPrivilege[];
+  role: tSecurityRole;
+  validFrom: tTimestamp;
+  validTo?: tTimestamp;
+  privileges: tPrivilege[];
 };
 
 export default tRole;
