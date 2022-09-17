@@ -1,5 +1,6 @@
 import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import tJwtResponse from "../../types/authentication/jwtResponse";
 import tUser from "../../types/user/user";
 
 type SliceState = {
@@ -30,16 +31,15 @@ export const authenticationSlice = createSlice({
     login: (
       state,
       action: PayloadAction<{
-        userDetail: tUser | null;
-        token: string;
+        jwtResponse: tJwtResponse;
       }>
     ) => {
-      localStorage.setItem("token", action.payload.token);
-      state.authenticatedUser = action.payload.userDetail;
+      localStorage.setItem("token", action.payload.jwtResponse.jwtToken);
+      state.authenticatedUser = action.payload.jwtResponse.user;
       state.redirectToHome = true;
       axios.defaults.headers.common[
         "Authorization"
-      ] = `Bearer ${action.payload.token}`;
+      ] = `Bearer ${action.payload.jwtResponse.jwtToken}`;
     },
     afterLoginCleanup: (state) => {
       state.redirectToHome = false;

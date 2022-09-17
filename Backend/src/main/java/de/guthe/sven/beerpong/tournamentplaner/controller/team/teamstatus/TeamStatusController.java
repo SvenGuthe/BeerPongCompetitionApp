@@ -80,6 +80,7 @@ public class TeamStatusController {
 
 	/**
 	 * Route to update the Team Status manually
+	 * TODO: Check if we should change this to PUT Method
 	 * @param teamStatusUpdateDTO the updated entry (id is the identifier)
 	 * @return the updated entry if the update was successful
 	 */

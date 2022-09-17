@@ -1,8 +1,10 @@
 // --------- CUSTOM Datatypes --------- //
 
+import tUser from "../user/user";
+
 type tJwtResponse = {
-  email: string;
-  password: string;
+  jwtToken: string;
+  user: tUser;
 };
 
 export default tJwtResponse;
