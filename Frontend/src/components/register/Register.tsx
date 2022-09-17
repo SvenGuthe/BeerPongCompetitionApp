@@ -3,7 +3,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 import classes from "./Register.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { sendRegisterRequest } from "../../store/authentication/authentication-store-actions";
-import { tRegister } from "../../types/authentication";
+import { tUserRegistration } from "../../types/authentication";
 import { RootState } from "../../store/combine-store";
 import { useNavigate } from "react-router-dom";
 import { afterRegisterCleanup } from "../../store/authentication/authentication-store";
@@ -13,7 +13,7 @@ import { afterRegisterCleanup } from "../../store/authentication/authentication-
  * @returns JSX with the form to register
  */
 const Register: React.FC = () => {
-  const [registerData, setRegisterData] = useState<tRegister>();
+  const [registerData, setRegisterData] = useState<tUserRegistration>();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -52,7 +52,7 @@ const Register: React.FC = () => {
       password: { value: string };
     };
 
-    const registerData: tRegister = {
+    const registerData: tUserRegistration = {
       firstName: target.firstName.value,
       lastName: target.lastName.value,
       gamerTag: target.gamerTag.value,

@@ -1,0 +1,11 @@
+// --------- CUSTOM Datatypes --------- //
+
+import { tID } from "../../defaults/generics";
+import { tRegistrationStatusType } from "../../enums/registrationStatusType";
+
+// id = RegistrationStatusID
+type tRegistrationStatusUpdate = tID & {
+    registrationStatusType: tRegistrationStatusType;
+}
+
+export default tRegistrationStatusUpdate;

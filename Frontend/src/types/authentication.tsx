@@ -1,13 +1,6 @@
-// --------- CUSTOM Datatypes (no DTO for now) --------- //
+// --------- CUSTOM Datatypes --------- //
 
-// TODO: Transform to DTOs
-
-export type tLogin = {
-  email: string;
-  password: string;
-};
-
-export type tRegister = {
+export type tUserRegistration = {
   email: string;
   firstName: string;
   gamerTag: string;

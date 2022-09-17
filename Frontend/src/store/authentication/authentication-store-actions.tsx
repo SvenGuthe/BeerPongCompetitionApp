@@ -7,7 +7,7 @@ import {
   setAuthenticatedUser,
   setLoading,
 } from "./authentication-store";
-import { tRegister } from "../../types/authentication";
+import { tUserRegistration } from "../../types/authentication";
 import {
   authenticatedUserRoute,
   confirmRoute,
@@ -40,7 +40,7 @@ export const sendLoginRequest = (email: String, password: String) => {
   };
 };
 
-export const sendRegisterRequest = (registerFormData: tRegister) => {
+export const sendRegisterRequest = (registerFormData: tUserRegistration) => {
   console.log(`Send ${registerRoute} [POST] Request`);
   return async (dispatch: Dispatch<any>) => {
     const sendRequest = async () =>
