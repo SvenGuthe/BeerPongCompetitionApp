@@ -1,8 +1,5 @@
 import { useMemo } from "react";
-import { tUserIDAndGamerTag } from "../../../../types/user";
-import { tCompetitionTeam } from "../../../../types/competition";
 import { tEnum } from "../../../../types/defaults/generics";
-import { tTeamAndUser } from "../../../../types/team";
 import EnumTable from "../../../enums/EnumTable";
 import TableSection from "../../../layout/TableSection";
 import BillingStatusAddRow from "./billingStatus/BillingStatusAddRow";
@@ -10,6 +7,9 @@ import CompetitionPlayerAdd from "./competitionPlayer/CompetitionPlayerAdd";
 import CompetitionPlayerDetail from "./competitionPlayer/CompetitionPlayerDetail";
 import CompetitionTeamDetailTable from "./CompetitionTeamDetailTable";
 import RegistrationStatusAddRow from "./registrationStatus/RegistrationStatusAddRow";
+import tCompetitionTeam from "../../../../types/competition/competitionteam/competitionTeam";
+import tTeamAndUser from "../../../../types/team/teamAndUser";
+import tUserIDAndGamerTag from "../../../../types/user/userIDAndGamerTag";
 
 /**
  * Component to show the competition team details and the registration- + billingstatus + competition players
@@ -94,7 +94,9 @@ const CompetitionTeamDetail: React.FC<{
                 ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
                 wrapped
                 addRow={
-                  <RegistrationStatusAddRow id={competitionTeamDetail.id} />
+                  <RegistrationStatusAddRow
+                    competitionTeamId={competitionTeamDetail.id}
+                  />
                 }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}
               />
@@ -132,7 +134,11 @@ const CompetitionTeamDetail: React.FC<{
                   ),
                 ].sort((a: tEnum, b: tEnum) => a.id - b.id)}
                 wrapped
-                addRow={<BillingStatusAddRow id={competitionTeamDetail.id} />}
+                addRow={
+                  <BillingStatusAddRow
+                    competitionTeamId={competitionTeamDetail.id}
+                  />
+                }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}
               />
             </TableSection>
@@ -152,7 +158,7 @@ const CompetitionTeamDetail: React.FC<{
               <CompetitionPlayerAdd
                 team={team}
                 user={props.users}
-                id={competitionTeamDetail.id}
+                competitionTeamId={competitionTeamDetail.id}
               />
             </TableSection>
           )}

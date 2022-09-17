@@ -1,11 +1,10 @@
 import axios from "axios";
 import { Dispatch } from "react";
 import { confirmationTokenRoute, userRoute } from "../../api-routes/user";
-import {
-  tConfirmationToken,
-  tConfirmationTokenAdd,
-  tUserUpdate,
-} from "../../types/user";
+import tConfirmationToken from "../../types/user/confirmationtoken/confirmationToken";
+import tConfirmationTokenAdd from "../../types/user/confirmationtoken/confirmationTokenAdd";
+import tUser from "../../types/user/user";
+import tUserUpdate from "../../types/user/userUpdate";
 import {
   updateUser as updateUserState,
   addConfirmationToken as addConfirmationTokenState,
@@ -19,7 +18,8 @@ export const updateUser = (user: tUserUpdate) => {
       await axios
         .put(userRoute, user)
         .then((response) => {
-          dispatch(updateUserState(response.data));
+          const userResponse: tUser = response.data;
+          dispatch(updateUserState(userResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -37,7 +37,8 @@ export const addConfirmationToken = (
       await axios
         .post(confirmationTokenRoute, confirmationToken)
         .then((response) => {
-          dispatch(addConfirmationTokenState(response.data));
+          const confirmationTokenResponse: tConfirmationToken = response.data;
+          dispatch(addConfirmationTokenState(confirmationTokenResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -55,7 +56,8 @@ export const toggleConfirmationToken = (
       await axios
         .put(confirmationTokenRoute, confirmationToken)
         .then((response) => {
-          dispatch(toggleConfirmationTokenState(response.data));
+          const confirmationTokenResponse: tConfirmationToken = response.data;
+          dispatch(toggleConfirmationTokenState(confirmationTokenResponse));
         })
         .catch(function (error) {
           console.log(error);

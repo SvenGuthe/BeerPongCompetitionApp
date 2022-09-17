@@ -26,7 +26,7 @@ const CompetitionDetail: React.FC = () => {
   const dispatch = useDispatch();
 
   // get the competition id from the url params
-  const id = useParams().id;
+  const competitionId = useParams().id;
 
   // get the competition details from redux
   const { competitionDetail } = useSelector((state: RootState) => {
@@ -52,10 +52,10 @@ const CompetitionDetail: React.FC = () => {
 
   // if there is an id in the url, load the competition details from the api
   useEffect(() => {
-    if (id) {
+    if (competitionId) {
       // load the details for the given id, add the competition to the local fetched competition (if not already stored) and also add the competition details
       dispatch(
-        getRequestWithID(+id, "/competition/competition", [
+        getRequestWithID(+competitionId, "/competition/competition", [
           addCompetition,
           storeCompetitionDetail,
         ])
@@ -68,7 +68,7 @@ const CompetitionDetail: React.FC = () => {
     };
 
     // Reload if the id was changed
-  }, [id, dispatch]);
+  }, [competitionId, dispatch]);
 
   return (
     <>
@@ -104,7 +104,7 @@ const CompetitionDetail: React.FC = () => {
                 wrapped
                 addRow={
                   <CompetitionStatusAddRow
-                    id={competitionDetail.competition.id}
+                    competitionId={competitionDetail.competition.id}
                   />
                 }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}

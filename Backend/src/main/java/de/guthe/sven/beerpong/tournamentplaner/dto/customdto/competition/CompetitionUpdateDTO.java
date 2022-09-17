@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 
 public class CompetitionUpdateDTO extends ID {
 
-	@NotNull(message = "competitionName in CompetitionUpdateDTO have to be set.")
 	private String competitionName;
 
 	private Timestamp competitionStartTimestamp;

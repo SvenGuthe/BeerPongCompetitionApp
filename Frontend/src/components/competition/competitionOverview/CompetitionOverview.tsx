@@ -5,7 +5,7 @@ import {
   removeCompetitions,
   storeCompetitions,
 } from "../../../store/competition/competition-store";
-import { tCompetition } from "../../../types/competition";
+import tCompetition from "../../../types/competition/competition";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import CompetitionTable from "./CompetitionTable";

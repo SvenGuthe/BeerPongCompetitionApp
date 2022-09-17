@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tConfirmationToken } from "../../../../types/user";
+import tConfirmationToken from "../../../../types/user/confirmationtoken/confirmationToken";
 import ConfirmationTokenAddRow from "./ConfirmationTokenAddRow";
 import ConfirmationTokenRow from "./ConfirmationTokenRow";
 
@@ -12,7 +12,7 @@ import ConfirmationTokenRow from "./ConfirmationTokenRow";
  * @returns JSX to display all available confirmation token and add new ones
  */
 const ConfirmationTokenTable: React.FC<{
-  id: number;
+  userId: number;
   confirmationToken: tConfirmationToken[];
   wrapped?: boolean;
   additionalAttributesHeader?: string[];
@@ -50,7 +50,7 @@ const ConfirmationTokenTable: React.FC<{
             confirmationToken={confirmationToken}
           />
         ))}
-        <ConfirmationTokenAddRow id={props.id} />
+        <ConfirmationTokenAddRow userId={props.userId} />
       </tbody>
     </>
   );

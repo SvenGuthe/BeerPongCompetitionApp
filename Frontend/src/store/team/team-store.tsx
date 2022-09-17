@@ -1,14 +1,12 @@
 import { createSlice, configureStore, PayloadAction } from "@reduxjs/toolkit";
 import { tEnum, tPaginationDTO } from "../../types/defaults/generics";
-import {
-  tTeam,
-  tTeamComposition,
-  tTeamCompositionStatus,
-  tTeamDetail,
-  tTeamInvitationLink,
-  tTeamStatus,
-} from "../../types/team";
-import { tTeamUser } from "../../types/user";
+import tTeam from "../../types/team/team";
+import tTeamComposition from "../../types/team/teamcomposition/teamComposition";
+import tTeamCompositionStatus from "../../types/team/teamcomposition/teamCompositionStatus";
+import tTeamDetail from "../../types/team/teamDetail";
+import tTeamInvitationLink from "../../types/team/teaminvitationlink/teamInvitationLink";
+import tTeamStatus from "../../types/team/teamstatus/teamStatus";
+import tTeamUser from "../../types/user/teamUser";
 
 type SliceState = {
   teams: tPaginationDTO<tTeam> | null;
@@ -106,7 +104,7 @@ export const teamSlice = createSlice({
 
       const newUsers = state.teamDetail!.users.map((user) => {
         if (user.id === userId) {
-          user.admin = action.payload.admin;
+          user.isAdmin = action.payload.isAdmin;
         }
         return user;
       });
@@ -153,7 +151,7 @@ export const teamSlice = createSlice({
       state.teamDetail!.users.push({
         id: teamComposition.id,
         user: teamComposition.user,
-        admin: teamComposition.admin,
+        isAdmin: teamComposition.isAdmin,
         creationTime: teamComposition.creationTime,
         teamCompositionStatus: teamComposition.teamCompositionStatus,
       });

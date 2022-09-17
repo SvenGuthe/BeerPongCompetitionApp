@@ -3,7 +3,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.competition.billing;
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.billing.BillingStatusUpdateDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.BillingStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.billing.BillingStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.competition.billing.BillingStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.billing.BillingStatusRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.competition.CompetitionService;

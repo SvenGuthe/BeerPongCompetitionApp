@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tCompetition } from "../../../types/competition";
+import tCompetition from "../../../types/competition/competition";
 import CompetitionRow from "./CompetitionRow";
 
 /**

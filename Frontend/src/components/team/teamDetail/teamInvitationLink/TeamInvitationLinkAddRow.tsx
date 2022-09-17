@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addTeamInvitationLink } from "../../../../store/team/team-store-actions";
-import { tTeamInvitationLinkAdd } from "../../../../types/team";
+import tTeamInvitationLinkAdd from "../../../../types/team/teaminvitationlink/teamInvitationLinkAdd";
 import FormItem from "../../../ui/form/FormItem";
 
 /**
@@ -10,10 +10,10 @@ import FormItem from "../../../ui/form/FormItem";
  * @returns JSX with a single table row (5 columns) and the possibility (input) to add a new custom invitation link
  */
 const TeamInvitationLinkAddRow: React.FC<{
-  id: number;
+  teamId: number;
 }> = (props) => {
   // get the id of the team from props
-  const id = props.id;
+  const teamId = props.teamId;
   const dispatch = useDispatch();
 
   const teamInvitationLinkRef = useRef<HTMLInputElement>(null);
@@ -22,7 +22,7 @@ const TeamInvitationLinkAddRow: React.FC<{
   const onSaveNewInvitationLink = (newValue: string) => {
     // Create the DTO with the team id and the team invitation link
     const teamInvitationLink: tTeamInvitationLinkAdd = {
-      id: id,
+      id: teamId,
       teamInvitationLink: newValue,
     };
 

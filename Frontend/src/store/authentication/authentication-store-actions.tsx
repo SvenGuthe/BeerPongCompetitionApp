@@ -7,28 +7,33 @@ import {
   setAuthenticatedUser,
   setLoading,
 } from "./authentication-store";
-import { tRegister } from "../../types/authentication";
 import {
   authenticatedUserRoute,
   confirmRoute,
   loginRoute,
   registerRoute,
 } from "../../api-routes/authentication";
+import tUserRegistration from "../../types/user/userRegistration";
+import tJwtRequest from "../../types/authentication/jwtRequest";
+import tUser from "../../types/user/user";
+import tJwtResponse from "../../types/authentication/jwtResponse";
 
-export const sendLoginRequest = (email: String, password: String) => {
+export const sendLoginRequest = (authenticationRequest: tJwtRequest) => {
   return async (dispatch: Dispatch<any>) => {
     console.log(`Send ${loginRoute} [POST] Request`);
     const sendRequest = async () =>
       await axios
-        .post(loginRoute, {
-          username: email,
-          password: password,
-        })
+        .post(loginRoute, authenticationRequest)
         .then((response) => {
+          const jwtToken: string = response.data.jwtToken;
+          const user: tUser = response.data.userDTO;
+          const jwtResponse: tJwtResponse = {
+            jwtToken,
+            user,
+          };
           dispatch(
             login({
-              token: response.data.jwtToken,
-              userDetail: response.data.userDetailDTO,
+              jwtResponse,
             })
           );
         })
@@ -40,16 +45,15 @@ export const sendLoginRequest = (email: String, password: String) => {
   };
 };
 
-export const sendRegisterRequest = (registerFormData: tRegister) => {
+export const sendRegisterRequest = (userRegistrationDTO: tUserRegistration) => {
   console.log(`Send ${registerRoute} [POST] Request`);
   return async (dispatch: Dispatch<any>) => {
     const sendRequest = async () =>
       await axios
-        .post(registerRoute, {
-          ...registerFormData,
-        })
+        .post(registerRoute, userRegistrationDTO)
         .then((response) => {
-          dispatch(register(response.data));
+          const user: tUser = response.data;
+          dispatch(register(user));
         })
         .catch(function (error) {
           console.log(error);
@@ -66,7 +70,8 @@ export const sendConfirmRequest = (token: string) => {
       await axios
         .get(`${confirmRoute}?token=${token}`)
         .then((response) => {
-          dispatch(confirm(response.data));
+          const user: tUser = response.data;
+          dispatch(confirm(user));
         })
         .catch(function (error) {
           console.log(error);
@@ -83,7 +88,8 @@ export const sendAuthenticationRequest = () => {
       await axios
         .get(authenticatedUserRoute)
         .then((response) => {
-          dispatch(setAuthenticatedUser(response.data));
+          const user: tUser = response.data;
+          dispatch(setAuthenticatedUser(user));
         })
         .catch(function (error) {
           dispatch(setAuthenticatedUser(null));

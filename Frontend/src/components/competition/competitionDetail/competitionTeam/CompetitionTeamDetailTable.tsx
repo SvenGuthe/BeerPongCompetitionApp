@@ -2,11 +2,9 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateCompetitionTeam } from "../../../../store/competition/competition-store-actions";
-import {
-  tCompetitionTeam,
-  tCompetitionTeamUpdate,
-} from "../../../../types/competition";
-import { tTeamAndUser } from "../../../../types/team";
+import tCompetitionTeam from "../../../../types/competition/competitionteam/competitionTeam";
+import tCompetitionTeamUpdate from "../../../../types/competition/competitionteam/competitionTeamUpdate";
+import tTeamAndUser from "../../../../types/team/teamAndUser";
 import FormItem from "../../../ui/form/FormItem";
 
 /**

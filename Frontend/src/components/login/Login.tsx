@@ -5,8 +5,8 @@ import classes from "./Login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/combine-store";
 import { sendLoginRequest } from "../../store/authentication/authentication-store-actions";
-import { tLogin } from "../../types/authentication";
 import { afterLoginCleanup } from "../../store/authentication/authentication-store";
+import tJwtRequest from "../../types/authentication/jwtRequest";
 
 /**
  * Component to display the login page
@@ -15,7 +15,7 @@ import { afterLoginCleanup } from "../../store/authentication/authentication-sto
 const Login: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loginData, setLoginData] = useState<tLogin | null>();
+  const [loginData, setLoginData] = useState<tJwtRequest | null>();
 
   // get the information if the application should redirect to home
   // this is the case, if the login was successful
@@ -38,7 +38,12 @@ const Login: React.FC = () => {
   // other request the bearer token should be set in the header
   useEffect(() => {
     if (loginData) {
-      dispatch(sendLoginRequest(loginData.email, loginData.password));
+      dispatch(
+        sendLoginRequest({
+          username: loginData.username,
+          password: loginData.password,
+        })
+      );
     }
   }, [loginData, dispatch]);
 
@@ -56,7 +61,7 @@ const Login: React.FC = () => {
 
     // set the login data from the targets
     setLoginData({
-      email,
+      username: email,
       password,
     });
   };

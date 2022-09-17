@@ -2,7 +2,7 @@ package de.guthe.sven.beerpong.tournamentplaner.controller.user;
 
 import de.guthe.sven.beerpong.tournamentplaner.dto.PaginationDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.EnumDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.userstatus.UserStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.UserStatus;
 import de.guthe.sven.beerpong.tournamentplaner.repository.user.UserStatusRepository;
 import org.slf4j.Logger;

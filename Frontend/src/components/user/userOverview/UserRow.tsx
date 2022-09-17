@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { tUser } from "../../../types/user";
+import tUser from "../../../types/user/user";
 
 /**
  * Component which includes a single row of the user list

@@ -1,10 +1,10 @@
-import { tCompetitionAdmin } from "../../../../types/competition";
 import CompetitionAdminDetailTable from "./CompetitionAdminDetailTable";
 import TableSection from "../../../layout/TableSection";
 import EnumTable from "../../../enums/EnumTable";
 import AdminStatusAddRow from "./adminStatus/AdminStatusAddRow";
 import { useMemo } from "react";
 import { tEnum } from "../../../../types/defaults/generics";
+import tCompetitionAdmin from "../../../../types/competition/competitionadmin/competitionAdmin";
 
 /**
  * Component to show the competition admin details and the status of every competition admin

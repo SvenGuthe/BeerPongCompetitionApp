@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { tCompetitionPlayer } from "../../../../../types/competition";
+import tCompetitionPlayer from "../../../../../types/competition/competitionplayer/competitionPlayer";
 import { tEnum } from "../../../../../types/defaults/generics";
 import EnumTable from "../../../../enums/EnumTable";
 import TableSection from "../../../../layout/TableSection";
@@ -62,7 +62,7 @@ const CompetitionPlayerDetail: React.FC<{
                 wrapped
                 addRow={
                   <CompetitionPlayerStatusAddRow
-                    id={competitionPlayerDetail.id}
+                    competitionPlayerId={competitionPlayerDetail.id}
                   />
                 }
                 additionalAttributesHeader={["Valide von", "Valide bis"]}

@@ -2,8 +2,8 @@ import { useRef } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { addCompetitionAdmin } from "../../../../store/competition/competition-store-actions";
-import { tUserIDAndGamerTag } from "../../../../types/user";
-import { tCompetitionAdminAdd } from "../../../../types/competition";
+import tCompetitionAdminAdd from "../../../../types/competition/competitionadmin/competitionAdminAdd";
+import tUserIDAndGamerTag from "../../../../types/user/userIDAndGamerTag";
 
 /**
  * Component to add a new competition admin to the current competition

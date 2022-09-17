@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeBillingStatus } from "../../../../../store/competition/competition-store-actions";
-import { tBillingStatusUpdate } from "../../../../../types/competition";
+import tBillingStatusUpdate from "../../../../../types/competition/billing/billingStatusUpdate";
 import { tBillingStatusType } from "../../../../../types/enums/billingStatusType";
 import { BillingStatusTypeSelectInput } from "../../../../ui/form/PredefinedSelectInputs";
 
@@ -10,17 +10,17 @@ import { BillingStatusTypeSelectInput } from "../../../../ui/form/PredefinedSele
  * @returns JSX with a single table row (4 columns) and the possibility (select input) to choose a new billing status for the competition team
  */
 const BillingStatusAddRow: React.FC<{
-  id: number;
+  competitionTeamId: number;
 }> = (props) => {
   // get the competition team id from the props
-  const id = props.id;
+  const competitionTeamId = props.competitionTeamId;
   const dispatch = useDispatch();
 
   // Handler when clicked the add button
   const onSaveNewBillingStatusType = (newValue: string[]) => {
     // Create the DTO with the competition team id and the selected billing status
     const billingStatus: tBillingStatusUpdate = {
-      id: id,
+      id: competitionTeamId,
       billingStatusType: newValue[0] as tBillingStatusType,
     };
 

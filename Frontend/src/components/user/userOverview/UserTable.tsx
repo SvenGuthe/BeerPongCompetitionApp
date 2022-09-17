@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tUser } from "../../../types/user";
+import tUser from "../../../types/user/user";
 import UserRow from "./UserRow";
 
 /**

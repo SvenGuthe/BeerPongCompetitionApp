@@ -1,24 +1,24 @@
 import { useDispatch } from "react-redux";
 import { changeCompetitionAdminStatus } from "../../../../../store/competition/competition-store-actions";
-import { tCompetitionAdminStatusUpdate } from "../../../../../types/competition";
+import tCompetitionAdminStatusUpdate from "../../../../../types/competition/competitionadmin/competitionAdminStatusUpdate";
 import { tCompetitionAdminStatusType } from "../../../../../types/enums/competitionAdminStatusType";
 import { CompetitionAdminStatusTypeInput } from "../../../../ui/form/PredefinedSelectInputs";
 
 /**
  * Component to add a new competition admin status (embedded in a table row)
- * @param props id of the current competition
+ * @param props id of the current competition admin
  * @returns JSX to select and save the new competition admin status
  */
 const AdminStatusAddRow: React.FC<{
   id: number;
 }> = (props) => {
-  // Get the id of the competition
+  // Get the id of the competition admin
   const id = props.id;
   const dispatch = useDispatch();
 
   // Handler when clicked the save button
   const onSaveNewCompetitionAdminStatusType = (newValue: string[]) => {
-    // Create the DTO with the competition id and the currently selected competition admin status type
+    // Create the DTO with the competition admin id and the currently selected competition admin status type
     const competitionAdminStatus: tCompetitionAdminStatusUpdate = {
       id: id,
       competitionAdminStatusType: newValue[0] as tCompetitionAdminStatusType,

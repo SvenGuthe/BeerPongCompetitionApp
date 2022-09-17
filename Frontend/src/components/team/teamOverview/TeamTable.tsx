@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tTeam } from "../../../types/team";
+import tTeam from "../../../types/team/team";
 import TeamRow from "./TeamRow";
 
 /**

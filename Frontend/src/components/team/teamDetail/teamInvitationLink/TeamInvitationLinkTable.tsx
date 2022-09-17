@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { tTeamInvitationLink } from "../../../../types/team";
+import tTeamInvitationLink from "../../../../types/team/teaminvitationlink/teamInvitationLink";
 import TeamInvitationLinkAddRow from "./TeamInvitationLinkAddRow";
 import TeamInvitationLinkRow from "./TeamInvitationLinkRow";
 
@@ -13,7 +13,7 @@ import TeamInvitationLinkRow from "./TeamInvitationLinkRow";
  */
 const TeamInvitationLinkTable: React.FC<{
   teamInvitationLinks: tTeamInvitationLink[];
-  id: number;
+  teamId: number;
   wrapped?: boolean;
   additionalAttributesHeader?: string[];
 }> = (props) => {
@@ -54,7 +54,7 @@ const TeamInvitationLinkTable: React.FC<{
             teamInvitationLink={teamInvitationLink}
           />
         ))}
-        <TeamInvitationLinkAddRow id={props.id} />
+        <TeamInvitationLinkAddRow teamId={props.teamId} />
       </tbody>
     </>
   );

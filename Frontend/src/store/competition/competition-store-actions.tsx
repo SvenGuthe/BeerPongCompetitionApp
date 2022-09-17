@@ -11,18 +11,25 @@ import {
   competitionTeamRoute,
   registrationStatusRoute,
 } from "../../api-routes/competition";
-import {
-  tBillingStatusUpdate,
-  tCompetitionAdminAdd,
-  tCompetitionAdminStatusUpdate,
-  tCompetitionPlayerAdd,
-  tCompetitionPlayerStatusUpdate,
-  tCompetitionStatusUpdate,
-  tCompetitionTeamAdd,
-  tCompetitionTeamUpdate,
-  tCompetitionUpdate,
-  tRegistrationStatusUpdate,
-} from "../../types/competition";
+import tBillingStatus from "../../types/competition/billing/billingStatus";
+import tBillingStatusUpdate from "../../types/competition/billing/billingStatusUpdate";
+import tCompetition from "../../types/competition/competition";
+import tCompetitionAdmin from "../../types/competition/competitionadmin/competitionAdmin";
+import tCompetitionAdminAdd from "../../types/competition/competitionadmin/competitionAdminAdd";
+import tCompetitionAdminStatus from "../../types/competition/competitionadmin/competitionAdminStatus";
+import tCompetitionAdminStatusUpdate from "../../types/competition/competitionadmin/competitionAdminStatusUpdate";
+import tCompetitionPlayer from "../../types/competition/competitionplayer/competitionPlayer";
+import tCompetitionPlayerAdd from "../../types/competition/competitionplayer/competitionPlayerAdd";
+import tCompetitionPlayerStatus from "../../types/competition/competitionplayer/competitionPlayerStatus";
+import tCompetitionPlayerStatusUpdate from "../../types/competition/competitionplayer/competitionPlayerStatusUpdate";
+import tCompetitionStatus from "../../types/competition/competitionstatus/competitionStatus";
+import tCompetitionStatusUpdate from "../../types/competition/competitionstatus/competitionStatusUpdate";
+import tCompetitionTeam from "../../types/competition/competitionteam/competitionTeam";
+import tCompetitionTeamAdd from "../../types/competition/competitionteam/competitionTeamAdd";
+import tCompetitionTeamUpdate from "../../types/competition/competitionteam/competitionTeamUpdate";
+import tCompetitionUpdate from "../../types/competition/competitionUpdate";
+import tRegistrationStatus from "../../types/competition/registration/registrationStatus";
+import tRegistrationStatusUpdate from "../../types/competition/registration/registrationStatusUpdate";
 import {
   updateBillingStatus,
   updateCompetitionAdminStatus,
@@ -45,7 +52,8 @@ export const changeCompetitionStatus = (
       await axios
         .put(competitionStatusRoute, competitionStatus)
         .then((response) => {
-          dispatch(updateCompetitionStatus(response.data));
+          const competitionStatusResponse: tCompetitionStatus[] = response.data;
+          dispatch(updateCompetitionStatus(competitionStatusResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -64,9 +72,11 @@ export const changeCompetitionAdminStatus = (
       await axios
         .put(competitionAdminStatusRoute, competitionAdminStatus)
         .then((response) => {
+          const competitionAdminStatusResponse: tCompetitionAdminStatus[] =
+            response.data;
           dispatch(
             updateCompetitionAdminStatus({
-              competitionAdminStatus: response.data,
+              competitionAdminStatus: competitionAdminStatusResponse,
               competitionAdminId: competitionAdminStatus.id,
             })
           );
@@ -88,9 +98,11 @@ export const changeRegistrationStatus = (
       await axios
         .put(registrationStatusRoute, registrationStatus)
         .then((response) => {
+          const registrationStatusResponse: tRegistrationStatus[] =
+            response.data;
           dispatch(
             updateRegistrationStatus({
-              registrationStatus: response.data,
+              registrationStatus: registrationStatusResponse,
               competitionTeamId: registrationStatus.id,
             })
           );
@@ -110,9 +122,10 @@ export const changeBillingStatus = (billingStatus: tBillingStatusUpdate) => {
       await axios
         .put(billingStatusRoute, billingStatus)
         .then((response) => {
+          const billingStatusResponse: tBillingStatus[] = response.data;
           dispatch(
             updateBillingStatus({
-              billingStatus: response.data,
+              billingStatus: billingStatusResponse,
               competitionTeamId: billingStatus.id,
             })
           );
@@ -132,7 +145,8 @@ export const addCompetitionAdmin = (competitionAdmin: tCompetitionAdminAdd) => {
       await axios
         .post(competitionAdminRoute, competitionAdmin)
         .then((response) => {
-          dispatch(addCompetitionAdminState(response.data));
+          const competitionAdmin: tCompetitionAdmin = response.data;
+          dispatch(addCompetitionAdminState(competitionAdmin));
         })
         .catch(function (error) {
           console.log(error);
@@ -150,9 +164,10 @@ export const addCompetitionPlayer = (
       await axios
         .post(competitionPlayerRoute, competitionPlayer)
         .then((response) => {
+          const competitionPlayerResponse: tCompetitionPlayer = response.data;
           dispatch(
             addCompetitionPlayerState({
-              competitionPlayer: response.data,
+              competitionPlayer: competitionPlayerResponse,
               competitionTeamId: competitionPlayer.id,
             })
           );
@@ -171,7 +186,8 @@ export const addCompetitionTeam = (competitionTeam: tCompetitionTeamAdd) => {
       await axios
         .post(competitionTeamRoute, competitionTeam)
         .then((response) => {
-          dispatch(addCompetitionTeamState(response.data));
+          const competitionTeamResponse: tCompetitionTeam = response.data;
+          dispatch(addCompetitionTeamState(competitionTeamResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -187,7 +203,8 @@ export const updateCompetition = (competition: tCompetitionUpdate) => {
       await axios
         .put(competitionRoute, competition)
         .then((response) => {
-          dispatch(updateCompetitionState(response.data));
+          const competition: tCompetition = response.data;
+          dispatch(updateCompetitionState(competition));
         })
         .catch(function (error) {
           console.log(error);
@@ -205,10 +222,12 @@ export const updateCompetitionPlayerStatus = (
       await axios
         .put(competitionPlayerStatusRoute, competitionPlayerStatus)
         .then((response) => {
+          const competitionPlayerStatusResponse: tCompetitionPlayerStatus[] =
+            response.data;
           dispatch(
             updateCompetitionPlayerStatusState({
               competitionPlayerId: competitionPlayerStatus.id,
-              competitionPlayerStatus: response.data,
+              competitionPlayerStatus: competitionPlayerStatusResponse,
             })
           );
         })
@@ -228,7 +247,8 @@ export const updateCompetitionTeam = (
       await axios
         .put(competitionTeamRoute, competitionTeam)
         .then((response) => {
-          dispatch(updateCompetitionTeamState(response.data));
+          const competitionTeamResponse: tCompetitionTeam = response.data;
+          dispatch(updateCompetitionTeamState(competitionTeamResponse));
         })
         .catch(function (error) {
           console.log(error);

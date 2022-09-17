@@ -25,7 +25,7 @@ const UserDetails: React.FC = () => {
   const dispatch = useDispatch();
 
   // get the user id from the url params
-  const id = useParams().id;
+  const userId = useParams().id;
 
   // get the user details from redux
   const { userDetail } = useSelector((state: RootState) => {
@@ -63,9 +63,11 @@ const UserDetails: React.FC = () => {
 
   // if there is an id in the url, load the user details from the api
   useEffect(() => {
-    if (id) {
+    if (userId) {
       // load the details for the given id, add the user to the local fetched users (if not already stored) and also add the user details
-      dispatch(getRequestWithID(+id, userRoute, [addUser, storeUserDetail]));
+      dispatch(
+        getRequestWithID(+userId, userRoute, [addUser, storeUserDetail])
+      );
     }
 
     // if the page is unmount, remove the user detail
@@ -74,7 +76,7 @@ const UserDetails: React.FC = () => {
     };
 
     // Reload if the id was changed
-  }, [id, dispatch]);
+  }, [userId, dispatch]);
 
   return (
     <>
@@ -91,7 +93,7 @@ const UserDetails: React.FC = () => {
             <TableSection>
               <h3>Confirmation Token</h3>
               <ConfirmationTokenTable
-                id={userDetail.user.id}
+                userId={userDetail.user.id}
                 confirmationToken={confirmationToken}
                 wrapped
               />
@@ -105,7 +107,7 @@ const UserDetails: React.FC = () => {
                   const additionalAttributes = [
                     {
                       id: team.id + "_admin",
-                      value: String(team.admin),
+                      value: String(team.isAdmin),
                     },
                     {
                       id: team.id + "_creationTime",

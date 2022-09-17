@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { changeCompetitionStatus } from "../../../../store/competition/competition-store-actions";
-import { tCompetitionStatusUpdate } from "../../../../types/competition";
+import tCompetitionStatusUpdate from "../../../../types/competition/competitionstatus/competitionStatusUpdate";
 import { tCompetitionStatusType } from "../../../../types/enums/competitionStatusType";
 import { CompetitionStatusTypeInput } from "../../../ui/form/PredefinedSelectInputs";
 
@@ -10,17 +10,17 @@ import { CompetitionStatusTypeInput } from "../../../ui/form/PredefinedSelectInp
  * @returns JSX with a single table row (4 columns) and the possibility (select input) to choose a new status for the competition
  */
 const CompetitionStatusAddRow: React.FC<{
-  id: number;
+  competitionId: number;
 }> = (props) => {
   // get the competition id from the props
-  const id = props.id;
+  const competitionId = props.competitionId;
   const dispatch = useDispatch();
 
   // Handler when clicked the add button
   const onSaveNewCompetitionStatusType = (newValue: string[]) => {
     // Create the DTO with the competition id and the selected competition status
     const competitionStatus: tCompetitionStatusUpdate = {
-      id: id,
+      id: competitionId,
       competitionStatusType: newValue[0] as tCompetitionStatusType,
     };
 

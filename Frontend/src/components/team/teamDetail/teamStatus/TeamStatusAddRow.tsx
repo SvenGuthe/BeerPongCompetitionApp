@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { updateTeamStatus } from "../../../../store/team/team-store-actions";
 import { tTeamStatusType } from "../../../../types/enums/teamStatusType";
-import { tTeamStatusUpdate } from "../../../../types/team";
+import tTeamStatusUpdate from "../../../../types/team/teamstatus/teamStatusUpdate";
 import { TeamStatusTypeInput } from "../../../ui/form/PredefinedSelectInputs";
 
 /**
@@ -10,10 +10,10 @@ import { TeamStatusTypeInput } from "../../../ui/form/PredefinedSelectInputs";
  * @returns JSX with a single table row (4 columns) and the possibility (select input) to choose a new status for the team
  */
 const TeamStatusAddRow: React.FC<{
-  id: number;
+  teamId: number;
 }> = (props) => {
   // get the team id from the props
-  const id = props.id;
+  const teamId = props.teamId;
   const dispatch = useDispatch();
 
   // Handler when clicked the add button
@@ -22,7 +22,7 @@ const TeamStatusAddRow: React.FC<{
 
     // Create the DTO with the team id and the selected team status
     const teamStatus: tTeamStatusUpdate = {
-      id: id,
+      id: teamId,
       teamStatusType: newStatus,
     };
 

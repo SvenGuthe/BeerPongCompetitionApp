@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { tCompetition } from "../../../types/competition";
+import tCompetition from "../../../types/competition/competition";
 import { competitionHierarchy } from "../../../utility/hierarchy";
 
 /**

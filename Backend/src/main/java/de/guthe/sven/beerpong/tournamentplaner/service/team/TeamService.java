@@ -1,6 +1,11 @@
 package de.guthe.sven.beerpong.tournamentplaner.service.team;
 
 import de.guthe.sven.beerpong.tournamentplaner.datatype.enums.TeamCompositionStatusType;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teamcomposition.TeamCompositionAddDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teamcomposition.TeamCompositionStatusUpdateDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teamcomposition.TeamCompositionUpdateDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teaminvitationlink.TeamInvitationLinkAddDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teamstatus.TeamStatusUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.TeamUserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.*;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition.TeamCompositionStatusDTO;
@@ -9,7 +14,7 @@ import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.Competit
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamcomposition.TeamCompositionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.TeamStatusDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teamstatus.TeamStatusDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teamcomposition.TeamCompositionStatusHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.team.teaminvitationlink.TeamInvitationLinkHistory;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.User;

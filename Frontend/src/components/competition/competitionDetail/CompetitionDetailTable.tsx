@@ -2,7 +2,8 @@ import { useRef, useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { updateCompetition } from "../../../store/competition/competition-store-actions";
-import { tCompetition, tCompetitionUpdate } from "../../../types/competition";
+import tCompetition from "../../../types/competition/competition";
+import tCompetitionUpdate from "../../../types/competition/competitionUpdate";
 import FormItem from "../../ui/form/FormItem";
 
 /**

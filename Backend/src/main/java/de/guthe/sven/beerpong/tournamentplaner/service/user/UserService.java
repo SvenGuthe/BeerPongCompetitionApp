@@ -1,10 +1,10 @@
 package de.guthe.sven.beerpong.tournamentplaner.service.user;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.ConfirmationTokenAddDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.confirmationtoken.ConfirmationTokenAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.UserDetailDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.user.UserUpdateDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.UserTeamDTO;
-import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.ConfirmationTokenDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.confirmationtoken.ConfirmationTokenDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.user.UserDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.CompetitionDTO;
 import de.guthe.sven.beerpong.tournamentplaner.model.user.*;

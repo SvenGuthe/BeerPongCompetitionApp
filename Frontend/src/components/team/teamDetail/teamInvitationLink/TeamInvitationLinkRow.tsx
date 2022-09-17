@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import { tTeamInvitationLink } from "../../../../types/team";
+import tTeamInvitationLink from "../../../../types/team/teaminvitationlink/teamInvitationLink";
 
 /**
  * Component which defines a single row (a single team invitation link)

@@ -1,6 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.competition.competitionplayer;
 
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.CompetitionPlayerAddDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.competition.competitionplayer.CompetitionPlayerAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.competition.competitionplayer.CompetitionPlayerDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.competition.competitionplayer.CompetitionPlayerRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.ACLService;

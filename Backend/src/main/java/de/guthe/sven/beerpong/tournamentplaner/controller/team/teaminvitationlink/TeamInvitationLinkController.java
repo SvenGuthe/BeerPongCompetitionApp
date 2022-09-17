@@ -1,7 +1,6 @@
 package de.guthe.sven.beerpong.tournamentplaner.controller.team.teaminvitationlink;
 
-import de.guthe.sven.beerpong.tournamentplaner.controller.competition.CompetitionTeamController;
-import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.TeamInvitationLinkAddDTO;
+import de.guthe.sven.beerpong.tournamentplaner.dto.customdto.team.teaminvitationlink.TeamInvitationLinkAddDTO;
 import de.guthe.sven.beerpong.tournamentplaner.dto.modeldto.team.teaminvitationlink.TeamInvitationLinkDTO;
 import de.guthe.sven.beerpong.tournamentplaner.repository.team.teaminvitationlink.TeamInvitationLinkRepository;
 import de.guthe.sven.beerpong.tournamentplaner.service.team.TeamService;

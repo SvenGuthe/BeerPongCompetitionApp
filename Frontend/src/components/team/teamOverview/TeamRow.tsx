@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { tTeam } from "../../../types/team";
+import tTeam from "../../../types/team/team";
 import { teamHierarchy } from "../../../utility/hierarchy";
 
 /**
@@ -48,7 +48,7 @@ const TeamRow: React.FC<{
       <td>{team.teamName}</td>
       <td>{team.creationTime}</td>
       <td>{currentTeamStatus.teamStatusDescription}</td>
-      <td>{String(team.playerTeam)}</td>
+      <td>{String(team.isPlayerTeam)}</td>
       <td>{countValidInvitationLinks}</td>
       {additionalAttributes.map((additionalAttribute) => {
         return additionalAttribute.reactElement ? (

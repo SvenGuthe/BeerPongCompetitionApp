@@ -7,14 +7,17 @@ import {
   teamRoute,
   teamStatusRoute,
 } from "../../api-routes/team";
-import {
-  tTeamCompositionAdd,
-  tTeamCompositionStatusUpdate,
-  tTeamCompositionUpdate,
-  tTeamInvitationLinkAdd,
-  tTeamStatusUpdate,
-  tTeamUpdate,
-} from "../../types/team";
+import tTeam from "../../types/team/team";
+import tTeamComposition from "../../types/team/teamcomposition/teamComposition";
+import tTeamCompositionAdd from "../../types/team/teamcomposition/teamCompositionAdd";
+import tTeamCompositionStatus from "../../types/team/teamcomposition/teamCompositionStatus";
+import tTeamCompositionStatusUpdate from "../../types/team/teamcomposition/teamCompositionStatusUpdate";
+import tTeamCompositionUpdate from "../../types/team/teamcomposition/teamCompositionUpdate";
+import tTeamInvitationLink from "../../types/team/teaminvitationlink/teamInvitationLink";
+import tTeamInvitationLinkAdd from "../../types/team/teaminvitationlink/teamInvitationLinkAdd";
+import tTeamStatus from "../../types/team/teamstatus/teamStatus";
+import tTeamStatusUpdate from "../../types/team/teamstatus/teamStatusUpdate";
+import tTeamUpdate from "../../types/team/teamUpdate";
 import {
   updateTeam as updateTeamState,
   updateTeamStatus as updateTeamStatusState,
@@ -31,7 +34,8 @@ export const updateTeam = (team: tTeamUpdate) => {
       await axios
         .put(teamRoute, team)
         .then((response) => {
-          dispatch(updateTeamState(response.data));
+          const teamResponse: tTeam = response.data;
+          dispatch(updateTeamState(teamResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -47,7 +51,8 @@ export const updateTeamStatus = (teamStatus: tTeamStatusUpdate) => {
       await axios
         .post(teamStatusRoute, teamStatus)
         .then((response) => {
-          dispatch(updateTeamStatusState(response.data));
+          const teamStatusResponse: tTeamStatus[] = response.data;
+          dispatch(updateTeamStatusState(teamStatusResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -66,7 +71,8 @@ export const addTeamInvitationLink = (
       await axios
         .post(teamInvitationLinkRoute, teamInvitationLink)
         .then((response) => {
-          dispatch(addTeamInvitationLinkState(response.data));
+          const teamInvitationLinkResponse: tTeamInvitationLink = response.data;
+          dispatch(addTeamInvitationLinkState(teamInvitationLinkResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -85,7 +91,8 @@ export const updateTeamComposition = (
       await axios
         .put(teamCompositionRoute, teamComposition)
         .then((response) => {
-          dispatch(updateTeamCompositionState(response.data));
+          const teamCompositionResponse: tTeamComposition = response.data;
+          dispatch(updateTeamCompositionState(teamCompositionResponse));
         })
         .catch(function (error) {
           console.log(error);
@@ -103,7 +110,11 @@ export const updateTeamCompositionStatus = (
       await axios
         .put(teamCompositionStatusRoute, teamCompositionStatus)
         .then((response) => {
-          dispatch(updateTeamCompositionStatusState(response.data));
+          const teamCompositionStatusResponse: tTeamCompositionStatus[] =
+            response.data;
+          dispatch(
+            updateTeamCompositionStatusState(teamCompositionStatusResponse)
+          );
         })
         .catch(function (error) {
           console.log(error);
@@ -119,7 +130,8 @@ export const addTeamComposition = (teamComposition: tTeamCompositionAdd) => {
       await axios
         .post(teamCompositionRoute, teamComposition)
         .then((response) => {
-          dispatch(addTeamCompositionState(response.data));
+          const teamCompositionResponse: tTeamComposition = response.data;
+          dispatch(addTeamCompositionState(teamCompositionResponse));
         })
         .catch(function (error) {
           console.log(error);

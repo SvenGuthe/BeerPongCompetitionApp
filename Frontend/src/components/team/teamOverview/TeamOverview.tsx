@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/combine-store";
 import { removeTeams, storeTeams } from "../../../store/team/team-store";
-import { tTeam } from "../../../types/team";
+import tTeam from "../../../types/team/team";
 import { getRequest } from "../../../utility/genericHTTPFunctions";
 import TableWithSearchAndFilter from "../../ui/TableWithSearchAndFilter";
 import TeamTable from "./TeamTable";
